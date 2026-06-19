@@ -1,20 +1,226 @@
 datasource db {
   provider = "postgresql"
 }
+
 generator client {
   provider = "prisma-client"
   output   = "./generated"
 }
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+
+model Role {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String   @unique(map: "roles_name_key") @db.VarChar(30)
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  users       User[]
+
+  @@map("roles")
 }
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  Int?
+
+model User {
+  id                String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  authUserId        String?            @unique(map: "users_auth_user_id_key") @map("auth_user_id") @db.Uuid
+  roleId            String             @map("role_id") @db.Uuid
+  email             String             @unique(map: "users_email_key") @db.VarChar(255)
+  displayName       String             @map("display_name") @db.VarChar(100)
+  status            String             @default("active") @db.VarChar(30)
+  lastLoginAt       DateTime?          @map("last_login_at") @db.Timestamptz(3)
+  createdAt         DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime           @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt         DateTime?          @map("deleted_at") @db.Timestamptz(3)
+  role              Role               @relation(fields: [roleId], references: [id], onDelete: Restrict)
+  studentProfile    StudentProfile?
+  teacherProfile    TeacherProfile?
+  createdQuestions  Question[]         @relation("QuestionCreator")
+  practiceSessions  PracticeSession[]
+  pointTransactions PointTransaction[]
+
+  @@index([roleId], map: "idx_users_role_id")
+  @@index([status], map: "idx_users_status")
+  @@map("users")
+}
+
+model StudentProfile {
+  userId             String   @id @map("user_id") @db.Uuid
+  studentNo          String?  @unique(map: "student_profiles_student_no_key") @map("student_no") @db.VarChar(50)
+  avatarUrl          String?  @map("avatar_url")
+  bio                String?
+  currentTitleId     String?  @map("current_title_id") @db.Uuid
+  totalPoints        Int      @default(0) @map("total_points")
+  totalPracticeCount Int      @default(0) @map("total_practice_count")
+  totalCorrectCount  Int      @default(0) @map("total_correct_count")
+  totalAnswerCount   Int      @default(0) @map("total_answer_count")
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("student_profiles")
+}
+
+model TeacherProfile {
+  userId     String   @id @map("user_id") @db.Uuid
+  teacherNo  String?  @unique(map: "teacher_profiles_teacher_no_key") @map("teacher_no") @db.VarChar(50)
+  department String?  @db.VarChar(100)
+  avatarUrl  String?  @map("avatar_url")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("teacher_profiles")
+}
+
+model Exam {
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code             String            @unique(map: "exams_code_key") @db.VarChar(50)
+  name             String            @db.VarChar(100)
+  description      String?
+  isActive         Boolean           @default(true) @map("is_active")
+  createdAt        DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+  questions        Question[]
+  practiceSessions PracticeSession[]
+
+  @@map("exams")
+}
+
+model QuestionCategory {
+  id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code      String     @unique(map: "question_categories_code_key") @db.VarChar(50)
+  name      String     @db.VarChar(100)
+  sortOrder Int        @map("sort_order")
+  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
+  questions Question[]
+
+  @@map("question_categories")
+}
+
+model Question {
+  id                       String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sourceKey                String                    @unique(map: "questions_source_key_key") @map("source_key") @db.VarChar(120)
+  examId                   String                    @map("exam_id") @db.Uuid
+  categoryId               String                    @map("category_id") @db.Uuid
+  sourceYear               Int?                      @map("source_year")
+  sourceSeason             String?                   @map("source_season") @db.VarChar(30)
+  questionNo               Int?                      @map("question_no")
+  questionText             String                    @map("question_text")
+  imagePath                String?                   @map("image_path")
+  explanation              String?
+  questionType             String                    @default("single_choice") @map("question_type") @db.VarChar(30)
+  difficulty               Int?
+  status                   String                    @default("published") @db.VarChar(30)
+  createdBy                String?                   @map("created_by") @db.Uuid
+  createdAt                DateTime                  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt                DateTime                  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt                DateTime?                 @map("deleted_at") @db.Timestamptz(3)
+  exam                     Exam                      @relation(fields: [examId], references: [id], onDelete: Restrict)
+  category                 QuestionCategory          @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  creator                  User?                     @relation("QuestionCreator", fields: [createdBy], references: [id], onDelete: SetNull)
+  choices                  QuestionChoice[]
+  practiceSessionQuestions PracticeSessionQuestion[]
+  practiceAnswers          PracticeAnswer[]
+
+  @@index([examId], map: "idx_questions_exam_id")
+  @@index([categoryId], map: "idx_questions_category_id")
+  @@index([createdBy], map: "idx_questions_created_by")
+  @@index([status], map: "idx_questions_status")
+  @@index([sourceYear, sourceSeason, questionNo], map: "idx_questions_source")
+  @@map("questions")
+}
+
+model QuestionChoice {
+  id              String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  questionId      String           @map("question_id") @db.Uuid
+  choiceLabel     String           @map("choice_label") @db.VarChar(10)
+  choiceText      String           @map("choice_text")
+  isCorrect       Boolean          @default(false) @map("is_correct")
+  sortOrder       Int              @map("sort_order")
+  createdAt       DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  question        Question         @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  practiceAnswers PracticeAnswer[]
+
+  @@unique([questionId, choiceLabel], map: "question_choices_question_id_choice_label_key")
+  @@unique([questionId, sortOrder], map: "question_choices_question_id_sort_order_key")
+  @@index([questionId], map: "idx_question_choices_question_id")
+  @@map("question_choices")
+}
+
+model PracticeSession {
+  id               String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String                    @map("user_id") @db.Uuid
+  examId           String                    @map("exam_id") @db.Uuid
+  status           String                    @default("in_progress") @db.VarChar(30)
+  questionCount    Int                       @default(0) @map("question_count")
+  answeredCount    Int                       @default(0) @map("answered_count")
+  correctCount     Int                       @default(0) @map("correct_count")
+  earnedPoints     Int                       @default(0) @map("earned_points")
+  startedAt        DateTime                  @default(now()) @map("started_at") @db.Timestamptz(3)
+  completedAt      DateTime?                 @map("completed_at") @db.Timestamptz(3)
+  createdAt        DateTime                  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime                  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user             User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exam             Exam                      @relation(fields: [examId], references: [id], onDelete: Restrict)
+  sessionQuestions PracticeSessionQuestion[]
+  answers          PracticeAnswer[]
+
+  @@index([userId], map: "idx_practice_sessions_user_id")
+  @@index([examId], map: "idx_practice_sessions_exam_id")
+  @@index([startedAt], map: "idx_practice_sessions_started_at")
+  @@index([status], map: "idx_practice_sessions_status")
+  @@map("practice_sessions")
+}
+
+model PracticeSessionQuestion {
+  id         String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId  String          @map("session_id") @db.Uuid
+  questionId String          @map("question_id") @db.Uuid
+  orderNo    Int             @map("order_no")
+  createdAt  DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  session    PracticeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question   Question        @relation(fields: [questionId], references: [id], onDelete: Restrict)
+
+  @@unique([sessionId, questionId], map: "practice_session_questions_session_id_question_id_key")
+  @@unique([sessionId, orderNo], map: "practice_session_questions_session_id_order_no_key")
+  @@index([questionId], map: "idx_practice_session_questions_question_id")
+  @@map("practice_session_questions")
+}
+
+model PracticeAnswer {
+  id               String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId        String          @map("session_id") @db.Uuid
+  questionId       String          @map("question_id") @db.Uuid
+  selectedChoiceId String          @map("selected_choice_id") @db.Uuid
+  isCorrect        Boolean         @map("is_correct")
+  orderNo          Int             @map("order_no")
+  answeredAt       DateTime        @default(now()) @map("answered_at") @db.Timestamptz(3)
+  createdAt        DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  session          PracticeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question         Question        @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  selectedChoice   QuestionChoice  @relation(fields: [selectedChoiceId], references: [id], onDelete: Restrict)
+
+  @@unique([sessionId, questionId], map: "practice_answers_session_id_question_id_key")
+  @@unique([sessionId, orderNo], map: "practice_answers_session_id_order_no_key")
+  @@index([questionId], map: "idx_practice_answers_question_id")
+  @@index([selectedChoiceId], map: "idx_practice_answers_selected_choice_id")
+  @@map("practice_answers")
+}
+
+model PointTransaction {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId          String   @map("user_id") @db.Uuid
+  points          Int
+  reason          String   @db.VarChar(50)
+  sourceType      String?  @map("source_type") @db.VarChar(50)
+  sourceId        String?  @map("source_id") @db.Uuid
+  transactionDate DateTime @map("transaction_date") @db.Date
+  description     String?
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, reason, sourceType, sourceId], map: "point_transactions_idempotency_key")
+  @@index([userId, transactionDate], map: "idx_point_transactions_user_date")
+  @@index([reason, transactionDate], map: "idx_point_transactions_reason_date")
+  @@map("point_transactions")
 }

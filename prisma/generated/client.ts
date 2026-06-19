@@ -31,8 +31,8 @@ export * from "./enums"
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more Roles
+ * const roles = await prisma.role.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -42,12 +42,62 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
+ * Model Role
+ * 
+ */
+export type Role = Prisma.RoleModel
+/**
  * Model User
  * 
  */
 export type User = Prisma.UserModel
 /**
- * Model Post
+ * Model StudentProfile
  * 
  */
-export type Post = Prisma.PostModel
+export type StudentProfile = Prisma.StudentProfileModel
+/**
+ * Model TeacherProfile
+ * 
+ */
+export type TeacherProfile = Prisma.TeacherProfileModel
+/**
+ * Model Exam
+ * 
+ */
+export type Exam = Prisma.ExamModel
+/**
+ * Model QuestionCategory
+ * 
+ */
+export type QuestionCategory = Prisma.QuestionCategoryModel
+/**
+ * Model Question
+ * 
+ */
+export type Question = Prisma.QuestionModel
+/**
+ * Model QuestionChoice
+ * 
+ */
+export type QuestionChoice = Prisma.QuestionChoiceModel
+/**
+ * Model PracticeSession
+ * 
+ */
+export type PracticeSession = Prisma.PracticeSessionModel
+/**
+ * Model PracticeSessionQuestion
+ * 
+ */
+export type PracticeSessionQuestion = Prisma.PracticeSessionQuestionModel
+/**
+ * Model PracticeAnswer
+ * 
+ */
+export type PracticeAnswer = Prisma.PracticeAnswerModel
+/**
+ * Model PointTransaction
+ * 
+ */
+export type PointTransaction = Prisma.PointTransactionModel

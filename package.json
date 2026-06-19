@@ -7,7 +7,9 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "prisma generate"
+    "typecheck": "tsc --noEmit",
+    "postinstall": "prisma generate",
+    "seed:build": "node scripts/build-question-seed.mjs"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",
