@@ -8,6 +8,16 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Role'
 export type * from './models/User'
-export type * from './models/Post'
+export type * from './models/StudentProfile'
+export type * from './models/TeacherProfile'
+export type * from './models/Exam'
+export type * from './models/QuestionCategory'
+export type * from './models/Question'
+export type * from './models/QuestionChoice'
+export type * from './models/PracticeSession'
+export type * from './models/PracticeSessionQuestion'
+export type * from './models/PracticeAnswer'
+export type * from './models/PointTransaction'
 export type * from './commonInputTypes'

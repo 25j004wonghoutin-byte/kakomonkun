@@ -51,8 +51,18 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Role: 'Role',
   User: 'User',
-  Post: 'Post'
+  StudentProfile: 'StudentProfile',
+  TeacherProfile: 'TeacherProfile',
+  Exam: 'Exam',
+  QuestionCategory: 'QuestionCategory',
+  Question: 'Question',
+  QuestionChoice: 'QuestionChoice',
+  PracticeSession: 'PracticeSession',
+  PracticeSessionQuestion: 'PracticeSessionQuestion',
+  PracticeAnswer: 'PracticeAnswer',
+  PointTransaction: 'PointTransaction'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -71,23 +81,180 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const RoleScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
+  authUserId: 'authUserId',
+  roleId: 'roleId',
   email: 'email',
-  name: 'name'
+  displayName: 'displayName',
+  status: 'status',
+  lastLoginAt: 'lastLoginAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const PostScalarFieldEnum = {
-  id: 'id',
-  title: 'title',
-  published: 'published',
-  authorId: 'authorId'
+export const StudentProfileScalarFieldEnum = {
+  userId: 'userId',
+  studentNo: 'studentNo',
+  avatarUrl: 'avatarUrl',
+  bio: 'bio',
+  currentTitleId: 'currentTitleId',
+  totalPoints: 'totalPoints',
+  totalPracticeCount: 'totalPracticeCount',
+  totalCorrectCount: 'totalCorrectCount',
+  totalAnswerCount: 'totalAnswerCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
-export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
+export type StudentProfileScalarFieldEnum = (typeof StudentProfileScalarFieldEnum)[keyof typeof StudentProfileScalarFieldEnum]
+
+
+export const TeacherProfileScalarFieldEnum = {
+  userId: 'userId',
+  teacherNo: 'teacherNo',
+  department: 'department',
+  avatarUrl: 'avatarUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeacherProfileScalarFieldEnum = (typeof TeacherProfileScalarFieldEnum)[keyof typeof TeacherProfileScalarFieldEnum]
+
+
+export const ExamScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExamScalarFieldEnum = (typeof ExamScalarFieldEnum)[keyof typeof ExamScalarFieldEnum]
+
+
+export const QuestionCategoryScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuestionCategoryScalarFieldEnum = (typeof QuestionCategoryScalarFieldEnum)[keyof typeof QuestionCategoryScalarFieldEnum]
+
+
+export const QuestionScalarFieldEnum = {
+  id: 'id',
+  sourceKey: 'sourceKey',
+  examId: 'examId',
+  categoryId: 'categoryId',
+  sourceYear: 'sourceYear',
+  sourceSeason: 'sourceSeason',
+  questionNo: 'questionNo',
+  questionText: 'questionText',
+  imagePath: 'imagePath',
+  explanation: 'explanation',
+  questionType: 'questionType',
+  difficulty: 'difficulty',
+  status: 'status',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type QuestionScalarFieldEnum = (typeof QuestionScalarFieldEnum)[keyof typeof QuestionScalarFieldEnum]
+
+
+export const QuestionChoiceScalarFieldEnum = {
+  id: 'id',
+  questionId: 'questionId',
+  choiceLabel: 'choiceLabel',
+  choiceText: 'choiceText',
+  isCorrect: 'isCorrect',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuestionChoiceScalarFieldEnum = (typeof QuestionChoiceScalarFieldEnum)[keyof typeof QuestionChoiceScalarFieldEnum]
+
+
+export const PracticeSessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  examId: 'examId',
+  status: 'status',
+  questionCount: 'questionCount',
+  answeredCount: 'answeredCount',
+  correctCount: 'correctCount',
+  earnedPoints: 'earnedPoints',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PracticeSessionScalarFieldEnum = (typeof PracticeSessionScalarFieldEnum)[keyof typeof PracticeSessionScalarFieldEnum]
+
+
+export const PracticeSessionQuestionScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  questionId: 'questionId',
+  orderNo: 'orderNo',
+  createdAt: 'createdAt'
+} as const
+
+export type PracticeSessionQuestionScalarFieldEnum = (typeof PracticeSessionQuestionScalarFieldEnum)[keyof typeof PracticeSessionQuestionScalarFieldEnum]
+
+
+export const PracticeAnswerScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  questionId: 'questionId',
+  selectedChoiceId: 'selectedChoiceId',
+  isCorrect: 'isCorrect',
+  orderNo: 'orderNo',
+  answeredAt: 'answeredAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PracticeAnswerScalarFieldEnum = (typeof PracticeAnswerScalarFieldEnum)[keyof typeof PracticeAnswerScalarFieldEnum]
+
+
+export const PointTransactionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  points: 'points',
+  reason: 'reason',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  transactionDate: 'transactionDate',
+  description: 'description',
+  createdAt: 'createdAt'
+} as const
+
+export type PointTransactionScalarFieldEnum = (typeof PointTransactionScalarFieldEnum)[keyof typeof PointTransactionScalarFieldEnum]
 
 
 export const SortOrder = {

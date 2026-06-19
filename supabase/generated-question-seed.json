@@ -1,0 +1,5589 @@
+[
+  {
+    "sourceKey": "it-passport-supplemental-1",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 1,
+    "questionText": "OSI基本参照モデルのトランスポート層で動作するプロトコルはどれか？",
+    "imagePath": null,
+    "explanation": "TCP（Transmission Control Protocol）は、OSIモデルのトランスポート層で信頼性のあるデータ転送を提供します。IPはネットワーク層、HTTPはアプリケーション層、Ethernetはデータリンク層で動作します。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "IP",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "HTTP",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "TCP",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "Ethernet",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-2",
+    "examCode": "it_passport",
+    "categoryCode": "management",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 2,
+    "questionText": "プロジェクトマネジメントにおいて、プロジェクトのスコープ、時間、コストの制約を何と呼ぶか？",
+    "imagePath": null,
+    "explanation": "鉄の三角形（またはプロジェクトマネジメントの三角形）は、スコープ、時間、コストの3つの主要な制約を表します。これらは相互に関連しており、1つを変更すると他の少なくとも1つに影響を与えます。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "品質トライアングル",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "リスクマトリクス",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "プロジェクト憲章",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "鉄の三角形",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-3",
+    "examCode": "it_passport",
+    "categoryCode": "strategy",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 3,
+    "questionText": "企業の外部環境と内部環境を分析し、強み、弱み、機会、脅威を評価するフレームワークは何か？",
+    "imagePath": null,
+    "explanation": "SWOT分析は、企業の戦略計画を策定するために、内部要因（Strengths, Weaknesses）と外部要因（Opportunities, Threats）を評価するのに役立ちます。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "SWOT分析",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "PEST分析",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "ファイブフォース分析",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "バリューチェーン分析",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-4",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 4,
+    "questionText": "ウェブアプリケーションの脆弱性を突き、不正なSQL文を実行させる攻撃手法は何か？",
+    "imagePath": null,
+    "explanation": "SQLインジェクションは、アプリケーションが予期しないSQLコマンドをデータベースに送信させ、データを不正に操作したり盗んだりする攻撃です。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "クロスサイトスクリプティング",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "SQLインジェクション",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "DoS攻撃",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "フィッシング",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-5",
+    "examCode": "it_passport",
+    "categoryCode": "management",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 5,
+    "questionText": "プロジェクトの作業を階層的に詳細化して、管理可能な単位に分割した図を何と呼ぶか？",
+    "imagePath": null,
+    "explanation": "WBSは、プロジェクトの成果物と作業を階層的に分解し、プロジェクト全体のスコープを視覚的に表現します。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "ガントチャート",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "WBS (Work Breakdown Structure)",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "PERT図",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "アローダイアグラム",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-6",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 6,
+    "questionText": "ドメイン名（例: www.example.com）をIPアドレスに変換するサービスを提供するシステムは何か？",
+    "imagePath": null,
+    "explanation": "DNS（Domain Name System）は、人間が読みやすいドメイン名を、コンピュータが理解できるIPアドレスに解決（変換）する役割を担っています。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "DHCP",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "DNS",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "HTTP",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "SMTP",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-7",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 7,
+    "questionText": "公開鍵と秘密鍵のペアを使用して暗号化と復号を行う暗号方式を何と呼ぶか？",
+    "imagePath": null,
+    "explanation": "公開鍵暗号方式は、暗号化に使う鍵（公開鍵）と復号に使う鍵（秘密鍵）が異なる非対称鍵暗号です。安全な通信やデジタル署名に利用されます。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "共通鍵暗号方式",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "公開鍵暗号方式",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "ハッシュ関数",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "ブロックチェーン",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-8",
+    "examCode": "it_passport",
+    "categoryCode": "management",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 8,
+    "questionText": "プロジェクトのスケジュール管理において、タスクの開始日、終了日、期間を視覚的に表現する棒グラフは何か？",
+    "imagePath": null,
+    "explanation": "ガントチャートは、プロジェクトのタイムラインとタスクの依存関係を視覚的に示し、進捗管理に広く使用されます。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "フローチャート",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "ヒストグラム",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "散布図",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "ガントチャート",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-9",
+    "examCode": "it_passport",
+    "categoryCode": "strategy",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 9,
+    "questionText": "市場成長率と市場占有率の2つの軸で事業を評価し、戦略的な位置づけを分析するフレームワークは何か？",
+    "imagePath": null,
+    "explanation": "BCGマトリクスは、「花形」「金のなる木」「問題児」「負け犬」の4つの象限に事業を分類し、経営資源の最適な配分を検討するために使用されます。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "アンゾフの成長マトリクス",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "BCGマトリクス",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "SWOT分析",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "3C分析",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-10",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 10,
+    "questionText": "ネットワークに接続するコンピュータに、IPアドレスなどの必要な情報を自動的に割り当てるプロトコルは何か？",
+    "imagePath": null,
+    "explanation": "DHCP（Dynamic Host Configuration Protocol）は、ネットワーク管理を簡素化するために、クライアントデバイスにIPアドレスを動的に割り当てます。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "FTP",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "SNMP",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "DHCP",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "DNS",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-11",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 11,
+    "questionText": "複数のハードディスクを組み合わせて、信頼性や性能を向上させる技術は何か？",
+    "imagePath": null,
+    "explanation": "RAID（Redundant Arrays of Independent Disks）は、ディスクのミラーリングやストライピングなどの技術を用いて、単一のディスクよりも高い性能や耐障害性を実現します。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "SSD",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "RAID",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "NFS",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "SAN",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-12",
+    "examCode": "it_passport",
+    "categoryCode": "management",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 12,
+    "questionText": "プロジェクトの各タスクの所要時間を見積もり、プロジェクト完了までの最短時間を特定する手法は何か？",
+    "imagePath": null,
+    "explanation": "クリティカルパス法（Critical Path Method）は、プロジェクトの最も長い経路（クリティカルパス）を特定し、遅延がプロジェクト全体に影響を与えるタスクを管理します。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "クリティカルパス法",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "モンテカルロ法",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "デルファイ法",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "ファンクションポイント法",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-13",
+    "examCode": "it_passport",
+    "categoryCode": "strategy",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 13,
+    "questionText": "顧客（Customer）、競合（Competitor）、自社（Company）の3つの視点から事業環境を分析するフレームワークは何か？",
+    "imagePath": null,
+    "explanation": "3C分析は、事業を成功に導くための戦略を立案する際に、市場と競合の状況、そして自社の強みと弱みを総合的に分析する基本的なフレームワークです。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "4P分析",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "3C分析",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "ファイブフォース分析",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "PEST分析",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-14",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 14,
+    "questionText": "物理メモリの容量を超えるメモリ空間を、ハードディスクなどの補助記憶装置を利用して実現する仕組みは何か？",
+    "imagePath": null,
+    "explanation": "仮想メモリ（Virtual Memory）は、主記憶装置（RAM）の物理的な容量よりも大きなプログラムを実行できるようにするメモリ管理の仕組みです。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "キャッシュメモリ",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "仮想メモリ",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "レジスタ",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "フラッシュメモリ",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-15",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 15,
+    "questionText": "ネットワークの境界に設置され、内外の通信を監視・制御して不正なアクセスを防ぐシステムは何か？",
+    "imagePath": null,
+    "explanation": "ファイアウォールは、事前に定義されたセキュリティルールに基づいて、ネットワークトラフィックを許可または拒否することで、信頼できない外部ネットワークからの脅威を防ぎます。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "ルータ",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "スイッチ",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "ファイアウォール",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "IDS（侵入検知システム）",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-16",
+    "examCode": "it_passport",
+    "categoryCode": "management",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 16,
+    "questionText": "ITサービスの提供者と利用者の間で、サービスの品質レベルについて合意した文書を何と呼ぶか？",
+    "imagePath": null,
+    "explanation": "SLAは、サービスの可用性、性能、サポート時間など、具体的なサービスレベルの目標値を定義し、両者間の期待値を明確にします。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "SLA (Service Level Agreement)",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "NDA (Non-Disclosure Agreement)",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "RFP (Request For Proposal)",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "SOW (Statement of Work)",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-17",
+    "examCode": "it_passport",
+    "categoryCode": "strategy",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 17,
+    "questionText": "業界の収益性を決定する5つの競争要因（新規参入の脅威、代替品の脅威、買い手の交渉力、売り手の交渉力、業界内の競争）を分析するフレームワークは何か？",
+    "imagePath": null,
+    "explanation": "マイケル・ポーターのファイブフォース分析は、業界の構造を分析し、その業界の魅力度や競争の激しさを理解するために使用されます。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "ポーターのファイブフォース分析",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "BCGマトリクス",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "SWOT分析",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "バリューチェーン分析",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-18",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 18,
+    "questionText": "CPUが次に実行するプロセスを、実行可能状態のプロセスの中から選択するOSの機能を何と呼ぶか？",
+    "imagePath": null,
+    "explanation": "プロセススケジューリングは、CPUの利用率を最大化し、スループットを高め、応答時間を短縮するために、様々なアルゴリズム（例：FIFO、ラウンドロビン）を用いて行われます。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "メモリ管理",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "ファイル管理",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "プロセススケジューリング",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "デバイス管理",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-19",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 19,
+    "questionText": "データベースにおいて、データの冗長性を排除し、一貫性を保つためにテーブルを体系的に整理するプロセスを何と呼ぶか？",
+    "imagePath": null,
+    "explanation": "正規化は、第1正規形、第2正規形、第3正規形などの段階を経て、データ更新時の不整合（更新時異常）を防ぐことを目的とします。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "インデックス作成",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "クエリ最適化",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "正規化",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "トランザクション管理",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-20",
+    "examCode": "it_passport",
+    "categoryCode": "management",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 20,
+    "questionText": "ITサービスマネジメントのベストプラクティスを体系的にまとめたフレームワークは何か？",
+    "imagePath": null,
+    "explanation": "ITIL（Information Technology Infrastructure Library）は、ITサービスの品質を向上させ、ビジネスニーズとITサービスを整合させるためのプロセスや手順を提供します。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "COBIT",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "PMBOK",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "ITIL",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "CMMI",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-21",
+    "examCode": "it_passport",
+    "categoryCode": "strategy",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 21,
+    "questionText": "競合のいない未開拓の市場を創造し、高成長と高収益を目指す経営戦略論を何と呼ぶか？",
+    "imagePath": null,
+    "explanation": "ブルーオーシャン戦略は、血みどろの競争が繰り広げられる既存市場（レッドオーシャン）から脱却し、新しい価値を提供することで競争のない市場空間を切り開くことを目指します。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "ブルーオーシャン戦略",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "レッドオーシャン戦略",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "多角化戦略",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "集中戦略",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-22",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 22,
+    "questionText": "現在主流のIPv4に代わる、次世代のインターネットプロトコルで、アドレス空間が128ビットに拡張されているものは何か？",
+    "imagePath": null,
+    "explanation": "IPv6は、IPv4のアドレス枯渇問題を解決するために開発され、ほぼ無限に近い数のIPアドレスを提供できます。セキュリティ機能の強化なども図られています。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "IPv5",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "IPv6",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "TCP/IP v2",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "IPX/SPX",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-23",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 23,
+    "questionText": "コンピュータがデータから学習し、パターンやルールを自動的に見つけ出す技術分野は何か？",
+    "imagePath": null,
+    "explanation": "機械学習は人工知能（AI）の一分野であり、教師あり学習、教師なし学習、強化学習などの手法があります。画像認識や自然言語処理などに応用されています。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "エキスパートシステム",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "ニューラルネットワーク",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "機械学習",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "データマイニング",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-24",
+    "examCode": "it_passport",
+    "categoryCode": "management",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 24,
+    "questionText": "アジャイル開発手法の一つで、スプリントと呼ばれる短い期間のイテレーションを繰り返して開発を進めるフレームワークは何か？",
+    "imagePath": null,
+    "explanation": "スクラムは、プロダクトオーナー、スクラムマスター、開発チームといった役割を定義し、日々の進捗確認（デイリースクラム）などを通じて、変化に柔軟に対応しながら開発を進めます。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "ウォーターフォール",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "スパイラルモデル",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "スクラム",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "エクストリームプログラミング(XP)",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-25",
+    "examCode": "it_passport",
+    "categoryCode": "strategy",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 25,
+    "questionText": "他社には真似のできない、企業独自の強みとなる中核的な能力を何と呼ぶか？",
+    "imagePath": null,
+    "explanation": "コアコンピタンス経営は、自社の得意な技術やスキルを見極め、そこに経営資源を集中させることで、持続的な競争優位性を築くことを目指す戦略です。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "コアコンピタンス",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "シナジー効果",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "規模の経済",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "ブランドエクイティ",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-26",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 26,
+    "questionText": "クラウドコンピューティングのサービスモデルのうち、ハードウェアやネットワークなどのインフラを提供する形態を何と呼ぶか？",
+    "imagePath": null,
+    "explanation": "IaaS（Infrastructure as a Service）は、サーバ、ストレージ、ネットワークなどのITインフラをインターネット経由で提供します。利用者はOS以上のレイヤを自由に構築できます。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "SaaS",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "PaaS",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "IaaS",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "DaaS",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-27",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 27,
+    "questionText": "ビッグデータの特徴を表す「3つのV」に含まれないものはどれか？",
+    "imagePath": null,
+    "explanation": "ビッグデータの基本的な3Vは、Volume（データの量）、Velocity（データ生成・更新の速度）、Variety（データの種類・多様性）です。後にVeracity（正確性）やValue（価値）などが加えられることもあります。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "Volume (量)",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "Variety (多様性)",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "Velocity (速度)",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "Value (価値)",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-28",
+    "examCode": "it_passport",
+    "categoryCode": "management",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 28,
+    "questionText": "ITガバナンスとマネジメントのためのフレームワークで、ビジネス目標とIT目標を整合させることを目的とするものは何か？",
+    "imagePath": null,
+    "explanation": "COBIT（Control Objectives for Information and related Technology）は、ITの統制とガバナンスを実現するための成熟したフレームワークを提供し、監査や評価の基準としても利用されます。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "ITIL",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "ISO/IEC 27001",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "COBIT",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "PMBOK",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-29",
+    "examCode": "it_passport",
+    "categoryCode": "strategy",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 29,
+    "questionText": "既存のビジネスプロセスを抜本的に見直し、コスト、品質、サービス、スピードの劇的な改善を目指すアプローチを何と呼ぶか？",
+    "imagePath": null,
+    "explanation": "BPRは、既存の組織構造や業務ルールにとらわれず、顧客価値を最大化するために、情報技術を駆使してビジネスプロセスを根本的に再設計する考え方です。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "TQM (Total Quality Management)",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "シックスシグマ",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "BPR (Business Process Re-engineering)",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "カイゼン",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-30",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 30,
+    "questionText": "様々な「モノ」がインターネットに接続され、相互に情報をやり取りする仕組みを何と呼ぶか？",
+    "imagePath": null,
+    "explanation": "IoTは、センサーやデバイスを搭載した物理的なオブジェクトがインターネットを介してデータを収集・交換することを可能にし、遠隔監視や自動制御など様々な応用が期待されています。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "AI (人工知能)",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "IoT (Internet of Things)",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "クラウドコンピューティング",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "ビッグデータ",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "it-passport-supplemental-31",
+    "examCode": "it_passport",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "補助問題",
+    "questionNo": 31,
+    "questionText": "取引記録を暗号技術を用いて鎖（チェーン）のようにつなぎ、分散管理することで、改ざんを極めて困難にする技術は何か？",
+    "imagePath": null,
+    "explanation": "ブロックチェーンは、P2Pネットワーク上で取引台帳を共有し、合意形成アルゴリズムによってデータの正しさを保証する分散型台帳技術です。仮想通貨ビットコインの中核技術として知られています。",
+    "choices": [
+      {
+        "label": "A",
+        "text": "データマイニング",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "B",
+        "text": "ブロックチェーン",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "C",
+        "text": "ニューラルネットワーク",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "D",
+        "text": "公開鍵暗号",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-1",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 1,
+    "questionText": "大規模言語モデルを用いた自然言語処理において、事前学習済みのモデルに対して行うファインチューニングに関する記述として、最も適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "強化学習を行い、最適な結果が得られるようにする。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "事前学習と同じデータを繰り返し用いて学習を行い、モデルの精度を高めるようにする。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "大量のテキストデータを用いて学習を行い、モデルの精度を高めるようにする。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "特定のデータを用いて追加で学習を行い、目的とするタスクに適用できるようにする。",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-2",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 2,
+    "questionText": "浮動小数点形式で表現された数値の演算結果における丸め誤差の説明はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "演算結果がコンピュータの扱える最大値を超えることによって生じる誤差である。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "数表現のけた数に限度があるので、最下位けたより小さい部分について四捨五入や切上げ、切捨てを行うことによって生じる誤差である。",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "乗除算において、指数部が小さい方の数値の仮数部の下位部分が失われることによって生じる誤差である。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "絶対値がほぼ等しい数値の加減算において、上位の有効数字が失われることによって生じる誤差である。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-3",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 3,
+    "questionText": "図の木構造は2分探索木である。a~g の値の大小関係として、適切なものはどれか。ここで、a~gの値は重複しないものとする。",
+    "imagePath": "/kakomon/img/2025A/3.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "a<b<d<e<c<f<g",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "d<b<e<a<f<c<g",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "d<e<f<g<b<c<a",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "g<f<c<e<d<b<a",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-4",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 4,
+    "questionText": "MTBFは4,000時間, MTTRは1,000時間の装置がある。今後の6年間は、予防保守によって MTBF を前年に比べて毎年100時間ずつ改善し、遠隔保守によってMTTRを前年に比べて毎年100時間ずつ改善していく計画である。6年経過後の稼働率は幾らか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "0.88",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "0.90",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "0.92",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "0.94",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-5",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 5,
+    "questionText": "ローコード開発ツールを用いたソフトウェア開発の説明はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "アプリケーションソフトウェアの開発基盤の上で、用意された部品やテンプレートをGUIを用いた操作で組み合わせたり、必要に応じて一部の処理のソースコードを記述したりすることによって、アプリケーションソフトウェアを作成する。",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "アプリケーションソフトウェアの開発基盤の上で、用意された部品やテンプレートをGUIを用いた操作で組み合わせるだけで、ソースコードを記述せずに、アプリケーションソフトウェアを作成する。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "アプリケーションソフトウェアの定型的な枠組みを参照して、独自の処理のソースコードを記述することによって、アプリケーションソフトウェアを作成する。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "利用者がシステムを利用して行う作業を自動化ツールに代行させるために、利用者によるシステムの操作手順をツールに登録する。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-6",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 6,
+    "questionText": "“商品”表に対するSQL文「SELECT * FROM 商品 WHERE 仕入先 ID IN ('M002', 'M004')」と同じ結果が得られる SELECT文はどれか。",
+    "imagePath": "/kakomon/img/2025A/6.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "SELECT * FROM 商品 WHERE 仕入先 ID='M002' AND 仕入先 ID='M004'",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "SELECT * FROM 商品 WHERE 仕入先 ID='M002' INTERSECT SELECT * FROM 商品 WHERE 仕入先 ID='M004'",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "SELECT * FROM 商品 WHERE 仕入先 ID='M002' OR 仕入先 ID='M004'",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "SELECT * FROM 商品 WHERE 仕入先 ID BETWEEN 'M002' AND 'M004'",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-7",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 7,
+    "questionText": "1G バイトの動画データを 40M ビット/秒の回線を使用してダウンロードしたところ、5分掛かった。このときの回線利用率はおよそ何%か。ここで、ダウンロード時には動画データに20%の制御情報が付加されるものとする。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "10",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "53",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "67",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "80",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-8",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 8,
+    "questionText": "HTTPとHTTPSを比較した場合において、HTTPSだけがもつ特徴を示したものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "cookieに保存されている情報を用いたセッション管理が可能である。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "IDとパスワードによって利用者の認証を行うことが可能である。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "Web ブラウザでキャッシュさせることによって通信量を減らすことが可能である。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "通信相手先サーバをサーバ証明書によって確認することが可能である。",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-9",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 9,
+    "questionText": "暗号の危殆化に該当するものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "ある CAでデジタル証明書の署名に使っている公開鍵のデジタル証明書の有効期限が切れた。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "ある暗号アルゴリズムの秘密鍵が不正アクセスによって漏えいした。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "あるハッシュ関数においてハッシュ値が同じになるデータの組みを現実的な時間内で発見する方法が見つかった。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "あるランサムウェアの一種で暗号化されたファイルの復号鍵が公開された。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-10",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 10,
+    "questionText": "WAF の説明はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "Web サイトに対するアクセス内容を監視し、攻撃とみなされるパターンを検知したときに当該アクセスを遮断する。",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "Wi-Fi アライアンスが認定した無線 LAN の暗号化方式の規格であり、AES 暗号に対応している。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "様々なシステムの動作ログを一元的に蓄積、管理し、セキュリティ上の脅威となる事象をいち早く検知、分析する。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "ファイアウォール機能を有し、マルウェア対策機能,侵入検知機能などの複数のセキュリティ機能を連携させ、統合的に管理する。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-11",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 11,
+    "questionText": "E-R モデルにおけるエンティティの特徴はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "エンティティとインスタンスとは、1対1の対応関係をとる。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "エンティティとなり得るものは、物的に実現するものである。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "エンティティは、特性を表すための属性 (アトリビュート)をもつ。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "異なった種類のエンティティ間の関係は、主として状態遷移として表現される。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-12",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 12,
+    "questionText": "オブジェクト指向プログラミングの特徴のうち、異なるクラスのオブジェクトを同一のインタフェースで操作したときに、操作対象クラスに応じた異なる動作を可能にすることを何と呼ぶか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "委譲",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "継承",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "コンポジション",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "多相性",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-13",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 13,
+    "questionText": "アジャイル開発手法の一つであるスクラムにおいて、プロダクトバックログアイテムの内容や並び順を決定する役割をもつのは誰か。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "開発者",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "顧客",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "スクラムマスタ",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "プロダクトオーナ",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-14",
+    "examCode": "fe",
+    "categoryCode": "management",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 14,
+    "questionText": "図は、あるプロジェクトの作業A~Iとその作業日数を表している。このプロジェクトの最短所要日数は何日か。",
+    "imagePath": "/kakomon/img/2025A/14.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "27",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "28",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "29",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "31",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-15",
+    "examCode": "fe",
+    "categoryCode": "management",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 15,
+    "questionText": "サーバ室の物理的な安全対策の状況について、情報セキュリティ管理基準(平成28年)に照らして、情報セキュリティ監査を行って判明した状況のうち、監査人が、指摘事項として監査報告書に記載すべきものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "サーバが設置されている施設の無人領域では、営業時間中でも、警報装置が作動するようになっている。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "サーバ室に非常口,避難器具,誘導灯などを設置している。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "社外からサーバ室へ直接出入りするドアを設置しているが、出入りを考慮して常時施錠していない。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "場所が分からないように、サーバ室の所在を室外に表示していない。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-16",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 16,
+    "questionText": "データマイニングの手法の一つであって、POS などの蓄積データから“一緒に買われる商品”の組合せを発見する分析手法はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "3C分析",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "ABC 分析",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "コンジョイント分析",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "マーケットバスケット分析",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-17",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 17,
+    "questionText": "インターネット上の生成 AI サービスを利用する際に、オプトアウトを設定することはどのような場合に有効か。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "個々の利用者が、自身が生成 AI から得た情報に対して、著作権を主張したい場合",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "個々の利用者が入力した情報を、生成AI の学習に利用させたくない場合",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "個々の利用者が入力した情報を、生成 AI を通じて、他の利用者にも知ってほしい場合",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "生成AIから得た情報の信ぴょう性を高めたい場合",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-18",
+    "examCode": "fe",
+    "categoryCode": "strategy",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 18,
+    "questionText": "物販事業において、ロングテールをビジネスとして成功させるために必要な施策はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "多くの有名ブランド店が出店するショッピングモールの構築",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "交通の利便性が高い地域に対する、生活必需品を広く浅く取りそろえた出店計画",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "店舗で購入した商品を近隣地域に無償で配送するサービスの実施",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "豊富な品ぞろえと、在庫コストや配送費用を抑えるための大規模な物流センタの構築や活用",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-19",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 19,
+    "questionText": "表の条件で喫茶店を開業したい。月10万円の利益を出すためには、1客席当たり1日平均何人の客が必要か。\n条件:\n客1人当たりの売上高: 500円\n客1人当たりの変動費: 100円\n固定費: 300,000円/月\n1か月の営業日数: 20日\n客席数: 10席",
+    "imagePath": "/kakomon/img/2025A/19.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "3.75",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "4",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "4.2",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "5",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2025-20",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2025,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和7年度)",
+    "questionNo": 20,
+    "questionText": "カーボンフットプリントの説明として、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "温室効果ガスの排出量から吸収量と除去量を差し引いた合計をゼロにする取組",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "原材料調達から廃棄・リサイクルに至るまでのライフサイクル全体を通して排出される温-室効果ガスの排出量を、CO₂量に換算して、その値を商品やサービスに表示すること",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "自動車のエンジンから排出される一酸化炭素,窒素酸化物や炭化水素類などの大気汚染物質の排出量の定め",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "商品がどのような場所で作られて、流通し、販売されているかを把握するための仕組み",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-1",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 1,
+    "questionText": "X及びYはそれぞれ0又は1の値をとる変数である。X▢YをXとYの論理演算としたとき、次の真理値表が得られた。X▢Yの真理値表はどれか。",
+    "imagePath": "/kakomon/img/2024A/1.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "../kakomon/img/2024A/1a.png",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "../kakomon/img/2024A/1i.png",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "../kakomon/img/2024A/1u.png",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "../kakomon/img/2024A/1e.png",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-2",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 2,
+    "questionText": "キーが小文字のアルファベット1文字 (a, b,･･･, zのいずれか)であるデータを、大きさが 10 のハッシュ表に格納する。ハッシュ関数として、アルファベットの ASCII コードを10進表記法で表したときの1の位の数を用いることにする。衝突が 起こるキーの組合せはどれか。ASCII コードでは、昇順に連続した2進数が、アルフ ァベット順にコードとして割り当てられている。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "aとi",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "bとr",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "cとj",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "dとx",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-3",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 3,
+    "questionText": "図に示す構成で、表に示すようにキャッシュメモリと主記憶のアクセス時間だけが異なり、他の条件は同じ2種類のCPU XとYがある。\nあるプログラムを CPU XとYとでそれぞれ実行したところ、両者の処理時間が等しかった。このとき、キャッシュメモリのヒット率は幾らか。ここで、CPU 以外の処理による影響はないものとする。",
+    "imagePath": "/kakomon/img/2024A/3.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "0.75",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "0.90",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "0.95",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "0.96",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-4",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 4,
+    "questionText": "あるシステムの今年度のMTBFは3,000時間, MTTRは1,000時間である。翌年度は MTBF について今年度の20%分の改善, MTTR について今年度の10%分の改善を図ると、翌年度の稼働率は何%になるか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "69",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "73",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "77",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "80",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-5",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 5,
+    "questionText": "複数の Web サービスの入出力処理を連結させて新たなサービスを提供する、“ロジックマッシュアップ”の例はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "利用者が選択した飲食店情報のページを表示する際に、他の Web サービスが提供する地図コンテンツをアクセスマップとして表示する。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "利用者が選択した投資商品の情報を表示する際に、関連する経済指標のデータを複数の Web サービスから取得し、グラフに加工して表示する。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "利用者が入力した予算の範囲で宿泊可能な施設のリストを他の Web サービスから取得し、それらの宿泊施設の空室状況を別の Web サービスから取得して表示する。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "利用者がマウスのドラッグで地図を操作した際に、 Web ページ全体ではなく一部を読み直すことによって地図をスクロールして表示する。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-6",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 6,
+    "questionText": "液晶ディスプレイなどの表示装置において、傾いた直線の境界を滑らかに表示する手法はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "アンチエイリアシング",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "シェーディング",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "テクスチャマッピング",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "バンプマッピング",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-7",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 7,
+    "questionText": "DBMSに実装すべき原子性(atomicity) を説明したものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "同一データベースに対する同一処理は、何度実行しても結果は同じである。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "トランザクション完了後にハードウェア障害が発生しても、更新されたデータベースの内容は保証される。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "トランザクション内の処理は、全てが実行されるか、全てが取り消されるかのいずれかである。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "一つのトランザクションの処理結果は、他のトランザクション処理の影響を受けない。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-8",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 8,
+    "questionText": "LAN 間接続装置に関する記述のうち、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "ゲートウェイは、OSI 基本参照モデルにおける第1~3層だけのプロトコルを変換する。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "ブリッジは、IPアドレスを基にしてフレームを中継する。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "リピータは、同種のセグメント間で信号を増幅することによって伝送距離を延長する。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "ルータは、MACアドレスを基にしてフレームを中継する。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-9",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 9,
+    "questionText": "ペネトレーションテストに該当するものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "検査対象の実行プログラムの設計書、ソースコードに着目し、開発プロセスの各工程にセキュリティ上の問題がないかどうかをツールや目視で確認する。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "公開 Web サーバの各コンテンツファイルのハッシュ値を管理し、定期的に各ファイルから生成したハッシュ値と一致するかどうかを確認する。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "公開 Web サーバや組織のネットワークの脆弱性を探索し、サーバに実際に侵入できるかどうかを確認する。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "内部ネットワークのサーバやネットワーク機器の IPFIX 情報から、各PCの通信に異常な振る舞いがないかどうかを確認する。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-10",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 10,
+    "questionText": "SQL インジェクションの対策として、有効なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "URLをWeb ページに出力するときは, “http://” や “https://” で始まる URL だけを許可する。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "外部からのパラメータでWeb サーバ内のファイル名を直接指定しない。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "スタイルシートを任意の Web サイトから取り込めるようにしない。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "プレースホルダを使って命令文を組み立てる。",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-11",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 11,
+    "questionText": "階層構造のモジュール群から成るソフトウェアの結合テストを、上位のモジュールから行う。この場合に使用する、下位のモジュールの代替となるテスト用のモジュールはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "エミュレータ",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "シミュレータ",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "スタブ",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "ドライバ",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-12",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 12,
+    "questionText": "アジャイル開発手法の一つであるスクラムで定義され、スプリントで実施するイベントのうち、毎日決まった時間に決まった場所で行い、開発チームの全員が前回からの進捗状況や今後の作業計画を共有するものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "スプリントプランニング",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "スプリントレトロスペクティブ",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "スプリントレビュー",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "デイリースクラム",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-13",
+    "examCode": "fe",
+    "categoryCode": "management",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 13,
+    "questionText": "アローダイアグラムで表されるプロジェクトは、完了までに最少で何日を要するか。",
+    "imagePath": "/kakomon/img/2024A/13.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "105",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "115",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "120",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "125",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-14",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 14,
+    "questionText": "システムの開発部門と運用部門が別々に組織化されているとき、システム開発を伴う新規サービスの設計及び移行を円滑かつ効果的に進めるための方法のうち、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "運用テストの完了後に、開発部門がシステム仕様と運用方法を運用部門に説明する。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "運用テストは、開発部門の支援を受けずに、運用部門だけで実施する。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "運用部門からもシステムの運用に関わる要件の抽出に積極的に参加する。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "開発部門は運用テストを実施して、運用マニュアルを作成し、運用部門に引き渡す。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-15",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 15,
+    "questionText": "ビッグデータ分析の前段階として、非構造化データを構造化データに加工する処理を記述している事例はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "関係データベースに蓄積された大量の財務データから必要な条件に合致するデータを抽出し、利用者が扱いやすい表計算ソフトウェアデータに加工する。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "個人情報を含むビッグデータを更に利活用するために、特定の個人を識別することができないように匿名化加工する。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "住所データ項目の中にある、“ヶ”と“が”の混在や、丁番地の表記不統一を、標準化された表記へ統一するために加工する。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "ソーシャルメディアの口コミを機械学習によって単語ごとに分解し、要約を作り、分析可能なデータに加工し、関係データベースに保管する。",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-16",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 16,
+    "questionText": "コアコンピタンスを説明したものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "経営活動における基本精神や行動指針",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "事業戦略の遂行によって達成すべき到達目標",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "自社を取り巻く環境に関するビジネス上の機会と脅威",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "他社との競争優位の源泉となる経営資源及び企業能力",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-17",
+    "examCode": "fe",
+    "categoryCode": "strategy",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 17,
+    "questionText": "マーケティング戦略におけるブルーオーシャンの説明として、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "競争が存在していない未知の市場",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "コモディティ化が進んだ既存の市場",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "新事業のアイディアを実際のビジネスに育成するまでの期間",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "製品開発したものを市場化する過程に横たわっている障壁",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-18",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 18,
+    "questionText": "HRテックの説明はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "ICTを活用して、住宅内のエネルギー使用状況の監視、機器の遠隔操作や自動制御などを可能にし、家庭におけるエネルギー管理を支援するソリューション",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "既存のビジネスモデルによる業界秩序や既得権益を破壊してしまうほど大きな影響を与える新しいICTやビジネスモデル",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "個人の資金に関わる情報を統合的に管理するサービスやマーケットプレイス・レンディングなどの金融サービスを実現するための新しい情報技術",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "採用,育成、評価、配属などの人事領域の業務を対象に、ビッグデータ解析やAI などの最新 ICTを活用して、業務改善と社員満足度向上を図るソリューション",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-19",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 19,
+    "questionText": "図は、製品の製造上のある要因の値 xと品質特性の値yとの関係をプロットしたものである。この図から読み取れることはどれか。",
+    "imagePath": "/kakomon/img/2024A/19.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "xからyを推定するためには、2次回帰係数の計算が必要である。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "xからyを推定するための回帰式は、yから xを推定する回帰式と同じである。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "xとyの相関係数は正である。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "xとyの相関係数は負である。",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2024-20",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2024,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和6年度)",
+    "questionNo": 20,
+    "questionText": "日本において、産業財産権と総称される四つの権利はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "意匠権、実用新案権 商標権,特許権",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "意匠権、実用新案権,著作権,特許権",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "意匠権, 商標権,著作権,特許権",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "実用新案権, 商標権,著作権,特許権",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-1",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 1,
+    "questionText": "16進小数0.Cを10進小数に変換したものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "0.12",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "0.55",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "0.75",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "0.84",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-2",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 2,
+    "questionText": "双方向のポインタをもつリスト構造のデータを表に示す。この表において新たな社員Gを社員Aと社員Kの間に追加する。追加後の表のポインタa~fの中で追加前と比べて値が変わるポインタだけを全て列記したものはどれか。",
+    "imagePath": "/kakomon/img/2023A/2.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "a, b, e, f",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "a, e, f",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "a, f",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "b, e",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-3",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 3,
+    "questionText": "コンピュータの高速化技術の一つであるメモリインタリーブに関する記述として、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "主記憶と入出力装置、又は主記憶同士のデータの受渡しをCPU経由でなく直接やり取りする方式",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "主記憶にデータを送り出す際に、データをキャッシュに書き込み、キャッシュがあふれたときに主記憶へ書き込む方式",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "主記憶のデータの一部をキャッシュにコピーすることによって、レジスタと主記憶とのアクセス速度の差を縮める方式",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "主記憶を複数の独立して動作するグループに分けて、各グループに並列にアクセスする方式",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-4",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 4,
+    "questionText": "エッジコンピューティングの説明として、最も適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "画面生成やデータ処理をクライアント側で実行することによって、Web アプリケーションソフトウェアの操作性や表現力を高めること",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "データが送信されてきたときだけ必要なサーバを立ち上げて、処理が終わり次第サーバを停止してリソースを解放すること",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "複数のサーバやPCを仮想化して統合することによって一つの高性能なコンピュータを作り上げ、並列処理によって処理能力を高めること",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "利用者や機器に取り付けられたセンサなどのデータ発生源に近い場所にあるサーバなどでデータを一次処理し、処理のリアルタイム性を高めること",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-5",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 5,
+    "questionText": "3次元グラフィックス処理におけるクリッピングの説明はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "CG映像作成における最終段階として、物体のデータをディスプレイに描画できるように映像化する処理である。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "画像表示領域にウィンドウを定義し、ウィンドウの外側を除去し、内側の見える部分だけを取り出す処理である。",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "スクリーンの画素数が有限であるために図形の境界近くに生じる、階段状のギザギザを目立たなくする処理である。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "立体感を生じさせるために、物体の表面に陰影を付ける処理である。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-6",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 6,
+    "questionText": "次の関数従属を満足するとき、成立する推移的関数従属はどれか。ここで、“A→ B\" はBがAに関数従属していることを表し、“A→ {B, C }”は、“A→B” かつ“A→ c\" が成立することを表す。",
+    "imagePath": "/kakomon/img/2023A/6.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "仕入先コード → 仕入担当者コード → 仕入先住所",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "商品コード → 仕入先コード → 商品販売価格",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "注文コード → 顧客コード → 顧客住所",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "注文コード → 商品コード → 顧客注文数量",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-7",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 7,
+    "questionText": "トランザクションが、データベースに対する更新処理を完全に行うか、全く処理しなかったかのように取り消すか、のどちらかの結果になることを保証する特性はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "一貫性(consistency)",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "原子性(atomicity)",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "耐久性 (durability)",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "独立性(isolation)",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-8",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 8,
+    "questionText": "IPv4 ネットワークにおいて、ネットワークの疎通確認に使われるものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "BOOTP",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "DHCP",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "MIB",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "ping",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-9",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 9,
+    "questionText": "ドライブバイダウンロード攻撃に該当するものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "PC から物理的にハードディスクドライブを盗み出し、その中のデータを Web サイトで公開し、ダウンロードさせる。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "電子メールの添付ファイルを開かせて、マルウェアに感染したPCのハードディスクドライブ内のファイルを暗号化し、元に戻すための鍵を攻撃者のサーバからダウンロードさせることと引換えに金銭を要求する。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "利用者が悪意のある Web サイトにアクセスしたときに Web ブラウザの脆弱性を悪用して利用者のPCをマルウェアに感染させる。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "利用者に気付かれないように無償配布のソフトウェアに不正プログラムを混在させておき 利用者の操作によってPCにダウンロードさせ、インストールさせることでハードディスクドライブから個人情報を収集して攻撃者のサーバに送信する。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-10",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 10,
+    "questionText": "図のような構成と通信サービスのシステムにおいて, Web アプリケーションの脆弱性対策のための WAF の設置場所として、最も適切な箇所はどこか。ここで、WAFには通信を暗号化したり、復号したりする機能はないものとする。",
+    "imagePath": "/kakomon/img/2023A/10.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "a",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "b",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "c",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "d",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-11",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 11,
+    "questionText": "次の流れ図において、①→②→③→⑤→②→③→④→②→⑥ の順に実行させるために、①においてmとnに与えるべき初期値aとbの関係はどれか。ここで、a, bはともに正の整数とする。",
+    "imagePath": "/kakomon/img/2023A/11.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "a = 2b",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "2a = b",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "2a = 3b",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "3a = 2b",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-12",
+    "examCode": "fe",
+    "categoryCode": "management",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 12,
+    "questionText": "アジャイル開発手法のスクラムにおいて、開発チームの全員が1人ずつ“昨日やったこと”,“今日やること”, “障害になっていること”などを話し、全員でプロジェクトの状況を共有するイベントはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "スプリントプランニング",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "スプリントレビュー",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "デイリースクラム",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "レトロスペクティブ",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-13",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 13,
+    "questionText": "図に示すとおりに作業を実施する予定であったが、作業Aで1日の遅れが生じた。各作業の費用増加率を表の値とするとき、当初の予定日数で終了するために掛かる増加費用を最も少なくするには、どの作業を短縮すべきか。ここで、費用増加率とは、作業を1日短縮するために要する増加費用のことである。",
+    "imagePath": "/kakomon/img/2023A/13.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "B",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "C",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "D",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "E",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-14",
+    "examCode": "fe",
+    "categoryCode": "management",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 14,
+    "questionText": "A社では、従業員が自宅のPCからインターネット経由で自社のネットワークに接続して仕事を行うテレワーキングの実施を計画している。A社が定めたテレワーキング運用規程について、情報セキュリティ管理基準(平成28年) に従って監査を実施した。判明した事項のうち、監査人が、指摘事項として監査報告書に記載すべきものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "テレワーキング運用規程に従うことを条件に、全ての従業員が利用できる。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "テレワーキングで従業員が使用する PCは、A社から支給されたものに限定する。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "テレワーキングで使用する PC へのマルウェア対策ソフト導入の要不要は、従業員それぞれが判断する。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "テレワーキングで使用するPCを、従業員の家族に使用させない。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-15",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 15,
+    "questionText": "ハイブリッドクラウドの説明はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "クラウドサービスが提供している機能の一部を、自社用にカスタマイズして利用すること",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "クラウドサービスのサービス内容を、消費者向けと法人向けの両方を対象とするように構成して提供すること",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "クラウドサービスのサービス内容を、有償サービスと無償サービスとに区分して提供すること",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "自社専用に使用するクラウドサービスと、汎用のクラウドサービスとの間でデータ及びアプリケーションソフトウェアの連携や相互運用が可能となる環境を提供すること",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-16",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 16,
+    "questionText": "ダイバーシティマネジメントの説明はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "従業員が仕事と生活の調和を図り、やりがいをもって業務に取り組み、組織の活力を向上させることである。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "性別や年齢、国籍などの面で従業員の多様性を尊重することによって、組織の活力を向上させることである。",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "自ら設定した目標の達成を目指して従業員が主体的に業務に取り組み、その達成度に応じて評価が行われることである。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "労使双方が労働条件についての合意を形成し、協調して収益の増大を目指すことである。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-17",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 17,
+    "questionText": "ERP を説明したものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "営業活動にITを活用して営業の効率と品質を高め、売上・利益の大幅な増加や、顧客満足度の向上を目指す手法・概念である。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "卸売業・メーカが小売店の経営活動を支援することによって、自社との取引量の拡大につなげる手法・概念である。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "企業全体の経営資源を有効かつ総合的に計画して管理し、経営の効率向上を図るための手法・概念である。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "消費者向けや企業間の商取引を、インターネットなどの電子的なネットワークを活用して行う手法・概念である。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-18",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 18,
+    "questionText": "イノベータ理論では、消費者を新製品の購入時期によって、イノベータ、アーリーアダプタ、アーリーマジョリティ、レイトマジョリティ、ラガードの五つに分類する。アーリーアダプタの説明として、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "新しい製品及び新技術の採用には懐疑的で、周囲の大多数が採用している場面を見てから採用する層",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "新商品、サービスなどを、リスクを恐れず最も早い段階で受容する層",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "新商品、サービスなどを早期に受け入れ、消費者に大きな影響を与える層であり、流行に敏感で、自ら情報収集を行い判断する層",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "世の中の動きに関心が薄く、流行が一般化してからそれを採用することが多い層であり、場合によっては不採用を貫く、最も保守的な層",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-19",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 19,
+    "questionText": "CIOの説明はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "経営戦略の立案及び業務執行を統括する最高責任者",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "資金調達,財務報告などの財務面での戦略策定及び執行を統括する最高責任者",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "自社の技術戦略や研究開発計画の立案及び執行を統括する最高責任者",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "情報管理,情報システムに関する戦略立案及び執行を統括する最高責任者",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-2023-20",
+    "examCode": "fe",
+    "categoryCode": "strategy",
+    "sourceYear": 2023,
+    "sourceSeason": "基本情報技術者試験科目 A 公開問題 (令和5年度)",
+    "questionNo": 20,
+    "questionText": "ボリュームライセンス契約の説明はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "企業などソフトウェアの大量購入者向けに、インストールできる台数をあらかじめ取り決め、ソフトウェアの使用を認める契約",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "使用場所を限定した契約であり、特定の施設の中であれば台数や人数に制限なく使用が許される契約",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "ソフトウェアをインターネットからダウンロードしたとき画面に表示される契約内容に同意するを選択することによって、使用が許される契約",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "標準の使用許諾条件を定め、その範囲で一定量のパッケージの包装を解いたときに、権利者と購入者との間に使用許諾契約が自動的に成立したとみなす契約",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-1",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 1,
+    "questionText": "負数を2の補数で表すとき 8ビットの2進正数nに対し-nを求める式はどれか。ここで、+は加算を表し、ORはビットごとの論理和, XORはビットごとの排他的論理和を表す。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "(n OR 10000000) + 00000001",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "(n OR 11111110) + 11111111",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "(n XOR 10000000) + 11111111",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "(n XOR 11111111) + 00000001",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-2",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 2,
+    "questionText": "次の流れ図は、10進整数 (0<j<100) を8桁の2進数に変換する処理を表している。2進数は下位桁から順に、配列の要素 NISHIN (1) から NISHIN (8) に格納される。流れ図のa及びbに入れる処理はどれか。ここで、j div 2はjを2で割った商の整数部分を、j mod 2はjを2で割った余りを表す。",
+    "imagePath": "/kakomon/img/sampleA/2.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "a: j ← j div 2, b: NISHIN (k) ← j mod 2",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "a: j ← j mod 2, b: NISHIN (k) ← j div 2",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "a: NISHIN (k) ← j div 2, b: j ← j mod 2",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "a: NISHIN (k) ← j mod 2, b: j ← j div 2",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-3",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 3,
+    "questionText": "P, Q, R はいずれも命題である。命題Pの真理値は真であり、命題 (not P) or Q 及び命題(not Q) or R のいずれの真理値も真であることが分かっている。Q Rの真理値はどれか。ここで、X or YはXとYの論理和, not XはXの否定を表す。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "Q:偽, R:偽",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "Q:偽, R:真",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "Q:真, R:偽",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "Q:真, R:真",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-4",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 4,
+    "questionText": "入力記号、出力記号の集合が {0,1} であり、状態遷移図で示されるオートマトンがある。0011001110 を入力記号とした場合の出力記号はどれか。ここで、入力記号は左から順に読み込まれるものとする。また、S₁は初期状態を表し、遷移の矢印のラベルは、入力/出力を表している。",
+    "imagePath": "/kakomon/img/sampleA/4.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "0001000110",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "0001001110",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "0010001000",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "0011111110",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-5",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 5,
+    "questionText": "2分探索木になっている2分木はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "../kakomon/img/sampleA/5a.png",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "../kakomon/img/sampleA/5i.png",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "../kakomon/img/sampleA/5u.png",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "../kakomon/img/sampleA/5e.png",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-6",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 6,
+    "questionText": "配列Aが図2の状態のとき、図1の流れ図を実行すると、配列Bが図3の状態になった。図1のaに入れる操作はどれか。ここで、配列 A, B の要素をそれぞれ A (i, j), B (i, j) とする。",
+    "imagePath": "/kakomon/img/sampleA/6.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "B(7-i, 7-j) ← A(i, j)",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "B(i, 7-j) ← A(i, j)",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "B(7-j, i) ← A(i, j)",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "B(j, 7-i) ← A(i, j)",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-7",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 7,
+    "questionText": "10進法で5桁の数a₁a₂a₃a₄a₅を、ハッシュ法を用いて配列に格納したい。ハッシュ関数を mod (a₁+a₂+a₃+a₄+a₅, 13)とし、求めたハッシュ値に対応する位置の配列要素に格納する場合, 54321 は配列のどの位置に入るか。ここで、mod(x, 13)は、xを13で割った余りとする。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "1",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "2",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "7",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "11",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-8",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 8,
+    "questionText": "自然数nに対して、次のとおり再帰的に定義される関数 f(n) を考える。f(5)の値はどれか。\nf(n): if n≤1 then return 1 else return n + f (n-1)",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "6",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "9",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "15",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "25",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-9",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 9,
+    "questionText": "プログラムのコーディング規約に規定する事項のうち、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "局所変数は、用途が異なる場合でもデータ型が同じならば、できるだけ同一の変数を使うようにする。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "処理性能を向上させるために、ループの制御変数には浮動小数点型変数を使用する。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "同様の計算を何度も繰り返すときは、関数の再帰呼出しを用いる。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "領域割付け関数を使用するときは、割付けができなかったときの処理を記述する。",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-10",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 10,
+    "questionText": "外部割込みの原因となるものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "ゼロによる除算命令の実行",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "存在しない命令コードの実行",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "タイマーによる時間経過の通知",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "ページフォールトの発生",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-11",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 11,
+    "questionText": "メモリのエラー検出及び訂正に ECC を利用している。データバス幅 2^n ビットに対して冗長ビットがn+2ビット必要なとき 128 ビットのデータバス幅に必要な冗長ビットは何ビットか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "7",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "8",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "9",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "10",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-12",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 12,
+    "questionText": "A~Dを、主記憶の実効アクセス時間が短い順に並べたものはどれか。",
+    "imagePath": "/kakomon/img/sampleA/12.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "A, B, C, D",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "A, D, B, C",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "C, D, A, B",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "D, C, A, B",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-13",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 13,
+    "questionText": "仮想化マシン環境を物理マシン 20 台で運用しているシステムがある。次の運用条件のとき、物理マシンが最低何台停止すると縮退運転になるか。",
+    "imagePath": "/kakomon/img/sampleA/13.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "2",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "3",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "4",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "5",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-14",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 14,
+    "questionText": "図のように、1台のサーバ、3台のクライアント及び2台のプリンタがLANで接続されている。このシステムはクライアントからの指示に基づいて、サーバにあるデータをプリンタに出力する。各装置の稼働率が表のとおりであるとき、このシステムの稼働率を表す計算式はどれか。ここで、クライアントは3台のうちどれか1台が稼働していればよく、プリンタは2台のうちどちらかが稼働していればよい。",
+    "imagePath": "/kakomon/img/sampleA/14.png",
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "a * b^3 * c^2",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "a * (1 - b^3) * (1 - c^2)",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "a * (1 - b)^3 * (1 - c)^2",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "a * (1 - (1 - b)^3) * (1 - (1 - c)^2)",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-15",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 15,
+    "questionText": "図の送信タスクから受信タスクにT秒間連続してデータを送信する。1秒当たりの送信量をS, 1秒当たりの受信量をRとしたとき、バッファがオーバフローしないバッファサイズLを表す関係式として適切なものはどれか。ここで、受信タスクよりも送信タスクの方が転送速度は速く、次の転送開始までの時間間隔は十分にあるものとする。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "L < (R - S) * T",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "L < (S - R) * T",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "L >= (R - S) * T",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "L >= (S - R) * T",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-16",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 16,
+    "questionText": "インタプリタの説明として、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "原始プログラムを、解釈しながら実行するプログラムである。",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "原始プログラムを、推論しながら翻訳するプログラムである。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "原始プログラムを、目的プログラムに翻訳するプログラムである。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "実行可能なプログラムを、主記憶装置にロードするプログラムである。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-17",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 17,
+    "questionText": "三つの媒体 A~Cに次の条件でファイル領域を割り当てた場合 割り当てた領域の総量が大きい順に媒体を並べたものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "A, B, C",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "A, C, B",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "B, A, C",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "C, B, A",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-18",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 18,
+    "questionText": "ファイルシステムの絶対パス名を説明したものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "あるディレクトリから対象ファイルに至る幾つかのパス名のうち、最短のパス名",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "カレントディレクトリから対象ファイルに至るパス名",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "ホームディレクトリから対象ファイルに至るパス名",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "ルートディレクトリから対象ファイルに至るパス名",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-19",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 19,
+    "questionText": "DRAM の特徴はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "書込み及び消去を一括又はブロック単位で行う。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "データを保持するためのリフレッシュ操作又はアクセス操作が不要である。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "電源が遮断された状態でも、記憶した情報を保持することができる。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "メモリセル構造が単純なので高集積化することができ、ビット単価を安くできる。",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-20",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 20,
+    "questionText": "次のような注文データが入力されたとき、注文日が入力日以前の営業日かどうかを検査するチェックはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "シーケンスチェック",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "重複チェック",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "フォーマットチェック",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "論理チェック",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-21",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 21,
+    "questionText": "RDBMSにおけるビューに関する記述のうち、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "ビューとは、名前を付けた導出表のことである。",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "ビューに対して、ビューを定義することはできない。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "ビューの定義を行ってから、必要があれば、その基底表を定義する。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "ビューは一つの基底表に対して一つだけ定義できる。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-22",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 22,
+    "questionText": "UML を用いて表した図の概念データモデルの解釈として、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "従業員の総数と部署の総数は一致する。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "従業員は、同時に複数の部署に所属してもよい。",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "所属する従業員がいない部署の存在は許されない。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "どの部署にも所属しない従業員が存在してもよい。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-23",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 23,
+    "questionText": "ビッグデータのデータ貯蔵場所であるデータレイクの特徴として、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "あらゆるデータをそのままの形式や構造で格納しておく。",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "データ量を抑えるために、データの記述情報であるメタデータは格納しない。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "データを格納する前にデータ利用方法を設計し、それに沿ってスキーマをあらかじめ定義しておく。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "テキストファイルやバイナリデータなど、格納するデータの形式に応じてリポジトリを使い分ける。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-24",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 24,
+    "questionText": "関係モデルにおいて表Xから表Yを得る関係演算はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "結合 (join)",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "射影(projection)",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "選択 (selection)",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "併合 (merge)",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-25",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 25,
+    "questionText": "IoT で用いられる無線通信技術であり、近距離の IT 機器同士が通信する無線 PAN (Personal Area Network) と呼ばれるネットワークに利用されるものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "BLE (Bluetooth Low Energy)",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "LTE (Long Term Evolution)",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "PLC (Power Line Communication)",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "PPP (Point-to-Point Protocol)",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-26",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 26,
+    "questionText": "1.5M ビット/秒の伝送路を用いて12M バイトのデータを転送するのに必要な伝送時間は何秒か。ここで、伝送路の伝送効率を50%とする。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "16",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "32",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "64",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "128",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-27",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 27,
+    "questionText": "TCP/IP を利用している環境で、電子メールに画像データなどを添付するための規格はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "JPEG",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "MIME",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "MPEG",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "SMTP",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-28",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 28,
+    "questionText": "トランスポート層のプロトコルであり、信頼性よりもリアルタイム性が重視される場合に用いられるものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "HTTP",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "IP",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "TCP",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "UDP",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-29",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 29,
+    "questionText": "PCとWeb サーバが HTTP で通信している。PCから Web サーバ宛てのパケットでは、送信元ポート番号はPC側で割り当てた50001, 宛先ポート番号は80であった。Web サーバからPCへの戻りのパケットでのポート番号の組合せはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "送信元 (Webサーバ) のポート番号: 80, 宛先(PC)のポート番号: 50001",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "送信元 (Webサーバ) のポート番号: 50001, 宛先(PC)のポート番号: 80",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "送信元 (Webサーバ) のポート番号: 80と50001以外からサーバ側で割り当てた番号, 宛先(PC)のポート番号: 80",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "送信元 (Webサーバ) のポート番号: 80と50001以外からサーバ側で割り当てた番号, 宛先(PC)のポート番号: 50001",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-30",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 30,
+    "questionText": "緊急事態を装って組織内部の人間からパスワードや機密情報を入手する不正な行為は、どれに分類されるか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "ソーシャルエンジニアリング",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "トロイの木馬",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "踏み台攻擊",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "ブルートフォース攻撃",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-31",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 31,
+    "questionText": "ボットネットにおける C&C サーバの役割として、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "Web サイトのコンテンツをキャッシュし、本来のサーバに代わってコンテンツを利用者に配信することによって、ネットワークやサーバの負荷を軽減する。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "外部からインターネットを経由して社内ネットワークにアクセスする際に、CHAP などのプロトコルを中継することによって、利用者認証時のパスワードの盗聴を防ぐ。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "外部からインターネットを経由して社内ネットワークにアクセスする際に、時刻同期方式を採用したワンタイムパスワードを発行することによって、利用者認証時のパスワードの盗聴を防止する。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "侵入して乗っ取ったコンピュータに対して、他のコンピュータへの攻撃などの不正な操作をするよう、外部から命令を出したり応答を受け取ったりする。",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-32",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 32,
+    "questionText": "メッセージ認証符号の利用目的に該当するものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "メッセージが改ざんされていないことを確認する。",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "メッセージの暗号化方式を確認する。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "メッセージの概要を確認する。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "メッセージの秘匿性を確保する。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-33",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 33,
+    "questionText": "UPSの導入によって期待できる情報セキュリティ対策としての効果はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "PCが電力線通信 (PLC) からマルウェアに感染することを防ぐ。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "サーバと端末間の通信における情報漏えいを防ぐ。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "電源の瞬断に起因するデータの破損を防ぐ。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "電子メールの内容が改ざんされることを防ぐ。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-34",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 34,
+    "questionText": "ファジングに該当するものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "サーバにFIN パケットを送信し、サーバからの応答を観測して、稼働しているサービスを見つけ出す。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "サーバの OS やアプリケーションソフトウェアが生成したログやコマンド履歴などを解析して、ファイルサーバに保存されているファイルの改ざんを検知する。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "ソフトウェアに、問題を引き起こしそうな多様なデータを入力し、挙動を監視して、脆弱性を見つけ出す。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "ネットワーク上を流れるパケットを収集し、そのプロトコルヘッダやペイロードを解析して、あらかじめ登録された攻撃パターンと一致するものを検出する。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-35",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 35,
+    "questionText": "マルウェアの動的解析に該当するものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "検体のハッシュ値を計算し、オンラインデータベースに登録された既知のマルウェアのハッシュ値のリストと照合してマルウェアを特定する。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "検体をサンドボックス上で実行し、その動作や外部との通信を観測する。",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "検体をネットワーク上の通信データから抽出し、さらに、逆コンパイルして取得したコードから検体の機能を調べる。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "ハードディスク内のファイルの拡張子とファイルヘッダの内容を基に、拡張子が偽装された不正なプログラムファイルを検出する。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-36",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 36,
+    "questionText": "SQL インジェクション攻撃による被害を防ぐ方法はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "入力された文字が、データベースへの問合せや操作において、特別な意味をもつ文字として解釈されないようにする。",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "入力に HTML タグが含まれていたら、HTML タグとして解釈されない他の文字列に置き換える。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "入力に上位ディレクトリを指定する文字列(../) が含まれているときは受け付けない。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "入力の全体の長さが制限を超えているときは受け付けない。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-37",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 37,
+    "questionText": "電子メールをドメインAの送信者がドメインBの宛先に送信するとき、送信者をドメインAのメールサーバで認証するためのものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "APOP",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "POP3S",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "S/MIME",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "SMTP-AUTH",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-38",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 38,
+    "questionText": "オブジェクト指向プログラムにおいて、データとメソッドを一つにまとめ、オブジェクトの実装の詳細をユーザから見えなくすることを何と呼ぶか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "インスタンス",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "カプセル化",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "クラスタ化",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "抽象化",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-39",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 39,
+    "questionText": "モジュール結合度が最も弱くなるものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "一つのモジュールで、できるだけ多くの機能を実現する。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "二つのモジュール間で必要なデータ項目だけを引数として渡す。",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "他のモジュールとデータ項目を共有するためにグローバルな領域を使用する。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "他のモジュールを呼び出すときに、呼び出したモジュールの論理を制御するための引数を渡す。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-40",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 40,
+    "questionText": "モジュールの内部構造を考慮することなく、仕様書どおりに機能するかどうかをテストする手法はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "トップダウンテスト",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "ブラックボックステスト",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "ボトムアップテスト",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "ホワイトボックステスト",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-41",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 41,
+    "questionText": "アジャイル開発のスクラムにおけるスプリントのルールのうち、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "スプリントの期間を決定したら、スプリントの1回目には要件定義工程を、2回目には設計工程を、3回目にはコード作成工程を、4回目にはテスト工程をそれぞれ割り当てる。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "成果物の内容を確認するスプリントレビューを、スプリントの期間の中間時点で実施する。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "プロジェクトで設定したスプリントの期間でリリース判断が可能なプロダクトインクリメントができるように、スプリントゴールを設定する。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "毎回のスプリントプランニングにおいて、スプリントの期間をゴールの難易度に応じて、1週間から1か月までの範囲に設定する。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-42",
+    "examCode": "fe",
+    "categoryCode": "management",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 42,
+    "questionText": "プロジェクトライフサイクルの一般的な特性はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "開発要員数は、プロジェクト開始時が最多であり、プロジェクトが進むにつれて減少し、完了に近づくと再度増加する。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "ステークホルダがコストを変えずにプロジェクトの成果物に対して及ぼすことができる影響の度合いは、プロジェクト完了直前が最も大きくなる。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "プロジェクトが完了に近づくほど、変更やエラーの修正がプロジェクトに影響する度合いは小さくなる。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "リスクは、プロジェクトが完了に近づくにつれて減少する。",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-43",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 43,
+    "questionText": "ソフトウェア開発の見積方法の一つであるファンクションポイント法の説明として、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "開発規模が分かっていることを前提として、工数と工期を見積もる方法である。ビジネス分野に限らず、全分野に適用可能である。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "過去に経験した類似のソフトウェアについてのデータを基にして、ソフトウェアの相違点を調べ、同じ部分については過去のデータを使い、異なった部分は経験に基づいて、規模と工数を見積もる方法である。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "ソフトウェアの機能を入出力データ数やファイル数などによって定量的に計測し、複雑さによる調整を行って、ソフトウェア規模を見積もる方法である。",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "単位作業項目に適用する作業量の基準値を決めておき、作業項目を単位作業項目まで分解し、基準値を適用して算出した作業量の積算で全体の作業量を見積もる方法である。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-44",
+    "examCode": "fe",
+    "categoryCode": "management",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 44,
+    "questionText": "アローダイアグラムの日程計画をもつプロジェクトの、開始から終了までの最少所要日数は何日か。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "9",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "10",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "11",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "12",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-45",
+    "examCode": "fe",
+    "categoryCode": "management",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 45,
+    "questionText": "サービスマネジメントのプロセス改善におけるベンチマーキングはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "IT サービスのパフォーマンスを財務,顧客,内部プロセス、学習と成長の観点から測定し、戦略的な活動をサポートする。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "業界内外の優れた業務方法 (ベストプラクティス) と比較して、サービス品質及びパフォーマンスのレベルを評価する。",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "サービスのレベルで可用性 信頼性、パフォーマンスを測定し、顧客に報告する。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "強み、弱み、機会、脅威の観点から ITサービスマネジメントの現状を分析する。",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-46",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 46,
+    "questionText": "ディスク障害時に、フルバックアップを取得してあるテープからディスクにデータを復元した後、フルバックアップ取得時以降の更新後コピーをログから反映させてデータベースを回復する方法はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "チェックポイントリスタート",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "リブート",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "ロールバック",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "ロールフォワード",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-47",
+    "examCode": "fe",
+    "categoryCode": "strategy",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 47,
+    "questionText": "経営者が社内のシステム監査人の外観上の独立性を担保するために講じる措置として、最も適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "システム監査人にITに関する継続的学習を義務付ける。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "システム監査人に必要な知識や経験を定めて公表する。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "システム監査人の監査技法研修制度を設ける。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "システム監査人の所属部署を内部監査部門とする。",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-48",
+    "examCode": "fe",
+    "categoryCode": "management",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 48,
+    "questionText": "情報セキュリティ監査において、可用性を確認するチェック項目はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "外部記憶媒体の無断持出しが禁止されていること",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "中断時間を定めたSLAの水準が保たれるように管理されていること",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "データ入力時のエラーチェックが適切に行われていること",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "データベースが暗号化されていること",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-49",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 49,
+    "questionText": "テレワークで活用している VDI に関する記述として、適切なものはどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "PC環境を仮想化してサーバ上に置くことで、社外から端末の種類を選ばず自分のデスクトップPC環境として利用できるシステム",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "インターネット上に仮想の専用線を設定し、特定の人だけが利用できる専用ネットワーク",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "紙で保管されている資料を、ネットワークを介して遠隔地からでも参照可能な電子書類に変換・保存することができるツール",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "対面での会議開催が困難な場合に、ネットワークを介して対面と同じようなコミュニケーションができるツール",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-50",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 50,
+    "questionText": "投資案件において、5年間の投資効果を ROI (Return On Investment) で評価した場合、四つの案件 a~d のうち、最も ROI が高いものはどれか。ここで、割引率は考慮しなくてもよいものとする。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "a",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "b",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "c",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "d",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-51",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 51,
+    "questionText": "国や地方公共団体が、環境への配慮を積極的に行っていると評価されている製品・サービスを選んでいる。この取組を何というか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "CSR",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "エコマーク認定",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "環境アセスメント",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "グリーン購入",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-52",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 52,
+    "questionText": "コアコンピタンスの説明はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "競合他社にはまねのできない自社ならではの卓越した能力",
+        "isCorrect": true,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "経営を行う上で法令や各種規制,社会的規範などを遵守する企業活動",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "市場・技術・商品(サービス) の観点から設定した、事業の展開領域",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "組織活動の目的を達成するために行う、業務とシステムの全体最適化手法",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-53",
+    "examCode": "fe",
+    "categoryCode": "strategy",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 53,
+    "questionText": "新しい事業に取り組む際の手法として、E. リースが提唱したリーンスタートアップの説明はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "国・地方公共団体など、公共機関の補助金・助成金の交付を前提とし、事前に詳細な事業計画を検討・立案した上で、公共性のある事業を立ち上げる手法",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "市場環境の変化によって競争力を喪失した事業分野に対して、経営資源を大規模に追加投入し、リニューアルすることによって、基幹事業として再出発を期す手法",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "持続可能な事業を迅速に構築し、展開するために、あらかじめ詳細に立案された事業計画を厳格に遂行して、成果の検証や計画の変更を最小限にとどめる手法",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "実用最小限の製品・サービスを短期間で作り、構築・計測・学習というフィードバックループで改良や方向転換をして、継続的にイノベーションを行う手法",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-54",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 54,
+    "questionText": "IoT の応用事例のうち、HEMSの説明はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "工場内の機械に取り付けたセンサで振動、温度、音などを常時計測し、収集したデータを基に機械の劣化状態を分析して、適切なタイミングで部品を交換する。",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "自動車に取り付けたセンサで車両の状態、路面状況などのデータを計測し、ネットワークを介して保存し分析することによって、効率的な運転を支援する。",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "情報通信技術や環境技術を駆使して、街灯などの公共設備や交通システムをはじめとする都市基盤のエネルギーの可視化と消費の最適制御を行う。",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "太陽光発電装置などのエネルギー機器,家電機器,センサ類などを家庭内通信ネットワークに接続して、エネルギーの可視化と消費の最適制御を行う。",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-55",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 55,
+    "questionText": "ロングテールの説明はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "Web コンテンツを構成するテキストや画像などのデジタルコンテンツに、統合的・体系的な管理、配信などの必要な処理を行うこと",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "インターネットショッピングで、売上の全体に対して、あまり売れない商品群の売上合計が無視できない割合になっていること",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "自分の Web サイトやブログに企業へのリンクを掲載し、他者がこれらのリンクを経由して商品を購入したときに、企業が紹介料を支払うこと",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "メーカや卸売業者から商品を直接発送することによって、在庫リスクを負うことなく自分の Web サイトで商品が販売できること",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-56",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 56,
+    "questionText": "CGM (Consumer Generated Media) の例はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "企業が、経営状況や財務状況,業績動向に関する情報を 個人投資家向けに公開する自社の Web サイト",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "企業が、自社の商品の特徴や使用方法に関する情報を、一般消費者向けに発信する自社の Web サイト",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "行政機関が、政策、行政サービスに関する情報を、一般市民向けに公開する自組織の Web サイト",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "個人が、自らが使用した商品などの評価に関する情報を、不特定多数に向けて発信するブログやSNSなどの Web サイト",
+        "isCorrect": true,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-57",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 57,
+    "questionText": "製品X及びYを生産するために2種類の原料A, Bが必要である。製品1個の生産に必要となる原料の量と調達可能量は表に示すとおりである。製品XとYの1個当たりの販売利益が、それぞれ100円,150円であるとき、最大利益は何円か。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "5,000",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "6,000",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "7,000",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "8,000",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-58",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 58,
+    "questionText": "令和2年4月に30万円で購入したPCを3年後に1万円で売却するとき、固定資産売却損は何万円か。ここで、耐用年数は4年,減価償却は定額法,定額法の償却率は0.250,残存価額は0円とする。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "6.0",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "6.5",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "7.0",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "7.5",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-59",
+    "examCode": "fe",
+    "categoryCode": "technology",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 59,
+    "questionText": "売上高が100百万円のとき、変動費が60百万円、固定費が30百万円掛かる。変動費率、固定費は変わらないものとして、目標利益 18百万円を達成するのに必要な売上高は何百万円か。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "108",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "120",
+        "isCorrect": true,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "156",
+        "isCorrect": false,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "180",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  },
+  {
+    "sourceKey": "fe-subject-a-sample-60",
+    "examCode": "fe",
+    "categoryCode": "strategy",
+    "sourceYear": null,
+    "sourceSeason": "基本情報技術者試験科目 A サンプル問題",
+    "questionNo": 60,
+    "questionText": "労働者派遣法に基づく、派遣先企業と労働者との関係(図の太線部分)はどれか。",
+    "imagePath": null,
+    "explanation": null,
+    "choices": [
+      {
+        "label": "ア",
+        "text": "請負契約関係",
+        "isCorrect": false,
+        "sortOrder": 1
+      },
+      {
+        "label": "イ",
+        "text": "雇用契約関係",
+        "isCorrect": false,
+        "sortOrder": 2
+      },
+      {
+        "label": "ウ",
+        "text": "指揮命令関係",
+        "isCorrect": true,
+        "sortOrder": 3
+      },
+      {
+        "label": "エ",
+        "text": "労働者派遣契約関係",
+        "isCorrect": false,
+        "sortOrder": 4
+      }
+    ]
+  }
+]
