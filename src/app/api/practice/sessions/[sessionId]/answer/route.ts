@@ -11,7 +11,7 @@ export async function POST(
   request: Request,
   context: { params: Promise<{ sessionId: string }> },
 ) {
-  const user = await getCurrentUser(request);
+  const user = await getCurrentUser();
   if (!user) return unauthorized();
 
   const { sessionId } = await context.params;

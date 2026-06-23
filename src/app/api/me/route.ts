@@ -1,8 +1,8 @@
 import { getCurrentUser } from "@/lib/auth";
 import { unauthorized } from "@/lib/http";
 
-export async function GET(request: Request) {
-  const user = await getCurrentUser(request);
+export async function GET() {
+  const user = await getCurrentUser();
 
   if (!user) {
     return unauthorized();

@@ -1,0 +1,13 @@
+
+> kakomonkun@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.9 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.100.146:3000
+- Environments: .env.local
+✓ Ready in 871ms
+
+ GET /login 200 in 428ms (next.js: 104ms, proxy.ts: 166ms, application-code: 158ms)
+ GET /auth/callback 307 in 96ms (next.js: 79ms, proxy.ts: 4ms, application-code: 13ms)
+ GET /api/me 401 in 387ms (next.js: 350ms, proxy.ts: 4ms, application-code: 34ms)

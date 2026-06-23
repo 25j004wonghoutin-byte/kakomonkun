@@ -8,7 +8,7 @@ type CreateSessionBody = {
 };
 
 export async function POST(request: Request) {
-  const user = await getCurrentUser(request);
+  const user = await getCurrentUser();
   if (!user) return unauthorized();
   if (!["student", "teacher"].includes(user.role.name)) return forbidden();
 

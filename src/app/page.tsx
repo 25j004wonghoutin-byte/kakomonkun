@@ -35,7 +35,7 @@ export default function Home() {
         if (active) setMe(data);
       })
       .catch(() => {
-        // DATABASE_URL未設定のデザイン確認時も、デモ表示を維持する。
+        // 一時的な通信失敗時は初期表示を維持する。
       });
     return () => {
       active = false;
@@ -49,7 +49,7 @@ export default function Home() {
     <StudentShell userName={me?.displayName} points={points}>
       <PageHeading
         eyebrow="STUDENT HOME"
-        title={`${me?.displayName ?? "デモ学生"}さん、今日も一歩進みましょう`}
+        title={`${me?.displayName ?? "学生"}さん、今日も一歩進みましょう`}
         description="まずは今日の一問から。短い積み重ねが、合格へのいちばん確かな近道です。"
       />
 
