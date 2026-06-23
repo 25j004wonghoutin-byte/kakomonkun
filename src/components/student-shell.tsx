@@ -22,7 +22,7 @@ type StudentShellProps = {
 
 export function StudentShell({
   children,
-  userName = "デモ学生",
+  userName = "学生",
   points = 0,
 }: StudentShellProps) {
   const pathname = usePathname();
@@ -59,6 +59,14 @@ export function StudentShell({
             <div className="grid size-10 place-items-center rounded-full bg-slate-900 text-sm font-black text-white">
               {userName.slice(0, 1)}
             </div>
+            <form action="/auth/signout" method="post">
+              <button
+                type="submit"
+                className="rounded-full border border-slate-200 px-3 py-2 text-xs font-black text-slate-600 transition hover:border-rose-300 hover:bg-rose-50 hover:text-rose-700"
+              >
+                ログアウト
+              </button>
+            </form>
           </div>
         </div>
 

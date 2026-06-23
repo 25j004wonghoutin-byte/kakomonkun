@@ -4,10 +4,10 @@ import { prisma } from "@/lib/prisma";
 import { getTokyoDayRange } from "@/lib/tokyo-date";
 
 export async function POST(
-  request: Request,
+  _request: Request,
   context: { params: Promise<{ sessionId: string }> },
 ) {
-  const user = await getCurrentUser(request);
+  const user = await getCurrentUser();
   if (!user) return unauthorized();
 
   const { sessionId } = await context.params;

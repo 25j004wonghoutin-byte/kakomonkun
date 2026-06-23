@@ -23,7 +23,7 @@ const exams = [
 export default function PracticeStartPage() {
   const router = useRouter();
   const [selectedExam, setSelectedExam] = useState("it_passport");
-  const [userName, setUserName] = useState("デモ学生");
+  const [userName, setUserName] = useState("学生");
   const [points, setPoints] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
