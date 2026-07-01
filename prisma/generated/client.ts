@@ -82,6 +82,11 @@ export type Question = Prisma.QuestionModel
  */
 export type QuestionChoice = Prisma.QuestionChoiceModel
 /**
+ * Model DailyQaAnswer
+ * 
+ */
+export type DailyQaAnswer = Prisma.DailyQaAnswerModel
+/**
  * Model PracticeSession
  * 
  */
@@ -101,3 +106,38 @@ export type PracticeAnswer = Prisma.PracticeAnswerModel
  * 
  */
 export type PointTransaction = Prisma.PointTransactionModel
+/**
+ * Model MockExam
+ * 
+ */
+export type MockExam = Prisma.MockExamModel
+/**
+ * Model MockExamQuestion
+ * 
+ */
+export type MockExamQuestion = Prisma.MockExamQuestionModel
+/**
+ * Model MockAttempt
+ * 
+ */
+export type MockAttempt = Prisma.MockAttemptModel
+/**
+ * Model MockAnswer
+ * 
+ */
+export type MockAnswer = Prisma.MockAnswerModel
+/**
+ * Model Title
+ * 
+ */
+export type Title = Prisma.TitleModel
+/**
+ * Model UserTitle
+ * 
+ */
+export type UserTitle = Prisma.UserTitleModel
+/**
+ * Model MonthlyRanking
+ * 
+ */
+export type MonthlyRanking = Prisma.MonthlyRankingModel

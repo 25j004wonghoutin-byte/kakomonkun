@@ -226,6 +226,11 @@ export type UserWhereInput = {
   studentProfile?: Prisma.XOR<Prisma.StudentProfileNullableScalarRelationFilter, Prisma.StudentProfileWhereInput> | null
   teacherProfile?: Prisma.XOR<Prisma.TeacherProfileNullableScalarRelationFilter, Prisma.TeacherProfileWhereInput> | null
   createdQuestions?: Prisma.QuestionListRelationFilter
+  dailyQaAnswers?: Prisma.DailyQaAnswerListRelationFilter
+  createdMockExams?: Prisma.MockExamListRelationFilter
+  mockAttempts?: Prisma.MockAttemptListRelationFilter
+  userTitles?: Prisma.UserTitleListRelationFilter
+  monthlyRankings?: Prisma.MonthlyRankingListRelationFilter
   practiceSessions?: Prisma.PracticeSessionListRelationFilter
   pointTransactions?: Prisma.PointTransactionListRelationFilter
 }
@@ -245,6 +250,11 @@ export type UserOrderByWithRelationInput = {
   studentProfile?: Prisma.StudentProfileOrderByWithRelationInput
   teacherProfile?: Prisma.TeacherProfileOrderByWithRelationInput
   createdQuestions?: Prisma.QuestionOrderByRelationAggregateInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerOrderByRelationAggregateInput
+  createdMockExams?: Prisma.MockExamOrderByRelationAggregateInput
+  mockAttempts?: Prisma.MockAttemptOrderByRelationAggregateInput
+  userTitles?: Prisma.UserTitleOrderByRelationAggregateInput
+  monthlyRankings?: Prisma.MonthlyRankingOrderByRelationAggregateInput
   practiceSessions?: Prisma.PracticeSessionOrderByRelationAggregateInput
   pointTransactions?: Prisma.PointTransactionOrderByRelationAggregateInput
 }
@@ -267,6 +277,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   studentProfile?: Prisma.XOR<Prisma.StudentProfileNullableScalarRelationFilter, Prisma.StudentProfileWhereInput> | null
   teacherProfile?: Prisma.XOR<Prisma.TeacherProfileNullableScalarRelationFilter, Prisma.TeacherProfileWhereInput> | null
   createdQuestions?: Prisma.QuestionListRelationFilter
+  dailyQaAnswers?: Prisma.DailyQaAnswerListRelationFilter
+  createdMockExams?: Prisma.MockExamListRelationFilter
+  mockAttempts?: Prisma.MockAttemptListRelationFilter
+  userTitles?: Prisma.UserTitleListRelationFilter
+  monthlyRankings?: Prisma.MonthlyRankingListRelationFilter
   practiceSessions?: Prisma.PracticeSessionListRelationFilter
   pointTransactions?: Prisma.PointTransactionListRelationFilter
 }, "id" | "authUserId" | "email">
@@ -317,6 +332,11 @@ export type UserCreateInput = {
   studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
   teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
   createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
 }
@@ -335,6 +355,11 @@ export type UserUncheckedCreateInput = {
   studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
   teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
   createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -353,6 +378,11 @@ export type UserUpdateInput = {
   studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
   teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
   createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
 }
@@ -371,6 +401,11 @@ export type UserUncheckedUpdateInput = {
   studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
   teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
   createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -562,6 +597,20 @@ export type UserUpdateOneWithoutCreatedQuestionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedQuestionsInput, Prisma.UserUpdateWithoutCreatedQuestionsInput>, Prisma.UserUncheckedUpdateWithoutCreatedQuestionsInput>
 }
 
+export type UserCreateNestedOneWithoutDailyQaAnswersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDailyQaAnswersInput, Prisma.UserUncheckedCreateWithoutDailyQaAnswersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDailyQaAnswersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDailyQaAnswersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDailyQaAnswersInput, Prisma.UserUncheckedCreateWithoutDailyQaAnswersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDailyQaAnswersInput
+  upsert?: Prisma.UserUpsertWithoutDailyQaAnswersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDailyQaAnswersInput, Prisma.UserUpdateWithoutDailyQaAnswersInput>, Prisma.UserUncheckedUpdateWithoutDailyQaAnswersInput>
+}
+
 export type UserCreateNestedOneWithoutPracticeSessionsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutPracticeSessionsInput, Prisma.UserUncheckedCreateWithoutPracticeSessionsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutPracticeSessionsInput
@@ -590,6 +639,64 @@ export type UserUpdateOneRequiredWithoutPointTransactionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPointTransactionsInput, Prisma.UserUpdateWithoutPointTransactionsInput>, Prisma.UserUncheckedUpdateWithoutPointTransactionsInput>
 }
 
+export type UserCreateNestedOneWithoutCreatedMockExamsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedMockExamsInput, Prisma.UserUncheckedCreateWithoutCreatedMockExamsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedMockExamsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutCreatedMockExamsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedMockExamsInput, Prisma.UserUncheckedCreateWithoutCreatedMockExamsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedMockExamsInput
+  upsert?: Prisma.UserUpsertWithoutCreatedMockExamsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedMockExamsInput, Prisma.UserUpdateWithoutCreatedMockExamsInput>, Prisma.UserUncheckedUpdateWithoutCreatedMockExamsInput>
+}
+
+export type UserCreateNestedOneWithoutMockAttemptsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMockAttemptsInput, Prisma.UserUncheckedCreateWithoutMockAttemptsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMockAttemptsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMockAttemptsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMockAttemptsInput, Prisma.UserUncheckedCreateWithoutMockAttemptsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMockAttemptsInput
+  upsert?: Prisma.UserUpsertWithoutMockAttemptsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMockAttemptsInput, Prisma.UserUpdateWithoutMockAttemptsInput>, Prisma.UserUncheckedUpdateWithoutMockAttemptsInput>
+}
+
+export type UserCreateNestedOneWithoutUserTitlesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserTitlesInput, Prisma.UserUncheckedCreateWithoutUserTitlesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserTitlesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutUserTitlesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserTitlesInput, Prisma.UserUncheckedCreateWithoutUserTitlesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserTitlesInput
+  upsert?: Prisma.UserUpsertWithoutUserTitlesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserTitlesInput, Prisma.UserUpdateWithoutUserTitlesInput>, Prisma.UserUncheckedUpdateWithoutUserTitlesInput>
+}
+
+export type UserCreateNestedOneWithoutMonthlyRankingsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMonthlyRankingsInput, Prisma.UserUncheckedCreateWithoutMonthlyRankingsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMonthlyRankingsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMonthlyRankingsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMonthlyRankingsInput, Prisma.UserUncheckedCreateWithoutMonthlyRankingsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMonthlyRankingsInput
+  upsert?: Prisma.UserUpsertWithoutMonthlyRankingsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMonthlyRankingsInput, Prisma.UserUpdateWithoutMonthlyRankingsInput>, Prisma.UserUncheckedUpdateWithoutMonthlyRankingsInput>
+}
+
 export type UserCreateWithoutRoleInput = {
   id?: string
   authUserId?: string | null
@@ -603,6 +710,11 @@ export type UserCreateWithoutRoleInput = {
   studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
   teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
   createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
 }
@@ -620,6 +732,11 @@ export type UserUncheckedCreateWithoutRoleInput = {
   studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
   teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
   createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -679,6 +796,11 @@ export type UserCreateWithoutStudentProfileInput = {
   role: Prisma.RoleCreateNestedOneWithoutUsersInput
   teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
   createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
 }
@@ -696,6 +818,11 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   deletedAt?: Date | string | null
   teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
   createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -729,6 +856,11 @@ export type UserUpdateWithoutStudentProfileInput = {
   role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
   teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
   createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
 }
@@ -746,6 +878,11 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
   createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -763,6 +900,11 @@ export type UserCreateWithoutTeacherProfileInput = {
   role: Prisma.RoleCreateNestedOneWithoutUsersInput
   studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
   createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
 }
@@ -780,6 +922,11 @@ export type UserUncheckedCreateWithoutTeacherProfileInput = {
   deletedAt?: Date | string | null
   studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
   createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -813,6 +960,11 @@ export type UserUpdateWithoutTeacherProfileInput = {
   role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
   studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
   createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
 }
@@ -830,6 +982,11 @@ export type UserUncheckedUpdateWithoutTeacherProfileInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
   createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -847,6 +1004,11 @@ export type UserCreateWithoutCreatedQuestionsInput = {
   role: Prisma.RoleCreateNestedOneWithoutUsersInput
   studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
   teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
 }
@@ -864,6 +1026,11 @@ export type UserUncheckedCreateWithoutCreatedQuestionsInput = {
   deletedAt?: Date | string | null
   studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
   teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -897,6 +1064,11 @@ export type UserUpdateWithoutCreatedQuestionsInput = {
   role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
   studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
   teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
 }
@@ -914,6 +1086,115 @@ export type UserUncheckedUpdateWithoutCreatedQuestionsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
   teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutDailyQaAnswersInput = {
+  id?: string
+  authUserId?: string | null
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutDailyQaAnswersInput = {
+  id?: string
+  authUserId?: string | null
+  roleId: string
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutDailyQaAnswersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDailyQaAnswersInput, Prisma.UserUncheckedCreateWithoutDailyQaAnswersInput>
+}
+
+export type UserUpsertWithoutDailyQaAnswersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDailyQaAnswersInput, Prisma.UserUncheckedUpdateWithoutDailyQaAnswersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDailyQaAnswersInput, Prisma.UserUncheckedCreateWithoutDailyQaAnswersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDailyQaAnswersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDailyQaAnswersInput, Prisma.UserUncheckedUpdateWithoutDailyQaAnswersInput>
+}
+
+export type UserUpdateWithoutDailyQaAnswersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDailyQaAnswersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -932,6 +1213,11 @@ export type UserCreateWithoutPracticeSessionsInput = {
   studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
   teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
   createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
 }
 
@@ -949,6 +1235,11 @@ export type UserUncheckedCreateWithoutPracticeSessionsInput = {
   studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
   teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
   createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -982,6 +1273,11 @@ export type UserUpdateWithoutPracticeSessionsInput = {
   studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
   teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
   createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
 }
 
@@ -999,6 +1295,11 @@ export type UserUncheckedUpdateWithoutPracticeSessionsInput = {
   studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
   teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
   createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1016,6 +1317,11 @@ export type UserCreateWithoutPointTransactionsInput = {
   studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
   teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
   createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
 }
 
@@ -1033,6 +1339,11 @@ export type UserUncheckedCreateWithoutPointTransactionsInput = {
   studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
   teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
   createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1066,6 +1377,11 @@ export type UserUpdateWithoutPointTransactionsInput = {
   studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
   teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
   createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
 }
 
@@ -1083,7 +1399,428 @@ export type UserUncheckedUpdateWithoutPointTransactionsInput = {
   studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
   teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
   createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCreatedMockExamsInput = {
+  id?: string
+  authUserId?: string | null
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCreatedMockExamsInput = {
+  id?: string
+  authUserId?: string | null
+  roleId: string
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCreatedMockExamsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedMockExamsInput, Prisma.UserUncheckedCreateWithoutCreatedMockExamsInput>
+}
+
+export type UserUpsertWithoutCreatedMockExamsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedMockExamsInput, Prisma.UserUncheckedUpdateWithoutCreatedMockExamsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedMockExamsInput, Prisma.UserUncheckedCreateWithoutCreatedMockExamsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedMockExamsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedMockExamsInput, Prisma.UserUncheckedUpdateWithoutCreatedMockExamsInput>
+}
+
+export type UserUpdateWithoutCreatedMockExamsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedMockExamsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutMockAttemptsInput = {
+  id?: string
+  authUserId?: string | null
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMockAttemptsInput = {
+  id?: string
+  authUserId?: string | null
+  roleId: string
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMockAttemptsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMockAttemptsInput, Prisma.UserUncheckedCreateWithoutMockAttemptsInput>
+}
+
+export type UserUpsertWithoutMockAttemptsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMockAttemptsInput, Prisma.UserUncheckedUpdateWithoutMockAttemptsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMockAttemptsInput, Prisma.UserUncheckedCreateWithoutMockAttemptsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMockAttemptsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMockAttemptsInput, Prisma.UserUncheckedUpdateWithoutMockAttemptsInput>
+}
+
+export type UserUpdateWithoutMockAttemptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMockAttemptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutUserTitlesInput = {
+  id?: string
+  authUserId?: string | null
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutUserTitlesInput = {
+  id?: string
+  authUserId?: string | null
+  roleId: string
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutUserTitlesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserTitlesInput, Prisma.UserUncheckedCreateWithoutUserTitlesInput>
+}
+
+export type UserUpsertWithoutUserTitlesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUserTitlesInput, Prisma.UserUncheckedUpdateWithoutUserTitlesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserTitlesInput, Prisma.UserUncheckedCreateWithoutUserTitlesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUserTitlesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUserTitlesInput, Prisma.UserUncheckedUpdateWithoutUserTitlesInput>
+}
+
+export type UserUpdateWithoutUserTitlesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUserTitlesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutMonthlyRankingsInput = {
+  id?: string
+  authUserId?: string | null
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMonthlyRankingsInput = {
+  id?: string
+  authUserId?: string | null
+  roleId: string
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMonthlyRankingsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMonthlyRankingsInput, Prisma.UserUncheckedCreateWithoutMonthlyRankingsInput>
+}
+
+export type UserUpsertWithoutMonthlyRankingsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMonthlyRankingsInput, Prisma.UserUncheckedUpdateWithoutMonthlyRankingsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMonthlyRankingsInput, Prisma.UserUncheckedCreateWithoutMonthlyRankingsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMonthlyRankingsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMonthlyRankingsInput, Prisma.UserUncheckedUpdateWithoutMonthlyRankingsInput>
+}
+
+export type UserUpdateWithoutMonthlyRankingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMonthlyRankingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyRoleInput = {
@@ -1111,6 +1848,11 @@ export type UserUpdateWithoutRoleInput = {
   studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
   teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
   createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
 }
@@ -1128,6 +1870,11 @@ export type UserUncheckedUpdateWithoutRoleInput = {
   studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
   teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
   createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1151,12 +1898,22 @@ export type UserUncheckedUpdateManyWithoutRoleInput = {
 
 export type UserCountOutputType = {
   createdQuestions: number
+  dailyQaAnswers: number
+  createdMockExams: number
+  mockAttempts: number
+  userTitles: number
+  monthlyRankings: number
   practiceSessions: number
   pointTransactions: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdQuestions?: boolean | UserCountOutputTypeCountCreatedQuestionsArgs
+  dailyQaAnswers?: boolean | UserCountOutputTypeCountDailyQaAnswersArgs
+  createdMockExams?: boolean | UserCountOutputTypeCountCreatedMockExamsArgs
+  mockAttempts?: boolean | UserCountOutputTypeCountMockAttemptsArgs
+  userTitles?: boolean | UserCountOutputTypeCountUserTitlesArgs
+  monthlyRankings?: boolean | UserCountOutputTypeCountMonthlyRankingsArgs
   practiceSessions?: boolean | UserCountOutputTypeCountPracticeSessionsArgs
   pointTransactions?: boolean | UserCountOutputTypeCountPointTransactionsArgs
 }
@@ -1176,6 +1933,41 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
  */
 export type UserCountOutputTypeCountCreatedQuestionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.QuestionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDailyQaAnswersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DailyQaAnswerWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedMockExamsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MockExamWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMockAttemptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MockAttemptWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUserTitlesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserTitleWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMonthlyRankingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MonthlyRankingWhereInput
 }
 
 /**
@@ -1208,6 +2000,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   studentProfile?: boolean | Prisma.User$studentProfileArgs<ExtArgs>
   teacherProfile?: boolean | Prisma.User$teacherProfileArgs<ExtArgs>
   createdQuestions?: boolean | Prisma.User$createdQuestionsArgs<ExtArgs>
+  dailyQaAnswers?: boolean | Prisma.User$dailyQaAnswersArgs<ExtArgs>
+  createdMockExams?: boolean | Prisma.User$createdMockExamsArgs<ExtArgs>
+  mockAttempts?: boolean | Prisma.User$mockAttemptsArgs<ExtArgs>
+  userTitles?: boolean | Prisma.User$userTitlesArgs<ExtArgs>
+  monthlyRankings?: boolean | Prisma.User$monthlyRankingsArgs<ExtArgs>
   practiceSessions?: boolean | Prisma.User$practiceSessionsArgs<ExtArgs>
   pointTransactions?: boolean | Prisma.User$pointTransactionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1260,6 +2057,11 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   studentProfile?: boolean | Prisma.User$studentProfileArgs<ExtArgs>
   teacherProfile?: boolean | Prisma.User$teacherProfileArgs<ExtArgs>
   createdQuestions?: boolean | Prisma.User$createdQuestionsArgs<ExtArgs>
+  dailyQaAnswers?: boolean | Prisma.User$dailyQaAnswersArgs<ExtArgs>
+  createdMockExams?: boolean | Prisma.User$createdMockExamsArgs<ExtArgs>
+  mockAttempts?: boolean | Prisma.User$mockAttemptsArgs<ExtArgs>
+  userTitles?: boolean | Prisma.User$userTitlesArgs<ExtArgs>
+  monthlyRankings?: boolean | Prisma.User$monthlyRankingsArgs<ExtArgs>
   practiceSessions?: boolean | Prisma.User$practiceSessionsArgs<ExtArgs>
   pointTransactions?: boolean | Prisma.User$pointTransactionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1278,6 +2080,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     studentProfile: Prisma.$StudentProfilePayload<ExtArgs> | null
     teacherProfile: Prisma.$TeacherProfilePayload<ExtArgs> | null
     createdQuestions: Prisma.$QuestionPayload<ExtArgs>[]
+    dailyQaAnswers: Prisma.$DailyQaAnswerPayload<ExtArgs>[]
+    createdMockExams: Prisma.$MockExamPayload<ExtArgs>[]
+    mockAttempts: Prisma.$MockAttemptPayload<ExtArgs>[]
+    userTitles: Prisma.$UserTitlePayload<ExtArgs>[]
+    monthlyRankings: Prisma.$MonthlyRankingPayload<ExtArgs>[]
     practiceSessions: Prisma.$PracticeSessionPayload<ExtArgs>[]
     pointTransactions: Prisma.$PointTransactionPayload<ExtArgs>[]
   }
@@ -1690,6 +2497,11 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   studentProfile<T extends Prisma.User$studentProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$studentProfileArgs<ExtArgs>>): Prisma.Prisma__StudentProfileClient<runtime.Types.Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   teacherProfile<T extends Prisma.User$teacherProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$teacherProfileArgs<ExtArgs>>): Prisma.Prisma__TeacherProfileClient<runtime.Types.Result.GetResult<Prisma.$TeacherProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   createdQuestions<T extends Prisma.User$createdQuestionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdQuestionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  dailyQaAnswers<T extends Prisma.User$dailyQaAnswersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$dailyQaAnswersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyQaAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdMockExams<T extends Prisma.User$createdMockExamsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdMockExamsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MockExamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mockAttempts<T extends Prisma.User$mockAttemptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$mockAttemptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MockAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userTitles<T extends Prisma.User$userTitlesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userTitlesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserTitlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  monthlyRankings<T extends Prisma.User$monthlyRankingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$monthlyRankingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MonthlyRankingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   practiceSessions<T extends Prisma.User$practiceSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$practiceSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PracticeSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pointTransactions<T extends Prisma.User$pointTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pointTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PointTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2191,6 +3003,126 @@ export type User$createdQuestionsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.QuestionScalarFieldEnum | Prisma.QuestionScalarFieldEnum[]
+}
+
+/**
+ * User.dailyQaAnswers
+ */
+export type User$dailyQaAnswersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DailyQaAnswer
+   */
+  select?: Prisma.DailyQaAnswerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DailyQaAnswer
+   */
+  omit?: Prisma.DailyQaAnswerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DailyQaAnswerInclude<ExtArgs> | null
+  where?: Prisma.DailyQaAnswerWhereInput
+  orderBy?: Prisma.DailyQaAnswerOrderByWithRelationInput | Prisma.DailyQaAnswerOrderByWithRelationInput[]
+  cursor?: Prisma.DailyQaAnswerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DailyQaAnswerScalarFieldEnum | Prisma.DailyQaAnswerScalarFieldEnum[]
+}
+
+/**
+ * User.createdMockExams
+ */
+export type User$createdMockExamsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MockExam
+   */
+  select?: Prisma.MockExamSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MockExam
+   */
+  omit?: Prisma.MockExamOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MockExamInclude<ExtArgs> | null
+  where?: Prisma.MockExamWhereInput
+  orderBy?: Prisma.MockExamOrderByWithRelationInput | Prisma.MockExamOrderByWithRelationInput[]
+  cursor?: Prisma.MockExamWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MockExamScalarFieldEnum | Prisma.MockExamScalarFieldEnum[]
+}
+
+/**
+ * User.mockAttempts
+ */
+export type User$mockAttemptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MockAttempt
+   */
+  select?: Prisma.MockAttemptSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MockAttempt
+   */
+  omit?: Prisma.MockAttemptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MockAttemptInclude<ExtArgs> | null
+  where?: Prisma.MockAttemptWhereInput
+  orderBy?: Prisma.MockAttemptOrderByWithRelationInput | Prisma.MockAttemptOrderByWithRelationInput[]
+  cursor?: Prisma.MockAttemptWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MockAttemptScalarFieldEnum | Prisma.MockAttemptScalarFieldEnum[]
+}
+
+/**
+ * User.userTitles
+ */
+export type User$userTitlesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserTitle
+   */
+  select?: Prisma.UserTitleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserTitle
+   */
+  omit?: Prisma.UserTitleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserTitleInclude<ExtArgs> | null
+  where?: Prisma.UserTitleWhereInput
+  orderBy?: Prisma.UserTitleOrderByWithRelationInput | Prisma.UserTitleOrderByWithRelationInput[]
+  cursor?: Prisma.UserTitleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserTitleScalarFieldEnum | Prisma.UserTitleScalarFieldEnum[]
+}
+
+/**
+ * User.monthlyRankings
+ */
+export type User$monthlyRankingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MonthlyRanking
+   */
+  select?: Prisma.MonthlyRankingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MonthlyRanking
+   */
+  omit?: Prisma.MonthlyRankingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MonthlyRankingInclude<ExtArgs> | null
+  where?: Prisma.MonthlyRankingWhereInput
+  orderBy?: Prisma.MonthlyRankingOrderByWithRelationInput | Prisma.MonthlyRankingOrderByWithRelationInput[]
+  cursor?: Prisma.MonthlyRankingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MonthlyRankingScalarFieldEnum | Prisma.MonthlyRankingScalarFieldEnum[]
 }
 
 /**

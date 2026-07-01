@@ -199,6 +199,7 @@ export type ExamWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
   questions?: Prisma.QuestionListRelationFilter
+  mockExams?: Prisma.MockExamListRelationFilter
   practiceSessions?: Prisma.PracticeSessionListRelationFilter
 }
 
@@ -211,6 +212,7 @@ export type ExamOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   questions?: Prisma.QuestionOrderByRelationAggregateInput
+  mockExams?: Prisma.MockExamOrderByRelationAggregateInput
   practiceSessions?: Prisma.PracticeSessionOrderByRelationAggregateInput
 }
 
@@ -226,6 +228,7 @@ export type ExamWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
   questions?: Prisma.QuestionListRelationFilter
+  mockExams?: Prisma.MockExamListRelationFilter
   practiceSessions?: Prisma.PracticeSessionListRelationFilter
 }, "id" | "code">
 
@@ -264,6 +267,7 @@ export type ExamCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   questions?: Prisma.QuestionCreateNestedManyWithoutExamInput
+  mockExams?: Prisma.MockExamCreateNestedManyWithoutExamInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutExamInput
 }
 
@@ -276,6 +280,7 @@ export type ExamUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutExamInput
+  mockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutExamInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutExamInput
 }
 
@@ -288,6 +293,7 @@ export type ExamUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.QuestionUpdateManyWithoutExamNestedInput
+  mockExams?: Prisma.MockExamUpdateManyWithoutExamNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutExamNestedInput
 }
 
@@ -300,6 +306,7 @@ export type ExamUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.QuestionUncheckedUpdateManyWithoutExamNestedInput
+  mockExams?: Prisma.MockExamUncheckedUpdateManyWithoutExamNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutExamNestedInput
 }
 
@@ -400,6 +407,20 @@ export type ExamUpdateOneRequiredWithoutPracticeSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ExamUpdateToOneWithWhereWithoutPracticeSessionsInput, Prisma.ExamUpdateWithoutPracticeSessionsInput>, Prisma.ExamUncheckedUpdateWithoutPracticeSessionsInput>
 }
 
+export type ExamCreateNestedOneWithoutMockExamsInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutMockExamsInput, Prisma.ExamUncheckedCreateWithoutMockExamsInput>
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutMockExamsInput
+  connect?: Prisma.ExamWhereUniqueInput
+}
+
+export type ExamUpdateOneRequiredWithoutMockExamsNestedInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutMockExamsInput, Prisma.ExamUncheckedCreateWithoutMockExamsInput>
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutMockExamsInput
+  upsert?: Prisma.ExamUpsertWithoutMockExamsInput
+  connect?: Prisma.ExamWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ExamUpdateToOneWithWhereWithoutMockExamsInput, Prisma.ExamUpdateWithoutMockExamsInput>, Prisma.ExamUncheckedUpdateWithoutMockExamsInput>
+}
+
 export type ExamCreateWithoutQuestionsInput = {
   id?: string
   code: string
@@ -408,6 +429,7 @@ export type ExamCreateWithoutQuestionsInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  mockExams?: Prisma.MockExamCreateNestedManyWithoutExamInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutExamInput
 }
 
@@ -419,6 +441,7 @@ export type ExamUncheckedCreateWithoutQuestionsInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  mockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutExamInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutExamInput
 }
 
@@ -446,6 +469,7 @@ export type ExamUpdateWithoutQuestionsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mockExams?: Prisma.MockExamUpdateManyWithoutExamNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutExamNestedInput
 }
 
@@ -457,6 +481,7 @@ export type ExamUncheckedUpdateWithoutQuestionsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mockExams?: Prisma.MockExamUncheckedUpdateManyWithoutExamNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutExamNestedInput
 }
 
@@ -469,6 +494,7 @@ export type ExamCreateWithoutPracticeSessionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   questions?: Prisma.QuestionCreateNestedManyWithoutExamInput
+  mockExams?: Prisma.MockExamCreateNestedManyWithoutExamInput
 }
 
 export type ExamUncheckedCreateWithoutPracticeSessionsInput = {
@@ -480,6 +506,7 @@ export type ExamUncheckedCreateWithoutPracticeSessionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutExamInput
+  mockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutExamInput
 }
 
 export type ExamCreateOrConnectWithoutPracticeSessionsInput = {
@@ -507,6 +534,7 @@ export type ExamUpdateWithoutPracticeSessionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.QuestionUpdateManyWithoutExamNestedInput
+  mockExams?: Prisma.MockExamUpdateManyWithoutExamNestedInput
 }
 
 export type ExamUncheckedUpdateWithoutPracticeSessionsInput = {
@@ -518,6 +546,71 @@ export type ExamUncheckedUpdateWithoutPracticeSessionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.QuestionUncheckedUpdateManyWithoutExamNestedInput
+  mockExams?: Prisma.MockExamUncheckedUpdateManyWithoutExamNestedInput
+}
+
+export type ExamCreateWithoutMockExamsInput = {
+  id?: string
+  code: string
+  name: string
+  description?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  questions?: Prisma.QuestionCreateNestedManyWithoutExamInput
+  practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutExamInput
+}
+
+export type ExamUncheckedCreateWithoutMockExamsInput = {
+  id?: string
+  code: string
+  name: string
+  description?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutExamInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutExamInput
+}
+
+export type ExamCreateOrConnectWithoutMockExamsInput = {
+  where: Prisma.ExamWhereUniqueInput
+  create: Prisma.XOR<Prisma.ExamCreateWithoutMockExamsInput, Prisma.ExamUncheckedCreateWithoutMockExamsInput>
+}
+
+export type ExamUpsertWithoutMockExamsInput = {
+  update: Prisma.XOR<Prisma.ExamUpdateWithoutMockExamsInput, Prisma.ExamUncheckedUpdateWithoutMockExamsInput>
+  create: Prisma.XOR<Prisma.ExamCreateWithoutMockExamsInput, Prisma.ExamUncheckedCreateWithoutMockExamsInput>
+  where?: Prisma.ExamWhereInput
+}
+
+export type ExamUpdateToOneWithWhereWithoutMockExamsInput = {
+  where?: Prisma.ExamWhereInput
+  data: Prisma.XOR<Prisma.ExamUpdateWithoutMockExamsInput, Prisma.ExamUncheckedUpdateWithoutMockExamsInput>
+}
+
+export type ExamUpdateWithoutMockExamsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  questions?: Prisma.QuestionUpdateManyWithoutExamNestedInput
+  practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutExamNestedInput
+}
+
+export type ExamUncheckedUpdateWithoutMockExamsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  questions?: Prisma.QuestionUncheckedUpdateManyWithoutExamNestedInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutExamNestedInput
 }
 
 
@@ -527,11 +620,13 @@ export type ExamUncheckedUpdateWithoutPracticeSessionsInput = {
 
 export type ExamCountOutputType = {
   questions: number
+  mockExams: number
   practiceSessions: number
 }
 
 export type ExamCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   questions?: boolean | ExamCountOutputTypeCountQuestionsArgs
+  mockExams?: boolean | ExamCountOutputTypeCountMockExamsArgs
   practiceSessions?: boolean | ExamCountOutputTypeCountPracticeSessionsArgs
 }
 
@@ -555,6 +650,13 @@ export type ExamCountOutputTypeCountQuestionsArgs<ExtArgs extends runtime.Types.
 /**
  * ExamCountOutputType without action
  */
+export type ExamCountOutputTypeCountMockExamsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MockExamWhereInput
+}
+
+/**
+ * ExamCountOutputType without action
+ */
 export type ExamCountOutputTypeCountPracticeSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PracticeSessionWhereInput
 }
@@ -569,6 +671,7 @@ export type ExamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   questions?: boolean | Prisma.Exam$questionsArgs<ExtArgs>
+  mockExams?: boolean | Prisma.Exam$mockExamsArgs<ExtArgs>
   practiceSessions?: boolean | Prisma.Exam$practiceSessionsArgs<ExtArgs>
   _count?: boolean | Prisma.ExamCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["exam"]>
@@ -606,6 +709,7 @@ export type ExamSelectScalar = {
 export type ExamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "description" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["exam"]>
 export type ExamInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   questions?: boolean | Prisma.Exam$questionsArgs<ExtArgs>
+  mockExams?: boolean | Prisma.Exam$mockExamsArgs<ExtArgs>
   practiceSessions?: boolean | Prisma.Exam$practiceSessionsArgs<ExtArgs>
   _count?: boolean | Prisma.ExamCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -616,6 +720,7 @@ export type $ExamPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "Exam"
   objects: {
     questions: Prisma.$QuestionPayload<ExtArgs>[]
+    mockExams: Prisma.$MockExamPayload<ExtArgs>[]
     practiceSessions: Prisma.$PracticeSessionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1021,6 +1126,7 @@ readonly fields: ExamFieldRefs;
 export interface Prisma__ExamClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   questions<T extends Prisma.Exam$questionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Exam$questionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mockExams<T extends Prisma.Exam$mockExamsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Exam$mockExamsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MockExamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   practiceSessions<T extends Prisma.Exam$practiceSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Exam$practiceSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PracticeSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1472,6 +1578,30 @@ export type Exam$questionsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.QuestionScalarFieldEnum | Prisma.QuestionScalarFieldEnum[]
+}
+
+/**
+ * Exam.mockExams
+ */
+export type Exam$mockExamsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MockExam
+   */
+  select?: Prisma.MockExamSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MockExam
+   */
+  omit?: Prisma.MockExamOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MockExamInclude<ExtArgs> | null
+  where?: Prisma.MockExamWhereInput
+  orderBy?: Prisma.MockExamOrderByWithRelationInput | Prisma.MockExamOrderByWithRelationInput[]
+  cursor?: Prisma.MockExamWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MockExamScalarFieldEnum | Prisma.MockExamScalarFieldEnum[]
 }
 
 /**
