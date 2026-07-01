@@ -33,6 +33,11 @@ model User {
   studentProfile    StudentProfile?
   teacherProfile    TeacherProfile?
   createdQuestions  Question[]         @relation("QuestionCreator")
+  dailyQaAnswers    DailyQaAnswer[]
+  createdMockExams  MockExam[]         @relation("MockExamCreator")
+  mockAttempts      MockAttempt[]
+  userTitles        UserTitle[]
+  monthlyRankings   MonthlyRanking[]
   practiceSessions  PracticeSession[]
   pointTransactions PointTransaction[]
 
@@ -54,6 +59,7 @@ model StudentProfile {
   createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
   user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currentTitle       Title?   @relation("EquippedTitle", fields: [currentTitleId], references: [id], onDelete: SetNull)
 
   @@map("student_profiles")
 }
@@ -79,6 +85,7 @@ model Exam {
   createdAt        DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt        DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
   questions        Question[]
+  mockExams        MockExam[]
   practiceSessions PracticeSession[]
 
   @@map("exams")
@@ -118,6 +125,9 @@ model Question {
   category                 QuestionCategory          @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   creator                  User?                     @relation("QuestionCreator", fields: [createdBy], references: [id], onDelete: SetNull)
   choices                  QuestionChoice[]
+  dailyQaAnswers           DailyQaAnswer[]
+  mockExamQuestions        MockExamQuestion[]
+  mockAnswers              MockAnswer[]
   practiceSessionQuestions PracticeSessionQuestion[]
   practiceAnswers          PracticeAnswer[]
 
@@ -139,12 +149,36 @@ model QuestionChoice {
   createdAt       DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt       DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
   question        Question         @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  dailyQaAnswers  DailyQaAnswer[]
+  mockAnswers     MockAnswer[]
   practiceAnswers PracticeAnswer[]
 
   @@unique([questionId, choiceLabel], map: "question_choices_question_id_choice_label_key")
   @@unique([questionId, sortOrder], map: "question_choices_question_id_sort_order_key")
   @@index([questionId], map: "idx_question_choices_question_id")
   @@map("question_choices")
+}
+
+model DailyQaAnswer {
+  id                  String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId              String         @map("user_id") @db.Uuid
+  questionId          String         @map("question_id") @db.Uuid
+  selectedChoiceId    String         @map("selected_choice_id") @db.Uuid
+  isCorrect           Boolean        @map("is_correct")
+  answerDate          DateTime       @map("answer_date") @db.Date
+  answeredAt          DateTime       @default(now()) @map("answered_at") @db.Timestamptz(3)
+  answerPointAwarded  Boolean        @default(false) @map("answer_point_awarded")
+  correctPointAwarded Boolean        @default(false) @map("correct_point_awarded")
+  createdAt           DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question            Question       @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  selectedChoice      QuestionChoice @relation(fields: [selectedChoiceId], references: [id], onDelete: Restrict)
+
+  @@unique([userId, answerDate], map: "daily_qa_answers_user_id_answer_date_key")
+  @@index([questionId], map: "idx_daily_qa_answers_question_id")
+  @@index([selectedChoiceId], map: "idx_daily_qa_answers_selected_choice_id")
+  @@index([answerDate], map: "idx_daily_qa_answers_answer_date")
+  @@map("daily_qa_answers")
 }
 
 model PracticeSession {
@@ -223,4 +257,139 @@ model PointTransaction {
   @@index([userId, transactionDate], map: "idx_point_transactions_user_date")
   @@index([reason, transactionDate], map: "idx_point_transactions_reason_date")
   @@map("point_transactions")
+}
+
+model MockExam {
+  id               String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  examId           String             @map("exam_id") @db.Uuid
+  title            String             @db.VarChar(200)
+  targetMonth      DateTime           @map("target_month") @db.Date
+  description      String?
+  timeLimitMinutes Int?               @map("time_limit_minutes")
+  questionCount    Int                @default(0) @map("question_count")
+  status           String             @default("draft") @db.VarChar(30)
+  availableFrom    DateTime?          @map("available_from") @db.Timestamptz(3)
+  availableUntil   DateTime?          @map("available_until") @db.Timestamptz(3)
+  createdBy        String?            @map("created_by") @db.Uuid
+  createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime           @updatedAt @map("updated_at") @db.Timestamptz(3)
+  exam             Exam               @relation(fields: [examId], references: [id], onDelete: Restrict)
+  creator          User?              @relation("MockExamCreator", fields: [createdBy], references: [id], onDelete: SetNull)
+  questions        MockExamQuestion[]
+  attempts         MockAttempt[]
+
+  @@unique([examId, targetMonth], map: "mock_exams_exam_id_target_month_key")
+  @@index([createdBy], map: "idx_mock_exams_created_by")
+  @@index([status], map: "idx_mock_exams_status")
+  @@index([availableFrom], map: "idx_mock_exams_available_from")
+  @@map("mock_exams")
+}
+
+model MockExamQuestion {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  mockExamId String   @map("mock_exam_id") @db.Uuid
+  questionId String   @map("question_id") @db.Uuid
+  orderNo    Int      @map("order_no")
+  score      Int      @default(1)
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  mockExam   MockExam @relation(fields: [mockExamId], references: [id], onDelete: Cascade)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Restrict)
+
+  @@unique([mockExamId, questionId], map: "mock_exam_questions_mock_exam_id_question_id_key")
+  @@unique([mockExamId, orderNo], map: "mock_exam_questions_mock_exam_id_order_no_key")
+  @@index([questionId], map: "idx_mock_exam_questions_question_id")
+  @@map("mock_exam_questions")
+}
+
+model MockAttempt {
+  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  mockExamId     String       @map("mock_exam_id") @db.Uuid
+  userId         String       @map("user_id") @db.Uuid
+  status         String       @default("in_progress") @db.VarChar(30)
+  startedAt      DateTime     @default(now()) @map("started_at") @db.Timestamptz(3)
+  submittedAt    DateTime?    @map("submitted_at") @db.Timestamptz(3)
+  totalQuestions Int          @default(0) @map("total_questions")
+  correctCount   Int          @default(0) @map("correct_count")
+  score          Int          @default(0)
+  earnedPoints   Int          @default(0) @map("earned_points")
+  createdAt      DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  mockExam       MockExam     @relation(fields: [mockExamId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answers        MockAnswer[]
+
+  @@unique([mockExamId, userId], map: "mock_attempts_mock_exam_id_user_id_key")
+  @@index([userId], map: "idx_mock_attempts_user_id")
+  @@index([status], map: "idx_mock_attempts_status")
+  @@index([startedAt], map: "idx_mock_attempts_started_at")
+  @@map("mock_attempts")
+}
+
+model MockAnswer {
+  id               String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  attemptId        String         @map("attempt_id") @db.Uuid
+  questionId       String         @map("question_id") @db.Uuid
+  selectedChoiceId String         @map("selected_choice_id") @db.Uuid
+  isCorrect        Boolean        @map("is_correct")
+  scoreAwarded     Int            @default(0) @map("score_awarded")
+  answeredAt       DateTime?      @map("answered_at") @db.Timestamptz(3)
+  createdAt        DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  attempt          MockAttempt    @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question         Question       @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  selectedChoice   QuestionChoice @relation(fields: [selectedChoiceId], references: [id], onDelete: Restrict)
+
+  @@unique([attemptId, questionId], map: "mock_answers_attempt_id_question_id_key")
+  @@index([questionId], map: "idx_mock_answers_question_id")
+  @@index([selectedChoiceId], map: "idx_mock_answers_selected_choice_id")
+  @@map("mock_answers")
+}
+
+model Title {
+  id                      String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                    String           @unique(map: "titles_name_key") @db.VarChar(100)
+  description             String?
+  pricePoints             Int              @map("price_points")
+  rarity                  String           @default("normal") @db.VarChar(30)
+  isActive                Boolean          @default(true) @map("is_active")
+  sortOrder               Int              @default(0) @map("sort_order")
+  createdAt               DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt               DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  equippedStudentProfiles StudentProfile[] @relation("EquippedTitle")
+  userTitles              UserTitle[]
+
+  @@index([isActive, sortOrder], map: "idx_titles_active_sort_order")
+  @@map("titles")
+}
+
+model UserTitle {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  titleId     String    @map("title_id") @db.Uuid
+  purchasedAt DateTime  @default(now()) @map("purchased_at") @db.Timestamptz(3)
+  equippedAt  DateTime? @map("equipped_at") @db.Timestamptz(3)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       Title     @relation(fields: [titleId], references: [id], onDelete: Restrict)
+
+  @@unique([userId, titleId], map: "user_titles_user_id_title_id_key")
+  @@index([titleId], map: "idx_user_titles_title_id")
+  @@map("user_titles")
+}
+
+model MonthlyRanking {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  targetMonth   DateTime @map("target_month") @db.Date
+  userId        String   @map("user_id") @db.Uuid
+  rankNo        Int      @map("rank_no")
+  monthlyPoints Int      @default(0) @map("monthly_points")
+  mockScore     Int?     @map("mock_score")
+  rewardPoints  Int      @default(0) @map("reward_points")
+  calculatedAt  DateTime @default(now()) @map("calculated_at") @db.Timestamptz(3)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([targetMonth, userId], map: "monthly_rankings_target_month_user_id_key")
+  @@unique([targetMonth, rankNo], map: "monthly_rankings_target_month_rank_no_key")
+  @@index([userId], map: "idx_monthly_rankings_user_id")
+  @@map("monthly_rankings")
 }

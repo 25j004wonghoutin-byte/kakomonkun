@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { QuestionChoiceContent } from "@/components/question-choice-content";
 import { StudentShell } from "@/components/student-shell";
 import { ErrorCard, LoadingCard } from "@/components/ui";
 
@@ -205,7 +206,7 @@ export default function PracticeSessionPage() {
                 <span className="grid size-9 shrink-0 place-items-center rounded-full bg-slate-100 text-sm font-black">
                   {choice.choiceLabel}
                 </span>
-                {choice.choiceText}
+                <QuestionChoiceContent text={choice.choiceText} label={choice.choiceLabel} />
               </button>
             );
           })}

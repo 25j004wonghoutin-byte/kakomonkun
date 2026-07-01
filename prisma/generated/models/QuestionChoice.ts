@@ -241,6 +241,8 @@ export type QuestionChoiceWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"QuestionChoice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"QuestionChoice"> | Date | string
   question?: Prisma.XOR<Prisma.QuestionScalarRelationFilter, Prisma.QuestionWhereInput>
+  dailyQaAnswers?: Prisma.DailyQaAnswerListRelationFilter
+  mockAnswers?: Prisma.MockAnswerListRelationFilter
   practiceAnswers?: Prisma.PracticeAnswerListRelationFilter
 }
 
@@ -254,6 +256,8 @@ export type QuestionChoiceOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   question?: Prisma.QuestionOrderByWithRelationInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerOrderByRelationAggregateInput
+  mockAnswers?: Prisma.MockAnswerOrderByRelationAggregateInput
   practiceAnswers?: Prisma.PracticeAnswerOrderByRelationAggregateInput
 }
 
@@ -272,6 +276,8 @@ export type QuestionChoiceWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"QuestionChoice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"QuestionChoice"> | Date | string
   question?: Prisma.XOR<Prisma.QuestionScalarRelationFilter, Prisma.QuestionWhereInput>
+  dailyQaAnswers?: Prisma.DailyQaAnswerListRelationFilter
+  mockAnswers?: Prisma.MockAnswerListRelationFilter
   practiceAnswers?: Prisma.PracticeAnswerListRelationFilter
 }, "id" | "questionId_choiceLabel" | "questionId_sortOrder">
 
@@ -314,6 +320,8 @@ export type QuestionChoiceCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   question: Prisma.QuestionCreateNestedOneWithoutChoicesInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutSelectedChoiceInput
+  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutSelectedChoiceInput
   practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutSelectedChoiceInput
 }
 
@@ -326,6 +334,8 @@ export type QuestionChoiceUncheckedCreateInput = {
   sortOrder: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutSelectedChoiceInput
+  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutSelectedChoiceInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutSelectedChoiceInput
 }
 
@@ -338,6 +348,8 @@ export type QuestionChoiceUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   question?: Prisma.QuestionUpdateOneRequiredWithoutChoicesNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutSelectedChoiceNestedInput
+  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutSelectedChoiceNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutSelectedChoiceNestedInput
 }
 
@@ -350,6 +362,8 @@ export type QuestionChoiceUncheckedUpdateInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutSelectedChoiceNestedInput
+  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutSelectedChoiceNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutSelectedChoiceNestedInput
 }
 
@@ -493,6 +507,20 @@ export type QuestionChoiceUncheckedUpdateManyWithoutQuestionNestedInput = {
   deleteMany?: Prisma.QuestionChoiceScalarWhereInput | Prisma.QuestionChoiceScalarWhereInput[]
 }
 
+export type QuestionChoiceCreateNestedOneWithoutDailyQaAnswersInput = {
+  create?: Prisma.XOR<Prisma.QuestionChoiceCreateWithoutDailyQaAnswersInput, Prisma.QuestionChoiceUncheckedCreateWithoutDailyQaAnswersInput>
+  connectOrCreate?: Prisma.QuestionChoiceCreateOrConnectWithoutDailyQaAnswersInput
+  connect?: Prisma.QuestionChoiceWhereUniqueInput
+}
+
+export type QuestionChoiceUpdateOneRequiredWithoutDailyQaAnswersNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionChoiceCreateWithoutDailyQaAnswersInput, Prisma.QuestionChoiceUncheckedCreateWithoutDailyQaAnswersInput>
+  connectOrCreate?: Prisma.QuestionChoiceCreateOrConnectWithoutDailyQaAnswersInput
+  upsert?: Prisma.QuestionChoiceUpsertWithoutDailyQaAnswersInput
+  connect?: Prisma.QuestionChoiceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.QuestionChoiceUpdateToOneWithWhereWithoutDailyQaAnswersInput, Prisma.QuestionChoiceUpdateWithoutDailyQaAnswersInput>, Prisma.QuestionChoiceUncheckedUpdateWithoutDailyQaAnswersInput>
+}
+
 export type QuestionChoiceCreateNestedOneWithoutPracticeAnswersInput = {
   create?: Prisma.XOR<Prisma.QuestionChoiceCreateWithoutPracticeAnswersInput, Prisma.QuestionChoiceUncheckedCreateWithoutPracticeAnswersInput>
   connectOrCreate?: Prisma.QuestionChoiceCreateOrConnectWithoutPracticeAnswersInput
@@ -507,6 +535,20 @@ export type QuestionChoiceUpdateOneRequiredWithoutPracticeAnswersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.QuestionChoiceUpdateToOneWithWhereWithoutPracticeAnswersInput, Prisma.QuestionChoiceUpdateWithoutPracticeAnswersInput>, Prisma.QuestionChoiceUncheckedUpdateWithoutPracticeAnswersInput>
 }
 
+export type QuestionChoiceCreateNestedOneWithoutMockAnswersInput = {
+  create?: Prisma.XOR<Prisma.QuestionChoiceCreateWithoutMockAnswersInput, Prisma.QuestionChoiceUncheckedCreateWithoutMockAnswersInput>
+  connectOrCreate?: Prisma.QuestionChoiceCreateOrConnectWithoutMockAnswersInput
+  connect?: Prisma.QuestionChoiceWhereUniqueInput
+}
+
+export type QuestionChoiceUpdateOneRequiredWithoutMockAnswersNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionChoiceCreateWithoutMockAnswersInput, Prisma.QuestionChoiceUncheckedCreateWithoutMockAnswersInput>
+  connectOrCreate?: Prisma.QuestionChoiceCreateOrConnectWithoutMockAnswersInput
+  upsert?: Prisma.QuestionChoiceUpsertWithoutMockAnswersInput
+  connect?: Prisma.QuestionChoiceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.QuestionChoiceUpdateToOneWithWhereWithoutMockAnswersInput, Prisma.QuestionChoiceUpdateWithoutMockAnswersInput>, Prisma.QuestionChoiceUncheckedUpdateWithoutMockAnswersInput>
+}
+
 export type QuestionChoiceCreateWithoutQuestionInput = {
   id?: string
   choiceLabel: string
@@ -515,6 +557,8 @@ export type QuestionChoiceCreateWithoutQuestionInput = {
   sortOrder: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutSelectedChoiceInput
+  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutSelectedChoiceInput
   practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutSelectedChoiceInput
 }
 
@@ -526,6 +570,8 @@ export type QuestionChoiceUncheckedCreateWithoutQuestionInput = {
   sortOrder: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutSelectedChoiceInput
+  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutSelectedChoiceInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutSelectedChoiceInput
 }
 
@@ -569,6 +615,74 @@ export type QuestionChoiceScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"QuestionChoice"> | Date | string
 }
 
+export type QuestionChoiceCreateWithoutDailyQaAnswersInput = {
+  id?: string
+  choiceLabel: string
+  choiceText: string
+  isCorrect?: boolean
+  sortOrder: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  question: Prisma.QuestionCreateNestedOneWithoutChoicesInput
+  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutSelectedChoiceInput
+  practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutSelectedChoiceInput
+}
+
+export type QuestionChoiceUncheckedCreateWithoutDailyQaAnswersInput = {
+  id?: string
+  questionId: string
+  choiceLabel: string
+  choiceText: string
+  isCorrect?: boolean
+  sortOrder: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutSelectedChoiceInput
+  practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutSelectedChoiceInput
+}
+
+export type QuestionChoiceCreateOrConnectWithoutDailyQaAnswersInput = {
+  where: Prisma.QuestionChoiceWhereUniqueInput
+  create: Prisma.XOR<Prisma.QuestionChoiceCreateWithoutDailyQaAnswersInput, Prisma.QuestionChoiceUncheckedCreateWithoutDailyQaAnswersInput>
+}
+
+export type QuestionChoiceUpsertWithoutDailyQaAnswersInput = {
+  update: Prisma.XOR<Prisma.QuestionChoiceUpdateWithoutDailyQaAnswersInput, Prisma.QuestionChoiceUncheckedUpdateWithoutDailyQaAnswersInput>
+  create: Prisma.XOR<Prisma.QuestionChoiceCreateWithoutDailyQaAnswersInput, Prisma.QuestionChoiceUncheckedCreateWithoutDailyQaAnswersInput>
+  where?: Prisma.QuestionChoiceWhereInput
+}
+
+export type QuestionChoiceUpdateToOneWithWhereWithoutDailyQaAnswersInput = {
+  where?: Prisma.QuestionChoiceWhereInput
+  data: Prisma.XOR<Prisma.QuestionChoiceUpdateWithoutDailyQaAnswersInput, Prisma.QuestionChoiceUncheckedUpdateWithoutDailyQaAnswersInput>
+}
+
+export type QuestionChoiceUpdateWithoutDailyQaAnswersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  choiceLabel?: Prisma.StringFieldUpdateOperationsInput | string
+  choiceText?: Prisma.StringFieldUpdateOperationsInput | string
+  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  question?: Prisma.QuestionUpdateOneRequiredWithoutChoicesNestedInput
+  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutSelectedChoiceNestedInput
+  practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutSelectedChoiceNestedInput
+}
+
+export type QuestionChoiceUncheckedUpdateWithoutDailyQaAnswersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  choiceLabel?: Prisma.StringFieldUpdateOperationsInput | string
+  choiceText?: Prisma.StringFieldUpdateOperationsInput | string
+  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutSelectedChoiceNestedInput
+  practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutSelectedChoiceNestedInput
+}
+
 export type QuestionChoiceCreateWithoutPracticeAnswersInput = {
   id?: string
   choiceLabel: string
@@ -578,6 +692,8 @@ export type QuestionChoiceCreateWithoutPracticeAnswersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   question: Prisma.QuestionCreateNestedOneWithoutChoicesInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutSelectedChoiceInput
+  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutSelectedChoiceInput
 }
 
 export type QuestionChoiceUncheckedCreateWithoutPracticeAnswersInput = {
@@ -589,6 +705,8 @@ export type QuestionChoiceUncheckedCreateWithoutPracticeAnswersInput = {
   sortOrder: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutSelectedChoiceInput
+  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutSelectedChoiceInput
 }
 
 export type QuestionChoiceCreateOrConnectWithoutPracticeAnswersInput = {
@@ -616,6 +734,8 @@ export type QuestionChoiceUpdateWithoutPracticeAnswersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   question?: Prisma.QuestionUpdateOneRequiredWithoutChoicesNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutSelectedChoiceNestedInput
+  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutSelectedChoiceNestedInput
 }
 
 export type QuestionChoiceUncheckedUpdateWithoutPracticeAnswersInput = {
@@ -627,6 +747,76 @@ export type QuestionChoiceUncheckedUpdateWithoutPracticeAnswersInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutSelectedChoiceNestedInput
+  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutSelectedChoiceNestedInput
+}
+
+export type QuestionChoiceCreateWithoutMockAnswersInput = {
+  id?: string
+  choiceLabel: string
+  choiceText: string
+  isCorrect?: boolean
+  sortOrder: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  question: Prisma.QuestionCreateNestedOneWithoutChoicesInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutSelectedChoiceInput
+  practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutSelectedChoiceInput
+}
+
+export type QuestionChoiceUncheckedCreateWithoutMockAnswersInput = {
+  id?: string
+  questionId: string
+  choiceLabel: string
+  choiceText: string
+  isCorrect?: boolean
+  sortOrder: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutSelectedChoiceInput
+  practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutSelectedChoiceInput
+}
+
+export type QuestionChoiceCreateOrConnectWithoutMockAnswersInput = {
+  where: Prisma.QuestionChoiceWhereUniqueInput
+  create: Prisma.XOR<Prisma.QuestionChoiceCreateWithoutMockAnswersInput, Prisma.QuestionChoiceUncheckedCreateWithoutMockAnswersInput>
+}
+
+export type QuestionChoiceUpsertWithoutMockAnswersInput = {
+  update: Prisma.XOR<Prisma.QuestionChoiceUpdateWithoutMockAnswersInput, Prisma.QuestionChoiceUncheckedUpdateWithoutMockAnswersInput>
+  create: Prisma.XOR<Prisma.QuestionChoiceCreateWithoutMockAnswersInput, Prisma.QuestionChoiceUncheckedCreateWithoutMockAnswersInput>
+  where?: Prisma.QuestionChoiceWhereInput
+}
+
+export type QuestionChoiceUpdateToOneWithWhereWithoutMockAnswersInput = {
+  where?: Prisma.QuestionChoiceWhereInput
+  data: Prisma.XOR<Prisma.QuestionChoiceUpdateWithoutMockAnswersInput, Prisma.QuestionChoiceUncheckedUpdateWithoutMockAnswersInput>
+}
+
+export type QuestionChoiceUpdateWithoutMockAnswersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  choiceLabel?: Prisma.StringFieldUpdateOperationsInput | string
+  choiceText?: Prisma.StringFieldUpdateOperationsInput | string
+  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  question?: Prisma.QuestionUpdateOneRequiredWithoutChoicesNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutSelectedChoiceNestedInput
+  practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutSelectedChoiceNestedInput
+}
+
+export type QuestionChoiceUncheckedUpdateWithoutMockAnswersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  choiceLabel?: Prisma.StringFieldUpdateOperationsInput | string
+  choiceText?: Prisma.StringFieldUpdateOperationsInput | string
+  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutSelectedChoiceNestedInput
+  practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutSelectedChoiceNestedInput
 }
 
 export type QuestionChoiceCreateManyQuestionInput = {
@@ -647,6 +837,8 @@ export type QuestionChoiceUpdateWithoutQuestionInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutSelectedChoiceNestedInput
+  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutSelectedChoiceNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutSelectedChoiceNestedInput
 }
 
@@ -658,6 +850,8 @@ export type QuestionChoiceUncheckedUpdateWithoutQuestionInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutSelectedChoiceNestedInput
+  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutSelectedChoiceNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutSelectedChoiceNestedInput
 }
 
@@ -677,10 +871,14 @@ export type QuestionChoiceUncheckedUpdateManyWithoutQuestionInput = {
  */
 
 export type QuestionChoiceCountOutputType = {
+  dailyQaAnswers: number
+  mockAnswers: number
   practiceAnswers: number
 }
 
 export type QuestionChoiceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  dailyQaAnswers?: boolean | QuestionChoiceCountOutputTypeCountDailyQaAnswersArgs
+  mockAnswers?: boolean | QuestionChoiceCountOutputTypeCountMockAnswersArgs
   practiceAnswers?: boolean | QuestionChoiceCountOutputTypeCountPracticeAnswersArgs
 }
 
@@ -692,6 +890,20 @@ export type QuestionChoiceCountOutputTypeDefaultArgs<ExtArgs extends runtime.Typ
    * Select specific fields to fetch from the QuestionChoiceCountOutputType
    */
   select?: Prisma.QuestionChoiceCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * QuestionChoiceCountOutputType without action
+ */
+export type QuestionChoiceCountOutputTypeCountDailyQaAnswersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DailyQaAnswerWhereInput
+}
+
+/**
+ * QuestionChoiceCountOutputType without action
+ */
+export type QuestionChoiceCountOutputTypeCountMockAnswersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MockAnswerWhereInput
 }
 
 /**
@@ -712,6 +924,8 @@ export type QuestionChoiceSelect<ExtArgs extends runtime.Types.Extensions.Intern
   createdAt?: boolean
   updatedAt?: boolean
   question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
+  dailyQaAnswers?: boolean | Prisma.QuestionChoice$dailyQaAnswersArgs<ExtArgs>
+  mockAnswers?: boolean | Prisma.QuestionChoice$mockAnswersArgs<ExtArgs>
   practiceAnswers?: boolean | Prisma.QuestionChoice$practiceAnswersArgs<ExtArgs>
   _count?: boolean | Prisma.QuestionChoiceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["questionChoice"]>
@@ -754,6 +968,8 @@ export type QuestionChoiceSelectScalar = {
 export type QuestionChoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "questionId" | "choiceLabel" | "choiceText" | "isCorrect" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["questionChoice"]>
 export type QuestionChoiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
+  dailyQaAnswers?: boolean | Prisma.QuestionChoice$dailyQaAnswersArgs<ExtArgs>
+  mockAnswers?: boolean | Prisma.QuestionChoice$mockAnswersArgs<ExtArgs>
   practiceAnswers?: boolean | Prisma.QuestionChoice$practiceAnswersArgs<ExtArgs>
   _count?: boolean | Prisma.QuestionChoiceCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -768,6 +984,8 @@ export type $QuestionChoicePayload<ExtArgs extends runtime.Types.Extensions.Inte
   name: "QuestionChoice"
   objects: {
     question: Prisma.$QuestionPayload<ExtArgs>
+    dailyQaAnswers: Prisma.$DailyQaAnswerPayload<ExtArgs>[]
+    mockAnswers: Prisma.$MockAnswerPayload<ExtArgs>[]
     practiceAnswers: Prisma.$PracticeAnswerPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1174,6 +1392,8 @@ readonly fields: QuestionChoiceFieldRefs;
 export interface Prisma__QuestionChoiceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   question<T extends Prisma.QuestionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionDefaultArgs<ExtArgs>>): Prisma.Prisma__QuestionClient<runtime.Types.Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  dailyQaAnswers<T extends Prisma.QuestionChoice$dailyQaAnswersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionChoice$dailyQaAnswersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyQaAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mockAnswers<T extends Prisma.QuestionChoice$mockAnswersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionChoice$mockAnswersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MockAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   practiceAnswers<T extends Prisma.QuestionChoice$practiceAnswersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionChoice$practiceAnswersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PracticeAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1610,6 +1830,54 @@ export type QuestionChoiceDeleteManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many QuestionChoices to delete.
    */
   limit?: number
+}
+
+/**
+ * QuestionChoice.dailyQaAnswers
+ */
+export type QuestionChoice$dailyQaAnswersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DailyQaAnswer
+   */
+  select?: Prisma.DailyQaAnswerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DailyQaAnswer
+   */
+  omit?: Prisma.DailyQaAnswerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DailyQaAnswerInclude<ExtArgs> | null
+  where?: Prisma.DailyQaAnswerWhereInput
+  orderBy?: Prisma.DailyQaAnswerOrderByWithRelationInput | Prisma.DailyQaAnswerOrderByWithRelationInput[]
+  cursor?: Prisma.DailyQaAnswerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DailyQaAnswerScalarFieldEnum | Prisma.DailyQaAnswerScalarFieldEnum[]
+}
+
+/**
+ * QuestionChoice.mockAnswers
+ */
+export type QuestionChoice$mockAnswersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MockAnswer
+   */
+  select?: Prisma.MockAnswerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MockAnswer
+   */
+  omit?: Prisma.MockAnswerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MockAnswerInclude<ExtArgs> | null
+  where?: Prisma.MockAnswerWhereInput
+  orderBy?: Prisma.MockAnswerOrderByWithRelationInput | Prisma.MockAnswerOrderByWithRelationInput[]
+  cursor?: Prisma.MockAnswerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MockAnswerScalarFieldEnum | Prisma.MockAnswerScalarFieldEnum[]
 }
 
 /**
