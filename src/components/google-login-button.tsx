@@ -38,7 +38,7 @@ export function GoogleLoginButton({ nextPath }: GoogleLoginButtonProps) {
         type="button"
         onClick={signIn}
         disabled={loading}
-        className="flex w-full items-center justify-center gap-3 rounded-2xl border border-slate-300 bg-white px-5 py-4 font-black text-slate-800 shadow-sm transition hover:border-blue-400 hover:bg-blue-50 disabled:cursor-wait disabled:opacity-60"
+        className="flex h-20 w-full items-center justify-center gap-4 rounded-xl border border-slate-300 bg-white px-5 text-xl font-black text-[#071d36] shadow-[0_10px_22px_-16px_rgba(15,23,42,0.85)] transition hover:border-blue-400 hover:bg-blue-50 disabled:cursor-wait disabled:opacity-60 sm:gap-8 sm:px-6 sm:text-2xl"
       >
         <GoogleIcon />
         {loading ? "Googleへ移動しています..." : "Googleでログイン"}
@@ -54,7 +54,7 @@ export function GoogleLoginButton({ nextPath }: GoogleLoginButtonProps) {
 
 function GoogleIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5">
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-9 shrink-0 sm:size-11">
       <path
         fill="#4285F4"
         d="M21.6 12.23c0-.71-.06-1.4-.18-2.07H12v3.92h5.38a4.6 4.6 0 0 1-2 3.02v2.54h3.24c1.9-1.75 2.98-4.33 2.98-7.41Z"
