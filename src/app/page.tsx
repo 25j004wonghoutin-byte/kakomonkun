@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { AiExplanationMarkdown } from "@/components/ai-explanation-markdown";
 import { QuestionChoiceContent } from "@/components/question-choice-content";
 import { StudentShell } from "@/components/student-shell";
 
@@ -50,6 +51,12 @@ type AnswerResult = {
   };
 };
 
+type AiExplanationResult = {
+  explanation: string;
+  fromCache: boolean;
+  modelName: string;
+};
+
 async function readError(response: Response, fallback: string) {
   try {
     const data = (await response.json()) as { error?: string };
@@ -74,6 +81,9 @@ export default function Home() {
   const [question, setQuestion] = useState<DailyQuestion | null>(null);
   const [selectedChoiceId, setSelectedChoiceId] = useState<string | null>(null);
   const [answerResult, setAnswerResult] = useState<AnswerResult | null>(null);
+  const [aiExplanation, setAiExplanation] = useState<AiExplanationResult | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState("");
   const [questionLoading, setQuestionLoading] = useState(true);
   const [answering, setAnswering] = useState(false);
   const [error, setError] = useState("");
@@ -83,6 +93,9 @@ export default function Home() {
     setError("");
     setSelectedChoiceId(null);
     setAnswerResult(null);
+    setAiExplanation(null);
+    setAiError("");
+    setAiLoading(false);
 
     try {
       setQuestion(await fetchDailyQuestion());
@@ -147,6 +160,39 @@ export default function Home() {
       setError(cause instanceof Error ? cause.message : "回答を判定できませんでした。");
     } finally {
       setAnswering(false);
+    }
+  }
+
+  async function loadAiExplanation() {
+    if (!question || !answerResult) return;
+
+    setAiLoading(true);
+    setAiError("");
+
+    try {
+      const response = await fetch("/api/ai/explanation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ questionId: question.id }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error ?? "AI解説を取得できませんでした。");
+      }
+      if (typeof data.explanation !== "string") {
+        throw new Error("AI解説の形式が不正です。");
+      }
+
+      setAiExplanation({
+        explanation: data.explanation,
+        fromCache: Boolean(data.fromCache),
+        modelName: typeof data.modelName === "string" ? data.modelName : "Gemini",
+      });
+    } catch (cause) {
+      setAiError(cause instanceof Error ? cause.message : "AI解説を取得できませんでした。");
+    } finally {
+      setAiLoading(false);
     }
   }
 
@@ -306,6 +352,37 @@ export default function Home() {
                       <p className="mt-3 whitespace-pre-wrap text-sm leading-7 text-slate-700">
                         {answerResult.explanation ?? "この問題の解説はまだ登録されていません。"}
                       </p>
+                    </div>
+
+                    <div className="mt-4 rounded-md border border-sky-200 bg-sky-50 p-4">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                          <p className="text-sm font-black text-sky-900">AI解説補助</p>
+                          <p className="mt-1 text-xs font-bold leading-5 text-sky-700">
+                            この解説はAIによる補助説明です。内容が不正確な場合があります。
+                          </p>
+                        </div>
+                        {aiExplanation ? (
+                          <span className="w-fit rounded-full bg-white px-3 py-1 text-xs font-black text-sky-700 ring-1 ring-sky-200">
+                            {aiExplanation.fromCache ? "保存済み" : "新規生成"} / {aiExplanation.modelName}
+                          </span>
+                        ) : null}
+                      </div>
+
+                      {aiExplanation ? (
+                        <AiExplanationMarkdown text={aiExplanation.explanation} className="mt-4" />
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={loadAiExplanation}
+                          disabled={aiLoading}
+                          className="mt-4 rounded-md bg-sky-600 px-5 py-3 text-sm font-black text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+                        >
+                          {aiLoading ? "AI解説を作成中..." : "AI解説を作成する"}
+                        </button>
+                      )}
+
+                      {aiError ? <p className="mt-3 text-sm font-bold text-rose-700">{aiError}</p> : null}
                     </div>
 
                     <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">

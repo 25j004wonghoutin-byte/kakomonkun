@@ -141,3 +141,13 @@ export type UserTitle = Prisma.UserTitleModel
  * 
  */
 export type MonthlyRanking = Prisma.MonthlyRankingModel
+/**
+ * Model AiExplanation
+ * 
+ */
+export type AiExplanation = Prisma.AiExplanationModel
+/**
+ * Model AiUsageLog
+ * 
+ */
+export type AiUsageLog = Prisma.AiUsageLogModel

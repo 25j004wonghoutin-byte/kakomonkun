@@ -70,7 +70,9 @@ export const ModelName = {
   MockAnswer: 'MockAnswer',
   Title: 'Title',
   UserTitle: 'UserTitle',
-  MonthlyRanking: 'MonthlyRanking'
+  MonthlyRanking: 'MonthlyRanking',
+  AiExplanation: 'AiExplanation',
+  AiUsageLog: 'AiUsageLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -384,6 +386,28 @@ export const MonthlyRankingScalarFieldEnum = {
 } as const
 
 export type MonthlyRankingScalarFieldEnum = (typeof MonthlyRankingScalarFieldEnum)[keyof typeof MonthlyRankingScalarFieldEnum]
+
+
+export const AiExplanationScalarFieldEnum = {
+  id: 'id',
+  questionId: 'questionId',
+  modelName: 'modelName',
+  answerText: 'answerText',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AiExplanationScalarFieldEnum = (typeof AiExplanationScalarFieldEnum)[keyof typeof AiExplanationScalarFieldEnum]
+
+
+export const AiUsageLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  questionId: 'questionId',
+  usedAt: 'usedAt'
+} as const
+
+export type AiUsageLogScalarFieldEnum = (typeof AiUsageLogScalarFieldEnum)[keyof typeof AiUsageLogScalarFieldEnum]
 
 
 export const SortOrder = {

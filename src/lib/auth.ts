@@ -1,4 +1,6 @@
 import type { User as SupabaseUser } from "@supabase/supabase-js";
+import { cookies } from "next/headers";
+import { DEV_AUTH_COOKIE, isDevTestAuthEnabled } from "@/lib/dev-auth";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 
@@ -93,6 +95,22 @@ export async function ensureAppUser(authUser: SupabaseUser) {
 }
 
 export async function getCurrentUser() {
+  if (isDevTestAuthEnabled()) {
+    const cookieStore = await cookies();
+    const devUserId = cookieStore.get(DEV_AUTH_COOKIE)?.value;
+
+    if (devUserId) {
+      const devUser = await prisma.user.findUnique({
+        where: { id: devUserId },
+        include: { role: true, studentProfile: true },
+      });
+
+      if (devUser && devUser.status === "active" && !devUser.deletedAt) {
+        return devUser;
+      }
+    }
+  }
+
   const supabase = await createClient();
   const {
     data: { user: authUser },

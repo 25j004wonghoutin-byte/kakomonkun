@@ -40,6 +40,7 @@ model User {
   monthlyRankings   MonthlyRanking[]
   practiceSessions  PracticeSession[]
   pointTransactions PointTransaction[]
+  aiUsageLogs       AiUsageLog[]
 
   @@index([roleId], map: "idx_users_role_id")
   @@index([status], map: "idx_users_status")
@@ -130,6 +131,8 @@ model Question {
   mockAnswers              MockAnswer[]
   practiceSessionQuestions PracticeSessionQuestion[]
   practiceAnswers          PracticeAnswer[]
+  aiExplanations           AiExplanation[]
+  aiUsageLogs              AiUsageLog[]
 
   @@index([examId], map: "idx_questions_exam_id")
   @@index([categoryId], map: "idx_questions_category_id")
@@ -392,4 +395,31 @@ model MonthlyRanking {
   @@unique([targetMonth, rankNo], map: "monthly_rankings_target_month_rank_no_key")
   @@index([userId], map: "idx_monthly_rankings_user_id")
   @@map("monthly_rankings")
+}
+
+model AiExplanation {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  questionId String   @map("question_id") @db.Uuid
+  modelName  String   @map("model_name") @db.VarChar(80)
+  answerText String   @map("answer_text")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId, modelName], map: "ai_explanations_question_id_model_name_key")
+  @@index([questionId], map: "idx_ai_explanations_question_id")
+  @@map("ai_explanations")
+}
+
+model AiUsageLog {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  questionId String   @map("question_id") @db.Uuid
+  usedAt     DateTime @default(now()) @map("used_at") @db.Timestamptz(3)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([userId, usedAt], map: "idx_ai_usage_logs_user_used_at")
+  @@index([questionId], map: "idx_ai_usage_logs_question_id")
+  @@map("ai_usage_logs")
 }

@@ -233,6 +233,7 @@ export type UserWhereInput = {
   monthlyRankings?: Prisma.MonthlyRankingListRelationFilter
   practiceSessions?: Prisma.PracticeSessionListRelationFilter
   pointTransactions?: Prisma.PointTransactionListRelationFilter
+  aiUsageLogs?: Prisma.AiUsageLogListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -257,6 +258,7 @@ export type UserOrderByWithRelationInput = {
   monthlyRankings?: Prisma.MonthlyRankingOrderByRelationAggregateInput
   practiceSessions?: Prisma.PracticeSessionOrderByRelationAggregateInput
   pointTransactions?: Prisma.PointTransactionOrderByRelationAggregateInput
+  aiUsageLogs?: Prisma.AiUsageLogOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -284,6 +286,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   monthlyRankings?: Prisma.MonthlyRankingListRelationFilter
   practiceSessions?: Prisma.PracticeSessionListRelationFilter
   pointTransactions?: Prisma.PointTransactionListRelationFilter
+  aiUsageLogs?: Prisma.AiUsageLogListRelationFilter
 }, "id" | "authUserId" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -339,6 +342,7 @@ export type UserCreateInput = {
   monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -362,6 +366,7 @@ export type UserUncheckedCreateInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -385,6 +390,7 @@ export type UserUpdateInput = {
   monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -408,6 +414,7 @@ export type UserUncheckedUpdateInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -697,6 +704,20 @@ export type UserUpdateOneRequiredWithoutMonthlyRankingsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMonthlyRankingsInput, Prisma.UserUpdateWithoutMonthlyRankingsInput>, Prisma.UserUncheckedUpdateWithoutMonthlyRankingsInput>
 }
 
+export type UserCreateNestedOneWithoutAiUsageLogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAiUsageLogsInput, Prisma.UserUncheckedCreateWithoutAiUsageLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAiUsageLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAiUsageLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAiUsageLogsInput, Prisma.UserUncheckedCreateWithoutAiUsageLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAiUsageLogsInput
+  upsert?: Prisma.UserUpsertWithoutAiUsageLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAiUsageLogsInput, Prisma.UserUpdateWithoutAiUsageLogsInput>, Prisma.UserUncheckedUpdateWithoutAiUsageLogsInput>
+}
+
 export type UserCreateWithoutRoleInput = {
   id?: string
   authUserId?: string | null
@@ -717,6 +738,7 @@ export type UserCreateWithoutRoleInput = {
   monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRoleInput = {
@@ -739,6 +761,7 @@ export type UserUncheckedCreateWithoutRoleInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRoleInput = {
@@ -803,6 +826,7 @@ export type UserCreateWithoutStudentProfileInput = {
   monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStudentProfileInput = {
@@ -825,6 +849,7 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStudentProfileInput = {
@@ -863,6 +888,7 @@ export type UserUpdateWithoutStudentProfileInput = {
   monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentProfileInput = {
@@ -885,6 +911,7 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTeacherProfileInput = {
@@ -907,6 +934,7 @@ export type UserCreateWithoutTeacherProfileInput = {
   monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTeacherProfileInput = {
@@ -929,6 +957,7 @@ export type UserUncheckedCreateWithoutTeacherProfileInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTeacherProfileInput = {
@@ -967,6 +996,7 @@ export type UserUpdateWithoutTeacherProfileInput = {
   monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTeacherProfileInput = {
@@ -989,6 +1019,7 @@ export type UserUncheckedUpdateWithoutTeacherProfileInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedQuestionsInput = {
@@ -1011,6 +1042,7 @@ export type UserCreateWithoutCreatedQuestionsInput = {
   monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedQuestionsInput = {
@@ -1033,6 +1065,7 @@ export type UserUncheckedCreateWithoutCreatedQuestionsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedQuestionsInput = {
@@ -1071,6 +1104,7 @@ export type UserUpdateWithoutCreatedQuestionsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedQuestionsInput = {
@@ -1093,6 +1127,7 @@ export type UserUncheckedUpdateWithoutCreatedQuestionsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDailyQaAnswersInput = {
@@ -1115,6 +1150,7 @@ export type UserCreateWithoutDailyQaAnswersInput = {
   monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDailyQaAnswersInput = {
@@ -1137,6 +1173,7 @@ export type UserUncheckedCreateWithoutDailyQaAnswersInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDailyQaAnswersInput = {
@@ -1175,6 +1212,7 @@ export type UserUpdateWithoutDailyQaAnswersInput = {
   monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDailyQaAnswersInput = {
@@ -1197,6 +1235,7 @@ export type UserUncheckedUpdateWithoutDailyQaAnswersInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPracticeSessionsInput = {
@@ -1219,6 +1258,7 @@ export type UserCreateWithoutPracticeSessionsInput = {
   userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
   monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPracticeSessionsInput = {
@@ -1241,6 +1281,7 @@ export type UserUncheckedCreateWithoutPracticeSessionsInput = {
   userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
   monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPracticeSessionsInput = {
@@ -1279,6 +1320,7 @@ export type UserUpdateWithoutPracticeSessionsInput = {
   userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
   monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPracticeSessionsInput = {
@@ -1301,6 +1343,7 @@ export type UserUncheckedUpdateWithoutPracticeSessionsInput = {
   userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
   monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPointTransactionsInput = {
@@ -1323,6 +1366,7 @@ export type UserCreateWithoutPointTransactionsInput = {
   userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
   monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPointTransactionsInput = {
@@ -1345,6 +1389,7 @@ export type UserUncheckedCreateWithoutPointTransactionsInput = {
   userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
   monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPointTransactionsInput = {
@@ -1383,6 +1428,7 @@ export type UserUpdateWithoutPointTransactionsInput = {
   userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
   monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPointTransactionsInput = {
@@ -1405,6 +1451,7 @@ export type UserUncheckedUpdateWithoutPointTransactionsInput = {
   userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
   monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedMockExamsInput = {
@@ -1427,6 +1474,7 @@ export type UserCreateWithoutCreatedMockExamsInput = {
   monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedMockExamsInput = {
@@ -1449,6 +1497,7 @@ export type UserUncheckedCreateWithoutCreatedMockExamsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedMockExamsInput = {
@@ -1487,6 +1536,7 @@ export type UserUpdateWithoutCreatedMockExamsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedMockExamsInput = {
@@ -1509,6 +1559,7 @@ export type UserUncheckedUpdateWithoutCreatedMockExamsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMockAttemptsInput = {
@@ -1531,6 +1582,7 @@ export type UserCreateWithoutMockAttemptsInput = {
   monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMockAttemptsInput = {
@@ -1553,6 +1605,7 @@ export type UserUncheckedCreateWithoutMockAttemptsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMockAttemptsInput = {
@@ -1591,6 +1644,7 @@ export type UserUpdateWithoutMockAttemptsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMockAttemptsInput = {
@@ -1613,6 +1667,7 @@ export type UserUncheckedUpdateWithoutMockAttemptsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUserTitlesInput = {
@@ -1635,6 +1690,7 @@ export type UserCreateWithoutUserTitlesInput = {
   monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUserTitlesInput = {
@@ -1657,6 +1713,7 @@ export type UserUncheckedCreateWithoutUserTitlesInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUserTitlesInput = {
@@ -1695,6 +1752,7 @@ export type UserUpdateWithoutUserTitlesInput = {
   monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserTitlesInput = {
@@ -1717,6 +1775,7 @@ export type UserUncheckedUpdateWithoutUserTitlesInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMonthlyRankingsInput = {
@@ -1739,6 +1798,7 @@ export type UserCreateWithoutMonthlyRankingsInput = {
   userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMonthlyRankingsInput = {
@@ -1761,6 +1821,7 @@ export type UserUncheckedCreateWithoutMonthlyRankingsInput = {
   userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMonthlyRankingsInput = {
@@ -1799,6 +1860,7 @@ export type UserUpdateWithoutMonthlyRankingsInput = {
   userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMonthlyRankingsInput = {
@@ -1819,6 +1881,115 @@ export type UserUncheckedUpdateWithoutMonthlyRankingsInput = {
   createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
   mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
   userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAiUsageLogsInput = {
+  id?: string
+  authUserId?: string | null
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAiUsageLogsInput = {
+  id?: string
+  authUserId?: string | null
+  roleId: string
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAiUsageLogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAiUsageLogsInput, Prisma.UserUncheckedCreateWithoutAiUsageLogsInput>
+}
+
+export type UserUpsertWithoutAiUsageLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAiUsageLogsInput, Prisma.UserUncheckedUpdateWithoutAiUsageLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAiUsageLogsInput, Prisma.UserUncheckedCreateWithoutAiUsageLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAiUsageLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAiUsageLogsInput, Prisma.UserUncheckedUpdateWithoutAiUsageLogsInput>
+}
+
+export type UserUpdateWithoutAiUsageLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAiUsageLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1855,6 +2026,7 @@ export type UserUpdateWithoutRoleInput = {
   monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRoleInput = {
@@ -1877,6 +2049,7 @@ export type UserUncheckedUpdateWithoutRoleInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutRoleInput = {
@@ -1905,6 +2078,7 @@ export type UserCountOutputType = {
   monthlyRankings: number
   practiceSessions: number
   pointTransactions: number
+  aiUsageLogs: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1916,6 +2090,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   monthlyRankings?: boolean | UserCountOutputTypeCountMonthlyRankingsArgs
   practiceSessions?: boolean | UserCountOutputTypeCountPracticeSessionsArgs
   pointTransactions?: boolean | UserCountOutputTypeCountPointTransactionsArgs
+  aiUsageLogs?: boolean | UserCountOutputTypeCountAiUsageLogsArgs
 }
 
 /**
@@ -1984,6 +2159,13 @@ export type UserCountOutputTypeCountPointTransactionsArgs<ExtArgs extends runtim
   where?: Prisma.PointTransactionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAiUsageLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AiUsageLogWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2007,6 +2189,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   monthlyRankings?: boolean | Prisma.User$monthlyRankingsArgs<ExtArgs>
   practiceSessions?: boolean | Prisma.User$practiceSessionsArgs<ExtArgs>
   pointTransactions?: boolean | Prisma.User$pointTransactionsArgs<ExtArgs>
+  aiUsageLogs?: boolean | Prisma.User$aiUsageLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2064,6 +2247,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   monthlyRankings?: boolean | Prisma.User$monthlyRankingsArgs<ExtArgs>
   practiceSessions?: boolean | Prisma.User$practiceSessionsArgs<ExtArgs>
   pointTransactions?: boolean | Prisma.User$pointTransactionsArgs<ExtArgs>
+  aiUsageLogs?: boolean | Prisma.User$aiUsageLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2087,6 +2271,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     monthlyRankings: Prisma.$MonthlyRankingPayload<ExtArgs>[]
     practiceSessions: Prisma.$PracticeSessionPayload<ExtArgs>[]
     pointTransactions: Prisma.$PointTransactionPayload<ExtArgs>[]
+    aiUsageLogs: Prisma.$AiUsageLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2504,6 +2689,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   monthlyRankings<T extends Prisma.User$monthlyRankingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$monthlyRankingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MonthlyRankingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   practiceSessions<T extends Prisma.User$practiceSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$practiceSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PracticeSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pointTransactions<T extends Prisma.User$pointTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pointTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PointTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  aiUsageLogs<T extends Prisma.User$aiUsageLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$aiUsageLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3171,6 +3357,30 @@ export type User$pointTransactionsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.PointTransactionScalarFieldEnum | Prisma.PointTransactionScalarFieldEnum[]
+}
+
+/**
+ * User.aiUsageLogs
+ */
+export type User$aiUsageLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AiUsageLog
+   */
+  select?: Prisma.AiUsageLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AiUsageLog
+   */
+  omit?: Prisma.AiUsageLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AiUsageLogInclude<ExtArgs> | null
+  where?: Prisma.AiUsageLogWhereInput
+  orderBy?: Prisma.AiUsageLogOrderByWithRelationInput | Prisma.AiUsageLogOrderByWithRelationInput[]
+  cursor?: Prisma.AiUsageLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AiUsageLogScalarFieldEnum | Prisma.AiUsageLogScalarFieldEnum[]
 }
 
 /**

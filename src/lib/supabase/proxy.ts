@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { DEV_AUTH_COOKIE, isDevTestAuthEnabled } from "@/lib/dev-auth";
 import { getSupabaseConfig } from "@/lib/supabase/env";
 
 export async function updateSession(request: NextRequest) {
@@ -27,10 +28,12 @@ export async function updateSession(request: NextRequest) {
 
   const { data } = await supabase.auth.getClaims();
   const isAuthenticated = Boolean(data?.claims?.sub);
+  const isDevAuthenticated =
+    isDevTestAuthEnabled() && Boolean(request.cookies.get(DEV_AUTH_COOKIE)?.value);
   const pathname = request.nextUrl.pathname;
   const isProtectedPage = pathname === "/" || pathname.startsWith("/practice");
 
-  if (!isAuthenticated && isProtectedPage) {
+  if (!isAuthenticated && !isDevAuthenticated && isProtectedPage) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.search = "";
@@ -38,7 +41,7 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  if (isAuthenticated && pathname === "/login") {
+  if ((isAuthenticated || isDevAuthenticated) && pathname === "/login") {
     const homeUrl = request.nextUrl.clone();
     homeUrl.pathname = "/";
     homeUrl.search = "";

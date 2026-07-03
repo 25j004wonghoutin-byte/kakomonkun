@@ -43,13 +43,6 @@ export async function POST(
   });
   if (!sessionQuestion) return badRequest("Question is not part of this session");
 
-  const choice = await prisma.questionChoice.findUnique({
-    where: { id: body.selectedChoiceId },
-  });
-  if (!choice || choice.questionId !== body.questionId) {
-    return badRequest("Selected choice does not belong to the question");
-  }
-
   const existingAnswer = await prisma.practiceAnswer.findUnique({
     where: {
       sessionId_questionId: {
@@ -62,8 +55,30 @@ export async function POST(
 
   const question = await prisma.question.findUnique({
     where: { id: body.questionId },
-    select: { explanation: true },
+    select: {
+      explanation: true,
+      choices: {
+        orderBy: { sortOrder: "asc" },
+        select: {
+          id: true,
+          choiceLabel: true,
+          choiceText: true,
+          isCorrect: true,
+        },
+      },
+    },
   });
+  if (!question) return notFound("Question not found");
+
+  const choice = question.choices.find((item) => item.id === body.selectedChoiceId);
+  if (!choice) {
+    return badRequest("Selected choice does not belong to the question");
+  }
+
+  const correctChoice = question.choices.find((item) => item.isCorrect);
+  if (!correctChoice) {
+    return notFound("Correct choice is not configured");
+  }
 
   await prisma.$transaction([
     prisma.practiceAnswer.create({
@@ -85,7 +100,13 @@ export async function POST(
   ]);
 
   return Response.json({
+    selectedChoiceId: choice.id,
     isCorrect: choice.isCorrect,
-    explanation: question?.explanation ?? null,
+    explanation: question.explanation,
+    correctChoice: {
+      id: correctChoice.id,
+      choiceLabel: correctChoice.choiceLabel,
+      choiceText: correctChoice.choiceText,
+    },
   });
 }

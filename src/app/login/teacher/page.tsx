@@ -1,11 +1,42 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import { LoginSurface, SchoolBadge } from "@/components/login-screen";
 
 export default function TeacherLoginPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const isDevelopment = process.env.NODE_ENV !== "production";
+
+  async function submitLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!isDevelopment) return;
+
+    setSubmitting(true);
+    setError("");
+
+    const formData = new FormData(event.currentTarget);
+    const account = String(formData.get("teacherAccount") ?? "").trim();
+
+    try {
+      const response = await fetch("/api/dev/test-student-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ account }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error ?? "テストログインに失敗しました。");
+
+      router.push(typeof data.next === "string" ? data.next : "/practice");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "テストログインに失敗しました。");
+      setSubmitting(false);
+    }
+  }
 
   return (
     <LoginSurface>
@@ -18,19 +49,17 @@ export default function TeacherLoginPage() {
 
           <form
             className="mt-9 w-full space-y-6"
-            onSubmit={(event) => {
-              event.preventDefault();
-            }}
+            onSubmit={submitLogin}
           >
             <label className="grid items-center gap-3 sm:grid-cols-[150px_minmax(0,1fr)]">
               <span className="whitespace-nowrap text-left text-xl font-black text-[#071d36] sm:text-right sm:text-2xl">
                 アカウント：
               </span>
               <input
-                type="email"
+                type="text"
                 name="teacherAccount"
                 autoComplete="username"
-                placeholder="例）teacher@example.com"
+                placeholder={isDevelopment ? "例）test-student" : "例）teacher@example.com"}
                 className="h-16 min-w-0 rounded-lg border border-slate-300 bg-white px-5 text-xl font-medium text-[#071d36] shadow-inner shadow-slate-100 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
               />
             </label>
@@ -61,10 +90,17 @@ export default function TeacherLoginPage() {
             <div className="pt-4 sm:pl-[150px]">
               <button
                 type="submit"
+                disabled={submitting}
                 className="h-16 w-full max-w-[300px] rounded-lg bg-blue-600 px-8 text-2xl font-black text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700"
               >
-                ログイン
+                {submitting ? "ログイン中..." : "ログイン"}
               </button>
+              {isDevelopment ? (
+                <p className="mt-3 text-sm font-bold leading-6 text-slate-500">
+                  開発用: test-student と入力すると学生テストアカウントで練習画面へ移動します。
+                </p>
+              ) : null}
+              {error ? <p className="mt-3 text-sm font-bold leading-6 text-rose-600">{error}</p> : null}
             </div>
           </form>
         </div>

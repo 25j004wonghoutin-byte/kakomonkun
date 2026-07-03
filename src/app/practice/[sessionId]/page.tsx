@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { AiExplanationMarkdown } from "@/components/ai-explanation-markdown";
 import { QuestionChoiceContent } from "@/components/question-choice-content";
 import { StudentShell } from "@/components/student-shell";
 import { ErrorCard, LoadingCard } from "@/components/ui";
@@ -14,16 +15,26 @@ type Choice = {
   sortOrder: number;
 };
 
+type CorrectChoice = {
+  id: string;
+  choiceLabel: string;
+  choiceText: string;
+};
+
+type PracticeAnswerResult = {
+  selectedChoiceId: string;
+  isCorrect: boolean;
+  correctChoice: CorrectChoice | null;
+  explanation?: string | null;
+};
+
 type PracticeQuestion = {
   id: string;
   orderNo: number;
   text: string;
   imagePath: string | null;
   choices: Choice[];
-  answer: {
-    selectedChoiceId: string;
-    isCorrect: boolean;
-  } | null;
+  answer: PracticeAnswerResult | null;
 };
 
 type Session = {
@@ -36,13 +47,22 @@ type Session = {
   questions: PracticeQuestion[];
 };
 
+type AiExplanationResult = {
+  explanation: string;
+  fromCache: boolean;
+  modelName: string;
+};
+
 export default function PracticeSessionPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const router = useRouter();
   const [session, setSession] = useState<Session | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedChoice, setSelectedChoice] = useState("");
-  const [answerResult, setAnswerResult] = useState<{ isCorrect: boolean; explanation: string | null } | null>(null);
+  const [answerResult, setAnswerResult] = useState<PracticeAnswerResult | null>(null);
+  const [aiExplanations, setAiExplanations] = useState<Record<string, AiExplanationResult>>({});
+  const [aiErrors, setAiErrors] = useState<Record<string, string>>({});
+  const [aiLoadingQuestionId, setAiLoadingQuestionId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -97,7 +117,15 @@ export default function PracticeSessionPage() {
               correctCount: current.correctCount + (data.isCorrect ? 1 : 0),
               questions: current.questions.map((item) =>
                 item.id === question.id
-                  ? { ...item, answer: { selectedChoiceId: selectedChoice, isCorrect: data.isCorrect } }
+                  ? {
+                      ...item,
+                      answer: {
+                        selectedChoiceId: selectedChoice,
+                        isCorrect: data.isCorrect,
+                        correctChoice: data.correctChoice ?? null,
+                        explanation: data.explanation ?? null,
+                      },
+                    }
                   : item,
               ),
             }
@@ -107,6 +135,44 @@ export default function PracticeSessionPage() {
       setError(cause instanceof Error ? cause.message : "回答を保存できませんでした。");
     } finally {
       setSubmitting(false);
+    }
+  }
+
+  async function loadAiExplanation() {
+    if (!question || !(answerResult || question.answer)) return;
+
+    setAiLoadingQuestionId(question.id);
+    setAiErrors((current) => {
+      const next = { ...current };
+      delete next[question.id];
+      return next;
+    });
+
+    try {
+      const response = await fetch(`/api/practice/sessions/${sessionId}/ai-explanation`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ questionId: question.id }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error ?? "AI解説を取得できませんでした。");
+      if (typeof data.explanation !== "string") throw new Error("AI解説の形式が不正です。");
+
+      setAiExplanations((current) => ({
+        ...current,
+        [question.id]: {
+          explanation: data.explanation,
+          fromCache: Boolean(data.fromCache),
+          modelName: typeof data.modelName === "string" ? data.modelName : "Gemini",
+        },
+      }));
+    } catch (cause) {
+      setAiErrors((current) => ({
+        ...current,
+        [question.id]: cause instanceof Error ? cause.message : "AI解説を取得できませんでした。",
+      }));
+    } finally {
+      setAiLoadingQuestionId((current) => (current === question.id ? null : current));
     }
   }
 
@@ -150,6 +216,9 @@ export default function PracticeSessionPage() {
 
   if (!session || !question) return null;
   const displayedResult = answerResult ?? question.answer;
+  const aiExplanation = aiExplanations[question.id];
+  const aiError = aiErrors[question.id];
+  const aiLoading = aiLoadingQuestionId === question.id;
 
   return (
     <StudentShell>
@@ -184,8 +253,8 @@ export default function PracticeSessionPage() {
         <div className="mt-7 grid gap-3">
           {question.choices.map((choice) => {
             const chosen = selectedChoice === choice.id;
-            const correct = Boolean(displayedResult?.isCorrect && chosen);
-            const wrong = Boolean(displayedResult && chosen && !displayedResult.isCorrect);
+            const correct = Boolean(displayedResult?.correctChoice?.id === choice.id);
+            const wrong = Boolean(displayedResult && chosen && !correct);
 
             return (
               <button
@@ -207,6 +276,11 @@ export default function PracticeSessionPage() {
                   {choice.choiceLabel}
                 </span>
                 <QuestionChoiceContent text={choice.choiceText} label={choice.choiceLabel} />
+                {correct ? (
+                  <span className="ml-auto grid size-7 shrink-0 place-items-center rounded-full bg-emerald-600 text-xs font-black text-white">
+                    正
+                  </span>
+                ) : null}
               </button>
             );
           })}
@@ -223,9 +297,47 @@ export default function PracticeSessionPage() {
             <p className={`font-black ${displayedResult.isCorrect ? "text-emerald-800" : "text-rose-800"}`}>
               {displayedResult.isCorrect ? "正解です！" : "不正解です。次の問題で取り返しましょう。"}
             </p>
-            {"explanation" in displayedResult && displayedResult.explanation ? (
+            {!displayedResult.isCorrect && displayedResult.correctChoice ? (
+              <p className="mt-2 text-sm font-bold leading-6 text-slate-700">
+                正解は {displayedResult.correctChoice.choiceLabel} です。
+              </p>
+            ) : null}
+            {displayedResult.explanation ? (
               <p className="mt-2 text-sm leading-6 text-slate-700">{displayedResult.explanation}</p>
             ) : null}
+          </div>
+        ) : null}
+
+        {displayedResult ? (
+          <div className="mt-4 rounded-2xl border border-sky-200 bg-sky-50 p-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p className="font-black text-sky-900">AI解説補助</p>
+                <p className="mt-1 text-xs font-bold leading-5 text-sky-700">
+                  この解説はAIによる補助説明です。内容が不正確な場合があります。
+                </p>
+              </div>
+              {aiExplanation ? (
+                <span className="w-fit rounded-full bg-white px-3 py-1 text-xs font-black text-sky-700 ring-1 ring-sky-200">
+                  {aiExplanation.fromCache ? "保存済み" : "新規生成"} / {aiExplanation.modelName}
+                </span>
+              ) : null}
+            </div>
+
+            {aiExplanation ? (
+              <AiExplanationMarkdown text={aiExplanation.explanation} className="mt-4" />
+            ) : (
+              <button
+                type="button"
+                onClick={loadAiExplanation}
+                disabled={aiLoading}
+                className="mt-4 rounded-xl bg-sky-600 px-5 py-3 text-sm font-black text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+              >
+                {aiLoading ? "AI解説を作成中..." : "AI解説を作成する"}
+              </button>
+            )}
+
+            {aiError ? <p className="mt-3 text-sm font-bold text-rose-700">{aiError}</p> : null}
           </div>
         ) : null}
 
