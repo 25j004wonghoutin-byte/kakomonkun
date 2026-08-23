@@ -8,6 +8,23 @@ type TestStudentLoginBody = {
 };
 
 export async function POST(request: Request) {
+  try {
+    return await handleTestStudentLogin(request);
+  } catch (cause) {
+    console.error("Test student login failed", cause);
+
+    return Response.json(
+      {
+        error: isDatabaseAuthenticationError(cause)
+          ? "データベース認証に失敗しました。.env の DATABASE_URL を確認してください。"
+          : "テストログイン処理に失敗しました。サーバーログを確認してください。",
+      },
+      { status: 500 },
+    );
+  }
+}
+
+async function handleTestStudentLogin(request: Request) {
   if (!isDevTestAuthEnabled()) {
     return notFound();
   }
@@ -107,4 +124,21 @@ function normalizeTestEmail(account: string) {
 function getDisplayName(email: string) {
   const localPart = email.split("@")[0]?.trim();
   return localPart ? `テスト学生（${localPart.slice(0, 40)}）` : "テスト学生";
+}
+
+function isDatabaseAuthenticationError(cause: unknown) {
+  if (!cause || typeof cause !== "object") return false;
+
+  const error = cause as {
+    code?: unknown;
+    errorCode?: unknown;
+    message?: unknown;
+  };
+
+  return (
+    error.code === "P1000" ||
+    error.errorCode === "P1000" ||
+    (typeof error.message === "string" &&
+      error.message.includes("Authentication failed against the database server"))
+  );
 }

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 type NavigationItem = {
   label: string;
@@ -47,13 +47,47 @@ type StudentShellProps = {
 
 export function StudentShell({
   children,
-  userName = "学生",
+  userName,
 }: StudentShellProps) {
   const pathname = usePathname();
+  const [fetchedUserName, setFetchedUserName] = useState<string | null>(null);
+  const [userFetchComplete, setUserFetchComplete] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [desktopSidebarVisible, setDesktopSidebarVisible] = useState(true);
   const [noticeOpen, setNoticeOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (userName !== undefined) {
+      return;
+    }
+
+    let active = true;
+
+    fetch("/api/me")
+      .then((response) => (response.ok ? response.json() : Promise.reject()))
+      .then((data: { displayName?: unknown }) => {
+        if (!active) return;
+        setFetchedUserName(
+          typeof data.displayName === "string" && data.displayName.trim()
+            ? data.displayName
+            : null,
+        );
+      })
+      .catch(() => {
+        if (active) setFetchedUserName(null);
+      })
+      .finally(() => {
+        if (active) setUserFetchComplete(true);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [userName]);
+
+  const resolvedUserName = userName ?? fetchedUserName;
+  const userLoading = userName === undefined && !userFetchComplete;
 
   function toggleSidebar() {
     if (window.matchMedia("(min-width: 1024px)").matches) {
@@ -185,7 +219,16 @@ export function StudentShell({
                     <span className="grid size-11 place-items-center rounded-full border-2 border-blue-100 bg-blue-50 text-xl">
                       <StudentAvatar />
                     </span>
-                    <span className="hidden text-sm font-black sm:inline">{userName}</span>
+                    {userLoading || !resolvedUserName ? (
+                      <span
+                        aria-label="ユーザー情報を読み込み中"
+                        className="hidden h-4 w-20 rounded-full bg-slate-200 sm:inline-block"
+                      />
+                    ) : (
+                      <span className="hidden text-sm font-black sm:inline">
+                        {resolvedUserName}
+                      </span>
+                    )}
                     <AppIcon name="chevron" className="size-4 text-slate-600" />
                   </button>
 

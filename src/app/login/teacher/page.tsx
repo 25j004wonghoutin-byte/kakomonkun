@@ -5,6 +5,11 @@ import { type FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoginSurface, SchoolBadge } from "@/components/login-screen";
 
+type TestStudentLoginResponse = {
+  error?: string;
+  next?: string;
+};
+
 export default function TeacherLoginPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
@@ -28,10 +33,17 @@ export default function TeacherLoginPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ account }),
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error ?? "テストログインに失敗しました。");
+      const data = parseTestStudentLoginResponse(await response.text());
+      if (!response.ok) {
+        throw new Error(
+          data.error ?? `テストログインに失敗しました。（HTTP ${response.status}）`,
+        );
+      }
+      if (!data.next) {
+        throw new Error("ログインサーバーから正しい応答を受け取れませんでした。");
+      }
 
-      router.push(typeof data.next === "string" ? data.next : "/practice");
+      router.push(data.next);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "テストログインに失敗しました。");
       setSubmitting(false);
@@ -116,6 +128,23 @@ export default function TeacherLoginPage() {
       </div>
     </LoginSurface>
   );
+}
+
+function parseTestStudentLoginResponse(text: string): TestStudentLoginResponse {
+  if (!text) return {};
+
+  try {
+    const value: unknown = JSON.parse(text);
+    if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+
+    const record = value as Record<string, unknown>;
+    return {
+      error: typeof record.error === "string" ? record.error : undefined,
+      next: typeof record.next === "string" ? record.next : undefined,
+    };
+  } catch {
+    return {};
+  }
 }
 
 function EyeOffIcon() {

@@ -81,10 +81,17 @@ export async function POST(
       });
     }
 
-    if (user.studentProfile) {
-      await tx.studentProfile.update({
+    if (user.role.name === "student") {
+      await tx.studentProfile.upsert({
         where: { userId: user.id },
-        data: {
+        create: {
+          userId: user.id,
+          totalPoints: earnedPoints,
+          totalPracticeCount: 1,
+          totalCorrectCount: session.correctCount,
+          totalAnswerCount: session.answeredCount,
+        },
+        update: {
           totalPoints: { increment: earnedPoints },
           totalPracticeCount: { increment: 1 },
           totalCorrectCount: { increment: session.correctCount },

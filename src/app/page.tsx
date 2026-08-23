@@ -196,7 +196,7 @@ export default function Home() {
     }
   }
 
-  const displayName = me?.displayName ?? "学生";
+  const displayName = me?.displayName;
   const points = me?.profile?.totalPoints ?? 0;
   const titleCount = 0;
 
@@ -204,7 +204,7 @@ export default function Home() {
     <StudentShell userName={displayName} points={points}>
       <div className="mx-auto max-w-[980px] min-w-0">
         <p className="mb-6 text-[15px] font-black text-slate-900">
-          {displayName}さん、今日も一問ずつ積み上げましょう。
+          {displayName ? `${displayName}さん` : "今日も"}、一問ずつ積み上げましょう。
         </p>
 
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_230px]">

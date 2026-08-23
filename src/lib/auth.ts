@@ -94,6 +94,19 @@ export async function ensureAppUser(authUser: SupabaseUser) {
   });
 }
 
+async function ensureStudentProfileForUser(userId: string) {
+  await prisma.studentProfile.upsert({
+    where: { userId },
+    create: { userId },
+    update: {},
+  });
+
+  return prisma.user.findUniqueOrThrow({
+    where: { id: userId },
+    include: { role: true, studentProfile: true },
+  });
+}
+
 export async function getCurrentUser() {
   if (isDevTestAuthEnabled()) {
     const cookieStore = await cookies();
@@ -106,6 +119,10 @@ export async function getCurrentUser() {
       });
 
       if (devUser && devUser.status === "active" && !devUser.deletedAt) {
+        if (devUser.role.name === STUDENT_ROLE && !devUser.studentProfile) {
+          return ensureStudentProfileForUser(devUser.id);
+        }
+
         return devUser;
       }
     }
@@ -136,6 +153,10 @@ export async function getCurrentUser() {
   }
 
   if (!user || user.status !== "active" || user.deletedAt) return null;
+
+  if (user.role.name === STUDENT_ROLE && !user.studentProfile) {
+    user = await ensureStudentProfileForUser(user.id);
+  }
 
   return user;
 }
