@@ -9,6 +9,10 @@ if (!connectionString) {
 
 const adapter = new PrismaPg({
   connectionString,
+  max: 1,
+  idleTimeoutMillis: 10_000,
+  connectionTimeoutMillis: 10_000,
+  allowExitOnIdle: true,
 });
 
 const globalForPrisma = globalThis as unknown as {
