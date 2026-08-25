@@ -1,12 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { AiExplanationMarkdown } from "@/components/ai-explanation-markdown";
 import { QuestionChoiceContent } from "@/components/question-choice-content";
 import { StudentShell } from "@/components/student-shell";
 import { ErrorCard, LoadingCard } from "@/components/ui";
+import { readJsonResponse } from "@/lib/read-json-response";
 
 type Choice = {
   id: string;
@@ -33,6 +35,10 @@ type PracticeQuestion = {
   orderNo: number;
   text: string;
   imagePath: string | null;
+  category: {
+    code: string;
+    name: string;
+  };
   choices: Choice[];
   answer: PracticeAnswerResult | null;
 };
@@ -70,8 +76,9 @@ export default function PracticeSessionPage() {
   useEffect(() => {
     fetch(`/api/practice/sessions/${sessionId}`)
       .then(async (response) => {
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error ?? "練習を読み込めませんでした。");
+        const data = await readJsonResponse<Session & { error?: string }>(response);
+        if (!response.ok) throw new Error(data?.error ?? "練習を読み込めませんでした。");
+        if (!data) throw new Error("練習を読み込めませんでした。");
         return data;
       })
       .then((data: Session) => {
@@ -105,8 +112,9 @@ export default function PracticeSessionPage() {
           selectedChoiceId: selectedChoice,
         }),
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error ?? "回答を保存できませんでした。");
+      const data = await readJsonResponse<PracticeAnswerResult & { error?: string }>(response);
+      if (!response.ok) throw new Error(data?.error ?? "回答を保存できませんでした。");
+      if (!data) throw new Error("回答を保存できませんでした。");
 
       setAnswerResult(data);
       setSession((current) =>
@@ -154,8 +162,9 @@ export default function PracticeSessionPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ questionId: question.id }),
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error ?? "AI解説を取得できませんでした。");
+      const data = await readJsonResponse<AiExplanationResult & { error?: string }>(response);
+      if (!response.ok) throw new Error(data?.error ?? "AI解説を取得できませんでした。");
+      if (!data) throw new Error("AI解説を取得できませんでした。");
       if (typeof data.explanation !== "string") throw new Error("AI解説の形式が不正です。");
 
       setAiExplanations((current) => ({
@@ -177,12 +186,22 @@ export default function PracticeSessionPage() {
   }
 
   async function finishPractice() {
+    if (
+      session &&
+      session.answeredCount < session.questionCount &&
+      !window.confirm(
+        `未回答の問題が${session.questionCount - session.answeredCount}問あります。ここで終了すると、練習完了の5ptは獲得できません。結果を保存して終了しますか？`,
+      )
+    ) {
+      return;
+    }
+
     setSubmitting(true);
     setError("");
     try {
       const response = await fetch(`/api/practice/sessions/${sessionId}/finish`, { method: "POST" });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error ?? "練習を終了できませんでした。");
+      const data = await readJsonResponse<{ error?: string }>(response);
+      if (!response.ok) throw new Error(data?.error ?? "練習を終了できませんでした。");
       router.push(`/practice/${sessionId}/result`);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "練習を終了できませんでした。");
@@ -219,6 +238,8 @@ export default function PracticeSessionPage() {
   const aiExplanation = aiExplanations[question.id];
   const aiError = aiErrors[question.id];
   const aiLoading = aiLoadingQuestionId === question.id;
+  const answeredAllQuestions = session.answeredCount === session.questionCount;
+  const nextUnansweredIndex = findNextUnansweredIndex(session.questions, currentIndex);
 
   return (
     <StudentShell>
@@ -242,11 +263,19 @@ export default function PracticeSessionPage() {
       </div>
 
       <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+        <p className="mb-3 text-xs font-black text-blue-600">{question.category.name}</p>
         <p className="text-lg font-bold leading-8 text-slate-950">{question.text}</p>
 
         {question.imagePath ? (
           <div className="relative mt-5 min-h-52 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
-            <Image src={question.imagePath} alt="問題の図" fill className="object-contain p-4" sizes="(max-width: 768px) 100vw, 800px" />
+            <Image
+              src={question.imagePath}
+              alt="問題の図"
+              fill
+              loading="eager"
+              className="object-contain p-4"
+              sizes="(max-width: 768px) 100vw, 800px"
+            />
           </div>
         ) : null}
 
@@ -344,14 +373,24 @@ export default function PracticeSessionPage() {
         {error ? <div className="mt-5"><ErrorCard message={error} /></div> : null}
 
         <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <button
-            type="button"
-            onClick={finishPractice}
-            disabled={submitting || session.answeredCount === 0}
-            className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-black text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            練習を終了する
-          </button>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Link
+              href="/practice"
+              className="rounded-xl border border-slate-300 px-5 py-3 text-center text-sm font-black text-slate-700 transition hover:bg-slate-100"
+            >
+              あとで続ける
+            </Link>
+            {!answeredAllQuestions ? (
+              <button
+                type="button"
+                onClick={finishPractice}
+                disabled={submitting || session.answeredCount === 0}
+                className="rounded-xl px-5 py-3 text-sm font-black text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                ここで終了する
+              </button>
+            ) : null}
+          </div>
 
           {!displayedResult ? (
             <button
@@ -362,13 +401,13 @@ export default function PracticeSessionPage() {
             >
               {submitting ? "保存中..." : "回答する"}
             </button>
-          ) : currentIndex < session.questions.length - 1 ? (
+          ) : !answeredAllQuestions && nextUnansweredIndex !== -1 ? (
             <button
               type="button"
-              onClick={() => goToQuestion(currentIndex + 1)}
+              onClick={() => goToQuestion(nextUnansweredIndex)}
               className="rounded-xl bg-slate-950 px-6 py-3 font-black text-white transition hover:bg-blue-700"
             >
-              次の問題へ
+              次の未回答へ
             </button>
           ) : (
             <button
@@ -383,18 +422,21 @@ export default function PracticeSessionPage() {
         </div>
       </section>
 
-      <div className="mt-5 flex justify-center gap-2">
+      <div className="mx-auto mt-5 grid max-w-3xl grid-cols-6 gap-2 sm:grid-cols-10">
         {session.questions.map((item, index) => (
           <button
             key={item.id}
             type="button"
             onClick={() => goToQuestion(index)}
             aria-label={`${index + 1}問目へ`}
+            aria-current={index === currentIndex ? "step" : undefined}
             className={`size-9 rounded-full text-sm font-black transition ${
               index === currentIndex
                 ? "bg-blue-600 text-white"
-                : item.answer
+                : item.answer?.isCorrect
                   ? "bg-emerald-100 text-emerald-700"
+                  : item.answer
+                    ? "bg-rose-100 text-rose-700"
                   : "bg-white text-slate-500 ring-1 ring-slate-200"
             }`}
           >
@@ -404,4 +446,12 @@ export default function PracticeSessionPage() {
       </div>
     </StudentShell>
   );
+}
+
+function findNextUnansweredIndex(questions: PracticeQuestion[], currentIndex: number) {
+  for (let offset = 1; offset <= questions.length; offset += 1) {
+    const index = (currentIndex + offset) % questions.length;
+    if (!questions[index].answer) return index;
+  }
+  return -1;
 }

@@ -17,3 +17,24 @@ export function getTokyoDayRange(date = new Date()) {
   end.setUTCDate(end.getUTCDate() + 1);
   return { dateString, start, end };
 }
+
+export function getTokyoMonthRange(date = new Date()) {
+  const [year, month] = getTokyoDate(date).split("-").map(Number);
+  const start = getTokyoMonthBoundary(year, month - 1);
+  const end = getTokyoMonthBoundary(year, month);
+  const previousStart = getTokyoMonthBoundary(year, month - 2);
+
+  return {
+    monthString: `${year}-${String(month).padStart(2, "0")}`,
+    start,
+    end,
+    previousStart,
+  };
+}
+
+function getTokyoMonthBoundary(year: number, zeroBasedMonth: number) {
+  const normalized = new Date(Date.UTC(year, zeroBasedMonth, 1));
+  const normalizedYear = normalized.getUTCFullYear();
+  const normalizedMonth = String(normalized.getUTCMonth() + 1).padStart(2, "0");
+  return new Date(`${normalizedYear}-${normalizedMonth}-01T00:00:00+09:00`);
+}

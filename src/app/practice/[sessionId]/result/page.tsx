@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { StudentShell } from "@/components/student-shell";
 import { ErrorCard, LoadingCard } from "@/components/ui";
+import { readJsonResponse } from "@/lib/read-json-response";
 
 type ResultSession = {
   exam: { name: string };
@@ -22,8 +23,9 @@ export default function PracticeResultPage() {
   useEffect(() => {
     fetch(`/api/practice/sessions/${sessionId}`)
       .then(async (response) => {
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error ?? "結果を読み込めませんでした。");
+        const data = await readJsonResponse<ResultSession & { error?: string }>(response);
+        if (!response.ok) throw new Error(data?.error ?? "結果を読み込めませんでした。");
+        if (!data) throw new Error("結果を読み込めませんでした。");
         return data;
       })
       .then(setSession)
@@ -48,6 +50,7 @@ export default function PracticeResultPage() {
 
   const accuracy =
     session.answeredCount > 0 ? Math.round((session.correctCount / session.answeredCount) * 100) : 0;
+  const answeredAllQuestions = session.answeredCount === session.questionCount;
 
   return (
     <StudentShell>
@@ -55,19 +58,30 @@ export default function PracticeResultPage() {
         <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white text-center shadow-xl">
           <div className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400 px-6 py-10 text-white">
             <div className="mx-auto grid size-20 place-items-center rounded-full bg-white/20 text-4xl backdrop-blur">
-              🎉
+              {answeredAllQuestions ? "完" : "済"}
             </div>
-            <p className="mt-5 text-sm font-black tracking-[0.16em] text-blue-100">PRACTICE COMPLETE</p>
-            <h1 className="mt-2 text-3xl font-black sm:text-4xl">練習おつかれさまでした！</h1>
+            <p className="mt-5 text-sm font-black tracking-[0.16em] text-blue-100">
+              {answeredAllQuestions ? "PRACTICE COMPLETE" : "PRACTICE SAVED"}
+            </p>
+            <h1 className="mt-2 text-3xl font-black sm:text-4xl">
+              {answeredAllQuestions ? "練習おつかれさまでした！" : "ここまでの結果を保存しました"}
+            </h1>
             <p className="mt-2 font-bold text-blue-50">{session.exam.name}</p>
           </div>
 
           <div className="p-6 sm:p-10">
-            <div className="grid gap-4 sm:grid-cols-3">
-              <ResultMetric label="正解数" value={`${session.correctCount} / ${session.answeredCount}`} />
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <ResultMetric label="回答数" value={`${session.answeredCount} / ${session.questionCount}`} />
+              <ResultMetric label="正解数" value={`${session.correctCount}問`} />
               <ResultMetric label="正答率" value={`${accuracy}%`} />
               <ResultMetric label="獲得ポイント" value={`${session.earnedPoints} pt`} highlight />
             </div>
+
+            {!answeredAllQuestions ? (
+              <p className="mt-5 rounded-xl bg-amber-50 px-4 py-3 text-sm font-bold text-amber-800">
+                全問回答していないため、練習完了の5ptは対象外です。
+              </p>
+            ) : null}
 
             <div className="mt-8 h-3 overflow-hidden rounded-full bg-slate-100">
               <div

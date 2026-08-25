@@ -19,6 +19,12 @@ export async function GET(
         include: {
           question: {
             include: {
+              category: {
+                select: {
+                  code: true,
+                  name: true,
+                },
+              },
               choices: {
                 orderBy: { sortOrder: "asc" },
                 select: {
@@ -63,6 +69,7 @@ export async function GET(
       orderNo,
       text: question.questionText,
       imagePath: question.imagePath,
+      category: question.category,
       choices: question.choices.map((choice) => ({
         id: choice.id,
         choiceLabel: choice.choiceLabel,

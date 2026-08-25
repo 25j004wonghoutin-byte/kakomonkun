@@ -55,7 +55,6 @@ export async function ensureAppUser(authUser: SupabaseUser) {
         data: {
           authUserId: authUser.id,
           email,
-          displayName,
           lastLoginAt: new Date(),
         },
         include: { role: true, studentProfile: true },

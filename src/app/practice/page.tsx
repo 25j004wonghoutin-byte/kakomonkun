@@ -4,6 +4,15 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { StudentShell } from "@/components/student-shell";
 import { ErrorCard, PageHeading } from "@/components/ui";
+import {
+  ALL_PRACTICE_CATEGORY_CODE,
+  PRACTICE_CATEGORIES,
+  PRACTICE_QUESTION_COUNTS,
+  supportsPracticeCategorySelection,
+  type PracticeCategoryCode,
+  type PracticeQuestionCount,
+} from "@/lib/practice-config";
+import { readJsonResponse } from "@/lib/read-json-response";
 
 const exams = [
   {
@@ -20,22 +29,91 @@ const exams = [
   },
 ];
 
+const categoryOptions: Array<{
+  code: PracticeCategoryCode;
+  label: string;
+  description: string;
+}> = [
+  {
+    code: ALL_PRACTICE_CATEGORY_CODE,
+    label: "指定なし",
+    description: "3分野から同じ問題数ずつ出題",
+  },
+  ...PRACTICE_CATEGORIES.map((category) => ({
+    ...category,
+    description: `${category.label}系の問題だけを出題`,
+  })),
+];
+
+const startedAtFormatter = new Intl.DateTimeFormat("ja-JP", {
+  month: "numeric",
+  day: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
+type ActiveSession = {
+  id: string;
+  questionCount: number;
+  answeredCount: number;
+  startedAt: string;
+  exam: {
+    code: string;
+    name: string;
+  };
+};
+
+type SessionStartError = {
+  error?: string;
+  details?: {
+    shortages?: Array<{
+      categoryName: string;
+      available: number;
+      required: number;
+    }>;
+  };
+};
+
 export default function PracticeStartPage() {
   const router = useRouter();
   const [selectedExam, setSelectedExam] = useState("it_passport");
+  const [selectedCategory, setSelectedCategory] = useState<PracticeCategoryCode>(
+    ALL_PRACTICE_CATEGORY_CODE,
+  );
+  const [selectedQuestionCount, setSelectedQuestionCount] = useState<PracticeQuestionCount>(30);
+  const [activeSessions, setActiveSessions] = useState<ActiveSession[]>([]);
   const [userName, setUserName] = useState<string | undefined>();
   const [points, setPoints] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("/api/me")
-      .then((response) => (response.ok ? response.json() : Promise.reject()))
-      .then((data) => {
-        setUserName(data.displayName);
-        setPoints(data.profile?.totalPoints ?? 0);
-      })
-      .catch(() => undefined);
+    let cancelled = false;
+
+    async function loadPageData() {
+      const [meResponse, sessionsResponse] = await Promise.all([
+        fetch("/api/me"),
+        fetch("/api/practice/sessions"),
+      ]);
+      const [meData, sessionsData] = await Promise.all([
+        meResponse.ok ? meResponse.json() : null,
+        sessionsResponse.ok ? sessionsResponse.json() : null,
+      ]);
+
+      if (cancelled) return;
+      if (meData) {
+        setUserName(meData.displayName);
+        setPoints(meData.profile?.totalPoints ?? 0);
+      }
+      if (Array.isArray(sessionsData?.sessions)) {
+        setActiveSessions(sessionsData.sessions);
+      }
+    }
+
+    loadPageData().catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   async function startPractice() {
@@ -43,13 +121,20 @@ export default function PracticeStartPage() {
     setError("");
 
     try {
+      const categorySelectionEnabled = supportsPracticeCategorySelection(selectedExam);
       const response = await fetch("/api/practice/sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ examCode: selectedExam, questionCount: 3 }),
+        body: JSON.stringify({
+          examCode: selectedExam,
+          ...(categorySelectionEnabled ? { categoryCode: selectedCategory } : {}),
+          questionCount: selectedQuestionCount,
+        }),
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error ?? "練習を開始できませんでした。");
+      const data = await readJsonResponse<SessionStartError & { sessionId?: string }>(response);
+      if (!response.ok || !data?.sessionId) {
+        throw new Error(formatSessionStartError(data ?? {}));
+      }
       router.push(`/practice/${data.sessionId}`);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "練習を開始できませんでした。");
@@ -57,13 +142,62 @@ export default function PracticeStartPage() {
     }
   }
 
+  const selectedExamData = exams.find((exam) => exam.code === selectedExam) ?? exams[0];
+  const categorySelectionEnabled = supportsPracticeCategorySelection(selectedExam);
+  const selectedCategoryData =
+    categoryOptions.find((category) => category.code === selectedCategory) ?? categoryOptions[0];
+  const questionsPerCategory = selectedQuestionCount / PRACTICE_CATEGORIES.length;
+
   return (
     <StudentShell userName={userName} points={points}>
       <PageHeading
         eyebrow="PAST QUESTIONS"
         title="過去問練習"
-        description="挑戦する試験を選んでください。現在は動作確認用の3問コースです。"
+        description="試験と問題数を選んで、自分に合った練習を始めましょう。"
       />
+
+      {activeSessions.length > 0 ? (
+        <section className="mb-8" aria-labelledby="active-practice-heading">
+          <div className="mb-3 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-black text-blue-600">CONTINUE</p>
+              <h2 id="active-practice-heading" className="mt-1 text-lg font-black text-slate-950">
+                途中の練習
+              </h2>
+            </div>
+            <span className="text-xs font-bold text-slate-500">回答は自動保存されています</span>
+          </div>
+          <div className="grid gap-3 lg:grid-cols-2">
+            {activeSessions.map((session) => {
+              const progress = Math.round((session.answeredCount / session.questionCount) * 100);
+              return (
+                <article
+                  key={session.id}
+                  className="flex min-w-0 items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+                >
+                  <div className="grid size-12 shrink-0 place-items-center rounded-xl bg-blue-50 text-sm font-black text-blue-700">
+                    {progress}%
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="truncate font-black text-slate-950">{session.exam.name}</h3>
+                    <p className="mt-1 text-xs font-bold text-slate-500">
+                      {session.answeredCount} / {session.questionCount} 問回答 ・{" "}
+                      {startedAtFormatter.format(new Date(session.startedAt))}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => router.push(`/practice/${session.id}`)}
+                    className="shrink-0 rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-black text-white transition hover:bg-blue-700"
+                  >
+                    続きから
+                  </button>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      ) : null}
 
       <div className="grid gap-4 md:grid-cols-2">
         {exams.map((exam) => {
@@ -95,7 +229,7 @@ export default function PracticeStartPage() {
                 <p className="mt-4 leading-7 text-slate-600">{exam.description}</p>
                 <div className="mt-6 flex gap-2">
                   <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">
-                    全3問
+                    30 / 60問
                   </span>
                   <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">
                     選択式
@@ -108,14 +242,96 @@ export default function PracticeStartPage() {
       </div>
 
       <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-        <h3 className="text-lg font-black text-slate-950">練習について</h3>
-        <ul className="mt-4 grid gap-3 text-sm font-medium text-slate-600 sm:grid-cols-3">
-          <li className="rounded-2xl bg-slate-50 p-4">回答後すぐに正誤を確認</li>
-          <li className="rounded-2xl bg-slate-50 p-4">途中で終了しても回答を保存</li>
-          <li className="rounded-2xl bg-slate-50 p-4">完了すると条件に応じてポイント獲得</li>
-        </ul>
+        <div
+          className={`grid gap-8 ${
+            categorySelectionEnabled
+              ? "lg:grid-cols-[minmax(0,1fr)_minmax(220px,0.4fr)]"
+              : "max-w-md"
+          }`}
+        >
+          {categorySelectionEnabled ? (
+            <fieldset>
+              <legend className="text-lg font-black text-slate-950">出題分野</legend>
+              <p className="mt-1 text-sm font-medium text-slate-500">
+                指定なしでは3分野から均等に出題します。
+              </p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {categoryOptions.map((category) => {
+                  const selected = selectedCategory === category.code;
+                  return (
+                    <button
+                      key={category.code}
+                      type="button"
+                      aria-pressed={selected}
+                      onClick={() => setSelectedCategory(category.code)}
+                      className={`min-h-20 rounded-xl border px-4 py-3 text-left transition ${
+                        selected
+                          ? "border-blue-500 bg-blue-50 text-blue-950 ring-2 ring-blue-100"
+                          : "border-slate-200 text-slate-700 hover:border-blue-300 hover:bg-slate-50"
+                      }`}
+                    >
+                      <span className="block font-black">{category.label}</span>
+                      <span className="mt-1 block text-xs font-bold text-slate-500">
+                        {category.description}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </fieldset>
+          ) : null}
 
-        {error ? <div className="mt-5"><ErrorCard message={error} /></div> : null}
+          <fieldset>
+            <legend className="text-lg font-black text-slate-950">問題数</legend>
+            <p className="mt-1 text-sm font-medium text-slate-500">1回の練習で解く問題数です。</p>
+            <div
+              className={`mt-4 grid grid-cols-2 gap-3 ${
+                categorySelectionEnabled ? "lg:grid-cols-1" : ""
+              }`}
+            >
+              {PRACTICE_QUESTION_COUNTS.map((count) => {
+                const selected = selectedQuestionCount === count;
+                return (
+                  <button
+                    key={count}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => setSelectedQuestionCount(count)}
+                    className={`min-h-16 rounded-xl border px-4 text-center text-xl font-black transition ${
+                      selected
+                        ? "border-blue-500 bg-blue-600 text-white ring-2 ring-blue-100"
+                        : "border-slate-200 text-slate-700 hover:border-blue-300 hover:bg-slate-50"
+                    }`}
+                  >
+                    {count}問
+                  </button>
+                );
+              })}
+            </div>
+          </fieldset>
+        </div>
+
+        <div className="mt-8 border-y border-slate-200 py-5">
+          <p className="text-xs font-black text-slate-500">選択中のコース</p>
+          <p className="mt-1 text-lg font-black text-slate-950">
+            {selectedExamData.shortName} ・{" "}
+            {categorySelectionEnabled ? `${selectedCategoryData.label} ・ ` : ""}
+            {selectedQuestionCount}問
+          </p>
+          <p className="mt-1 text-sm font-medium text-slate-600">
+            {!categorySelectionEnabled
+              ? `全分野から${selectedQuestionCount}問をランダムに出題します。`
+              : selectedCategory === ALL_PRACTICE_CATEGORY_CODE
+              ? `テクノロジ・マネジメント・ストラテジから各${questionsPerCategory}問出題します。`
+              : `${selectedCategoryData.label}系から${selectedQuestionCount}問出題します。`}
+          </p>
+        </div>
+
+        {error ? (
+          <div className="mt-5">
+            <ErrorCard message={error} />
+          </div>
+        ) : null}
 
         <button
           type="button"
@@ -126,6 +342,27 @@ export default function PracticeStartPage() {
           {submitting ? "準備しています..." : "練習を開始する"}
         </button>
       </div>
+
+      <ul className="mt-6 grid gap-3 border-y border-slate-200 py-5 text-sm font-bold text-slate-600 sm:grid-cols-3">
+        <li>回答後すぐに正誤を確認</li>
+        <li>途中で離れても続きから再開</li>
+        <li>全問回答で練習完了ポイント</li>
+      </ul>
     </StudentShell>
   );
+}
+
+function formatSessionStartError(data: SessionStartError) {
+  const shortages = data.details?.shortages;
+  if (shortages?.length) {
+    const detail = shortages
+      .map(
+        (shortage) =>
+          `${shortage.categoryName}（${shortage.available}問 / 必要${shortage.required}問）`,
+      )
+      .join("、");
+    return `問題数が不足しています。${detail}`;
+  }
+
+  return data.error ?? "練習を開始できませんでした。";
 }
