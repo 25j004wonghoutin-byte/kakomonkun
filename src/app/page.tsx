@@ -1,10 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { AiExplanationMarkdown } from "@/components/ai-explanation-markdown";
-import { QuestionChoiceContent } from "@/components/question-choice-content";
+import {
+  QuizQuestionCard,
+  type QuizAnswerResult,
+  type QuizQuestion,
+} from "@/components/quiz-question-card";
 import { StudentShell } from "@/components/student-shell";
 
 type MeResponse = {
@@ -17,38 +20,17 @@ type MeResponse = {
   } | null;
 };
 
-type DailyQuestion = {
-  id: string;
-  text: string;
-  imagePath: string | null;
-  explanation: string | null;
-  exam: {
-    code: string;
-    name: string;
-  };
-  category: {
-    code: string;
-    name: string;
-  };
-  choices: Array<{
-    id: string;
-    label: string;
-    text: string;
-  }>;
+type DailyAnswer = QuizAnswerResult & {
+  selectedChoiceId: string;
+  awardedPoints: number;
 };
 
 type DailyQuestionResponse = {
-  question: DailyQuestion;
-};
-
-type AnswerResult = {
-  isCorrect: boolean;
-  explanation: string | null;
-  correctChoice: {
-    id: string;
-    label: string;
-    text: string;
-  };
+  date: string;
+  question: QuizQuestion;
+  answer: DailyAnswer | null;
+  totalPoints: number | null;
+  alreadyAnswered?: boolean;
 };
 
 type AiExplanationResult = {
@@ -72,40 +54,20 @@ async function fetchDailyQuestion() {
     throw new Error(await readError(response, "一問一答を読み込めませんでした。"));
   }
 
-  const data = (await response.json()) as DailyQuestionResponse;
-  return data.question;
+  return (await response.json()) as DailyQuestionResponse;
 }
 
 export default function Home() {
   const [me, setMe] = useState<MeResponse | null>(null);
-  const [question, setQuestion] = useState<DailyQuestion | null>(null);
+  const [question, setQuestion] = useState<QuizQuestion | null>(null);
   const [selectedChoiceId, setSelectedChoiceId] = useState<string | null>(null);
-  const [answerResult, setAnswerResult] = useState<AnswerResult | null>(null);
+  const [answerResult, setAnswerResult] = useState<DailyAnswer | null>(null);
   const [aiExplanation, setAiExplanation] = useState<AiExplanationResult | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState("");
   const [questionLoading, setQuestionLoading] = useState(true);
   const [answering, setAnswering] = useState(false);
   const [error, setError] = useState("");
-
-  const loadQuestion = useCallback(async () => {
-    setQuestionLoading(true);
-    setError("");
-    setSelectedChoiceId(null);
-    setAnswerResult(null);
-    setAiExplanation(null);
-    setAiError("");
-    setAiLoading(false);
-
-    try {
-      setQuestion(await fetchDailyQuestion());
-    } catch (cause) {
-      setQuestion(null);
-      setError(cause instanceof Error ? cause.message : "一問一答を読み込めませんでした。");
-    } finally {
-      setQuestionLoading(false);
-    }
-  }, []);
 
   useEffect(() => {
     let active = true;
@@ -118,8 +80,21 @@ export default function Home() {
       .catch(() => undefined);
 
     fetchDailyQuestion()
-      .then((dailyQuestion) => {
-        if (active) setQuestion(dailyQuestion);
+      .then((data) => {
+        if (!active) return;
+        setQuestion(data.question);
+        setSelectedChoiceId(data.answer?.selectedChoiceId ?? null);
+        setAnswerResult(data.answer);
+        if (data.totalPoints !== null) {
+          setMe((current) =>
+            current?.profile
+              ? {
+                  ...current,
+                  profile: { ...current.profile, totalPoints: data.totalPoints! },
+                }
+              : current,
+          );
+        }
       })
       .catch((cause) => {
         if (!active) return;
@@ -136,13 +111,13 @@ export default function Home() {
   }, []);
 
   async function submitAnswer() {
-    if (!question || !selectedChoiceId) return;
+    if (!question || !selectedChoiceId || answerResult) return;
 
     setAnswering(true);
     setError("");
 
     try {
-      const response = await fetch("/api/daily-qa", {
+      const response = await fetch("/api/daily-qa/answer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -155,7 +130,20 @@ export default function Home() {
         throw new Error(await readError(response, "回答を判定できませんでした。"));
       }
 
-      setAnswerResult((await response.json()) as AnswerResult);
+      const data = (await response.json()) as DailyQuestionResponse;
+      setQuestion(data.question);
+      setSelectedChoiceId(data.answer?.selectedChoiceId ?? selectedChoiceId);
+      setAnswerResult(data.answer);
+      if (data.totalPoints !== null) {
+        setMe((current) =>
+          current?.profile
+            ? {
+                ...current,
+                profile: { ...current.profile, totalPoints: data.totalPoints! },
+              }
+            : current,
+        );
+      }
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "回答を判定できませんでした。");
     } finally {
@@ -208,210 +196,80 @@ export default function Home() {
         </p>
 
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_230px]">
-          <section className="min-w-0 rounded-lg border border-slate-200 bg-white p-5 shadow-[0_14px_40px_-24px_rgba(15,23,42,0.55)] sm:p-7">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-xl font-black text-slate-950">今日の一問一答</h1>
-                {question ? (
-                  <>
-                    <span className="rounded-md bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700">
-                      {question.exam.name}
-                    </span>
-                    <span className="rounded-md bg-purple-100 px-3 py-1 text-xs font-bold text-purple-700">
-                      {question.category.name}
-                    </span>
-                  </>
-                ) : null}
-              </div>
-
-              <button
-                type="button"
-                onClick={loadQuestion}
-                disabled={questionLoading}
-                className="rounded-md border border-slate-300 bg-white px-4 py-2 text-xs font-black text-slate-700 transition hover:border-blue-400 hover:bg-blue-50 disabled:cursor-wait disabled:opacity-60"
-              >
-                別の問題を表示
-              </button>
-            </div>
-
-            <p className="mt-3 text-xs font-bold text-slate-500">
-              テスト中のため、リロードや再表示のたびにランダムで問題を出します。
-            </p>
-
-            {error ? (
-              <div role="alert" className="mt-5 rounded-md border border-rose-200 bg-rose-50 p-4 text-sm font-bold text-rose-700">
-                {error}
-              </div>
-            ) : null}
-
-            {questionLoading ? (
-              <div className="mt-7 rounded-md border border-slate-200 bg-slate-50 p-6 text-sm font-bold text-slate-500">
-                問題を読み込んでいます...
-              </div>
-            ) : question ? (
-              <div className="mt-7">
-                <div className="flex min-w-0 gap-4">
-                  <span className="mt-0.5 text-base font-black text-blue-700">Q.</span>
-                  <p className="min-w-0 whitespace-pre-wrap break-words text-sm font-bold leading-7 text-slate-900 [overflow-wrap:anywhere]">
-                    {question.text}
-                  </p>
+          <QuizQuestionCard
+            title="今日の一問一答"
+            description="毎日0時（日本時間）に更新され、回答は1日1回だけ記録されます。"
+            question={question}
+            selectedChoiceId={selectedChoiceId}
+            answerResult={answerResult}
+            loading={questionLoading}
+            answering={answering}
+            error={error}
+            onSelectChoice={setSelectedChoiceId}
+            onSubmit={submitAnswer}
+            resultNotice={
+              answerResult ? (
+                <div className="mt-5 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-black text-amber-800">
+                  {answerResult.awardedPoints > 0
+                    ? `本日の獲得 +${answerResult.awardedPoints} pt`
+                    : "本日の回答を記録しました。"}
                 </div>
-
-                {question.imagePath ? (
-                  <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-3">
-                    <Image
-                      src={question.imagePath}
-                      alt="問題画像"
-                      width={900}
-                      height={520}
-                      className="mx-auto h-auto max-h-[520px] w-auto max-w-full object-contain"
-                    />
-                  </div>
-                ) : null}
-
-                <div className="mt-4 divide-y divide-slate-200">
-                  {question.choices.map((choice) => {
-                    const chosen = selectedChoiceId === choice.id;
-                    const correct = answerResult?.correctChoice.id === choice.id;
-                    const wrong = Boolean(answerResult && chosen && !correct);
-
-                    return (
-                      <button
-                        key={choice.id}
-                        type="button"
-                        disabled={Boolean(answerResult) || answering}
-                        onClick={() => setSelectedChoiceId(choice.id)}
-                        className={`flex min-h-12 w-full items-center gap-3 px-2 py-3 text-left text-sm transition ${
-                          correct
-                            ? "rounded-md border border-emerald-200 bg-emerald-50 px-3 font-bold text-slate-900"
-                            : wrong
-                              ? "rounded-md border border-rose-200 bg-rose-50 px-3 font-bold text-slate-900"
-                              : "text-slate-700 hover:bg-blue-50 disabled:hover:bg-transparent"
-                        }`}
-                      >
-                        <span
-                          className={`grid size-5 shrink-0 place-items-center rounded-full border text-[11px] ${
-                            chosen || correct
-                              ? "border-blue-600 bg-blue-600 text-white"
-                              : "border-slate-400 bg-white text-slate-500"
-                          }`}
-                        >
-                          {chosen || correct ? "✓" : ""}
-                        </span>
-                        <span className="shrink-0 text-xs font-black text-slate-500">{choice.label}</span>
-                        <QuestionChoiceContent text={choice.text} label={choice.label} />
-                        {correct ? (
-                          <span className="grid size-6 shrink-0 place-items-center rounded-full bg-emerald-600 text-xs font-black text-white">
-                            正
-                          </span>
-                        ) : null}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {!answerResult ? (
-                  <div className="mt-7 flex flex-col items-start gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="text-sm font-bold text-slate-500">
-                      選択肢を選んでから回答してください。
-                    </p>
-                    <button
-                      type="button"
-                      disabled={!selectedChoiceId || answering}
-                      onClick={submitAnswer}
-                      className="inline-flex h-11 min-w-36 items-center justify-center rounded-md bg-blue-600 px-5 text-sm font-black text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
-                    >
-                      {answering ? "判定中..." : "回答する"}
-                    </button>
-                  </div>
-                ) : (
-                  <div className="mt-7 border-t border-slate-200 pt-6">
-                    <div className="flex gap-4">
-                      <span
-                        className={`grid size-10 shrink-0 place-items-center rounded-full text-2xl font-black text-white ${
-                          answerResult.isCorrect ? "bg-emerald-600" : "bg-rose-600"
-                        }`}
-                      >
-                        {answerResult.isCorrect ? "✓" : "!"}
-                      </span>
-                      <div>
-                        <p className={`text-lg font-black ${answerResult.isCorrect ? "text-emerald-700" : "text-rose-700"}`}>
-                          {answerResult.isCorrect ? "正解！" : "不正解"}
-                        </p>
-                        <p className="mt-1 text-sm font-bold text-slate-700">
-                          正解は {answerResult.correctChoice.label} です。
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="mt-5 rounded-md border border-emerald-200 bg-emerald-50 p-4">
-                      <div className="flex items-center gap-2 text-sm font-black text-emerald-700">
-                        <span className="grid size-6 place-items-center rounded-full bg-emerald-600 text-white">!</span>
-                        解説
-                      </div>
-                      <p className="mt-3 whitespace-pre-wrap text-sm leading-7 text-slate-700">
-                        {answerResult.explanation ?? "この問題の解説はまだ登録されていません。"}
+              ) : null
+            }
+            resultExtra={
+              answerResult ? (
+                <div className="mt-4 rounded-md border border-sky-200 bg-sky-50 p-4">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <p className="text-sm font-black text-sky-900">AI解説補助</p>
+                      <p className="mt-1 text-xs font-bold leading-5 text-sky-700">
+                        この解説はAIによる補助説明です。内容が不正確な場合があります。
                       </p>
                     </div>
-
-                    <div className="mt-4 rounded-md border border-sky-200 bg-sky-50 p-4">
-                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                        <div>
-                          <p className="text-sm font-black text-sky-900">AI解説補助</p>
-                          <p className="mt-1 text-xs font-bold leading-5 text-sky-700">
-                            この解説はAIによる補助説明です。内容が不正確な場合があります。
-                          </p>
-                        </div>
-                        {aiExplanation ? (
-                          <span className="w-fit rounded-full bg-white px-3 py-1 text-xs font-black text-sky-700 ring-1 ring-sky-200">
-                            {aiExplanation.fromCache ? "保存済み" : "新規生成"} / {aiExplanation.modelName}
-                          </span>
-                        ) : null}
-                      </div>
-
-                      {aiExplanation ? (
-                        <AiExplanationMarkdown text={aiExplanation.explanation} className="mt-4" />
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={loadAiExplanation}
-                          disabled={aiLoading}
-                          className="mt-4 rounded-md bg-sky-600 px-5 py-3 text-sm font-black text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:bg-slate-300"
-                        >
-                          {aiLoading ? "AI解説を作成中..." : "AI解説を作成する"}
-                        </button>
-                      )}
-
-                      {aiError ? <p className="mt-3 text-sm font-bold text-rose-700">{aiError}</p> : null}
-                    </div>
-
-                    <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-                      <button
-                        type="button"
-                        onClick={loadQuestion}
-                        className="inline-flex h-12 min-w-48 items-center justify-center rounded-md border border-blue-200 bg-white px-7 text-sm font-black text-blue-700 transition hover:bg-blue-50"
-                      >
-                        もう一問
-                      </button>
-                      <Link
-                        href="/practice"
-                        className="inline-flex h-12 min-w-64 items-center justify-center gap-6 rounded-md bg-blue-600 px-7 text-sm font-black text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700"
-                      >
-                        過去問練習へ
-                        <span aria-hidden="true" className="text-xl leading-none">
-                          →
-                        </span>
-                      </Link>
-                    </div>
+                    {aiExplanation ? (
+                      <span className="w-fit rounded-full bg-white px-3 py-1 text-xs font-black text-sky-700 ring-1 ring-sky-200">
+                        {aiExplanation.fromCache ? "保存済み" : "新規生成"} / {aiExplanation.modelName}
+                      </span>
+                    ) : null}
                   </div>
-                )}
-              </div>
-            ) : (
-              <div className="mt-7 rounded-md border border-slate-200 bg-slate-50 p-6 text-sm font-bold text-slate-500">
-                表示できる問題がありません。
-              </div>
-            )}
-          </section>
+
+                  {aiExplanation ? (
+                    <AiExplanationMarkdown text={aiExplanation.explanation} className="mt-4" />
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={loadAiExplanation}
+                      disabled={aiLoading}
+                      className="mt-4 rounded-md bg-sky-600 px-5 py-3 text-sm font-black text-white transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-300"
+                    >
+                      {aiLoading ? "AI解説を作成中..." : "AI解説を作成する"}
+                    </button>
+                  )}
+
+                  {aiError ? <p className="mt-3 text-sm font-bold text-rose-700">{aiError}</p> : null}
+                </div>
+              ) : null
+            }
+            resultActions={
+              <>
+                <Link
+                  href="/random-quiz"
+                  className="inline-flex h-12 min-w-48 items-center justify-center rounded-md border border-blue-200 bg-white px-7 text-sm font-black text-blue-700 transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                >
+                  ランダム出題へ
+                </Link>
+                <Link
+                  href="/practice"
+                  className="inline-flex h-12 min-w-64 items-center justify-center gap-6 rounded-md bg-blue-600 px-7 text-sm font-black text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                >
+                  過去問練習へ
+                  <span aria-hidden="true" className="text-xl leading-none">
+                    →
+                  </span>
+                </Link>
+              </>
+            }
+          />
 
           <aside className="min-w-0 rounded-lg border border-slate-200 bg-white p-5 shadow-[0_14px_40px_-24px_rgba(15,23,42,0.55)]">
             <h2 className="text-base font-black text-slate-950">所持情報</h2>

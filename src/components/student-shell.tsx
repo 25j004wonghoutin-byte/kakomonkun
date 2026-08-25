@@ -12,6 +12,7 @@ type NavigationItem = {
 
 type IconName =
   | "home"
+  | "shuffle"
   | "book"
   | "clipboard"
   | "crown"
@@ -25,6 +26,7 @@ type IconName =
 
 const navigation: NavigationItem[] = [
   { label: "ホーム", href: "/", icon: "home" },
+  { label: "ランダム出題", href: "/random-quiz", icon: "shuffle" },
   { label: "過去問練習", href: "/practice", icon: "book" },
   { label: "模擬試験", href: "/mock-exam", icon: "clipboard" },
   { label: "ランキング", href: "/ranking", icon: "crown" },
@@ -278,6 +280,12 @@ function AppIcon({ name, className = "size-5" }: { name: IconName; className?: s
       return (
         <svg {...common}>
           <path d="M4 10.8 12 4l8 6.8V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.2Z" fill="currentColor" />
+        </svg>
+      );
+    case "shuffle":
+      return (
+        <svg {...common}>
+          <path d="M4 7h2.5c4.5 0 6.5 10 11 10H20M17 14l3 3-3 3M4 17h2.5c1.5 0 2.7-1.1 3.8-2.6M13.7 9.6C14.8 8.1 16 7 17.5 7H20M17 4l3 3-3 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       );
     case "book":
