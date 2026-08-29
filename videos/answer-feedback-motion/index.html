@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>Answer Feedback Motion Preview</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Yu Gothic UI";
+        src: local("Yu Gothic UI");
+      }
+      @font-face {
+        font-family: "Hiragino Kaku Gothic ProN";
+        src: local("Hiragino Kaku Gothic ProN");
+      }
+      * { box-sizing: border-box; }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f4f7fb;
+        color: #0f172a;
+        font-family: "Yu Gothic UI", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
+      }
+      button { font: inherit; }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f4f7fb;
+      }
+      .clip {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 94px 120px;
+      }
+      .stage {
+        position: relative;
+        width: 1440px;
+        height: 850px;
+      }
+      .preview-label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: #2563eb;
+        font-size: 18px;
+        font-weight: 900;
+        letter-spacing: 0;
+      }
+      .preview-label::before {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: currentColor;
+        content: "";
+      }
+      .question-card {
+        position: absolute;
+        inset: 54px 0 0;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        overflow: hidden;
+        border: 1px solid #dbe3ef;
+        border-radius: 24px;
+        background: #ffffff;
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.1);
+      }
+      .question-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 32px;
+        padding: 38px 46px 28px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      .question-kicker {
+        margin: 0 0 12px;
+        color: #2563eb;
+        font-size: 17px;
+        font-weight: 900;
+      }
+      .question-title {
+        margin: 0;
+        max-width: 980px;
+        font-size: 32px;
+        line-height: 1.45;
+        letter-spacing: 0;
+      }
+      .question-count {
+        flex: 0 0 auto;
+        border-radius: 999px;
+        background: #eff6ff;
+        padding: 10px 16px;
+        color: #1d4ed8;
+        font-size: 16px;
+        font-weight: 900;
+      }
+      .answer-area {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 430px;
+        gap: 34px;
+        padding: 28px 46px 24px;
+      }
+      .answers { display: grid; gap: 14px; }
+      .answer {
+        position: relative;
+        display: flex;
+        min-height: 74px;
+        align-items: center;
+        gap: 18px;
+        overflow: hidden;
+        border: 2px solid #dbe3ef;
+        border-radius: 16px;
+        background: #ffffff;
+        padding: 13px 76px 13px 16px;
+        color: #334155;
+        font-size: 20px;
+        font-weight: 750;
+        transform-origin: 50% 50%;
+      }
+      .answer.selected {
+        border-color: #2563eb;
+        background: #eff6ff;
+        color: #172554;
+      }
+      .answer-letter {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 10px;
+        background: #eaf1fb;
+        color: #334155;
+        font-size: 17px;
+        font-weight: 900;
+      }
+      .selected .answer-letter { background: #2563eb; color: #ffffff; }
+      .state-mark {
+        position: absolute;
+        top: 50%;
+        right: 18px;
+        display: grid;
+        width: 46px;
+        height: 46px;
+        place-items: center;
+        border-radius: 999px;
+        opacity: 0;
+      }
+      .state-mark svg {
+        width: 32px;
+        height: 32px;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 4;
+      }
+      .state-mark.success { background: #d1fae5; color: #047857; }
+      .state-mark.error { background: #fee2e2; color: #b91c1c; }
+      .state-mark path { stroke-dashoffset: 1; }
+      .feedback-column {
+        display: grid;
+        align-content: end;
+        min-height: 100%;
+      }
+      .feedback-panel {
+        position: relative;
+        min-height: 210px;
+        overflow: hidden;
+        border: 1px solid #dbe3ef;
+        border-radius: 18px;
+        background: #f8fafc;
+        padding: 28px;
+        opacity: 0;
+        transform-origin: 50% 100%;
+      }
+      .feedback-panel::before {
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 5px;
+        background: var(--state-color);
+        content: "";
+      }
+      .feedback-panel.success { --state-color: #059669; background: #ecfdf5; }
+      .feedback-panel.error { --state-color: #dc2626; background: #fff1f2; }
+      .feedback-title {
+        margin: 0;
+        color: var(--state-color);
+        font-size: 28px;
+        font-weight: 900;
+        line-height: 1.3;
+      }
+      .feedback-copy {
+        margin: 16px 0 0;
+        color: #475569;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 1.65;
+      }
+      .correct-answer {
+        margin-top: 18px;
+        border: 1px solid #86efac;
+        border-radius: 12px;
+        background: #ffffff;
+        padding: 14px 16px;
+        color: #166534;
+        font-size: 17px;
+        font-weight: 900;
+        opacity: 0;
+      }
+      .question-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 22px 46px 30px;
+        border-top: 1px solid #e2e8f0;
+      }
+      .helper {
+        margin: 0;
+        color: #64748b;
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .submit-wrap { position: relative; flex: 0 0 auto; }
+      .submit-ripple {
+        position: absolute;
+        inset: 0;
+        border: 3px solid #60a5fa;
+        border-radius: 14px;
+        opacity: 0;
+      }
+      .submit-button {
+        position: relative;
+        z-index: 1;
+        min-width: 220px;
+        min-height: 58px;
+        border: 0;
+        border-radius: 14px;
+        background: #2563eb;
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 900;
+        box-shadow: 0 12px 24px rgba(37, 99, 235, 0.24);
+        transform-origin: 50% 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-gxr6" id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="1920" data-height="1080">
+      <section data-hf-id="hf-8csm" id="correct-scene" class="clip" data-start="0" data-duration="4" data-track-index="1">
+        <div data-hf-id="hf-tan6" class="stage">
+          <div data-hf-id="hf-lmy2" class="preview-label">正解フィードバック</div>
+          <article data-hf-id="hf-gc17" id="correct-card" class="question-card">
+            <header data-hf-id="hf-ocfv" class="question-head">
+              <div data-hf-id="hf-yeow">
+                <p data-hf-id="hf-pyz6" class="question-kicker">QUESTION 12</p>
+                <h1 data-hf-id="hf-3cf4" class="question-title">CPUの主な役割として、最も適切なものはどれですか。</h1>
+              </div>
+              <div data-hf-id="hf-bc6j" class="question-count">12 / 30</div>
+            </header>
+            <div data-hf-id="hf-tmtg" class="answer-area">
+              <div data-hf-id="hf-a2ht" class="answers">
+                <div data-hf-id="hf-321m" class="answer"><span data-hf-id="hf-tu0v" class="answer-letter">A</span>データを長期間保存する</div>
+                <div data-hf-id="hf-d3cp" id="correct-selected" class="answer selected">
+                  <span data-hf-id="hf-tfpu" class="answer-letter">B</span>命令を解釈し、演算や制御を行う
+                  <span data-hf-id="hf-68wd" id="success-mark" class="state-mark success" aria-label="正解">
+                    <svg data-hf-id="hf-s4t8" viewBox="0 0 40 40" aria-hidden="true"><path data-hf-id="hf-8zry" d="M9 21l7 7L31 12" /></svg>
+                  </span>
+                </div>
+                <div data-hf-id="hf-x1w0" class="answer"><span data-hf-id="hf-t1et" class="answer-letter">C</span>ネットワークを暗号化する</div>
+                <div data-hf-id="hf-dvtc" class="answer"><span data-hf-id="hf-vtk0" class="answer-letter">D</span>画面の明るさを調整する</div>
+              </div>
+              <div data-hf-id="hf-il4c" class="feedback-column">
+                <aside data-hf-id="hf-0fzw" id="success-panel" class="feedback-panel success">
+                  <p data-hf-id="hf-bt6x" class="feedback-title">正解です</p>
+                  <p data-hf-id="hf-3d47" class="feedback-copy">命令の解釈、演算、各装置の制御はCPUの中心的な役割です。</p>
+                </aside>
+              </div>
+            </div>
+            <footer data-hf-id="hf-z5gm" class="question-footer">
+              <p data-hf-id="hf-8jmr" class="helper">回答後、正解と解説をすぐに確認できます。</p>
+              <div data-hf-id="hf-ykbh" class="submit-wrap">
+                <span data-hf-id="hf-ehkz" id="correct-ripple" class="submit-ripple"></span>
+                <button data-hf-id="hf-0ste" id="correct-submit" class="submit-button" type="button">回答する</button>
+              </div>
+            </footer>
+          </article>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-39jh" id="incorrect-scene" class="clip" data-start="4" data-duration="4" data-track-index="1">
+        <div data-hf-id="hf-xa86" class="stage">
+          <div data-hf-id="hf-bev6" class="preview-label" style="color: #b91c1c">不正解フィードバック</div>
+          <article data-hf-id="hf-9yom" id="incorrect-card" class="question-card">
+            <header data-hf-id="hf-gyij" class="question-head">
+              <div data-hf-id="hf-y7yw">
+                <p data-hf-id="hf-opli" class="question-kicker">QUESTION 12</p>
+                <h1 data-hf-id="hf-a3ko" class="question-title">CPUの主な役割として、最も適切なものはどれですか。</h1>
+              </div>
+              <div data-hf-id="hf-nxaj" class="question-count">12 / 30</div>
+            </header>
+            <div data-hf-id="hf-z9j0" class="answer-area">
+              <div data-hf-id="hf-i81h" class="answers">
+                <div data-hf-id="hf-7m7y" class="answer"><span data-hf-id="hf-894v" class="answer-letter">A</span>データを長期間保存する</div>
+                <div data-hf-id="hf-uhqz" id="revealed-correct" class="answer">
+                  <span data-hf-id="hf-zk7q" class="answer-letter">B</span>命令を解釈し、演算や制御を行う
+                </div>
+                <div data-hf-id="hf-w1g2" id="wrong-selected" class="answer selected">
+                  <span data-hf-id="hf-7np5" class="answer-letter">C</span>ネットワークを暗号化する
+                  <span data-hf-id="hf-pspi" id="error-mark" class="state-mark error" aria-label="不正解">
+                    <svg data-hf-id="hf-g28k" viewBox="0 0 40 40" aria-hidden="true">
+                      <path data-hf-id="hf-qpvp" id="error-line-one" d="M12 12l16 16" />
+                      <path data-hf-id="hf-d2nh" id="error-line-two" d="M28 12L12 28" />
+                    </svg>
+                  </span>
+                </div>
+                <div data-hf-id="hf-sr3c" class="answer"><span data-hf-id="hf-kfo8" class="answer-letter">D</span>画面の明るさを調整する</div>
+              </div>
+              <div data-hf-id="hf-kqv8" class="feedback-column">
+                <aside data-hf-id="hf-xxu6" id="error-panel" class="feedback-panel error">
+                  <p data-hf-id="hf-d0i4" class="feedback-title">不正解です</p>
+                  <p data-hf-id="hf-lo8p" class="feedback-copy">選んだ回答を確認してから、正解と解説を見直しましょう。</p>
+                  <div data-hf-id="hf-hgik" id="correct-answer" class="correct-answer">正解：B　命令を解釈し、演算や制御を行う</div>
+                </aside>
+              </div>
+            </div>
+            <footer data-hf-id="hf-5hbe" class="question-footer">
+              <p data-hf-id="hf-rt1w" class="helper">間違えた問題は、結果画面からもう一度確認できます。</p>
+              <div data-hf-id="hf-rn8x" class="submit-wrap">
+                <span data-hf-id="hf-xmsw" id="wrong-ripple" class="submit-ripple"></span>
+                <button data-hf-id="hf-brz1" id="wrong-submit" class="submit-button" type="button">回答する</button>
+              </div>
+            </footer>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      document.querySelectorAll(".state-mark path").forEach((path) => {
+        const length = path.getTotalLength();
+        path.style.strokeDasharray = `${length}`;
+        path.style.strokeDashoffset = `${length}`;
+      });
+
+      const tl = gsap.timeline({ paused: true });
+
+      tl.to("#correct-submit", { scale: 0.96, duration: 0.1, ease: "power1.in" }, 0.45);
+      tl.to("#correct-submit", { scale: 1, duration: 0.28, ease: "back.out(1.35)" }, 0.55);
+      tl.fromTo("#correct-ripple", { scale: 1, opacity: 0.5 }, { scale: 1.3, opacity: 0, duration: 0.42, ease: "power2.out" }, 0.55);
+      tl.to("#correct-selected", { backgroundColor: "#ecfdf5", borderColor: "#34d399", color: "#065f46", scale: 1.01, duration: 0.2, ease: "power2.out" }, 0.68);
+      tl.to("#correct-selected", { scale: 1, duration: 0.24, ease: "power2.out", overwrite: "auto" }, 0.9);
+      tl.fromTo("#success-mark", { scale: 0.72, opacity: 0, rotation: -12, yPercent: -50 }, { scale: 1, opacity: 1, rotation: 0, yPercent: -50, duration: 0.34, ease: "power3.out" }, 0.72);
+      tl.to("#success-mark path", { strokeDashoffset: 0, duration: 0.42, ease: "power2.out" }, 0.82);
+      tl.fromTo("#success-panel", { y: 18, opacity: 0, scale: 0.98 }, { y: 0, opacity: 1, scale: 1, duration: 0.42, ease: "power3.out" }, 0.78);
+
+      tl.to("#wrong-submit", { scale: 0.96, duration: 0.1, ease: "power1.in" }, 4.45);
+      tl.to("#wrong-submit", { scale: 1, duration: 0.28, ease: "back.out(1.35)" }, 4.55);
+      tl.fromTo("#wrong-ripple", { scale: 1, opacity: 0.45 }, { scale: 1.3, opacity: 0, duration: 0.42, ease: "power2.out" }, 4.55);
+      tl.to("#wrong-selected", { backgroundColor: "#fff1f2", borderColor: "#f87171", color: "#7f1d1d", duration: 0.16, ease: "power1.out" }, 4.68);
+      tl.to("#wrong-selected", { x: -10, duration: 0.06, repeat: 5, yoyo: true, ease: "none" }, 4.7);
+      tl.fromTo("#error-mark", { scale: 0.78, opacity: 0, rotation: -8, yPercent: -50 }, { scale: 1, opacity: 1, rotation: 0, yPercent: -50, duration: 0.3, ease: "power3.out" }, 4.72);
+      tl.to(["#error-line-one", "#error-line-two"], { strokeDashoffset: 0, duration: 0.3, stagger: 0.08, ease: "power2.out" }, 4.78);
+      tl.fromTo("#error-panel", { y: 18, opacity: 0, scale: 0.98 }, { y: 0, opacity: 1, scale: 1, duration: 0.38, ease: "power3.out" }, 4.82);
+      tl.to("#revealed-correct", { backgroundColor: "#ecfdf5", borderColor: "#34d399", color: "#065f46", duration: 0.3, ease: "power2.out" }, 5.02);
+      tl.fromTo("#correct-answer", { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.32, ease: "power2.out" }, 5.12);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

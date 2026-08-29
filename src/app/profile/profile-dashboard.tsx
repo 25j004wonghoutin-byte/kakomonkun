@@ -36,7 +36,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
   const [profile, setProfile] = useState(initialData.profile);
   const [ownedTitles, setOwnedTitles] = useState(initialData.ownedTitles);
   const [period, setPeriod] = useState<Period>("overall");
-  const [showAllActivities, setShowAllActivities] = useState(false);
+  const [showAllPoints, setShowAllPoints] = useState(false);
   const [editDisplayName, setEditDisplayName] = useState(profile.displayName);
   const [editBio, setEditBio] = useState(profile.bio ?? "");
   const [profileSaving, setProfileSaving] = useState(false);
@@ -51,9 +51,10 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
 
   const accuracy =
     period === "overall" ? initialData.stats.overallAccuracy : initialData.stats.monthAccuracy;
-  const visibleActivities = showAllActivities
-    ? initialData.recentActivities
-    : initialData.recentActivities.slice(0, 3);
+  const visibleActivities = initialData.recentActivities.slice(0, 3);
+  const visiblePointHistory = showAllPoints
+    ? initialData.pointHistory
+    : initialData.pointHistory.slice(0, 3);
   const insight = getLearningInsight(initialData.categoryStats, period);
   const accuracyTrend = formatAccuracyTrend(initialData.stats);
 
@@ -140,7 +141,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
 
   return (
     <StudentShell userName={profile.displayName} points={profile.totalPoints}>
-      <div className="mx-auto w-full max-w-[1080px] min-w-0">
+      <div className="mx-auto w-full max-w-[1120px] min-w-0">
         <div className="mb-5">
           <p className="mb-1 text-xs font-black text-blue-600">MY PAGE</p>
           <h1 className="text-3xl font-black text-slate-950">マイページ</h1>
@@ -148,7 +149,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
 
         <section
           aria-labelledby="profile-name"
-          className="grid min-w-0 gap-5 rounded-lg border border-l-4 border-slate-200 border-l-blue-600 bg-white p-5 shadow-[0_14px_40px_-30px_rgba(15,23,42,0.55)] sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:items-center sm:p-6"
+          className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-4 rounded-lg border border-l-4 border-slate-200 border-l-blue-600 bg-white p-5 shadow-[0_14px_40px_-30px_rgba(15,23,42,0.55)] sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-5 sm:p-6"
         >
           <ProfileAvatar displayName={profile.displayName} avatarUrl={profile.avatarUrl} />
           <div className="min-w-0">
@@ -169,7 +170,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
           <button
             type="button"
             onClick={openProfileDialog}
-            className="min-h-11 rounded-md border border-slate-300 bg-white px-4 text-sm font-black text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 sm:justify-self-end"
+            className="col-span-2 min-h-11 rounded-md border border-slate-300 bg-white px-4 text-sm font-black text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 sm:col-span-1 sm:justify-self-end"
           >
             プロフィール編集
           </button>
@@ -177,29 +178,21 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
 
         <section aria-label="学習状況の概要" className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
           <MetricCard
-            symbol="P"
-            tone="amber"
             label="所持ポイント"
             value={`${profile.totalPoints.toLocaleString()} pt`}
             note={`今月 ${formatSignedNumber(initialData.stats.monthPoints)} pt`}
           />
           <MetricCard
-            symbol="回"
-            tone="blue"
             label="練習完了"
             value={`${initialData.stats.totalPracticeCount.toLocaleString()} 回`}
             note={`今月 ${initialData.stats.monthPracticeCount.toLocaleString()} 回`}
           />
           <MetricCard
-            symbol="問"
-            tone="green"
             label="総回答数"
             value={`${initialData.stats.totalAnswerCount.toLocaleString()} 問`}
             note={`正解 ${initialData.stats.totalCorrectCount.toLocaleString()} 問`}
           />
           <MetricCard
-            symbol="%"
-            tone="rose"
             label="総合正答率"
             value={`${initialData.stats.overallAccuracy}%`}
             note={accuracyTrend}
@@ -213,26 +206,34 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                 <h2 id="learning-status-heading" className="text-base font-black text-slate-950">
                   学習状況
                 </h2>
-                <div
-                  role="group"
-                  aria-label="集計期間"
-                  className="grid w-full grid-cols-2 rounded-md border border-slate-300 bg-slate-50 p-1 sm:w-auto"
-                >
-                  {(["overall", "month"] as const).map((option) => (
-                    <button
-                      key={option}
-                      type="button"
-                      aria-pressed={period === option}
-                      onClick={() => setPeriod(option)}
-                      className={`min-h-9 min-w-16 rounded px-3 text-xs font-black transition ${
-                        period === option
-                          ? "bg-white text-blue-700 shadow-sm"
-                          : "text-slate-500 hover:text-slate-800"
-                      }`}
-                    >
-                      {option === "overall" ? "総合" : "今月"}
-                    </button>
-                  ))}
+                <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
+                  <div
+                    role="group"
+                    aria-label="集計期間"
+                    className="grid grid-cols-2 rounded-md border border-slate-300 bg-slate-50 p-1"
+                  >
+                    {(["overall", "month"] as const).map((option) => (
+                      <button
+                        key={option}
+                        type="button"
+                        aria-pressed={period === option}
+                        onClick={() => setPeriod(option)}
+                        className={`min-h-9 min-w-16 rounded px-3 text-xs font-black transition ${
+                          period === option
+                            ? "bg-white text-blue-700 shadow-sm"
+                            : "text-slate-500 hover:text-slate-800"
+                        }`}
+                      >
+                        {option === "overall" ? "総合" : "今月"}
+                      </button>
+                    ))}
+                  </div>
+                  <Link
+                    href="/profile/learning"
+                    className="inline-flex min-h-11 items-center justify-center px-2 text-xs font-black text-blue-700 hover:text-blue-900"
+                  >
+                    詳細を見る&nbsp;→
+                  </Link>
                 </div>
               </div>
 
@@ -286,16 +287,12 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                 <h2 id="recent-learning-heading" className="text-base font-black text-slate-950">
                   最近の学習
                 </h2>
-                {initialData.recentActivities.length > 3 ? (
-                  <button
-                    type="button"
-                    aria-expanded={showAllActivities}
-                    onClick={() => setShowAllActivities((current) => !current)}
-                    className="min-h-11 rounded-md border border-blue-200 bg-blue-50 px-4 text-xs font-black text-blue-700 transition hover:bg-blue-100"
-                  >
-                    {showAllActivities ? "閉じる" : "すべて見る"}
-                  </button>
-                ) : null}
+                <Link
+                  href="/profile/learning"
+                  className="inline-flex min-h-11 items-center text-xs font-black text-blue-700 hover:text-blue-900"
+                >
+                  履歴を見る&nbsp;→
+                </Link>
               </div>
               {visibleActivities.length > 0 ? (
                 <ul className="divide-y divide-slate-100">
@@ -311,7 +308,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
             </section>
           </div>
 
-          <aside>
+          <aside className="space-y-4">
             <section aria-labelledby="titles-heading" className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-[0_14px_40px_-30px_rgba(15,23,42,0.55)]">
               <div className="flex min-h-[66px] items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
                 <h2 id="titles-heading" className="text-base font-black text-slate-950">
@@ -334,9 +331,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                 </div>
               ) : (
                 <div className="border-b border-slate-200 bg-slate-50 px-5 py-6 text-center">
-                  <span className="mx-auto grid size-12 place-items-center rounded-full border border-slate-300 bg-white text-sm font-black text-slate-500">
-                    称
-                  </span>
+                  <span className="flex justify-center"><TitleSymbol rarity="normal" large /></span>
                   <strong className="mt-3 block text-sm font-black text-slate-800">称号未装備</strong>
                   <p className="mt-1 text-xs font-semibold leading-5 text-slate-500">
                     所持している称号を装備すると、ここに表示されます。
@@ -388,6 +383,57 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                   称号ショップへ
                 </Link>
               </div>
+            </section>
+
+            <section
+              aria-labelledby="point-history-heading"
+              className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-[0_14px_40px_-30px_rgba(15,23,42,0.55)]"
+            >
+              <div className="flex min-h-[62px] items-center justify-between gap-3 border-b border-slate-200 px-5 py-3">
+                <h2 id="point-history-heading" className="text-base font-black text-slate-950">
+                  ポイント履歴
+                </h2>
+                {initialData.pointHistory.length > 3 ? (
+                  <button
+                    type="button"
+                    aria-expanded={showAllPoints}
+                    onClick={() => setShowAllPoints((current) => !current)}
+                    className="inline-flex min-h-11 items-center text-xs font-black text-blue-700 hover:text-blue-900"
+                  >
+                    {showAllPoints ? "閉じる" : "すべて見る"}
+                  </button>
+                ) : null}
+              </div>
+              {visiblePointHistory.length > 0 ? (
+                <ul className="divide-y divide-slate-100">
+                  {visiblePointHistory.map((history) => (
+                    <li
+                      key={history.id}
+                      className="grid min-h-[62px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-5 py-3"
+                    >
+                      <span className="min-w-0">
+                        <strong className="block break-words text-xs font-black text-slate-900">
+                          {history.description}
+                        </strong>
+                        <span className="mt-1 block text-[10px] font-bold text-slate-500">
+                          {activityDateFormatter.format(new Date(history.occurredAt))}
+                        </span>
+                      </span>
+                      <strong
+                        className={`whitespace-nowrap text-sm font-black ${
+                          history.points >= 0 ? "text-emerald-700" : "text-rose-700"
+                        }`}
+                      >
+                        {formatSignedNumber(history.points)} pt
+                      </strong>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="px-5 py-8 text-center text-xs font-semibold text-slate-500">
+                  ポイント履歴はまだありません。
+                </p>
+              )}
             </section>
           </aside>
         </div>
@@ -555,30 +601,16 @@ function ProfileAvatar({ displayName, avatarUrl }: { displayName: string; avatar
 }
 
 function MetricCard({
-  symbol,
-  tone,
   label,
   value,
   note,
 }: {
-  symbol: string;
-  tone: "amber" | "blue" | "green" | "rose";
   label: string;
   value: string;
   note: string;
 }) {
-  const toneClass = {
-    amber: "bg-amber-50 text-amber-700",
-    blue: "bg-blue-50 text-blue-700",
-    green: "bg-emerald-50 text-emerald-700",
-    rose: "bg-rose-50 text-rose-700",
-  }[tone];
-
   return (
-    <article className="grid min-h-[116px] min-w-0 content-start gap-2 rounded-lg border border-slate-200 bg-white p-4 sm:min-h-[92px] sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center sm:content-center sm:gap-3">
-      <span className={`grid size-10 place-items-center rounded-lg text-xs font-black ${toneClass}`}>
-        {symbol}
-      </span>
+    <article className="flex min-h-[104px] min-w-0 items-center rounded-lg border border-slate-200 bg-white p-4 sm:min-h-[92px] sm:px-5">
       <span className="min-w-0">
         <span className="block text-[11px] font-bold text-slate-500">{label}</span>
         <strong className="mt-0.5 block break-words text-xl font-black leading-tight text-slate-950">
@@ -612,17 +644,7 @@ function AccuracyRing({ accuracy, period }: { accuracy: number; period: Period }
 function RecentActivityRow({ activity }: { activity: ProfileRecentActivity }) {
   const incorrect = activity.result === "不正解";
   return (
-    <li className="grid min-h-[72px] grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-1 px-5 py-3 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
-      <span
-        aria-hidden="true"
-        className={`grid size-9 place-items-center rounded-lg text-xs font-black ${
-          activity.kind === "practice"
-            ? "bg-blue-50 text-blue-700"
-            : "bg-emerald-50 text-emerald-700"
-        }`}
-      >
-        {activity.kind === "practice" ? "練" : "日"}
-      </span>
+    <li className="grid min-h-[72px] grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 px-5 py-3">
       <span className="min-w-0">
         <strong className="block break-words text-xs font-black text-slate-900 sm:text-sm">
           {activity.title}
@@ -631,7 +653,7 @@ function RecentActivityRow({ activity }: { activity: ProfileRecentActivity }) {
           {activityDateFormatter.format(new Date(activity.occurredAt))} ・ {activity.detail}
         </span>
       </span>
-      <span className="col-start-2 text-left sm:col-start-auto sm:text-right">
+      <span className="text-right">
         <strong className={`text-sm font-black ${incorrect ? "text-rose-700" : "text-slate-900"}`}>
           {activity.result}
         </strong>
@@ -658,11 +680,15 @@ function TitleSymbol({ rarity, large = false }: { rarity: string; large?: boolea
   return (
     <span
       aria-hidden="true"
-      className={`grid shrink-0 place-items-center rounded-full border font-black ${colorClass} ${
-        large ? "size-12 text-sm" : "size-9 text-xs"
+      className={`grid shrink-0 place-items-center rounded-full border ${colorClass} ${
+        large ? "size-12" : "size-9"
       }`}
     >
-      称
+      <svg viewBox="0 0 24 24" className={large ? "size-6" : "size-5"}>
+        <path d="M8 3h8l-2 5h-4L8 3Z" fill="currentColor" />
+        <circle cx="12" cy="15" r="5.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+        <path d="m12 11.5 1.05 2.1 2.3.35-1.67 1.62.4 2.28L12 16.75l-2.08 1.1.4-2.28-1.67-1.62 2.3-.35L12 11.5Z" fill="currentColor" />
+      </svg>
     </span>
   );
 }

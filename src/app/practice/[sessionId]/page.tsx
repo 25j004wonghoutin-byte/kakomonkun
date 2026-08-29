@@ -7,7 +7,8 @@ import { useEffect, useMemo, useState } from "react";
 import { AiExplanationMarkdown } from "@/components/ai-explanation-markdown";
 import { QuestionChoiceContent } from "@/components/question-choice-content";
 import { StudentShell } from "@/components/student-shell";
-import { ErrorCard, LoadingCard } from "@/components/ui";
+import { AnswerStateMark, ErrorCard, LoadingCard } from "@/components/ui";
+import { getPracticeCompletionPoints } from "@/lib/practice-config";
 import { readJsonResponse } from "@/lib/read-json-response";
 
 type Choice = {
@@ -190,7 +191,7 @@ export default function PracticeSessionPage() {
       session &&
       session.answeredCount < session.questionCount &&
       !window.confirm(
-        `未回答の問題が${session.questionCount - session.answeredCount}問あります。ここで終了すると、練習完了の5ptは獲得できません。結果を保存して終了しますか？`,
+        `未回答の問題が${session.questionCount - session.answeredCount}問あります。ここで終了すると、練習完了の${getPracticeCompletionPoints(session.questionCount)}ptは獲得できません。結果を保存して終了しますか？`,
       )
     ) {
       return;
@@ -284,6 +285,7 @@ export default function PracticeSessionPage() {
             const chosen = selectedChoice === choice.id;
             const correct = Boolean(displayedResult?.correctChoice?.id === choice.id);
             const wrong = Boolean(displayedResult && chosen && !correct);
+            const delayedCorrectReveal = Boolean(displayedResult && !displayedResult.isCorrect && correct);
 
             return (
               <button
@@ -299,15 +301,21 @@ export default function PracticeSessionPage() {
                       : chosen
                         ? "border-blue-500 bg-blue-50 text-blue-950 ring-2 ring-blue-100"
                         : "border-slate-200 hover:border-blue-300 hover:bg-blue-50/50"
-                }`}
+                } ${answerResult && correct ? "answer-choice-correct-motion" : ""} ${
+                  answerResult && delayedCorrectReveal ? "answer-choice-correct-delay" : ""
+                } ${answerResult && wrong ? "answer-choice-wrong-motion" : ""}`}
               >
                 <span className="grid size-9 shrink-0 place-items-center rounded-full bg-slate-100 text-sm font-black">
                   {choice.choiceLabel}
                 </span>
                 <QuestionChoiceContent text={choice.choiceText} label={choice.choiceLabel} />
-                {correct ? (
-                  <span className="ml-auto grid size-7 shrink-0 place-items-center rounded-full bg-emerald-600 text-xs font-black text-white">
-                    正
+                {correct || wrong ? (
+                  <span className="ml-auto">
+                    <AnswerStateMark
+                      state={correct ? "correct" : "incorrect"}
+                      animate={Boolean(answerResult)}
+                      delayed={delayedCorrectReveal}
+                    />
                   </span>
                 ) : null}
               </button>
@@ -321,7 +329,9 @@ export default function PracticeSessionPage() {
               displayedResult.isCorrect
                 ? "border-emerald-200 bg-emerald-50"
                 : "border-rose-200 bg-rose-50"
-            }`}
+            } ${answerResult ? "answer-feedback-panel-motion" : ""}`}
+            role="status"
+            aria-live="polite"
           >
             <p className={`font-black ${displayedResult.isCorrect ? "text-emerald-800" : "text-rose-800"}`}>
               {displayedResult.isCorrect ? "正解です！" : "不正解です。次の問題で取り返しましょう。"}
@@ -384,7 +394,7 @@ export default function PracticeSessionPage() {
               <button
                 type="button"
                 onClick={finishPractice}
-                disabled={submitting || session.answeredCount === 0}
+                disabled={submitting}
                 className="rounded-xl px-5 py-3 text-sm font-black text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 ここで終了する
@@ -397,7 +407,7 @@ export default function PracticeSessionPage() {
               type="button"
               onClick={submitAnswer}
               disabled={!selectedChoice || submitting}
-              className="rounded-xl bg-blue-600 px-6 py-3 font-black text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+              className="rounded-xl bg-blue-600 px-6 py-3 font-black text-white transition hover:bg-blue-700 active:scale-[0.97] motion-reduce:transform-none disabled:cursor-not-allowed disabled:bg-slate-300"
             >
               {submitting ? "保存中..." : "回答する"}
             </button>

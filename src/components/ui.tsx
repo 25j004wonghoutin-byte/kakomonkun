@@ -67,3 +67,47 @@ export function ErrorCard({
     </div>
   );
 }
+
+export function AnswerStateMark({
+  state,
+  animate = false,
+  delayed = false,
+  size = "sm",
+}: {
+  state: "correct" | "incorrect";
+  animate?: boolean;
+  delayed?: boolean;
+  size?: "sm" | "lg";
+}) {
+  const stateClasses =
+    state === "correct"
+      ? "bg-emerald-100 text-emerald-700"
+      : "bg-rose-100 text-rose-700";
+  const sizeClasses = size === "lg" ? "size-11 p-2.5" : "size-8 p-1.5";
+
+  return (
+    <span
+      aria-hidden="true"
+      className={`grid shrink-0 place-items-center rounded-full ${stateClasses} ${sizeClasses} ${
+        animate ? "answer-state-mark-motion" : ""
+      } ${delayed ? "answer-state-mark-delay" : ""}`}
+    >
+      {state === "correct" ? (
+        <svg viewBox="0 0 24 24" fill="none" className="size-full" stroke="currentColor" strokeWidth="2.6">
+          <path
+            className="answer-state-mark-path"
+            pathLength="1"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m5.5 12.5 4.2 4.2L18.8 7.6"
+          />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" fill="none" className="size-full" stroke="currentColor" strokeWidth="2.6">
+          <path className="answer-state-mark-path" pathLength="1" strokeLinecap="round" d="m7.2 7.2 9.6 9.6" />
+          <path className="answer-state-mark-path" pathLength="1" strokeLinecap="round" d="m16.8 7.2-9.6 9.6" />
+        </svg>
+      )}
+    </span>
+  );
+}

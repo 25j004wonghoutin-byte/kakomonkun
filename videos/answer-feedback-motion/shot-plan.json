@@ -1,0 +1,25 @@
+{
+  "category": "webpage",
+  "duration_s": 8,
+  "fps": 30,
+  "canvas": { "w": 1920, "h": 1080, "aspect": "16:9" },
+  "style": "calm educational UI, crisp state feedback, restrained spring motion",
+  "palette": ["#F4F7FB", "#FFFFFF", "#0F172A", "#2563EB", "#059669", "#DC2626"],
+  "font": "system-ui",
+  "beats": [0.45, 0.72, 4.45, 4.72, 5.12],
+  "export": "mp4",
+  "asset_needs": [],
+  "block": "success-check + input-feedback",
+  "customize": {
+    "success": "blue practice UI with green ring and SVG check draw",
+    "error": "red selected-answer shake, SVG cross draw, then reveal correct choice"
+  },
+  "content": {
+    "url": "http://localhost:3000/practice",
+    "capture": "recreated answer panel for a deterministic preview",
+    "highlights": [
+      { "region": "selected answer and result banner", "label": "correct feedback" },
+      { "region": "selected answer, correct answer, and result banner", "label": "incorrect feedback" }
+    ]
+  }
+}

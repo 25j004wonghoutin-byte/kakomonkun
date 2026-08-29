@@ -16,6 +16,11 @@ export type PracticeCategoryCode =
 
 export type PracticeQuestionCount = (typeof PRACTICE_QUESTION_COUNTS)[number];
 
+export const PRACTICE_COMPLETION_POINTS: Record<PracticeQuestionCount, number> = {
+  30: 5,
+  60: 15,
+};
+
 export function isPracticeCategoryCode(value: unknown): value is PracticeCategoryCode {
   return (
     value === ALL_PRACTICE_CATEGORY_CODE ||
@@ -25,6 +30,12 @@ export function isPracticeCategoryCode(value: unknown): value is PracticeCategor
 
 export function isPracticeQuestionCount(value: unknown): value is PracticeQuestionCount {
   return PRACTICE_QUESTION_COUNTS.some((count) => count === value);
+}
+
+export function getPracticeCompletionPoints(questionCount: number) {
+  return isPracticeQuestionCount(questionCount)
+    ? PRACTICE_COMPLETION_POINTS[questionCount]
+    : 0;
 }
 
 export function supportsPracticeCategorySelection(examCode: string) {

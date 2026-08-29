@@ -3,6 +3,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { QuestionChoiceContent } from "@/components/question-choice-content";
+import { AnswerStateMark } from "@/components/ui";
 
 export type QuizQuestion = {
   id: string;
@@ -39,6 +40,7 @@ type QuizQuestionCardProps = {
   question: QuizQuestion | null;
   selectedChoiceId: string | null;
   answerResult: QuizAnswerResult | null;
+  animateAnswerResult?: boolean;
   loading: boolean;
   answering: boolean;
   error: string;
@@ -56,6 +58,7 @@ export function QuizQuestionCard({
   question,
   selectedChoiceId,
   answerResult,
+  animateAnswerResult = false,
   loading,
   answering,
   error,
@@ -130,6 +133,7 @@ export function QuizQuestionCard({
               const chosen = selectedChoiceId === choice.id;
               const correct = answerResult?.correctChoice.id === choice.id;
               const wrong = Boolean(answerResult && chosen && !correct);
+              const delayedCorrectReveal = Boolean(answerResult && !answerResult.isCorrect && correct);
 
               return (
                 <button
@@ -144,24 +148,32 @@ export function QuizQuestionCard({
                       : wrong
                         ? "rounded-md border border-rose-200 bg-rose-50 px-3 font-bold text-slate-900"
                         : "text-slate-700 hover:bg-blue-50 disabled:hover:bg-transparent"
-                  }`}
+                  } ${animateAnswerResult && correct ? "answer-choice-correct-motion" : ""} ${
+                    animateAnswerResult && delayedCorrectReveal ? "answer-choice-correct-delay" : ""
+                  } ${animateAnswerResult && wrong ? "answer-choice-wrong-motion" : ""}`}
                 >
                   <span
                     className={`grid size-5 shrink-0 place-items-center rounded-full border text-[11px] ${
-                      chosen || correct
+                      chosen && !answerResult
                         ? "border-blue-600 bg-blue-600 text-white"
                         : "border-slate-400 bg-white text-slate-500"
                     }`}
                   >
-                    {chosen || correct ? "✓" : ""}
+                    {chosen && !answerResult ? (
+                      <span className="size-2 rounded-full bg-white" />
+                    ) : null}
                   </span>
                   <span className="shrink-0 text-xs font-black text-slate-500">
                     {choice.label}
                   </span>
                   <QuestionChoiceContent text={choice.text} label={choice.label} />
-                  {correct ? (
-                    <span className="grid size-6 shrink-0 place-items-center rounded-full bg-emerald-600 text-xs font-black text-white">
-                      正
+                  {correct || wrong ? (
+                    <span className="ml-auto">
+                      <AnswerStateMark
+                        state={correct ? "correct" : "incorrect"}
+                        animate={animateAnswerResult}
+                        delayed={delayedCorrectReveal}
+                      />
                     </span>
                   ) : null}
                 </button>
@@ -178,28 +190,29 @@ export function QuizQuestionCard({
                 type="button"
                 disabled={!selectedChoiceId || answering}
                 onClick={onSubmit}
-                className="inline-flex h-11 min-w-36 items-center justify-center rounded-md bg-blue-600 px-5 text-sm font-black text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
+                className="inline-flex h-11 min-w-36 items-center justify-center rounded-md bg-blue-600 px-5 text-sm font-black text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 motion-reduce:transform-none disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
               >
                 {answering ? "判定中..." : "回答する"}
               </button>
             </div>
           ) : (
             <div className="mt-7 border-t border-slate-200 pt-6">
-              <div className="flex gap-4" role="status" aria-live="polite">
-                <span
-                  className={`grid size-10 shrink-0 place-items-center rounded-full text-2xl font-black text-white ${
-                    answerResult.isCorrect ? "bg-emerald-600" : "bg-rose-600"
-                  }`}
-                >
-                  {answerResult.isCorrect ? "✓" : "!"}
-                </span>
+              <div
+                className={`rounded-md border p-5 ${
+                  answerResult.isCorrect
+                    ? "border-emerald-200 bg-emerald-50"
+                    : "border-rose-200 bg-rose-50"
+                } ${animateAnswerResult ? "answer-feedback-panel-motion" : ""}`}
+                role="status"
+                aria-live="polite"
+              >
                 <div>
                   <p
                     className={`text-lg font-black ${
                       answerResult.isCorrect ? "text-emerald-700" : "text-rose-700"
                     }`}
                   >
-                    {answerResult.isCorrect ? "正解！" : "不正解"}
+                    {answerResult.isCorrect ? "正解です" : "不正解です"}
                   </p>
                   <p className="mt-1 text-sm font-bold text-slate-700">
                     正解は {answerResult.correctChoice.label} です。
@@ -210,12 +223,7 @@ export function QuizQuestionCard({
               {resultNotice}
 
               <div className="mt-5 rounded-md border border-emerald-200 bg-emerald-50 p-4">
-                <div className="flex items-center gap-2 text-sm font-black text-emerald-700">
-                  <span className="grid size-6 place-items-center rounded-full bg-emerald-600 text-white">
-                    !
-                  </span>
-                  解説
-                </div>
+                <div className="text-sm font-black text-emerald-700">解説</div>
                 <p className="mt-3 whitespace-pre-wrap text-sm leading-7 text-slate-700">
                   {answerResult.explanation ?? "この問題の解説はまだ登録されていません。"}
                 </p>

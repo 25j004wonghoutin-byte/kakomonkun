@@ -57,10 +57,7 @@ export default function PracticeResultPage() {
       <div className="mx-auto max-w-3xl">
         <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white text-center shadow-xl">
           <div className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400 px-6 py-10 text-white">
-            <div className="mx-auto grid size-20 place-items-center rounded-full bg-white/20 text-4xl backdrop-blur">
-              {answeredAllQuestions ? "完" : "済"}
-            </div>
-            <p className="mt-5 text-sm font-black tracking-[0.16em] text-blue-100">
+            <p className="text-sm font-black tracking-[0.16em] text-blue-100">
               {answeredAllQuestions ? "PRACTICE COMPLETE" : "PRACTICE SAVED"}
             </p>
             <h1 className="mt-2 text-3xl font-black sm:text-4xl">
@@ -79,7 +76,7 @@ export default function PracticeResultPage() {
 
             {!answeredAllQuestions ? (
               <p className="mt-5 rounded-xl bg-amber-50 px-4 py-3 text-sm font-bold text-amber-800">
-                全問回答していないため、練習完了の5ptは対象外です。
+                未完了なため、ポイントを獲得できませんでした。
               </p>
             ) : null}
 

@@ -42,6 +42,7 @@ export default function RandomQuizPage() {
   const [answerResult, setAnswerResult] = useState<QuizAnswerResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [answering, setAnswering] = useState(false);
+  const [animateAnswerResult, setAnimateAnswerResult] = useState(false);
   const [error, setError] = useState("");
 
   async function loadQuestion() {
@@ -49,6 +50,7 @@ export default function RandomQuizPage() {
     setError("");
     setSelectedChoiceId(null);
     setAnswerResult(null);
+    setAnimateAnswerResult(false);
 
     try {
       setQuestion(await fetchRandomQuestion());
@@ -108,6 +110,7 @@ export default function RandomQuizPage() {
       }
 
       const data = (await response.json()) as { answer: QuizAnswerResult };
+      setAnimateAnswerResult(true);
       setAnswerResult(data.answer);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "回答を判定できませんでした。");
@@ -132,6 +135,7 @@ export default function RandomQuizPage() {
           question={question}
           selectedChoiceId={selectedChoiceId}
           answerResult={answerResult}
+          animateAnswerResult={animateAnswerResult}
           loading={loading}
           answering={answering}
           error={error}

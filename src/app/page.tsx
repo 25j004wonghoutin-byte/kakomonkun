@@ -67,6 +67,7 @@ export default function Home() {
   const [aiError, setAiError] = useState("");
   const [questionLoading, setQuestionLoading] = useState(true);
   const [answering, setAnswering] = useState(false);
+  const [animateAnswerResult, setAnimateAnswerResult] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -131,6 +132,7 @@ export default function Home() {
       }
 
       const data = (await response.json()) as DailyQuestionResponse;
+      setAnimateAnswerResult(true);
       setQuestion(data.question);
       setSelectedChoiceId(data.answer?.selectedChoiceId ?? selectedChoiceId);
       setAnswerResult(data.answer);
@@ -202,6 +204,7 @@ export default function Home() {
             question={question}
             selectedChoiceId={selectedChoiceId}
             answerResult={answerResult}
+            animateAnswerResult={animateAnswerResult}
             loading={questionLoading}
             answering={answering}
             error={error}

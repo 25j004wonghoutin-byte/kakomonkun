@@ -1,0 +1,10 @@
+{
+  "duration": 8,
+  "assertions": [
+    { "kind": "appearsBy", "selector": "#success-panel", "bySec": 1.4 },
+    { "kind": "appearsBy", "selector": "#error-panel", "bySec": 5.5 },
+    { "kind": "appearsBy", "selector": "#correct-answer", "bySec": 5.8 },
+    { "kind": "staysInFrame", "selector": "#correct-card" },
+    { "kind": "staysInFrame", "selector": "#incorrect-card" }
+  ]
+}

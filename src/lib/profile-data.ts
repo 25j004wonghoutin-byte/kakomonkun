@@ -39,6 +39,13 @@ export type ProfileRecentActivity = {
   earnedPoints: number;
 };
 
+export type ProfilePointHistory = {
+  id: string;
+  description: string;
+  occurredAt: string;
+  points: number;
+};
+
 export type ProfilePageData = {
   profile: {
     displayName: string;
@@ -67,6 +74,7 @@ export type ProfilePageData = {
     }
   >;
   recentActivities: ProfileRecentActivity[];
+  pointHistory: ProfilePointHistory[];
 };
 
 export async function getStudentProfileData(userId: string): Promise<ProfilePageData> {
@@ -84,6 +92,7 @@ export async function getStudentProfileData(userId: string): Promise<ProfilePage
     categoryRows,
     practiceActivities,
     dailyActivities,
+    pointTransactions,
   ] = await Promise.all([
     prisma.studentProfile.findUniqueOrThrow({
       where: { userId },
@@ -217,6 +226,20 @@ export async function getStudentProfileData(userId: string): Promise<ProfilePage
         },
       },
     }),
+    prisma.pointTransaction.findMany({
+      where: { userId },
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+      take: 16,
+      select: {
+        id: true,
+        points: true,
+        reason: true,
+        sourceType: true,
+        sourceId: true,
+        description: true,
+        createdAt: true,
+      },
+    }),
   ]);
 
   const categoryByCode = new Map(categoryRows.map((row) => [row.code, row]));
@@ -275,6 +298,31 @@ export async function getStudentProfileData(userId: string): Promise<ProfilePage
       Number(answer.answerPointAwarded) + Number(answer.correctPointAwarded),
   }));
 
+  const pointHistoryBySource = new Map<string, ProfilePointHistory>();
+  for (const transaction of pointTransactions) {
+    const sourceKey =
+      transaction.sourceType && transaction.sourceId
+        ? `${transaction.sourceType}-${transaction.sourceId}`
+        : transaction.id;
+    const existing = pointHistoryBySource.get(sourceKey);
+
+    if (existing) {
+      existing.points += transaction.points;
+      continue;
+    }
+
+    pointHistoryBySource.set(sourceKey, {
+      id: sourceKey,
+      description: getPointHistoryDescription(
+        transaction.sourceType,
+        transaction.reason,
+        transaction.description,
+      ),
+      occurredAt: transaction.createdAt.toISOString(),
+      points: transaction.points,
+    });
+  }
+
   return {
     profile: {
       displayName: profile.user.displayName,
@@ -310,9 +358,20 @@ export async function getStudentProfileData(userId: string): Promise<ProfilePage
     recentActivities: [...practiceRecent, ...dailyRecent]
       .sort((left, right) => right.occurredAt.localeCompare(left.occurredAt))
       .slice(0, 8),
+    pointHistory: Array.from(pointHistoryBySource.values()).slice(0, 5),
   };
 }
 
 function calculateAccuracy(correctCount: number, answerCount: number) {
   return answerCount > 0 ? Math.round((correctCount / answerCount) * 100) : 0;
+}
+
+function getPointHistoryDescription(
+  sourceType: string | null,
+  reason: string,
+  description: string | null,
+) {
+  if (sourceType === "practice") return "過去問練習完了";
+  if (sourceType === "daily_qa") return "一問一答に回答";
+  return description || reason;
 }

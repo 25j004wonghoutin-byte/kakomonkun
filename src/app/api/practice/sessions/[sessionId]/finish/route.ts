@@ -1,6 +1,6 @@
 import { getCurrentUser } from "@/lib/auth";
 import { conflict, forbidden, notFound, unauthorized } from "@/lib/http";
-import { isPracticeQuestionCount } from "@/lib/practice-config";
+import { getPracticeCompletionPoints } from "@/lib/practice-config";
 import { prisma } from "@/lib/prisma";
 import { getTokyoDayRange } from "@/lib/tokyo-date";
 
@@ -28,14 +28,13 @@ export async function POST(
     });
   }
   if (session.status !== "in_progress") return conflict("Practice session cannot be completed");
-  if (session.answeredCount === 0) return conflict("Answer at least one question before finishing");
 
   const { dateString } = getTokyoDayRange();
   const transactionDate = new Date(`${dateString}T00:00:00.000Z`);
   const isStudent = user.role.name === "student";
   const answeredAllQuestions = session.answeredCount === session.questionCount;
-  const isRewardEligibleSession =
-    answeredAllQuestions && isPracticeQuestionCount(session.questionCount);
+  const configuredCompletionPoints = getPracticeCompletionPoints(session.questionCount);
+  const isRewardEligibleSession = answeredAllQuestions && configuredCompletionPoints > 0;
   const rewardedToday = isStudent
     ? await prisma.pointTransaction.count({
         where: {
@@ -46,8 +45,12 @@ export async function POST(
       })
     : 0;
 
-  const completionPoints = isStudent && isRewardEligibleSession && rewardedToday < 2 ? 5 : 0;
-  const correctBonusPoints = isStudent ? Math.floor(session.correctCount / 10) : 0;
+  const completionPoints =
+    isStudent && isRewardEligibleSession && rewardedToday < 2
+      ? configuredCompletionPoints
+      : 0;
+  const correctBonusPoints =
+    isStudent && answeredAllQuestions ? Math.floor(session.correctCount / 10) : 0;
   const earnedPoints = completionPoints + correctBonusPoints;
 
   const result = await prisma.$transaction(async (tx) => {
