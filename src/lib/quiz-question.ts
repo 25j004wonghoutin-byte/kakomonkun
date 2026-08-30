@@ -1,4 +1,5 @@
 import { Prisma } from "../../prisma/generated/client";
+import { getQuestionPresentation } from "@/lib/official-question";
 import { prisma } from "@/lib/prisma";
 
 const availableQuestionWhere = {
@@ -11,6 +12,9 @@ export const quizQuestionSelect = {
   questionText: true,
   imagePath: true,
   explanation: true,
+  sourceYear: true,
+  sourceSeason: true,
+  questionNo: true,
   exam: { select: { code: true, name: true } },
   category: { select: { code: true, name: true } },
   choices: {
@@ -74,6 +78,7 @@ export function toPublicQuizQuestion(question: QuizQuestionRecord) {
     imagePath: question.imagePath,
     exam: question.exam,
     category: question.category,
+    ...getQuestionPresentation(question),
     choices: question.choices.map((choice) => ({
       id: choice.id,
       label: choice.choiceLabel,

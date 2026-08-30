@@ -176,6 +176,12 @@ const buildFeQuestions = ({ fileName, answers, sourcePrefix, seasonName }) =>
 
 const answerRoot = readJson("kakomon_answers.json");
 const supplemental = buildSupplementalQuestions();
+const officialItPassport = readJson("ipa-it-passport-2021-2026.json");
+if (!Array.isArray(officialItPassport) || officialItPassport.length !== 600) {
+  throw new Error(
+    `Expected 600 official IPA IT Passport questions, found ${officialItPassport?.length ?? 0}`,
+  );
+}
 const subjectA = buildFeQuestions({
   fileName: "kakomon_questionsA.json",
   answers: answerRoot["科目A試験"],
@@ -189,8 +195,9 @@ const subjectS = buildFeQuestions({
   seasonName: subjectSSeason,
 });
 
-const questions = [...supplemental, ...subjectA, ...subjectS];
+const questions = [...supplemental, ...officialItPassport, ...subjectA, ...subjectS];
 
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-fs.writeFileSync(outputPath, `${JSON.stringify(questions, null, 2)}\n`, "utf8");
+const serialized = `${JSON.stringify(questions, null, 2)}\n`.replace(/\r?\n/g, "\r\n");
+fs.writeFileSync(outputPath, serialized, "utf8");
 console.log(`Generated ${questions.length} questions at ${outputPath}`);

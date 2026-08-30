@@ -40,6 +40,11 @@ type PracticeQuestion = {
     code: string;
     name: string;
   };
+  displayMode: "standard" | "official_scan";
+  source: {
+    label: string;
+    url: string;
+  } | null;
   choices: Choice[];
   answer: PracticeAnswerResult | null;
 };
@@ -241,6 +246,7 @@ export default function PracticeSessionPage() {
   const aiLoading = aiLoadingQuestionId === question.id;
   const answeredAllQuestions = session.answeredCount === session.questionCount;
   const nextUnansweredIndex = findNextUnansweredIndex(session.questions, currentIndex);
+  const officialScan = question.displayMode === "official_scan" && Boolean(question.imagePath);
 
   return (
     <StudentShell>
@@ -265,9 +271,25 @@ export default function PracticeSessionPage() {
 
       <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
         <p className="mb-3 text-xs font-black text-blue-600">{question.category.name}</p>
-        <p className="text-lg font-bold leading-8 text-slate-950">{question.text}</p>
+        {!officialScan ? (
+          <p className="whitespace-pre-wrap text-lg font-bold leading-8 text-slate-950">
+            {question.text}
+          </p>
+        ) : null}
 
-        {question.imagePath ? (
+        {officialScan && question.imagePath ? (
+          <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 sm:p-4">
+            <Image
+              src={question.imagePath}
+              alt={question.source?.label ?? "IPA公開問題"}
+              width={1400}
+              height={1800}
+              loading="eager"
+              className="mx-auto h-auto w-full max-w-full object-contain"
+              sizes="(max-width: 768px) 100vw, 800px"
+            />
+          </div>
+        ) : question.imagePath ? (
           <div className="relative mt-5 min-h-52 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
             <Image
               src={question.imagePath}
@@ -280,7 +302,27 @@ export default function PracticeSessionPage() {
           </div>
         ) : null}
 
-        <div className="mt-7 grid gap-3">
+        {question.source ? (
+          <p className="mt-2 text-right text-xs font-bold text-slate-500">
+            出典：
+            <a
+              href={question.source.url}
+              target="_blank"
+              rel="noreferrer"
+              className="text-blue-700 underline decoration-blue-300 underline-offset-2 hover:text-blue-900"
+            >
+              {question.source.label}
+            </a>
+          </p>
+        ) : null}
+
+        <div
+          className={
+            officialScan
+              ? "mt-7 grid grid-cols-2 gap-3 sm:grid-cols-4"
+              : "mt-7 grid gap-3"
+          }
+        >
           {question.choices.map((choice) => {
             const chosen = selectedChoice === choice.id;
             const correct = Boolean(displayedResult?.correctChoice?.id === choice.id);
@@ -293,7 +335,7 @@ export default function PracticeSessionPage() {
                 type="button"
                 disabled={Boolean(displayedResult)}
                 onClick={() => setSelectedChoice(choice.id)}
-                className={`flex min-h-16 items-center gap-4 rounded-2xl border px-4 text-left font-bold transition sm:px-5 ${
+                className={`flex items-center gap-4 border font-bold transition ${
                   correct
                     ? "border-emerald-400 bg-emerald-50 text-emerald-900"
                     : wrong
@@ -301,14 +343,20 @@ export default function PracticeSessionPage() {
                       : chosen
                         ? "border-blue-500 bg-blue-50 text-blue-950 ring-2 ring-blue-100"
                         : "border-slate-200 hover:border-blue-300 hover:bg-blue-50/50"
-                } ${answerResult && correct ? "answer-choice-correct-motion" : ""} ${
+                } min-h-16 rounded-2xl px-4 sm:px-5 ${officialScan ? "justify-center text-center" : "text-left"} ${answerResult && correct ? "answer-choice-correct-motion" : ""} ${
                   answerResult && delayedCorrectReveal ? "answer-choice-correct-delay" : ""
                 } ${answerResult && wrong ? "answer-choice-wrong-motion" : ""}`}
               >
-                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-slate-100 text-sm font-black">
-                  {choice.choiceLabel}
-                </span>
-                <QuestionChoiceContent text={choice.choiceText} label={choice.choiceLabel} />
+                {officialScan ? (
+                  <span className="text-base font-black">{choice.choiceLabel}</span>
+                ) : (
+                  <>
+                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-slate-100 text-sm font-black">
+                      {choice.choiceLabel}
+                    </span>
+                    <QuestionChoiceContent text={choice.choiceText} label={choice.choiceLabel} />
+                  </>
+                )}
                 {correct || wrong ? (
                   <span className="ml-auto">
                     <AnswerStateMark

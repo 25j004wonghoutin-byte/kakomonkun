@@ -17,6 +17,11 @@ export type QuizQuestion = {
     code: string;
     name: string;
   };
+  displayMode: "standard" | "official_scan";
+  source: {
+    label: string;
+    url: string;
+  } | null;
   choices: Array<{
     id: string;
     label: string;
@@ -69,6 +74,10 @@ export function QuizQuestionCard({
   resultExtra,
   resultActions,
 }: QuizQuestionCardProps) {
+  const officialScan = Boolean(
+    question?.displayMode === "official_scan" && question.imagePath,
+  );
+
   return (
     <section className="min-w-0 rounded-lg border border-slate-200 bg-white p-5 shadow-[0_14px_40px_-24px_rgba(15,23,42,0.55)] sm:p-7">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -108,27 +117,51 @@ export function QuizQuestionCard({
         </div>
       ) : question ? (
         <div className="mt-7">
-          <div className="flex min-w-0 gap-4">
-            <span className="mt-0.5 text-base font-black text-blue-700">Q.</span>
-            <p className="min-w-0 whitespace-pre-wrap break-words text-sm font-bold leading-7 text-slate-900 [overflow-wrap:anywhere]">
-              {question.text}
-            </p>
-          </div>
+          {!officialScan ? (
+            <div className="flex min-w-0 gap-4">
+              <span className="mt-0.5 text-base font-black text-blue-700">Q.</span>
+              <p className="min-w-0 whitespace-pre-wrap break-words text-sm font-bold leading-7 text-slate-900 [overflow-wrap:anywhere]">
+                {question.text}
+              </p>
+            </div>
+          ) : null}
 
           {question.imagePath ? (
-            <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-3">
+            <div className="mt-5 overflow-hidden rounded-lg border border-slate-200 bg-white p-2 sm:p-3">
               <Image
                 src={question.imagePath}
-                alt="問題画像"
-                width={900}
-                height={520}
+                alt={question.source?.label ?? "問題画像"}
+                width={1400}
+                height={900}
                 loading="eager"
-                className="mx-auto h-auto max-h-[520px] w-auto max-w-full object-contain"
+                className={`mx-auto h-auto max-w-full object-contain ${
+                  officialScan ? "w-full" : "max-h-[520px] w-auto"
+                }`}
               />
             </div>
           ) : null}
 
-          <div className="mt-4 divide-y divide-slate-200">
+          {question.source ? (
+            <p className="mt-2 text-right text-xs font-bold text-slate-500">
+              出典：
+              <a
+                href={question.source.url}
+                target="_blank"
+                rel="noreferrer"
+                className="text-blue-700 underline decoration-blue-300 underline-offset-2 hover:text-blue-900"
+              >
+                {question.source.label}
+              </a>
+            </p>
+          ) : null}
+
+          <div
+            className={
+              officialScan
+                ? "mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4"
+                : "mt-4 divide-y divide-slate-200"
+            }
+          >
             {question.choices.map((choice) => {
               const chosen = selectedChoiceId === choice.id;
               const correct = answerResult?.correctChoice.id === choice.id;
@@ -142,31 +175,41 @@ export function QuizQuestionCard({
                   aria-pressed={chosen}
                   disabled={Boolean(answerResult) || answering}
                   onClick={() => onSelectChoice(choice.id)}
-                  className={`flex min-h-12 w-full items-center gap-3 px-2 py-3 text-left text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
+                  className={`flex min-h-12 w-full items-center gap-3 text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
                     correct
                       ? "rounded-md border border-emerald-200 bg-emerald-50 px-3 font-bold text-slate-900"
                       : wrong
                         ? "rounded-md border border-rose-200 bg-rose-50 px-3 font-bold text-slate-900"
-                        : "text-slate-700 hover:bg-blue-50 disabled:hover:bg-transparent"
+                        : officialScan
+                          ? chosen
+                            ? "justify-center rounded-md border border-blue-500 bg-blue-50 px-3 py-3 font-black text-blue-950 ring-2 ring-blue-100"
+                            : "justify-center rounded-md border border-slate-200 px-3 py-3 font-black text-slate-700 hover:border-blue-300 hover:bg-blue-50"
+                          : "px-2 py-3 text-left text-slate-700 hover:bg-blue-50 disabled:hover:bg-transparent"
                   } ${animateAnswerResult && correct ? "answer-choice-correct-motion" : ""} ${
                     animateAnswerResult && delayedCorrectReveal ? "answer-choice-correct-delay" : ""
                   } ${animateAnswerResult && wrong ? "answer-choice-wrong-motion" : ""}`}
                 >
-                  <span
-                    className={`grid size-5 shrink-0 place-items-center rounded-full border text-[11px] ${
-                      chosen && !answerResult
-                        ? "border-blue-600 bg-blue-600 text-white"
-                        : "border-slate-400 bg-white text-slate-500"
-                    }`}
-                  >
-                    {chosen && !answerResult ? (
-                      <span className="size-2 rounded-full bg-white" />
-                    ) : null}
-                  </span>
-                  <span className="shrink-0 text-xs font-black text-slate-500">
-                    {choice.label}
-                  </span>
-                  <QuestionChoiceContent text={choice.text} label={choice.label} />
+                  {officialScan ? (
+                    <span className="text-base font-black">{choice.label}</span>
+                  ) : (
+                    <>
+                      <span
+                        className={`grid size-5 shrink-0 place-items-center rounded-full border text-[11px] ${
+                          chosen && !answerResult
+                            ? "border-blue-600 bg-blue-600 text-white"
+                            : "border-slate-400 bg-white text-slate-500"
+                        }`}
+                      >
+                        {chosen && !answerResult ? (
+                          <span className="size-2 rounded-full bg-white" />
+                        ) : null}
+                      </span>
+                      <span className="shrink-0 text-xs font-black text-slate-500">
+                        {choice.label}
+                      </span>
+                      <QuestionChoiceContent text={choice.text} label={choice.label} />
+                    </>
+                  )}
                   {correct || wrong ? (
                     <span className="ml-auto">
                       <AnswerStateMark

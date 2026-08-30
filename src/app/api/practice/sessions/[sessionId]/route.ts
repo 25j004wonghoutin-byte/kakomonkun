@@ -1,5 +1,6 @@
 import { getCurrentUser } from "@/lib/auth";
 import { forbidden, notFound, unauthorized } from "@/lib/http";
+import { getQuestionPresentation } from "@/lib/official-question";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(
@@ -70,6 +71,7 @@ export async function GET(
       text: question.questionText,
       imagePath: question.imagePath,
       category: question.category,
+      ...getQuestionPresentation(question),
       choices: question.choices.map((choice) => ({
         id: choice.id,
         choiceLabel: choice.choiceLabel,
