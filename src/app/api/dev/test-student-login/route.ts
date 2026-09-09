@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { DEV_AUTH_COOKIE, isDevTestAuthEnabled } from "@/lib/dev-auth";
 import { badRequest, conflict, notFound, serverError } from "@/lib/http";
 import { prisma } from "@/lib/prisma";
+import { ensureStarterTitleForStudent } from "@/lib/starter-title";
 
 type TestStudentLoginBody = {
   account?: string;
@@ -84,6 +85,8 @@ async function handleTestStudentLogin(request: Request) {
     if (!appUser.studentProfile) {
       await tx.studentProfile.create({ data: { userId: appUser.id } });
     }
+
+    await ensureStarterTitleForStudent(tx, appUser.id);
 
     return tx.user.findUniqueOrThrow({
       where: { id: appUser.id },

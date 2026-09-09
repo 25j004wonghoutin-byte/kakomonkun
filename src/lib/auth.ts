@@ -2,6 +2,7 @@ import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { DEV_AUTH_COOKIE, isDevTestAuthEnabled } from "@/lib/dev-auth";
 import { prisma } from "@/lib/prisma";
+import { ensureStarterTitleForStudent } from "@/lib/starter-title";
 import { createClient } from "@/lib/supabase/server";
 
 const STUDENT_ROLE = "student";
@@ -86,6 +87,10 @@ export async function ensureAppUser(authUser: SupabaseUser) {
       });
     }
 
+    if (user.role.name === STUDENT_ROLE) {
+      await ensureStarterTitleForStudent(tx, user.id);
+    }
+
     return tx.user.findUniqueOrThrow({
       where: { id: user.id },
       include: { role: true, studentProfile: true },
@@ -94,15 +99,18 @@ export async function ensureAppUser(authUser: SupabaseUser) {
 }
 
 async function ensureStudentProfileForUser(userId: string) {
-  await prisma.studentProfile.upsert({
-    where: { userId },
-    create: { userId },
-    update: {},
-  });
+  return prisma.$transaction(async (tx) => {
+    await tx.studentProfile.upsert({
+      where: { userId },
+      create: { userId },
+      update: {},
+    });
+    await ensureStarterTitleForStudent(tx, userId);
 
-  return prisma.user.findUniqueOrThrow({
-    where: { id: userId },
-    include: { role: true, studentProfile: true },
+    return tx.user.findUniqueOrThrow({
+      where: { id: userId },
+      include: { role: true, studentProfile: true },
+    });
   });
 }
 
@@ -118,7 +126,10 @@ export async function getCurrentUser() {
       });
 
       if (devUser && devUser.status === "active" && !devUser.deletedAt) {
-        if (devUser.role.name === STUDENT_ROLE && !devUser.studentProfile) {
+        if (
+          devUser.role.name === STUDENT_ROLE &&
+          (!devUser.studentProfile || !devUser.studentProfile.currentTitleId)
+        ) {
           return ensureStudentProfileForUser(devUser.id);
         }
 
@@ -153,7 +164,10 @@ export async function getCurrentUser() {
 
   if (!user || user.status !== "active" || user.deletedAt) return null;
 
-  if (user.role.name === STUDENT_ROLE && !user.studentProfile) {
+  if (
+    user.role.name === STUDENT_ROLE &&
+    (!user.studentProfile || !user.studentProfile.currentTitleId)
+  ) {
     user = await ensureStudentProfileForUser(user.id);
   }
 
