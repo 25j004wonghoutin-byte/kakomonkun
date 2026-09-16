@@ -28,3 +28,7 @@ export function canDeleteContent(
 ): boolean {
   return actor.id === authorId || actor.roleName === "teacher";
 }
+
+export function canInteractWithPost(deletedAt: Date | null): boolean {
+  return deletedAt === null;
+}
