@@ -21,6 +21,33 @@ export type BoardAuthorView = {
   isTeacher: boolean;
 };
 
+export type PublicAuthorRow = {
+  id: string;
+  displayName: string;
+  role: { name: string };
+  studentProfile: {
+    avatarUrl: string | null;
+    currentTitle: { name: string } | null;
+  } | null;
+  teacherProfile: { avatarUrl: string | null } | null;
+};
+
+export function toBoardAuthor(row: PublicAuthorRow): BoardAuthorView {
+  const isTeacher = row.role.name === "teacher";
+
+  return {
+    id: row.id,
+    displayName: row.displayName,
+    avatarUrl: isTeacher
+      ? (row.teacherProfile?.avatarUrl ?? null)
+      : (row.studentProfile?.avatarUrl ?? null),
+    titleName: isTeacher
+      ? null
+      : (row.studentProfile?.currentTitle?.name ?? null),
+    isTeacher,
+  };
+}
+
 export type BoardPostView = {
   id: string;
   body: string;
