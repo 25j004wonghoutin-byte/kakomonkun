@@ -4,7 +4,10 @@ import {
   listBoardPosts,
 } from "@/lib/board/read";
 import type { BoardScope } from "@/lib/board/contract";
-import { badRequest, unauthorized } from "@/lib/http";
+import { toBoardActor } from "@/lib/board/permissions";
+import { createBoardPost } from "@/lib/board/write-posts";
+import { parseCreatePostPayload } from "@/lib/board/validation";
+import { badRequest, forbidden, unauthorized } from "@/lib/http";
 
 export async function GET(request: Request) {
   const viewer = await getCurrentUser();
@@ -29,4 +32,31 @@ export async function GET(request: Request) {
     }
     throw error;
   }
+}
+
+export async function POST(request: Request) {
+  const viewer = await getCurrentUser();
+  if (!viewer) {
+    return unauthorized("ログインが必要です。");
+  }
+
+  const actor = toBoardActor(viewer.id, viewer.role.name);
+  if (!actor) {
+    return forbidden("掲示板へ投稿できません。");
+  }
+
+  let value: unknown;
+  try {
+    value = await request.json();
+  } catch {
+    return badRequest("JSONの形式が正しくありません。");
+  }
+
+  const payload = parseCreatePostPayload(value);
+  if (!payload) {
+    return badRequest("投稿内容は1文字以上280文字以内で入力してください。");
+  }
+
+  const created = await createBoardPost(actor, payload.body);
+  return Response.json(created, { status: 201 });
 }
