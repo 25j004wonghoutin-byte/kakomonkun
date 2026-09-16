@@ -41,6 +41,10 @@ model User {
   practiceSessions  PracticeSession[]
   pointTransactions PointTransaction[]
   aiUsageLogs       AiUsageLog[]
+  boardPosts        BoardPost[]        @relation("BoardPostAuthor")
+  boardComments     BoardComment[]     @relation("BoardCommentAuthor")
+  boardPostLikes    BoardPostLike[]    @relation("BoardPostLikeUser")
+  boardDeleteLogs   BoardDeleteLog[]   @relation("BoardDeletionActor")
 
   @@index([roleId], map: "idx_users_role_id")
   @@index([status], map: "idx_users_status")
@@ -422,4 +426,62 @@ model AiUsageLog {
   @@index([userId, usedAt], map: "idx_ai_usage_logs_user_used_at")
   @@index([questionId], map: "idx_ai_usage_logs_question_id")
   @@map("ai_usage_logs")
+}
+
+model BoardPost {
+  id        String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  authorId  String          @map("author_id") @db.Uuid
+  body      String
+  isPinned  Boolean         @default(false) @map("is_pinned")
+  createdAt DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt DateTime?       @map("deleted_at") @db.Timestamptz(3)
+  author    User            @relation("BoardPostAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+  comments  BoardComment[]
+  likes     BoardPostLike[]
+
+  @@index([authorId], map: "idx_board_posts_author_id_fk")
+  @@map("board_posts")
+}
+
+model BoardComment {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  postId    String    @map("post_id") @db.Uuid
+  authorId  String    @map("author_id") @db.Uuid
+  body      String
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(3)
+  post      BoardPost @relation(fields: [postId], references: [id], onDelete: Restrict)
+  author    User      @relation("BoardCommentAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+
+  @@index([postId], map: "idx_board_comments_post_id_fk")
+  @@index([authorId], map: "idx_board_comments_author_id_fk")
+  @@map("board_comments")
+}
+
+model BoardPostLike {
+  postId    String    @map("post_id") @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  post      BoardPost @relation(fields: [postId], references: [id], onDelete: Restrict)
+  user      User      @relation("BoardPostLikeUser", fields: [userId], references: [id], onDelete: Restrict)
+
+  @@id([postId, userId])
+  @@index([userId], map: "idx_board_post_likes_user_id")
+  @@map("board_post_likes")
+}
+
+model BoardDeleteLog {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  targetType  String   @map("target_type") @db.VarChar(20)
+  targetId    String   @map("target_id") @db.Uuid
+  deletedById String   @map("deleted_by") @db.Uuid
+  reason      String?
+  deletedAt   DateTime @default(now()) @map("deleted_at") @db.Timestamptz(3)
+  deletedBy   User     @relation("BoardDeletionActor", fields: [deletedById], references: [id], onDelete: Restrict)
+
+  @@index([deletedById, deletedAt(sort: Desc)], map: "idx_board_delete_logs_actor_time")
+  @@index([targetType, targetId], map: "idx_board_delete_logs_target")
+  @@map("board_delete_logs")
 }

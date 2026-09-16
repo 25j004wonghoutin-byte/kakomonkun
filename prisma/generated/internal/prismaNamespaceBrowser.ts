@@ -72,7 +72,11 @@ export const ModelName = {
   UserTitle: 'UserTitle',
   MonthlyRanking: 'MonthlyRanking',
   AiExplanation: 'AiExplanation',
-  AiUsageLog: 'AiUsageLog'
+  AiUsageLog: 'AiUsageLog',
+  BoardPost: 'BoardPost',
+  BoardComment: 'BoardComment',
+  BoardPostLike: 'BoardPostLike',
+  BoardDeleteLog: 'BoardDeleteLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -408,6 +412,53 @@ export const AiUsageLogScalarFieldEnum = {
 } as const
 
 export type AiUsageLogScalarFieldEnum = (typeof AiUsageLogScalarFieldEnum)[keyof typeof AiUsageLogScalarFieldEnum]
+
+
+export const BoardPostScalarFieldEnum = {
+  id: 'id',
+  authorId: 'authorId',
+  body: 'body',
+  isPinned: 'isPinned',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type BoardPostScalarFieldEnum = (typeof BoardPostScalarFieldEnum)[keyof typeof BoardPostScalarFieldEnum]
+
+
+export const BoardCommentScalarFieldEnum = {
+  id: 'id',
+  postId: 'postId',
+  authorId: 'authorId',
+  body: 'body',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type BoardCommentScalarFieldEnum = (typeof BoardCommentScalarFieldEnum)[keyof typeof BoardCommentScalarFieldEnum]
+
+
+export const BoardPostLikeScalarFieldEnum = {
+  postId: 'postId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+} as const
+
+export type BoardPostLikeScalarFieldEnum = (typeof BoardPostLikeScalarFieldEnum)[keyof typeof BoardPostLikeScalarFieldEnum]
+
+
+export const BoardDeleteLogScalarFieldEnum = {
+  id: 'id',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  deletedById: 'deletedById',
+  reason: 'reason',
+  deletedAt: 'deletedAt'
+} as const
+
+export type BoardDeleteLogScalarFieldEnum = (typeof BoardDeleteLogScalarFieldEnum)[keyof typeof BoardDeleteLogScalarFieldEnum]
 
 
 export const SortOrder = {

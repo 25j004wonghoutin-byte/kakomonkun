@@ -234,6 +234,10 @@ export type UserWhereInput = {
   practiceSessions?: Prisma.PracticeSessionListRelationFilter
   pointTransactions?: Prisma.PointTransactionListRelationFilter
   aiUsageLogs?: Prisma.AiUsageLogListRelationFilter
+  boardPosts?: Prisma.BoardPostListRelationFilter
+  boardComments?: Prisma.BoardCommentListRelationFilter
+  boardPostLikes?: Prisma.BoardPostLikeListRelationFilter
+  boardDeleteLogs?: Prisma.BoardDeleteLogListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -259,6 +263,10 @@ export type UserOrderByWithRelationInput = {
   practiceSessions?: Prisma.PracticeSessionOrderByRelationAggregateInput
   pointTransactions?: Prisma.PointTransactionOrderByRelationAggregateInput
   aiUsageLogs?: Prisma.AiUsageLogOrderByRelationAggregateInput
+  boardPosts?: Prisma.BoardPostOrderByRelationAggregateInput
+  boardComments?: Prisma.BoardCommentOrderByRelationAggregateInput
+  boardPostLikes?: Prisma.BoardPostLikeOrderByRelationAggregateInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -287,6 +295,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   practiceSessions?: Prisma.PracticeSessionListRelationFilter
   pointTransactions?: Prisma.PointTransactionListRelationFilter
   aiUsageLogs?: Prisma.AiUsageLogListRelationFilter
+  boardPosts?: Prisma.BoardPostListRelationFilter
+  boardComments?: Prisma.BoardCommentListRelationFilter
+  boardPostLikes?: Prisma.BoardPostLikeListRelationFilter
+  boardDeleteLogs?: Prisma.BoardDeleteLogListRelationFilter
 }, "id" | "authUserId" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -343,6 +355,10 @@ export type UserCreateInput = {
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -367,6 +383,10 @@ export type UserUncheckedCreateInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserUpdateInput = {
@@ -391,6 +411,10 @@ export type UserUpdateInput = {
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -415,6 +439,10 @@ export type UserUncheckedUpdateInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -718,6 +746,62 @@ export type UserUpdateOneRequiredWithoutAiUsageLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAiUsageLogsInput, Prisma.UserUpdateWithoutAiUsageLogsInput>, Prisma.UserUncheckedUpdateWithoutAiUsageLogsInput>
 }
 
+export type UserCreateNestedOneWithoutBoardPostsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBoardPostsInput, Prisma.UserUncheckedCreateWithoutBoardPostsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBoardPostsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBoardPostsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBoardPostsInput, Prisma.UserUncheckedCreateWithoutBoardPostsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBoardPostsInput
+  upsert?: Prisma.UserUpsertWithoutBoardPostsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBoardPostsInput, Prisma.UserUpdateWithoutBoardPostsInput>, Prisma.UserUncheckedUpdateWithoutBoardPostsInput>
+}
+
+export type UserCreateNestedOneWithoutBoardCommentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBoardCommentsInput, Prisma.UserUncheckedCreateWithoutBoardCommentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBoardCommentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBoardCommentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBoardCommentsInput, Prisma.UserUncheckedCreateWithoutBoardCommentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBoardCommentsInput
+  upsert?: Prisma.UserUpsertWithoutBoardCommentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBoardCommentsInput, Prisma.UserUpdateWithoutBoardCommentsInput>, Prisma.UserUncheckedUpdateWithoutBoardCommentsInput>
+}
+
+export type UserCreateNestedOneWithoutBoardPostLikesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBoardPostLikesInput, Prisma.UserUncheckedCreateWithoutBoardPostLikesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBoardPostLikesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBoardPostLikesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBoardPostLikesInput, Prisma.UserUncheckedCreateWithoutBoardPostLikesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBoardPostLikesInput
+  upsert?: Prisma.UserUpsertWithoutBoardPostLikesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBoardPostLikesInput, Prisma.UserUpdateWithoutBoardPostLikesInput>, Prisma.UserUncheckedUpdateWithoutBoardPostLikesInput>
+}
+
+export type UserCreateNestedOneWithoutBoardDeleteLogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBoardDeleteLogsInput, Prisma.UserUncheckedCreateWithoutBoardDeleteLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBoardDeleteLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBoardDeleteLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBoardDeleteLogsInput, Prisma.UserUncheckedCreateWithoutBoardDeleteLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBoardDeleteLogsInput
+  upsert?: Prisma.UserUpsertWithoutBoardDeleteLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBoardDeleteLogsInput, Prisma.UserUpdateWithoutBoardDeleteLogsInput>, Prisma.UserUncheckedUpdateWithoutBoardDeleteLogsInput>
+}
+
 export type UserCreateWithoutRoleInput = {
   id?: string
   authUserId?: string | null
@@ -739,6 +823,10 @@ export type UserCreateWithoutRoleInput = {
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserUncheckedCreateWithoutRoleInput = {
@@ -762,6 +850,10 @@ export type UserUncheckedCreateWithoutRoleInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserCreateOrConnectWithoutRoleInput = {
@@ -827,6 +919,10 @@ export type UserCreateWithoutStudentProfileInput = {
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserUncheckedCreateWithoutStudentProfileInput = {
@@ -850,6 +946,10 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserCreateOrConnectWithoutStudentProfileInput = {
@@ -889,6 +989,10 @@ export type UserUpdateWithoutStudentProfileInput = {
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentProfileInput = {
@@ -912,6 +1016,10 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserCreateWithoutTeacherProfileInput = {
@@ -935,6 +1043,10 @@ export type UserCreateWithoutTeacherProfileInput = {
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserUncheckedCreateWithoutTeacherProfileInput = {
@@ -958,6 +1070,10 @@ export type UserUncheckedCreateWithoutTeacherProfileInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserCreateOrConnectWithoutTeacherProfileInput = {
@@ -997,6 +1113,10 @@ export type UserUpdateWithoutTeacherProfileInput = {
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTeacherProfileInput = {
@@ -1020,6 +1140,10 @@ export type UserUncheckedUpdateWithoutTeacherProfileInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserCreateWithoutCreatedQuestionsInput = {
@@ -1043,6 +1167,10 @@ export type UserCreateWithoutCreatedQuestionsInput = {
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedQuestionsInput = {
@@ -1066,6 +1194,10 @@ export type UserUncheckedCreateWithoutCreatedQuestionsInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedQuestionsInput = {
@@ -1105,6 +1237,10 @@ export type UserUpdateWithoutCreatedQuestionsInput = {
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedQuestionsInput = {
@@ -1128,6 +1264,10 @@ export type UserUncheckedUpdateWithoutCreatedQuestionsInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserCreateWithoutDailyQaAnswersInput = {
@@ -1151,6 +1291,10 @@ export type UserCreateWithoutDailyQaAnswersInput = {
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserUncheckedCreateWithoutDailyQaAnswersInput = {
@@ -1174,6 +1318,10 @@ export type UserUncheckedCreateWithoutDailyQaAnswersInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserCreateOrConnectWithoutDailyQaAnswersInput = {
@@ -1213,6 +1361,10 @@ export type UserUpdateWithoutDailyQaAnswersInput = {
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDailyQaAnswersInput = {
@@ -1236,6 +1388,10 @@ export type UserUncheckedUpdateWithoutDailyQaAnswersInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserCreateWithoutPracticeSessionsInput = {
@@ -1259,6 +1415,10 @@ export type UserCreateWithoutPracticeSessionsInput = {
   monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserUncheckedCreateWithoutPracticeSessionsInput = {
@@ -1282,6 +1442,10 @@ export type UserUncheckedCreateWithoutPracticeSessionsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserCreateOrConnectWithoutPracticeSessionsInput = {
@@ -1321,6 +1485,10 @@ export type UserUpdateWithoutPracticeSessionsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPracticeSessionsInput = {
@@ -1344,6 +1512,10 @@ export type UserUncheckedUpdateWithoutPracticeSessionsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserCreateWithoutPointTransactionsInput = {
@@ -1367,6 +1539,10 @@ export type UserCreateWithoutPointTransactionsInput = {
   monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserUncheckedCreateWithoutPointTransactionsInput = {
@@ -1390,6 +1566,10 @@ export type UserUncheckedCreateWithoutPointTransactionsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserCreateOrConnectWithoutPointTransactionsInput = {
@@ -1429,6 +1609,10 @@ export type UserUpdateWithoutPointTransactionsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPointTransactionsInput = {
@@ -1452,6 +1636,10 @@ export type UserUncheckedUpdateWithoutPointTransactionsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserCreateWithoutCreatedMockExamsInput = {
@@ -1475,6 +1663,10 @@ export type UserCreateWithoutCreatedMockExamsInput = {
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedMockExamsInput = {
@@ -1498,6 +1690,10 @@ export type UserUncheckedCreateWithoutCreatedMockExamsInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedMockExamsInput = {
@@ -1537,6 +1733,10 @@ export type UserUpdateWithoutCreatedMockExamsInput = {
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedMockExamsInput = {
@@ -1560,6 +1760,10 @@ export type UserUncheckedUpdateWithoutCreatedMockExamsInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserCreateWithoutMockAttemptsInput = {
@@ -1583,6 +1787,10 @@ export type UserCreateWithoutMockAttemptsInput = {
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserUncheckedCreateWithoutMockAttemptsInput = {
@@ -1606,6 +1814,10 @@ export type UserUncheckedCreateWithoutMockAttemptsInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserCreateOrConnectWithoutMockAttemptsInput = {
@@ -1645,6 +1857,10 @@ export type UserUpdateWithoutMockAttemptsInput = {
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMockAttemptsInput = {
@@ -1668,6 +1884,10 @@ export type UserUncheckedUpdateWithoutMockAttemptsInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserCreateWithoutUserTitlesInput = {
@@ -1691,6 +1911,10 @@ export type UserCreateWithoutUserTitlesInput = {
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserUncheckedCreateWithoutUserTitlesInput = {
@@ -1714,6 +1938,10 @@ export type UserUncheckedCreateWithoutUserTitlesInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserCreateOrConnectWithoutUserTitlesInput = {
@@ -1753,6 +1981,10 @@ export type UserUpdateWithoutUserTitlesInput = {
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserTitlesInput = {
@@ -1776,6 +2008,10 @@ export type UserUncheckedUpdateWithoutUserTitlesInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserCreateWithoutMonthlyRankingsInput = {
@@ -1799,6 +2035,10 @@ export type UserCreateWithoutMonthlyRankingsInput = {
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserUncheckedCreateWithoutMonthlyRankingsInput = {
@@ -1822,6 +2062,10 @@ export type UserUncheckedCreateWithoutMonthlyRankingsInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserCreateOrConnectWithoutMonthlyRankingsInput = {
@@ -1861,6 +2105,10 @@ export type UserUpdateWithoutMonthlyRankingsInput = {
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMonthlyRankingsInput = {
@@ -1884,6 +2132,10 @@ export type UserUncheckedUpdateWithoutMonthlyRankingsInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserCreateWithoutAiUsageLogsInput = {
@@ -1907,6 +2159,10 @@ export type UserCreateWithoutAiUsageLogsInput = {
   monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserUncheckedCreateWithoutAiUsageLogsInput = {
@@ -1930,6 +2186,10 @@ export type UserUncheckedCreateWithoutAiUsageLogsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
   practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
   pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
 }
 
 export type UserCreateOrConnectWithoutAiUsageLogsInput = {
@@ -1969,6 +2229,10 @@ export type UserUpdateWithoutAiUsageLogsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAiUsageLogsInput = {
@@ -1992,6 +2256,506 @@ export type UserUncheckedUpdateWithoutAiUsageLogsInput = {
   monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
+}
+
+export type UserCreateWithoutBoardPostsInput = {
+  id?: string
+  authUserId?: string | null
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
+}
+
+export type UserUncheckedCreateWithoutBoardPostsInput = {
+  id?: string
+  authUserId?: string | null
+  roleId: string
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
+}
+
+export type UserCreateOrConnectWithoutBoardPostsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBoardPostsInput, Prisma.UserUncheckedCreateWithoutBoardPostsInput>
+}
+
+export type UserUpsertWithoutBoardPostsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBoardPostsInput, Prisma.UserUncheckedUpdateWithoutBoardPostsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBoardPostsInput, Prisma.UserUncheckedCreateWithoutBoardPostsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBoardPostsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBoardPostsInput, Prisma.UserUncheckedUpdateWithoutBoardPostsInput>
+}
+
+export type UserUpdateWithoutBoardPostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBoardPostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
+}
+
+export type UserCreateWithoutBoardCommentsInput = {
+  id?: string
+  authUserId?: string | null
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
+}
+
+export type UserUncheckedCreateWithoutBoardCommentsInput = {
+  id?: string
+  authUserId?: string | null
+  roleId: string
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
+}
+
+export type UserCreateOrConnectWithoutBoardCommentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBoardCommentsInput, Prisma.UserUncheckedCreateWithoutBoardCommentsInput>
+}
+
+export type UserUpsertWithoutBoardCommentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBoardCommentsInput, Prisma.UserUncheckedUpdateWithoutBoardCommentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBoardCommentsInput, Prisma.UserUncheckedCreateWithoutBoardCommentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBoardCommentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBoardCommentsInput, Prisma.UserUncheckedUpdateWithoutBoardCommentsInput>
+}
+
+export type UserUpdateWithoutBoardCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBoardCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
+}
+
+export type UserCreateWithoutBoardPostLikesInput = {
+  id?: string
+  authUserId?: string | null
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogCreateNestedManyWithoutDeletedByInput
+}
+
+export type UserUncheckedCreateWithoutBoardPostLikesInput = {
+  id?: string
+  authUserId?: string | null
+  roleId: string
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedCreateNestedManyWithoutDeletedByInput
+}
+
+export type UserCreateOrConnectWithoutBoardPostLikesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBoardPostLikesInput, Prisma.UserUncheckedCreateWithoutBoardPostLikesInput>
+}
+
+export type UserUpsertWithoutBoardPostLikesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBoardPostLikesInput, Prisma.UserUncheckedUpdateWithoutBoardPostLikesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBoardPostLikesInput, Prisma.UserUncheckedCreateWithoutBoardPostLikesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBoardPostLikesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBoardPostLikesInput, Prisma.UserUncheckedUpdateWithoutBoardPostLikesInput>
+}
+
+export type UserUpdateWithoutBoardPostLikesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBoardPostLikesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
+}
+
+export type UserCreateWithoutBoardDeleteLogsInput = {
+  id?: string
+  authUserId?: string | null
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutBoardDeleteLogsInput = {
+  id?: string
+  authUserId?: string | null
+  roleId: string
+  email: string
+  displayName: string
+  status?: string
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  createdQuestions?: Prisma.QuestionUncheckedCreateNestedManyWithoutCreatorInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutUserInput
+  createdMockExams?: Prisma.MockExamUncheckedCreateNestedManyWithoutCreatorInput
+  mockAttempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutUserInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutUserInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutUserInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedCreateNestedManyWithoutUserInput
+  pointTransactions?: Prisma.PointTransactionUncheckedCreateNestedManyWithoutUserInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutUserInput
+  boardPosts?: Prisma.BoardPostUncheckedCreateNestedManyWithoutAuthorInput
+  boardComments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutBoardDeleteLogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBoardDeleteLogsInput, Prisma.UserUncheckedCreateWithoutBoardDeleteLogsInput>
+}
+
+export type UserUpsertWithoutBoardDeleteLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBoardDeleteLogsInput, Prisma.UserUncheckedUpdateWithoutBoardDeleteLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBoardDeleteLogsInput, Prisma.UserUncheckedCreateWithoutBoardDeleteLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBoardDeleteLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBoardDeleteLogsInput, Prisma.UserUncheckedUpdateWithoutBoardDeleteLogsInput>
+}
+
+export type UserUpdateWithoutBoardDeleteLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBoardDeleteLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  createdQuestions?: Prisma.QuestionUncheckedUpdateManyWithoutCreatorNestedInput
+  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutUserNestedInput
+  createdMockExams?: Prisma.MockExamUncheckedUpdateManyWithoutCreatorNestedInput
+  mockAttempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutUserNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutUserNestedInput
+  monthlyRankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput
+  practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
+  pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
+  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyRoleInput = {
@@ -2027,6 +2791,10 @@ export type UserUpdateWithoutRoleInput = {
   practiceSessions?: Prisma.PracticeSessionUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRoleInput = {
@@ -2050,6 +2818,10 @@ export type UserUncheckedUpdateWithoutRoleInput = {
   practiceSessions?: Prisma.PracticeSessionUncheckedUpdateManyWithoutUserNestedInput
   pointTransactions?: Prisma.PointTransactionUncheckedUpdateManyWithoutUserNestedInput
   aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
+  boardPosts?: Prisma.BoardPostUncheckedUpdateManyWithoutAuthorNestedInput
+  boardComments?: Prisma.BoardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  boardPostLikes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  boardDeleteLogs?: Prisma.BoardDeleteLogUncheckedUpdateManyWithoutDeletedByNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutRoleInput = {
@@ -2079,6 +2851,10 @@ export type UserCountOutputType = {
   practiceSessions: number
   pointTransactions: number
   aiUsageLogs: number
+  boardPosts: number
+  boardComments: number
+  boardPostLikes: number
+  boardDeleteLogs: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2091,6 +2867,10 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   practiceSessions?: boolean | UserCountOutputTypeCountPracticeSessionsArgs
   pointTransactions?: boolean | UserCountOutputTypeCountPointTransactionsArgs
   aiUsageLogs?: boolean | UserCountOutputTypeCountAiUsageLogsArgs
+  boardPosts?: boolean | UserCountOutputTypeCountBoardPostsArgs
+  boardComments?: boolean | UserCountOutputTypeCountBoardCommentsArgs
+  boardPostLikes?: boolean | UserCountOutputTypeCountBoardPostLikesArgs
+  boardDeleteLogs?: boolean | UserCountOutputTypeCountBoardDeleteLogsArgs
 }
 
 /**
@@ -2166,6 +2946,34 @@ export type UserCountOutputTypeCountAiUsageLogsArgs<ExtArgs extends runtime.Type
   where?: Prisma.AiUsageLogWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBoardPostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BoardPostWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBoardCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BoardCommentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBoardPostLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BoardPostLikeWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBoardDeleteLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BoardDeleteLogWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2190,6 +2998,10 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   practiceSessions?: boolean | Prisma.User$practiceSessionsArgs<ExtArgs>
   pointTransactions?: boolean | Prisma.User$pointTransactionsArgs<ExtArgs>
   aiUsageLogs?: boolean | Prisma.User$aiUsageLogsArgs<ExtArgs>
+  boardPosts?: boolean | Prisma.User$boardPostsArgs<ExtArgs>
+  boardComments?: boolean | Prisma.User$boardCommentsArgs<ExtArgs>
+  boardPostLikes?: boolean | Prisma.User$boardPostLikesArgs<ExtArgs>
+  boardDeleteLogs?: boolean | Prisma.User$boardDeleteLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2248,6 +3060,10 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   practiceSessions?: boolean | Prisma.User$practiceSessionsArgs<ExtArgs>
   pointTransactions?: boolean | Prisma.User$pointTransactionsArgs<ExtArgs>
   aiUsageLogs?: boolean | Prisma.User$aiUsageLogsArgs<ExtArgs>
+  boardPosts?: boolean | Prisma.User$boardPostsArgs<ExtArgs>
+  boardComments?: boolean | Prisma.User$boardCommentsArgs<ExtArgs>
+  boardPostLikes?: boolean | Prisma.User$boardPostLikesArgs<ExtArgs>
+  boardDeleteLogs?: boolean | Prisma.User$boardDeleteLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2272,6 +3088,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     practiceSessions: Prisma.$PracticeSessionPayload<ExtArgs>[]
     pointTransactions: Prisma.$PointTransactionPayload<ExtArgs>[]
     aiUsageLogs: Prisma.$AiUsageLogPayload<ExtArgs>[]
+    boardPosts: Prisma.$BoardPostPayload<ExtArgs>[]
+    boardComments: Prisma.$BoardCommentPayload<ExtArgs>[]
+    boardPostLikes: Prisma.$BoardPostLikePayload<ExtArgs>[]
+    boardDeleteLogs: Prisma.$BoardDeleteLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2690,6 +3510,10 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   practiceSessions<T extends Prisma.User$practiceSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$practiceSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PracticeSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pointTransactions<T extends Prisma.User$pointTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pointTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PointTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   aiUsageLogs<T extends Prisma.User$aiUsageLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$aiUsageLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  boardPosts<T extends Prisma.User$boardPostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$boardPostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BoardPostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  boardComments<T extends Prisma.User$boardCommentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$boardCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BoardCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  boardPostLikes<T extends Prisma.User$boardPostLikesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$boardPostLikesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BoardPostLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  boardDeleteLogs<T extends Prisma.User$boardDeleteLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$boardDeleteLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BoardDeleteLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3381,6 +4205,102 @@ export type User$aiUsageLogsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.AiUsageLogScalarFieldEnum | Prisma.AiUsageLogScalarFieldEnum[]
+}
+
+/**
+ * User.boardPosts
+ */
+export type User$boardPostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BoardPost
+   */
+  select?: Prisma.BoardPostSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BoardPost
+   */
+  omit?: Prisma.BoardPostOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BoardPostInclude<ExtArgs> | null
+  where?: Prisma.BoardPostWhereInput
+  orderBy?: Prisma.BoardPostOrderByWithRelationInput | Prisma.BoardPostOrderByWithRelationInput[]
+  cursor?: Prisma.BoardPostWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BoardPostScalarFieldEnum | Prisma.BoardPostScalarFieldEnum[]
+}
+
+/**
+ * User.boardComments
+ */
+export type User$boardCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BoardComment
+   */
+  select?: Prisma.BoardCommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BoardComment
+   */
+  omit?: Prisma.BoardCommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BoardCommentInclude<ExtArgs> | null
+  where?: Prisma.BoardCommentWhereInput
+  orderBy?: Prisma.BoardCommentOrderByWithRelationInput | Prisma.BoardCommentOrderByWithRelationInput[]
+  cursor?: Prisma.BoardCommentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BoardCommentScalarFieldEnum | Prisma.BoardCommentScalarFieldEnum[]
+}
+
+/**
+ * User.boardPostLikes
+ */
+export type User$boardPostLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BoardPostLike
+   */
+  select?: Prisma.BoardPostLikeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BoardPostLike
+   */
+  omit?: Prisma.BoardPostLikeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BoardPostLikeInclude<ExtArgs> | null
+  where?: Prisma.BoardPostLikeWhereInput
+  orderBy?: Prisma.BoardPostLikeOrderByWithRelationInput | Prisma.BoardPostLikeOrderByWithRelationInput[]
+  cursor?: Prisma.BoardPostLikeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BoardPostLikeScalarFieldEnum | Prisma.BoardPostLikeScalarFieldEnum[]
+}
+
+/**
+ * User.boardDeleteLogs
+ */
+export type User$boardDeleteLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BoardDeleteLog
+   */
+  select?: Prisma.BoardDeleteLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BoardDeleteLog
+   */
+  omit?: Prisma.BoardDeleteLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BoardDeleteLogInclude<ExtArgs> | null
+  where?: Prisma.BoardDeleteLogWhereInput
+  orderBy?: Prisma.BoardDeleteLogOrderByWithRelationInput | Prisma.BoardDeleteLogOrderByWithRelationInput[]
+  cursor?: Prisma.BoardDeleteLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BoardDeleteLogScalarFieldEnum | Prisma.BoardDeleteLogScalarFieldEnum[]
 }
 
 /**

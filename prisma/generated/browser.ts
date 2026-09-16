@@ -127,3 +127,23 @@ export type AiExplanation = Prisma.AiExplanationModel
  * 
  */
 export type AiUsageLog = Prisma.AiUsageLogModel
+/**
+ * Model BoardPost
+ *
+ */
+export type BoardPost = Prisma.BoardPostModel
+/**
+ * Model BoardComment
+ *
+ */
+export type BoardComment = Prisma.BoardCommentModel
+/**
+ * Model BoardPostLike
+ *
+ */
+export type BoardPostLike = Prisma.BoardPostLikeModel
+/**
+ * Model BoardDeleteLog
+ *
+ */
+export type BoardDeleteLog = Prisma.BoardDeleteLogModel
