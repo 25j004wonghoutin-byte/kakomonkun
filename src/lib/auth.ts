@@ -4,8 +4,26 @@ import { DEV_AUTH_COOKIE, isDevTestAuthEnabled } from "@/lib/dev-auth";
 import { prisma } from "@/lib/prisma";
 import { ensureStarterTitleForStudent } from "@/lib/starter-title";
 import { createClient } from "@/lib/supabase/server";
+import {
+  displayNameForRole,
+  isTeacherRole,
+} from "@/lib/teacher/identity";
 
 const STUDENT_ROLE = "student";
+const USER_WITH_PROFILES = {
+  role: true,
+  studentProfile: true,
+  teacherProfile: true,
+} as const;
+
+function withRoleDisplayName<
+  T extends { displayName: string; role: { name: string } },
+>(user: T): T {
+  return {
+    ...user,
+    displayName: displayNameForRole(user.role.name, user.displayName),
+  };
+}
 
 function getDisplayName(user: SupabaseUser) {
   const metadata = user.user_metadata;
@@ -58,7 +76,7 @@ export async function ensureAppUser(authUser: SupabaseUser) {
           email,
           lastLoginAt: new Date(),
         },
-        include: { role: true, studentProfile: true },
+        include: USER_WITH_PROFILES,
       });
     } else {
       const studentRole = await tx.role.findUnique({
@@ -77,7 +95,7 @@ export async function ensureAppUser(authUser: SupabaseUser) {
           displayName,
           lastLoginAt: new Date(),
         },
-        include: { role: true, studentProfile: true },
+        include: USER_WITH_PROFILES,
       });
     }
 
@@ -87,14 +105,22 @@ export async function ensureAppUser(authUser: SupabaseUser) {
       });
     }
 
+    if (isTeacherRole(user.role.name) && !user.teacherProfile) {
+      await tx.teacherProfile.create({
+        data: { userId: user.id },
+      });
+    }
+
     if (user.role.name === STUDENT_ROLE) {
       await ensureStarterTitleForStudent(tx, user.id);
     }
 
-    return tx.user.findUniqueOrThrow({
+    const completeUser = await tx.user.findUniqueOrThrow({
       where: { id: user.id },
-      include: { role: true, studentProfile: true },
+      include: USER_WITH_PROFILES,
     });
+
+    return withRoleDisplayName(completeUser);
   });
 }
 
@@ -107,10 +133,29 @@ async function ensureStudentProfileForUser(userId: string) {
     });
     await ensureStarterTitleForStudent(tx, userId);
 
-    return tx.user.findUniqueOrThrow({
+    const completeUser = await tx.user.findUniqueOrThrow({
       where: { id: userId },
-      include: { role: true, studentProfile: true },
+      include: USER_WITH_PROFILES,
     });
+
+    return withRoleDisplayName(completeUser);
+  });
+}
+
+async function ensureTeacherProfileForUser(userId: string) {
+  return prisma.$transaction(async (tx) => {
+    await tx.teacherProfile.upsert({
+      where: { userId },
+      create: { userId },
+      update: {},
+    });
+
+    const completeUser = await tx.user.findUniqueOrThrow({
+      where: { id: userId },
+      include: USER_WITH_PROFILES,
+    });
+
+    return withRoleDisplayName(completeUser);
   });
 }
 
@@ -122,7 +167,7 @@ export async function getCurrentUser() {
     if (devUserId) {
       const devUser = await prisma.user.findUnique({
         where: { id: devUserId },
-        include: { role: true, studentProfile: true },
+        include: USER_WITH_PROFILES,
       });
 
       if (devUser && devUser.status === "active" && !devUser.deletedAt) {
@@ -133,7 +178,11 @@ export async function getCurrentUser() {
           return ensureStudentProfileForUser(devUser.id);
         }
 
-        return devUser;
+        if (isTeacherRole(devUser.role.name) && !devUser.teacherProfile) {
+          return ensureTeacherProfileForUser(devUser.id);
+        }
+
+        return withRoleDisplayName(devUser);
       }
     }
   }
@@ -150,7 +199,7 @@ export async function getCurrentUser() {
 
   let user = await prisma.user.findUnique({
     where: { authUserId: authUser.id },
-    include: { role: true, studentProfile: true },
+    include: USER_WITH_PROFILES,
   });
 
   if (!user) {
@@ -171,5 +220,9 @@ export async function getCurrentUser() {
     user = await ensureStudentProfileForUser(user.id);
   }
 
-  return user;
+  if (isTeacherRole(user.role.name) && !user.teacherProfile) {
+    user = await ensureTeacherProfileForUser(user.id);
+  }
+
+  return withRoleDisplayName(user);
 }

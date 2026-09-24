@@ -1,5 +1,6 @@
 import { getCurrentUser } from "@/lib/auth";
 import { unauthorized } from "@/lib/http";
+import { displayNameForRole } from "@/lib/teacher/identity";
 
 export async function GET() {
   const user = await getCurrentUser();
@@ -10,7 +11,7 @@ export async function GET() {
 
   return Response.json({
     id: user.id,
-    displayName: user.displayName,
+    displayName: displayNameForRole(user.role.name, user.displayName),
     role: user.role.name,
     profile: user.studentProfile
       ? {
