@@ -45,6 +45,8 @@ model User {
   boardComments     BoardComment[]     @relation("BoardCommentAuthor")
   boardPostLikes    BoardPostLike[]    @relation("BoardPostLikeUser")
   boardDeleteLogs   BoardDeleteLog[]   @relation("BoardDeletionActor")
+  receivedNotifications Notification[] @relation("NotificationRecipient")
+  actedNotifications    Notification[] @relation("NotificationActor")
 
   @@index([roleId], map: "idx_users_role_id")
   @@index([status], map: "idx_users_status")
@@ -363,6 +365,7 @@ model Title {
   updatedAt               DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
   equippedStudentProfiles StudentProfile[] @relation("EquippedTitle")
   userTitles              UserTitle[]
+  notifications           Notification[]
 
   @@index([isActive, sortOrder], map: "idx_titles_active_sort_order")
   @@map("titles")
@@ -439,6 +442,7 @@ model BoardPost {
   author    User            @relation("BoardPostAuthor", fields: [authorId], references: [id], onDelete: Restrict)
   comments  BoardComment[]
   likes     BoardPostLike[]
+  notifications Notification[]
 
   @@index([authorId], map: "idx_board_posts_author_id_fk")
   @@map("board_posts")
@@ -454,6 +458,7 @@ model BoardComment {
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(3)
   post      BoardPost @relation(fields: [postId], references: [id], onDelete: Restrict)
   author    User      @relation("BoardCommentAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+  notifications Notification[]
 
   @@index([postId], map: "idx_board_comments_post_id_fk")
   @@index([authorId], map: "idx_board_comments_author_id_fk")
@@ -484,4 +489,32 @@ model BoardDeleteLog {
   @@index([deletedById, deletedAt(sort: Desc)], map: "idx_board_delete_logs_actor_time")
   @@index([targetType, targetId], map: "idx_board_delete_logs_target")
   @@map("board_delete_logs")
+}
+
+model Notification {
+  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  recipientId    String        @map("recipient_id") @db.Uuid
+  actorId        String?       @map("actor_id") @db.Uuid
+  type           String        @db.VarChar(30)
+  boardPostId    String?       @map("board_post_id") @db.Uuid
+  boardCommentId String?       @map("board_comment_id") @db.Uuid
+  titleId        String?       @map("title_id") @db.Uuid
+  readAt         DateTime?     @map("read_at") @db.Timestamptz(3)
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  recipient      User          @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Restrict)
+  actor          User?         @relation("NotificationActor", fields: [actorId], references: [id], onDelete: Restrict)
+  boardPost      BoardPost?    @relation(fields: [boardPostId], references: [id], onDelete: Restrict)
+  boardComment   BoardComment? @relation(fields: [boardCommentId], references: [id], onDelete: Restrict)
+  title          Title?        @relation(fields: [titleId], references: [id], onDelete: Restrict)
+
+  @@unique([recipientId, type, boardCommentId], map: "notifications_recipient_type_comment_key")
+  @@unique([recipientId, type, boardPostId], map: "notifications_recipient_type_post_key")
+  @@unique([recipientId, type, titleId], map: "notifications_recipient_type_title_key")
+  @@index([recipientId], map: "idx_notifications_recipient_id")
+  @@index([actorId], map: "idx_notifications_actor_id")
+  @@index([boardPostId], map: "idx_notifications_board_post_id")
+  @@index([boardCommentId], map: "idx_notifications_board_comment_id")
+  @@index([titleId], map: "idx_notifications_title_id")
+  @@index([recipientId, createdAt(sort: Desc), id(sort: Desc)], map: "idx_notifications_recipient_created")
+  @@map("notifications")
 }

@@ -200,6 +200,7 @@ export type BoardCommentWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"BoardComment"> | Date | string | null
   post?: Prisma.XOR<Prisma.BoardPostScalarRelationFilter, Prisma.BoardPostWhereInput>
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  notifications?: Prisma.NotificationListRelationFilter
 }
 
 export type BoardCommentOrderByWithRelationInput = {
@@ -212,6 +213,7 @@ export type BoardCommentOrderByWithRelationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   post?: Prisma.BoardPostOrderByWithRelationInput
   author?: Prisma.UserOrderByWithRelationInput
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput
 }
 
 export type BoardCommentWhereUniqueInput = Prisma.AtLeast<{
@@ -227,6 +229,7 @@ export type BoardCommentWhereUniqueInput = Prisma.AtLeast<{
   deletedAt?: Prisma.DateTimeNullableFilter<"BoardComment"> | Date | string | null
   post?: Prisma.XOR<Prisma.BoardPostScalarRelationFilter, Prisma.BoardPostWhereInput>
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  notifications?: Prisma.NotificationListRelationFilter
 }, "id">
 
 export type BoardCommentOrderByWithAggregationInput = {
@@ -263,6 +266,7 @@ export type BoardCommentCreateInput = {
   deletedAt?: Date | string | null
   post: Prisma.BoardPostCreateNestedOneWithoutCommentsInput
   author: Prisma.UserCreateNestedOneWithoutBoardCommentsInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutBoardCommentInput
 }
 
 export type BoardCommentUncheckedCreateInput = {
@@ -273,6 +277,7 @@ export type BoardCommentUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutBoardCommentInput
 }
 
 export type BoardCommentUpdateInput = {
@@ -283,6 +288,7 @@ export type BoardCommentUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   post?: Prisma.BoardPostUpdateOneRequiredWithoutCommentsNestedInput
   author?: Prisma.UserUpdateOneRequiredWithoutBoardCommentsNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutBoardCommentNestedInput
 }
 
 export type BoardCommentUncheckedUpdateInput = {
@@ -293,6 +299,7 @@ export type BoardCommentUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutBoardCommentNestedInput
 }
 
 export type BoardCommentCreateManyInput = {
@@ -361,6 +368,11 @@ export type BoardCommentMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+}
+
+export type BoardCommentNullableScalarRelationFilter = {
+  is?: Prisma.BoardCommentWhereInput | null
+  isNot?: Prisma.BoardCommentWhereInput | null
 }
 
 export type BoardCommentCreateNestedManyWithoutAuthorInput = {
@@ -447,6 +459,22 @@ export type BoardCommentUncheckedUpdateManyWithoutPostNestedInput = {
   deleteMany?: Prisma.BoardCommentScalarWhereInput | Prisma.BoardCommentScalarWhereInput[]
 }
 
+export type BoardCommentCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<Prisma.BoardCommentCreateWithoutNotificationsInput, Prisma.BoardCommentUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.BoardCommentCreateOrConnectWithoutNotificationsInput
+  connect?: Prisma.BoardCommentWhereUniqueInput
+}
+
+export type BoardCommentUpdateOneWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.BoardCommentCreateWithoutNotificationsInput, Prisma.BoardCommentUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.BoardCommentCreateOrConnectWithoutNotificationsInput
+  upsert?: Prisma.BoardCommentUpsertWithoutNotificationsInput
+  disconnect?: Prisma.BoardCommentWhereInput | boolean
+  delete?: Prisma.BoardCommentWhereInput | boolean
+  connect?: Prisma.BoardCommentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BoardCommentUpdateToOneWithWhereWithoutNotificationsInput, Prisma.BoardCommentUpdateWithoutNotificationsInput>, Prisma.BoardCommentUncheckedUpdateWithoutNotificationsInput>
+}
+
 export type BoardCommentCreateWithoutAuthorInput = {
   id?: string
   body: string
@@ -454,6 +482,7 @@ export type BoardCommentCreateWithoutAuthorInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   post: Prisma.BoardPostCreateNestedOneWithoutCommentsInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutBoardCommentInput
 }
 
 export type BoardCommentUncheckedCreateWithoutAuthorInput = {
@@ -463,6 +492,7 @@ export type BoardCommentUncheckedCreateWithoutAuthorInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutBoardCommentInput
 }
 
 export type BoardCommentCreateOrConnectWithoutAuthorInput = {
@@ -511,6 +541,7 @@ export type BoardCommentCreateWithoutPostInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   author: Prisma.UserCreateNestedOneWithoutBoardCommentsInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutBoardCommentInput
 }
 
 export type BoardCommentUncheckedCreateWithoutPostInput = {
@@ -520,6 +551,7 @@ export type BoardCommentUncheckedCreateWithoutPostInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutBoardCommentInput
 }
 
 export type BoardCommentCreateOrConnectWithoutPostInput = {
@@ -548,6 +580,62 @@ export type BoardCommentUpdateManyWithWhereWithoutPostInput = {
   data: Prisma.XOR<Prisma.BoardCommentUpdateManyMutationInput, Prisma.BoardCommentUncheckedUpdateManyWithoutPostInput>
 }
 
+export type BoardCommentCreateWithoutNotificationsInput = {
+  id?: string
+  body: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  post: Prisma.BoardPostCreateNestedOneWithoutCommentsInput
+  author: Prisma.UserCreateNestedOneWithoutBoardCommentsInput
+}
+
+export type BoardCommentUncheckedCreateWithoutNotificationsInput = {
+  id?: string
+  postId: string
+  authorId: string
+  body: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+}
+
+export type BoardCommentCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.BoardCommentWhereUniqueInput
+  create: Prisma.XOR<Prisma.BoardCommentCreateWithoutNotificationsInput, Prisma.BoardCommentUncheckedCreateWithoutNotificationsInput>
+}
+
+export type BoardCommentUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<Prisma.BoardCommentUpdateWithoutNotificationsInput, Prisma.BoardCommentUncheckedUpdateWithoutNotificationsInput>
+  create: Prisma.XOR<Prisma.BoardCommentCreateWithoutNotificationsInput, Prisma.BoardCommentUncheckedCreateWithoutNotificationsInput>
+  where?: Prisma.BoardCommentWhereInput
+}
+
+export type BoardCommentUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.BoardCommentWhereInput
+  data: Prisma.XOR<Prisma.BoardCommentUpdateWithoutNotificationsInput, Prisma.BoardCommentUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type BoardCommentUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  body?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  post?: Prisma.BoardPostUpdateOneRequiredWithoutCommentsNestedInput
+  author?: Prisma.UserUpdateOneRequiredWithoutBoardCommentsNestedInput
+}
+
+export type BoardCommentUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  postId?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  body?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
 export type BoardCommentCreateManyAuthorInput = {
   id?: string
   postId: string
@@ -564,6 +652,7 @@ export type BoardCommentUpdateWithoutAuthorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   post?: Prisma.BoardPostUpdateOneRequiredWithoutCommentsNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutBoardCommentNestedInput
 }
 
 export type BoardCommentUncheckedUpdateWithoutAuthorInput = {
@@ -573,6 +662,7 @@ export type BoardCommentUncheckedUpdateWithoutAuthorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutBoardCommentNestedInput
 }
 
 export type BoardCommentUncheckedUpdateManyWithoutAuthorInput = {
@@ -600,6 +690,7 @@ export type BoardCommentUpdateWithoutPostInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   author?: Prisma.UserUpdateOneRequiredWithoutBoardCommentsNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutBoardCommentNestedInput
 }
 
 export type BoardCommentUncheckedUpdateWithoutPostInput = {
@@ -609,6 +700,7 @@ export type BoardCommentUncheckedUpdateWithoutPostInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutBoardCommentNestedInput
 }
 
 export type BoardCommentUncheckedUpdateManyWithoutPostInput = {
@@ -621,6 +713,35 @@ export type BoardCommentUncheckedUpdateManyWithoutPostInput = {
 }
 
 
+/**
+ * Count Type BoardCommentCountOutputType
+ */
+
+export type BoardCommentCountOutputType = {
+  notifications: number
+}
+
+export type BoardCommentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  notifications?: boolean | BoardCommentCountOutputTypeCountNotificationsArgs
+}
+
+/**
+ * BoardCommentCountOutputType without action
+ */
+export type BoardCommentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BoardCommentCountOutputType
+   */
+  select?: Prisma.BoardCommentCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * BoardCommentCountOutputType without action
+ */
+export type BoardCommentCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
 
 export type BoardCommentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -632,6 +753,8 @@ export type BoardCommentSelect<ExtArgs extends runtime.Types.Extensions.Internal
   deletedAt?: boolean
   post?: boolean | Prisma.BoardPostDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  notifications?: boolean | Prisma.BoardComment$notificationsArgs<ExtArgs>
+  _count?: boolean | Prisma.BoardCommentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["boardComment"]>
 
 export type BoardCommentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -672,6 +795,8 @@ export type BoardCommentOmit<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type BoardCommentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   post?: boolean | Prisma.BoardPostDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  notifications?: boolean | Prisma.BoardComment$notificationsArgs<ExtArgs>
+  _count?: boolean | Prisma.BoardCommentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BoardCommentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   post?: boolean | Prisma.BoardPostDefaultArgs<ExtArgs>
@@ -687,6 +812,7 @@ export type $BoardCommentPayload<ExtArgs extends runtime.Types.Extensions.Intern
   objects: {
     post: Prisma.$BoardPostPayload<ExtArgs>
     author: Prisma.$UserPayload<ExtArgs>
+    notifications: Prisma.$NotificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1092,6 +1218,7 @@ export interface Prisma__BoardCommentClient<T, Null = never, ExtArgs extends run
   readonly [Symbol.toStringTag]: "PrismaPromise"
   post<T extends Prisma.BoardPostDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BoardPostDefaultArgs<ExtArgs>>): Prisma.Prisma__BoardPostClient<runtime.Types.Result.GetResult<Prisma.$BoardPostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   author<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  notifications<T extends Prisma.BoardComment$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BoardComment$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1526,6 +1653,30 @@ export type BoardCommentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many BoardComments to delete.
    */
   limit?: number
+}
+
+/**
+ * BoardComment.notifications
+ */
+export type BoardComment$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
 }
 
 /**

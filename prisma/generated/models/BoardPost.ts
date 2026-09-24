@@ -201,6 +201,7 @@ export type BoardPostWhereInput = {
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   comments?: Prisma.BoardCommentListRelationFilter
   likes?: Prisma.BoardPostLikeListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
 }
 
 export type BoardPostOrderByWithRelationInput = {
@@ -214,6 +215,7 @@ export type BoardPostOrderByWithRelationInput = {
   author?: Prisma.UserOrderByWithRelationInput
   comments?: Prisma.BoardCommentOrderByRelationAggregateInput
   likes?: Prisma.BoardPostLikeOrderByRelationAggregateInput
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput
 }
 
 export type BoardPostWhereUniqueInput = Prisma.AtLeast<{
@@ -230,6 +232,7 @@ export type BoardPostWhereUniqueInput = Prisma.AtLeast<{
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   comments?: Prisma.BoardCommentListRelationFilter
   likes?: Prisma.BoardPostLikeListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
 }, "id">
 
 export type BoardPostOrderByWithAggregationInput = {
@@ -268,6 +271,7 @@ export type BoardPostCreateInput = {
   author: Prisma.UserCreateNestedOneWithoutBoardPostsInput
   comments?: Prisma.BoardCommentCreateNestedManyWithoutPostInput
   likes?: Prisma.BoardPostLikeCreateNestedManyWithoutPostInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutBoardPostInput
 }
 
 export type BoardPostUncheckedCreateInput = {
@@ -280,6 +284,7 @@ export type BoardPostUncheckedCreateInput = {
   deletedAt?: Date | string | null
   comments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutPostInput
   likes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutPostInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutBoardPostInput
 }
 
 export type BoardPostUpdateInput = {
@@ -292,6 +297,7 @@ export type BoardPostUpdateInput = {
   author?: Prisma.UserUpdateOneRequiredWithoutBoardPostsNestedInput
   comments?: Prisma.BoardCommentUpdateManyWithoutPostNestedInput
   likes?: Prisma.BoardPostLikeUpdateManyWithoutPostNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutBoardPostNestedInput
 }
 
 export type BoardPostUncheckedUpdateInput = {
@@ -304,6 +310,7 @@ export type BoardPostUncheckedUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   comments?: Prisma.BoardCommentUncheckedUpdateManyWithoutPostNestedInput
   likes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutPostNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutBoardPostNestedInput
 }
 
 export type BoardPostCreateManyInput = {
@@ -380,6 +387,11 @@ export type BoardPostScalarRelationFilter = {
   isNot?: Prisma.BoardPostWhereInput
 }
 
+export type BoardPostNullableScalarRelationFilter = {
+  is?: Prisma.BoardPostWhereInput | null
+  isNot?: Prisma.BoardPostWhereInput | null
+}
+
 export type BoardPostCreateNestedManyWithoutAuthorInput = {
   create?: Prisma.XOR<Prisma.BoardPostCreateWithoutAuthorInput, Prisma.BoardPostUncheckedCreateWithoutAuthorInput> | Prisma.BoardPostCreateWithoutAuthorInput[] | Prisma.BoardPostUncheckedCreateWithoutAuthorInput[]
   connectOrCreate?: Prisma.BoardPostCreateOrConnectWithoutAuthorInput | Prisma.BoardPostCreateOrConnectWithoutAuthorInput[]
@@ -450,6 +462,22 @@ export type BoardPostUpdateOneRequiredWithoutLikesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BoardPostUpdateToOneWithWhereWithoutLikesInput, Prisma.BoardPostUpdateWithoutLikesInput>, Prisma.BoardPostUncheckedUpdateWithoutLikesInput>
 }
 
+export type BoardPostCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<Prisma.BoardPostCreateWithoutNotificationsInput, Prisma.BoardPostUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.BoardPostCreateOrConnectWithoutNotificationsInput
+  connect?: Prisma.BoardPostWhereUniqueInput
+}
+
+export type BoardPostUpdateOneWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.BoardPostCreateWithoutNotificationsInput, Prisma.BoardPostUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.BoardPostCreateOrConnectWithoutNotificationsInput
+  upsert?: Prisma.BoardPostUpsertWithoutNotificationsInput
+  disconnect?: Prisma.BoardPostWhereInput | boolean
+  delete?: Prisma.BoardPostWhereInput | boolean
+  connect?: Prisma.BoardPostWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BoardPostUpdateToOneWithWhereWithoutNotificationsInput, Prisma.BoardPostUpdateWithoutNotificationsInput>, Prisma.BoardPostUncheckedUpdateWithoutNotificationsInput>
+}
+
 export type BoardPostCreateWithoutAuthorInput = {
   id?: string
   body: string
@@ -459,6 +487,7 @@ export type BoardPostCreateWithoutAuthorInput = {
   deletedAt?: Date | string | null
   comments?: Prisma.BoardCommentCreateNestedManyWithoutPostInput
   likes?: Prisma.BoardPostLikeCreateNestedManyWithoutPostInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutBoardPostInput
 }
 
 export type BoardPostUncheckedCreateWithoutAuthorInput = {
@@ -470,6 +499,7 @@ export type BoardPostUncheckedCreateWithoutAuthorInput = {
   deletedAt?: Date | string | null
   comments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutPostInput
   likes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutPostInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutBoardPostInput
 }
 
 export type BoardPostCreateOrConnectWithoutAuthorInput = {
@@ -520,6 +550,7 @@ export type BoardPostCreateWithoutCommentsInput = {
   deletedAt?: Date | string | null
   author: Prisma.UserCreateNestedOneWithoutBoardPostsInput
   likes?: Prisma.BoardPostLikeCreateNestedManyWithoutPostInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutBoardPostInput
 }
 
 export type BoardPostUncheckedCreateWithoutCommentsInput = {
@@ -531,6 +562,7 @@ export type BoardPostUncheckedCreateWithoutCommentsInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   likes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutPostInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutBoardPostInput
 }
 
 export type BoardPostCreateOrConnectWithoutCommentsInput = {
@@ -558,6 +590,7 @@ export type BoardPostUpdateWithoutCommentsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   author?: Prisma.UserUpdateOneRequiredWithoutBoardPostsNestedInput
   likes?: Prisma.BoardPostLikeUpdateManyWithoutPostNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutBoardPostNestedInput
 }
 
 export type BoardPostUncheckedUpdateWithoutCommentsInput = {
@@ -569,6 +602,7 @@ export type BoardPostUncheckedUpdateWithoutCommentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   likes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutPostNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutBoardPostNestedInput
 }
 
 export type BoardPostCreateWithoutLikesInput = {
@@ -580,6 +614,7 @@ export type BoardPostCreateWithoutLikesInput = {
   deletedAt?: Date | string | null
   author: Prisma.UserCreateNestedOneWithoutBoardPostsInput
   comments?: Prisma.BoardCommentCreateNestedManyWithoutPostInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutBoardPostInput
 }
 
 export type BoardPostUncheckedCreateWithoutLikesInput = {
@@ -591,6 +626,7 @@ export type BoardPostUncheckedCreateWithoutLikesInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   comments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutPostInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutBoardPostInput
 }
 
 export type BoardPostCreateOrConnectWithoutLikesInput = {
@@ -618,6 +654,7 @@ export type BoardPostUpdateWithoutLikesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   author?: Prisma.UserUpdateOneRequiredWithoutBoardPostsNestedInput
   comments?: Prisma.BoardCommentUpdateManyWithoutPostNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutBoardPostNestedInput
 }
 
 export type BoardPostUncheckedUpdateWithoutLikesInput = {
@@ -629,6 +666,71 @@ export type BoardPostUncheckedUpdateWithoutLikesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   comments?: Prisma.BoardCommentUncheckedUpdateManyWithoutPostNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutBoardPostNestedInput
+}
+
+export type BoardPostCreateWithoutNotificationsInput = {
+  id?: string
+  body: string
+  isPinned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  author: Prisma.UserCreateNestedOneWithoutBoardPostsInput
+  comments?: Prisma.BoardCommentCreateNestedManyWithoutPostInput
+  likes?: Prisma.BoardPostLikeCreateNestedManyWithoutPostInput
+}
+
+export type BoardPostUncheckedCreateWithoutNotificationsInput = {
+  id?: string
+  authorId: string
+  body: string
+  isPinned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  comments?: Prisma.BoardCommentUncheckedCreateNestedManyWithoutPostInput
+  likes?: Prisma.BoardPostLikeUncheckedCreateNestedManyWithoutPostInput
+}
+
+export type BoardPostCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.BoardPostWhereUniqueInput
+  create: Prisma.XOR<Prisma.BoardPostCreateWithoutNotificationsInput, Prisma.BoardPostUncheckedCreateWithoutNotificationsInput>
+}
+
+export type BoardPostUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<Prisma.BoardPostUpdateWithoutNotificationsInput, Prisma.BoardPostUncheckedUpdateWithoutNotificationsInput>
+  create: Prisma.XOR<Prisma.BoardPostCreateWithoutNotificationsInput, Prisma.BoardPostUncheckedCreateWithoutNotificationsInput>
+  where?: Prisma.BoardPostWhereInput
+}
+
+export type BoardPostUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.BoardPostWhereInput
+  data: Prisma.XOR<Prisma.BoardPostUpdateWithoutNotificationsInput, Prisma.BoardPostUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type BoardPostUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  body?: Prisma.StringFieldUpdateOperationsInput | string
+  isPinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  author?: Prisma.UserUpdateOneRequiredWithoutBoardPostsNestedInput
+  comments?: Prisma.BoardCommentUpdateManyWithoutPostNestedInput
+  likes?: Prisma.BoardPostLikeUpdateManyWithoutPostNestedInput
+}
+
+export type BoardPostUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  body?: Prisma.StringFieldUpdateOperationsInput | string
+  isPinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  comments?: Prisma.BoardCommentUncheckedUpdateManyWithoutPostNestedInput
+  likes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutPostNestedInput
 }
 
 export type BoardPostCreateManyAuthorInput = {
@@ -649,6 +751,7 @@ export type BoardPostUpdateWithoutAuthorInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   comments?: Prisma.BoardCommentUpdateManyWithoutPostNestedInput
   likes?: Prisma.BoardPostLikeUpdateManyWithoutPostNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutBoardPostNestedInput
 }
 
 export type BoardPostUncheckedUpdateWithoutAuthorInput = {
@@ -660,6 +763,7 @@ export type BoardPostUncheckedUpdateWithoutAuthorInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   comments?: Prisma.BoardCommentUncheckedUpdateManyWithoutPostNestedInput
   likes?: Prisma.BoardPostLikeUncheckedUpdateManyWithoutPostNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutBoardPostNestedInput
 }
 
 export type BoardPostUncheckedUpdateManyWithoutAuthorInput = {
@@ -679,11 +783,13 @@ export type BoardPostUncheckedUpdateManyWithoutAuthorInput = {
 export type BoardPostCountOutputType = {
   comments: number
   likes: number
+  notifications: number
 }
 
 export type BoardPostCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   comments?: boolean | BoardPostCountOutputTypeCountCommentsArgs
   likes?: boolean | BoardPostCountOutputTypeCountLikesArgs
+  notifications?: boolean | BoardPostCountOutputTypeCountNotificationsArgs
 }
 
 /**
@@ -710,6 +816,13 @@ export type BoardPostCountOutputTypeCountLikesArgs<ExtArgs extends runtime.Types
   where?: Prisma.BoardPostLikeWhereInput
 }
 
+/**
+ * BoardPostCountOutputType without action
+ */
+export type BoardPostCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
 
 export type BoardPostSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -722,6 +835,7 @@ export type BoardPostSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   comments?: boolean | Prisma.BoardPost$commentsArgs<ExtArgs>
   likes?: boolean | Prisma.BoardPost$likesArgs<ExtArgs>
+  notifications?: boolean | Prisma.BoardPost$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.BoardPostCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["boardPost"]>
 
@@ -762,6 +876,7 @@ export type BoardPostInclude<ExtArgs extends runtime.Types.Extensions.InternalAr
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   comments?: boolean | Prisma.BoardPost$commentsArgs<ExtArgs>
   likes?: boolean | Prisma.BoardPost$likesArgs<ExtArgs>
+  notifications?: boolean | Prisma.BoardPost$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.BoardPostCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BoardPostIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -777,6 +892,7 @@ export type $BoardPostPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     author: Prisma.$UserPayload<ExtArgs>
     comments: Prisma.$BoardCommentPayload<ExtArgs>[]
     likes: Prisma.$BoardPostLikePayload<ExtArgs>[]
+    notifications: Prisma.$NotificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1183,6 +1299,7 @@ export interface Prisma__BoardPostClient<T, Null = never, ExtArgs extends runtim
   author<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   comments<T extends Prisma.BoardPost$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BoardPost$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BoardCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   likes<T extends Prisma.BoardPost$likesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BoardPost$likesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BoardPostLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notifications<T extends Prisma.BoardPost$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BoardPost$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1665,6 +1782,30 @@ export type BoardPost$likesArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.BoardPostLikeScalarFieldEnum | Prisma.BoardPostLikeScalarFieldEnum[]
+}
+
+/**
+ * BoardPost.notifications
+ */
+export type BoardPost$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
 }
 
 /**
