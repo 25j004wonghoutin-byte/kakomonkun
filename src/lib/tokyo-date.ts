@@ -32,6 +32,19 @@ export function getTokyoMonthRange(date = new Date()) {
   };
 }
 
+export function getTokyoWeekRange(date = new Date()) {
+  const dateString = getTokyoDate(date);
+  const [year, month, day] = dateString.split("-").map(Number);
+  const calendarDate = new Date(Date.UTC(year, month - 1, day));
+  const daysSinceMonday = (calendarDate.getUTCDay() + 6) % 7;
+  const start = new Date(`${dateString}T00:00:00+09:00`);
+  start.setUTCDate(start.getUTCDate() - daysSinceMonday);
+  const end = new Date(start);
+  end.setUTCDate(end.getUTCDate() + 7);
+
+  return { start, end };
+}
+
 function getTokyoMonthBoundary(year: number, zeroBasedMonth: number) {
   const normalized = new Date(Date.UTC(year, zeroBasedMonth, 1));
   const normalizedYear = normalized.getUTCFullYear();
