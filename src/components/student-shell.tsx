@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
+import { NotificationBell } from "@/components/notification-bell";
 
 type NavigationItem = {
   label: string;
@@ -35,12 +36,6 @@ const navigation: NavigationItem[] = [
   { label: "マイページ", href: "/profile", icon: "user" },
 ];
 
-const notifications = [
-  "今日の一問一答が更新されました。",
-  "過去問練習で連続正解を目指しましょう。",
-  "新しい称号がショップに追加されました。",
-];
-
 type StudentShellProps = {
   children: ReactNode;
   userName?: string;
@@ -56,7 +51,6 @@ export function StudentShell({
   const [userFetchComplete, setUserFetchComplete] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [desktopSidebarVisible, setDesktopSidebarVisible] = useState(true);
-  const [noticeOpen, setNoticeOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -176,36 +170,7 @@ export function StudentShell({
               </button>
 
               <div className="flex items-center gap-4">
-                <div className="relative">
-                  <button
-                    type="button"
-                    aria-label="通知"
-                    aria-expanded={noticeOpen}
-                    onClick={() => {
-                      setNoticeOpen((current) => !current);
-                      setUserMenuOpen(false);
-                    }}
-                    className="relative grid size-10 place-items-center rounded-full text-slate-700 transition hover:bg-slate-100"
-                  >
-                    <AppIcon name="bell" className="size-5" />
-                    <span className="absolute right-1.5 top-1.5 grid size-5 place-items-center rounded-full bg-red-500 text-[10px] font-black text-white ring-2 ring-white">
-                      3
-                    </span>
-                  </button>
-
-                  {noticeOpen ? (
-                    <div className="absolute right-0 mt-3 w-80 rounded-xl border border-slate-200 bg-white p-3 shadow-2xl shadow-slate-300/40">
-                      <p className="px-2 pb-2 text-sm font-black">通知</p>
-                      <div className="space-y-2">
-                        {notifications.map((message) => (
-                          <div key={message} className="rounded-lg bg-slate-50 p-3 text-sm leading-6 text-slate-700">
-                            {message}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ) : null}
-                </div>
+                <NotificationBell />
 
                 <div className="relative">
                   <button
@@ -214,7 +179,6 @@ export function StudentShell({
                     aria-expanded={userMenuOpen}
                     onClick={() => {
                       setUserMenuOpen((current) => !current);
-                      setNoticeOpen(false);
                     }}
                     className="flex items-center gap-3 rounded-full py-1 pl-1 pr-2 transition hover:bg-slate-100"
                   >

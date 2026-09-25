@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { GoogleLoginButton } from "@/components/google-login-button";
 import { LoginLayout } from "@/components/login-layout";
+import { TestStudentLoginForm } from "@/components/test-student-login-form";
 
 type LoginPageProps = {
   searchParams: Promise<{
@@ -38,6 +39,10 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           ) : null}
 
           <GoogleLoginButton nextPath={nextPath} />
+
+          {process.env.NODE_ENV !== "production" ? (
+            <TestStudentLoginForm nextPath={nextPath} />
+          ) : null}
 
           <Link
             href="/login/teacher"
