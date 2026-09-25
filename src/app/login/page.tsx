@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { GoogleLoginButton } from "@/components/google-login-button";
-import { BrandTitle, LoginSurface } from "@/components/login-screen";
+import { LoginLayout } from "@/components/login-layout";
 
 type LoginPageProps = {
   searchParams: Promise<{
@@ -18,42 +18,39 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const nextPath = getSafeNextPath(params.next);
 
   return (
-    <LoginSurface>
-      <div className="flex flex-1 flex-col px-6 pb-10 pt-24 sm:px-10 lg:px-16">
-        <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center text-center">
-          <BrandTitle />
+    <LoginLayout audience="student">
+      <div className="w-full max-w-[430px]">
+        <h1 className="text-3xl font-black tracking-[0.01em] text-[#071d36] sm:text-4xl">
+          学生ログイン
+        </h1>
+        <p className="mt-3 text-sm font-medium leading-6 text-slate-500 sm:text-base">
+          Googleアカウントでログインしてください。
+        </p>
 
-          <div className="mt-20 w-full max-w-[470px]">
-            <p className="mb-7 text-xl font-bold text-[#071d36]">
-              学生アカウントのログインはこちら
+        <div className="mt-8">
+          {params.error ? (
+            <p
+              role="alert"
+              className="mb-5 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-bold leading-6 text-rose-700"
+            >
+              ログイン処理を完了できませんでした。もう一度お試しください。
             </p>
+          ) : null}
 
-            {params.error ? (
-              <p
-                role="alert"
-                className="mb-5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-bold text-rose-700"
-              >
-                ログイン処理を完了できませんでした。もう一度お試しください。
-              </p>
-            ) : null}
+          <GoogleLoginButton nextPath={nextPath} />
 
-            <GoogleLoginButton nextPath={nextPath} />
-
-            <p className="mt-12 text-base font-medium text-[#14263a]">
-              ※ 初回ログイン時に学生プロフィールが自動で作成されます
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-10 flex justify-end">
           <Link
             href="/login/teacher"
-            className="text-base font-black text-blue-600 transition hover:text-blue-700 hover:underline sm:text-lg"
+            className="mt-8 block text-left text-sm font-bold text-blue-600 transition hover:text-blue-700 hover:underline"
           >
-            教師アカウントのログインはこちら&gt;&gt;&gt;
+            教師ログインへ →
           </Link>
+
+          <p className="mt-5 text-left text-xs font-medium leading-5 text-slate-400">
+            ※ 初回ログイン時に学生プロフィールが自動で作成されます
+          </p>
         </div>
       </div>
-    </LoginSurface>
+    </LoginLayout>
   );
 }

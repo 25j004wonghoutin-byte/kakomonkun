@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="380" height="108" viewBox="0 0 380 108" role="img" aria-labelledby="title description">
+  <title id="title">目指せ合格！過去問くん</title>
+  <desc id="description">ITパスポート・基本情報技術者試験 対策学習アプリ</desc>
+  <rect width="380" height="108" rx="18" fill="#fff"/>
+  <g transform="translate(22 18)">
+    <path d="M14 8h42v28c0 16-8 27-21 32C22 63 14 52 14 36V8Z" fill="#F5A900"/>
+    <path d="M20 14h30v21c0 12-5 21-15 26-10-5-15-14-15-26V14Z" fill="#FFC43D"/>
+    <path d="M14 16H5v12c0 10 6 17 17 18M56 16h9v12c0 10-6 17-17 18" fill="none" stroke="#D88A00" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M35 67v10M23 82h24" fill="none" stroke="#D88A00" stroke-width="6" stroke-linecap="round"/>
+    <path d="m35 18 4.2 8.6 9.5 1.4-6.9 6.7 1.7 9.5-8.5-4.5-8.5 4.5 1.7-9.5-6.9-6.7 9.5-1.4L35 18Z" fill="#fff"/>
+  </g>
+  <g fill="#071D36" font-family="Yu Gothic, Hiragino Kaku Gothic ProN, Meiryo, sans-serif">
+    <text x="105" y="35" font-size="20" font-weight="700">目指せ合格！</text>
+    <text x="105" y="69" font-size="34" font-weight="900">過去問くん</text>
+    <text x="105" y="91" font-size="11" font-weight="700">ITパスポート・基本情報技術者試験 対策学習アプリ</text>
+  </g>
+</svg>
