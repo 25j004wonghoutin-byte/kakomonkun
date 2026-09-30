@@ -2,6 +2,7 @@ import type { Prisma } from "../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import {
   toBoardAuthor,
+  toBoardPublicProfileIdentity,
   type BoardActor,
   type BoardCommentView,
   type BoardCursor,
@@ -324,15 +325,10 @@ export async function getBoardPublicProfile(
 
   const hasMore = rows.length > PAGE_SIZE;
   const pageRows = rows.slice(0, PAGE_SIZE);
-  const author = toBoardAuthor(profile);
+  const publicIdentity = toBoardPublicProfileIdentity(profile);
 
   return {
-    id: profile.id,
-    displayName: profile.displayName,
-    avatarUrl: author.avatarUrl,
-    bio: author.isTeacher ? null : (profile.studentProfile?.bio ?? null),
-    titleName: author.titleName,
-    isTeacher: author.isTeacher,
+    ...publicIdentity,
     postCount,
     posts: await toBoardPostViews(pageRows, actor),
     nextCursor: nextCursorFor("mine", pageRows, hasMore),

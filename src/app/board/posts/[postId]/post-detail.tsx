@@ -8,7 +8,11 @@ import type {
   BoardThreadView,
 } from "@/lib/board/contract";
 import { readJsonResponse } from "@/lib/read-json-response";
-import { PostCard } from "../../post-card";
+import {
+  BoardAuthorName,
+  PostCard,
+  TeacherBadge,
+} from "../../post-card";
 
 const dateFormatter = new Intl.DateTimeFormat("ja-JP", {
   month: "numeric",
@@ -182,10 +186,8 @@ export function PostDetail({
             </Link>
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <Link href={`/board/users/${comment.author.id}`} className="font-black text-slate-950 hover:underline">
-                  {comment.author.displayName}
-                </Link>
-                {comment.author.isTeacher ? <span className="rounded bg-blue-50 px-1.5 py-0.5 text-[10px] font-black text-blue-700">先生</span> : null}
+                <BoardAuthorName author={comment.author} />
+                <TeacherBadge isTeacher={comment.author.isTeacher} />
                 <time dateTime={comment.createdAt} className="text-xs text-slate-400">· {dateFormatter.format(new Date(comment.createdAt))}</time>
               </div>
               {comment.author.titleName ? <span className="mt-1.5 inline-flex rounded bg-blue-50 px-2 py-1 text-xs font-black text-blue-900">{comment.author.titleName}</span> : null}
@@ -200,7 +202,11 @@ export function PostDetail({
         <div className="flex gap-3 px-4 py-5 sm:gap-4 sm:px-6">
           <span aria-hidden="true" className="grid size-10 shrink-0 place-items-center rounded-full bg-blue-100 text-sm font-black text-blue-700">{viewerName.slice(0, 1)}</span>
           <div className="min-w-0 flex-1">
-            <p className="mb-2 text-xs text-slate-500">返信先：<Link href={`/board/users/${post.author.id}`} className="font-bold text-blue-600 hover:underline">{post.author.displayName}</Link>さん</p>
+            <p className="mb-2 flex flex-wrap items-center gap-1 text-xs text-slate-500">
+              <span>返信先：</span>
+              <BoardAuthorName author={post.author} />
+              {post.author.isTeacher ? null : <span>さん</span>}
+            </p>
             <label htmlFor="board-detail-reply" className="sr-only">返信本文</label>
             <textarea
               ref={replyRef}

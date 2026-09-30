@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { NotificationBell } from "@/components/notification-bell";
+import { StudentShell } from "@/components/student-shell";
 
 export type RoleNavigationItem = {
   label: string;
@@ -11,19 +12,48 @@ export type RoleNavigationItem = {
   icon: "home" | "students" | "message" | "bell";
 };
 
+const teacherNavigation: RoleNavigationItem[] = [
+  { label: "教師ホーム", href: "/teacher", icon: "home" },
+  { label: "学習状況", href: "/teacher/students", icon: "students" },
+  { label: "掲示板", href: "/board", icon: "message" },
+  { label: "通知", href: "/notifications", icon: "bell" },
+];
+
 type RoleShellProps = {
+  children: ReactNode;
+  roleName: string;
+  userName: string;
+};
+
+export function RoleShell({ children, roleName, userName }: RoleShellProps) {
+  if (roleName === "teacher") {
+    return (
+      <RoleNavigationShell
+        navigation={teacherNavigation}
+        userName="管理者"
+        avatarLabel="管"
+      >
+        {children}
+      </RoleNavigationShell>
+    );
+  }
+
+  return <StudentShell userName={userName}>{children}</StudentShell>;
+}
+
+type RoleNavigationShellProps = {
   children: ReactNode;
   navigation: RoleNavigationItem[];
   userName: string;
   avatarLabel: string;
 };
 
-export function RoleShell({
+export function RoleNavigationShell({
   children,
   navigation,
   userName,
   avatarLabel,
-}: RoleShellProps) {
+}: RoleNavigationShellProps) {
   const pathname = usePathname();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [desktopSidebarVisible, setDesktopSidebarVisible] = useState(true);

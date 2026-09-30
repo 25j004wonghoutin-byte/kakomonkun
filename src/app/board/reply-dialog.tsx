@@ -9,6 +9,7 @@ import type {
 } from "@/lib/board/contract";
 import { readJsonResponse } from "@/lib/read-json-response";
 import { scheduleBoardDialogOpen } from "./dialog-lifecycle";
+import { BoardAuthorName, TeacherBadge } from "./post-card";
 
 export function ReplyDialog({
   post,
@@ -139,17 +140,8 @@ export function ReplyDialog({
         </div>
         <div className="min-w-0 flex-1 pb-3">
           <div className="flex flex-wrap items-center gap-2">
-            <Link
-              href={`/board/users/${post.author.id}`}
-              className="font-black text-slate-950 hover:underline"
-            >
-              {post.author.displayName}
-            </Link>
-            {post.author.isTeacher ? (
-              <span className="rounded bg-blue-50 px-1.5 py-0.5 text-[10px] font-black text-blue-700">
-                先生
-              </span>
-            ) : null}
+            <BoardAuthorName author={post.author} />
+            <TeacherBadge isTeacher={post.author.isTeacher} />
           </div>
           {post.author.titleName ? (
             <span className="mt-1.5 inline-flex rounded bg-blue-50 px-2 py-1 text-xs font-black text-blue-900">
@@ -161,13 +153,8 @@ export function ReplyDialog({
           </p>
           <p className="mt-3 text-xs font-medium text-slate-500">
             返信先：
-            <Link
-              href={`/board/users/${post.author.id}`}
-              className="font-bold text-blue-600 hover:underline"
-            >
-              {post.author.displayName}
-            </Link>
-            さん
+            <BoardAuthorName author={post.author} />
+            {post.author.isTeacher ? null : "さん"}
           </p>
         </div>
       </div>
@@ -228,12 +215,8 @@ export function ReplyDialog({
             >
               <CommentAvatar comment={comment} />
               <div className="min-w-0 flex-1">
-                <Link
-                  href={`/board/users/${comment.author.id}`}
-                  className="font-black text-slate-950 hover:underline"
-                >
-                  {comment.author.displayName}
-                </Link>
+                <BoardAuthorName author={comment.author} />
+                <TeacherBadge isTeacher={comment.author.isTeacher} />
                 {comment.author.titleName ? (
                   <span className="mt-1.5 block w-fit rounded bg-blue-50 px-2 py-1 text-xs font-black text-blue-900">
                     {comment.author.titleName}

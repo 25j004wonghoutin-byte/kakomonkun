@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation";
-import { StudentShell } from "@/components/student-shell";
+import { RoleShell } from "@/components/role-shell";
 import { getCurrentUser } from "@/lib/auth";
 import { getBoardPublicProfile } from "@/lib/board/read";
 import { isUuid } from "@/lib/board/validation";
@@ -28,8 +28,8 @@ export default async function BoardUserPage({
   }
 
   return (
-    <StudentShell userName={user.displayName}>
+    <RoleShell roleName={user.role.name} userName={user.displayName}>
       <PublicProfile initialProfile={profile} viewerName={user.displayName} />
-    </StudentShell>
+    </RoleShell>
   );
 }

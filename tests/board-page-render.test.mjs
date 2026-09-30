@@ -121,7 +121,7 @@ test("teacher public profile does not invent a bio or title", () => {
     React.createElement(PublicProfile, {
       initialProfile: {
         id: author.id,
-        displayName: "田中先生",
+        displayName: "管理者",
         avatarUrl: null,
         bio: null,
         titleName: null,
@@ -134,7 +134,7 @@ test("teacher public profile does not invent a bio or title", () => {
     }),
   );
 
-  assert.match(html, /田中先生/);
+  assert.match(html, /text-violet-800[^>]*>管理者</);
   assert.match(html, /先生/);
   assert.doesNotMatch(html, /自己紹介|称号|ITパスポート|利用開始/);
 });
@@ -159,4 +159,53 @@ test("reply icon opens the composer while reply count links to the single post",
   assert.match(html, /先生からのお知らせ/);
   assert.match(html, /aria-label="田中先生の投稿に返信"/);
   assert.match(html, /href="\/board\/posts\/00000000-0000-4000-8000-000000000002"[^>]*>2<\/a>/);
+});
+
+test("teacher post and reply names use the distinct violet treatment and badge", () => {
+  const { PostCard } = require("../src/app/board/post-card.tsx");
+  const { PostDetail } = require("../src/app/board/posts/[postId]/post-detail.tsx");
+  const teacher = {
+    ...author,
+    displayName: "管理者",
+    titleName: null,
+    isTeacher: true,
+  };
+  const teacherPost = { ...post, author: teacher };
+  const postHtml = renderToStaticMarkup(
+    React.createElement(PostCard, {
+      post: teacherPost,
+      pending: false,
+      onReply() {},
+      onLike() {},
+      onPin() {},
+      onDelete() {},
+    }),
+  );
+  const detailHtml = renderToStaticMarkup(
+    React.createElement(PostDetail, {
+      initialThread: {
+        post: teacherPost,
+        comments: [{ ...thread.comments[0], author: teacher }],
+      },
+      viewerName: "あおい",
+    }),
+  );
+
+  assert.match(postHtml, /font-black text-violet-800[^>]*>管理者<\/a>/);
+  assert.match(postHtml, /bg-violet-50[^>]*text-violet-700[^>]*>先生<\/span>/);
+  assert.match(detailHtml, /font-black text-violet-800[^>]*>管理者<\/a>/);
+  assert.match(detailHtml, /bg-violet-50[^>]*text-violet-700[^>]*>先生<\/span>/);
+  assert.doesNotMatch(detailHtml, /管理者<\/a>さん/);
+
+  const { ReplyDialog } = require("../src/app/board/reply-dialog.tsx");
+  const replyHtml = renderToStaticMarkup(
+    React.createElement(ReplyDialog, {
+      post: teacherPost,
+      viewerName: "あおい",
+      onClose() {},
+      onSent() {},
+    }),
+  );
+  assert.match(replyHtml, /font-black text-violet-800[^>]*>管理者<\/a>/);
+  assert.doesNotMatch(replyHtml, /管理者<\/a>さん/);
 });

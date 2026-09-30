@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import type { BoardPostView, BoardPublicProfileView } from "@/lib/board/contract";
 import { readJsonResponse } from "@/lib/read-json-response";
-import { PostCard } from "../../post-card";
+import { PostCard, TeacherBadge } from "../../post-card";
 import { ReplyDialog } from "../../reply-dialog";
 
 export function PublicProfile({
@@ -135,7 +135,7 @@ export function PublicProfile({
         <header className="flex min-h-16 items-center gap-4 border-b border-slate-200 px-4 py-3 sm:px-6">
           <Link href="/board" aria-label="掲示板へ戻る" className="grid size-9 place-items-center rounded-full text-2xl text-slate-700 hover:bg-slate-100">←</Link>
           <div>
-            <h2 className="font-black text-slate-950">{initialProfile.displayName}</h2>
+            <h2 className={`font-black ${initialProfile.isTeacher ? "text-violet-800" : "text-slate-950"}`}>{initialProfile.displayName}</h2>
             <p className="text-xs text-slate-500">{postCount}件の投稿</p>
           </div>
         </header>
@@ -150,8 +150,8 @@ export function PublicProfile({
             {initialProfile.avatarUrl ? null : initialProfile.displayName.slice(0, 1)}
           </div>
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <h3 className="text-xl font-black text-slate-950">{initialProfile.displayName}</h3>
-            {initialProfile.isTeacher ? <span className="rounded bg-blue-50 px-2 py-1 text-xs font-black text-blue-700">先生</span> : null}
+            <h3 className={`text-xl font-black ${initialProfile.isTeacher ? "text-violet-800" : "text-slate-950"}`}>{initialProfile.displayName}</h3>
+            <TeacherBadge isTeacher={initialProfile.isTeacher} />
           </div>
           {initialProfile.titleName ? <span className="mt-2 inline-flex rounded bg-blue-50 px-2 py-1 text-xs font-black text-blue-900">{initialProfile.titleName}</span> : null}
           {initialProfile.bio ? <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7 text-slate-700">{initialProfile.bio}</p> : null}

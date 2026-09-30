@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { BoardPostView } from "@/lib/board/contract";
+import type { BoardAuthorView, BoardPostView } from "@/lib/board/contract";
 
 const dateFormatter = new Intl.DateTimeFormat("ja-JP", {
   month: "numeric",
@@ -43,17 +43,8 @@ export function PostCard({
         <AuthorAvatar post={post} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 leading-5">
-            <Link
-              href={`/board/users/${post.author.id}`}
-              className="font-black text-slate-950 hover:underline"
-            >
-              {post.author.displayName}
-            </Link>
-            {post.author.isTeacher ? (
-              <span className="rounded bg-blue-50 px-1.5 py-0.5 text-[10px] font-black text-blue-700">
-                先生
-              </span>
-            ) : null}
+            <BoardAuthorName author={post.author} />
+            <TeacherBadge isTeacher={post.author.isTeacher} />
             <time
               dateTime={post.createdAt}
               className="text-xs font-medium text-slate-400"
@@ -136,6 +127,29 @@ export function PostCard({
       </div>
     </article>
   );
+}
+
+export function BoardAuthorName({ author }: { author: BoardAuthorView }) {
+  return (
+    <Link
+      href={`/board/users/${author.id}`}
+      className={
+        author.isTeacher
+          ? "font-black text-violet-800 hover:underline"
+          : "font-black text-slate-950 hover:underline"
+      }
+    >
+      {author.displayName}
+    </Link>
+  );
+}
+
+export function TeacherBadge({ isTeacher }: { isTeacher: boolean }) {
+  return isTeacher ? (
+    <span className="rounded bg-violet-50 px-1.5 py-0.5 text-[10px] font-black text-violet-700">
+      先生
+    </span>
+  ) : null;
 }
 
 function AuthorAvatar({ post }: { post: BoardPostView }) {

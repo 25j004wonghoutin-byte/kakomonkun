@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { StudentShell } from "@/components/student-shell";
+import { RoleShell } from "@/components/role-shell";
 import { getCurrentUser } from "@/lib/auth";
 import { toBoardActor } from "@/lib/board/permissions";
 import { listBoardPosts } from "@/lib/board/read";
@@ -21,12 +21,12 @@ export default async function BoardPage() {
   const initial = await listBoardPosts(user.id, "all", null);
 
   return (
-    <StudentShell userName={user.displayName}>
+    <RoleShell roleName={user.role.name} userName={user.displayName}>
       <BoardFeed
         initialPosts={initial.posts}
         initialNextCursor={initial.nextCursor}
         viewer={{ ...actor, displayName: user.displayName }}
       />
-    </StudentShell>
+    </RoleShell>
   );
 }

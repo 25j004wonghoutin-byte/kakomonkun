@@ -1,3 +1,5 @@
+import { TEACHER_DISPLAY_NAME } from "@/lib/teacher/identity";
+
 export type BoardRoleName = "student" | "teacher";
 
 export type BoardActor = {
@@ -37,7 +39,7 @@ export function toBoardAuthor(row: PublicAuthorRow): BoardAuthorView {
 
   return {
     id: row.id,
-    displayName: row.displayName,
+    displayName: isTeacher ? TEACHER_DISPLAY_NAME : row.displayName,
     avatarUrl: isTeacher
       ? (row.teacherProfile?.avatarUrl ?? null)
       : (row.studentProfile?.avatarUrl ?? null),
@@ -86,3 +88,27 @@ export type BoardPublicProfileView = {
   posts: BoardPostView[];
   nextCursor: string | null;
 };
+
+export type PublicProfileRow = PublicAuthorRow & {
+  studentProfile: (PublicAuthorRow["studentProfile"] & {
+    bio: string | null;
+  }) | null;
+};
+
+export function toBoardPublicProfileIdentity(
+  row: PublicProfileRow,
+): Pick<
+  BoardPublicProfileView,
+  "id" | "displayName" | "avatarUrl" | "bio" | "titleName" | "isTeacher"
+> {
+  const author = toBoardAuthor(row);
+
+  return {
+    id: author.id,
+    displayName: author.displayName,
+    avatarUrl: author.avatarUrl,
+    bio: author.isTeacher ? null : (row.studentProfile?.bio ?? null),
+    titleName: author.titleName,
+    isTeacher: author.isTeacher,
+  };
+}
