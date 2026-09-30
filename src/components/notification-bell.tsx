@@ -1,14 +1,45 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type NotificationBellProps = {
   href?: string;
 };
 
 export function NotificationBell({ href = "/notifications" }: NotificationBellProps) {
+  const pathname = usePathname();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadUnreadCount() {
+      try {
+        const response = await fetch("/api/notifications/unread-count", {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+        if (!response.ok) return;
+
+        const data = (await response.json()) as { unreadCount: number };
+        setUnreadCount(data.unreadCount);
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+      }
+    }
+
+    void loadUnreadCount();
+    return () => controller.abort();
+  }, [pathname]);
+
+  const badge = formatUnreadBadge(unreadCount);
+
   return (
     <Link
       href={href}
-      aria-label="通知"
+      aria-label={unreadCount > 0 ? `通知 未読${unreadCount}件` : "通知"}
       className="relative grid size-10 place-items-center rounded-full text-slate-700 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
     >
       <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5" fill="none">
@@ -20,6 +51,16 @@ export function NotificationBell({ href = "/notifications" }: NotificationBellPr
           strokeLinejoin="round"
         />
       </svg>
+      {badge ? (
+        <span className="absolute -right-1 -top-1 grid min-w-5 place-items-center rounded-full bg-rose-500 px-1 text-[10px] font-black leading-5 text-white ring-2 ring-white">
+          {badge}
+        </span>
+      ) : null}
     </Link>
   );
+}
+
+export function formatUnreadBadge(count: number) {
+  if (count <= 0) return null;
+  return count > 99 ? "99+" : String(count);
 }
