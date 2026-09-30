@@ -4,7 +4,8 @@ import {
   displayNameForRole,
   isTeacherRole,
   isTeacherSessionPayload,
-  normalizeDevTeacherAccount,
+  normalizeTeacherAccountName,
+  teacherAuthEmailForAccount,
 } from "../src/lib/teacher/identity.ts";
 
 test("teacher identity is fixed and student identity is preserved", () => {
@@ -14,13 +15,20 @@ test("teacher identity is fixed and student identity is preserved", () => {
   assert.equal(isTeacherRole("student"), false);
 });
 
-test("development teacher accepts only test-teacher", () => {
+test("teacher account name is normalized and mapped to an internal email", () => {
+  assert.equal(normalizeTeacherAccountName(" Teacher.Admin "), "teacher.admin");
   assert.equal(
-    normalizeDevTeacherAccount(" TEST-TEACHER "),
-    "test-teacher@test.local",
+    teacherAuthEmailForAccount(" Teacher.Admin "),
+    "teacher.admin@teacher.local",
   );
-  assert.equal(normalizeDevTeacherAccount("test-student"), null);
-  assert.equal(normalizeDevTeacherAccount("teacher@example.com"), null);
+});
+
+test("teacher account name rejects email addresses and unsupported characters", () => {
+  assert.equal(normalizeTeacherAccountName("teacher@example.com"), null);
+  assert.equal(normalizeTeacherAccountName("teacher account"), null);
+  assert.equal(normalizeTeacherAccountName("管理者"), null);
+  assert.equal(normalizeTeacherAccountName("ab"), null);
+  assert.equal(teacherAuthEmailForAccount("invalid@example.com"), null);
 });
 
 test("teacher session payload rejects authenticated non-teachers", () => {

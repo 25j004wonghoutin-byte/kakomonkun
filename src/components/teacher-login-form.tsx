@@ -18,14 +18,13 @@ export function TeacherLoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const isDevelopment = process.env.NODE_ENV !== "production";
 
   async function submitLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submitting) return;
 
     const normalizedAccount = account.trim();
-    if (!normalizedAccount || (!isDevelopment && !password)) {
+    if (!normalizedAccount || !password) {
       setError("アカウントとパスワードを入力してください。");
       return;
     }
@@ -34,19 +33,7 @@ export function TeacherLoginForm() {
     setError("");
 
     try {
-      if (isDevelopment && normalizedAccount.toLowerCase() === "test-teacher") {
-        await signInAsDevelopmentTeacher(normalizedAccount);
-      } else {
-        const supabase = createClient();
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email: normalizedAccount,
-          password,
-        });
-
-        if (signInError) {
-          throw new Error("アカウントまたはパスワードが正しくありません。");
-        }
-      }
+      await signInAsTeacher(normalizedAccount, password);
 
       const meResponse = await fetch("/api/me", { cache: "no-store" });
       const mePayload: unknown = await meResponse.json().catch(() => null);
@@ -69,17 +56,20 @@ export function TeacherLoginForm() {
     }
   }
 
-  async function signInAsDevelopmentTeacher(normalizedAccount: string) {
-    const response = await fetch("/api/dev/test-teacher-login", {
+  async function signInAsTeacher(normalizedAccount: string, loginPassword: string) {
+    const response = await fetch("/api/auth/teacher-login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ account: normalizedAccount }),
+      body: JSON.stringify({
+        account: normalizedAccount,
+        password: loginPassword,
+      }),
     });
     const data = parseLoginResponse(await response.text());
 
     if (!response.ok) {
       throw new Error(
-        data.error ?? `教師テストログインに失敗しました。（HTTP ${response.status}）`,
+        data.error ?? `教師ログインに失敗しました。（HTTP ${response.status}）`,
       );
     }
   }
@@ -102,7 +92,7 @@ export function TeacherLoginForm() {
             autoComplete="username"
             value={account}
             onChange={(event) => setAccount(event.target.value)}
-            placeholder={isDevelopment ? "test-teacher またはメールアドレス" : "teacher@example.com"}
+            placeholder="アカウント名を入力"
             disabled={submitting}
             className="h-14 w-full rounded-lg border border-[#c9d5e5] bg-white px-4 text-base font-medium text-[#071d36] outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-50"
           />
@@ -150,12 +140,6 @@ export function TeacherLoginForm() {
         <Link href="/login" className="block text-left text-sm font-bold text-blue-600 transition hover:text-blue-700 hover:underline">
           学生ログインへ戻る →
         </Link>
-
-        {isDevelopment ? (
-          <p className="text-left text-xs font-medium leading-5 text-slate-400">
-            ※ 開発環境では test-teacher を使用できます
-          </p>
-        ) : null}
       </form>
     </div>
   );

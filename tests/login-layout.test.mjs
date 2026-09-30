@@ -15,6 +15,7 @@ test("teacher form has aligned fields button and switch link", () => {
   const form = readFileSync("src/components/teacher-login-form.tsx", "utf8");
   assert.match(form, /max-w-\[430px\]/);
   assert.match(form, /学生ログインへ戻る/);
-  assert.match(form, /signInWithPassword/);
-  assert.match(form, /test-teacher-login/);
+  assert.match(form, /\/api\/auth\/teacher-login/);
+  assert.match(form, /アカウント名を入力/);
+  assert.doesNotMatch(form, /test-teacher-login|test-teacher|メールアドレス/);
 });

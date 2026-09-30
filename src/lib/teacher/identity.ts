@@ -8,10 +8,18 @@ export function displayNameForRole(roleName: string, storedName: string) {
   return isTeacherRole(roleName) ? TEACHER_DISPLAY_NAME : storedName;
 }
 
-export function normalizeDevTeacherAccount(account: string) {
-  return account.trim().toLowerCase() === "test-teacher"
-    ? "test-teacher@test.local"
-    : null;
+const TEACHER_ACCOUNT_NAME_PATTERN = /^[a-z0-9][a-z0-9._-]{2,49}$/u;
+
+export function normalizeTeacherAccountName(account: string) {
+  const normalized = account.trim().toLowerCase();
+
+  return TEACHER_ACCOUNT_NAME_PATTERN.test(normalized) ? normalized : null;
+}
+
+export function teacherAuthEmailForAccount(account: string) {
+  const normalized = normalizeTeacherAccountName(account);
+
+  return normalized ? `${normalized}@teacher.local` : null;
 }
 
 export function isTeacherSessionPayload(value: unknown) {
