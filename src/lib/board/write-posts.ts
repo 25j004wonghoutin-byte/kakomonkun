@@ -1,9 +1,11 @@
+import type { Prisma } from "../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import type { BoardActor } from "@/lib/board/contract";
 import {
   canDeleteContent,
   canPinPost,
 } from "@/lib/board/permissions";
+import { createBoardPinnedNotifications } from "@/lib/notifications/write";
 
 export type BoardPostMutationResult =
   | "changed"
@@ -22,9 +24,21 @@ export async function setBoardPostPin(
   postId: string,
   isPinned: boolean,
 ): Promise<BoardPostMutationResult> {
-  const post = await prisma.boardPost.findUnique({
+  return prisma.$transaction((tx) =>
+    setBoardPostPinInTransaction(tx, actor, postId, isPinned),
+  );
+}
+
+export async function setBoardPostPinInTransaction(
+  tx: Prisma.TransactionClient,
+  actor: BoardActor,
+  postId: string,
+  isPinned: boolean,
+): Promise<BoardPostMutationResult> {
+  const post = await tx.boardPost.findUnique({
     where: { id: postId },
     select: {
+      isPinned: true,
       deletedAt: true,
       author: { select: { role: { select: { name: true } } } },
     },
@@ -37,12 +51,22 @@ export async function setBoardPostPin(
     return "forbidden";
   }
 
-  const changed = await prisma.boardPost.updateMany({
+  const changed = await tx.boardPost.updateMany({
     where: { id: postId, deletedAt: null },
     data: { isPinned },
   });
+  if (changed.count !== 1) {
+    return "not_found";
+  }
 
-  return changed.count === 1 ? "changed" : "not_found";
+  await createBoardPinnedNotifications(tx, {
+    wasPinned: post.isPinned,
+    isPinned,
+    actorId: actor.id,
+    boardPostId: postId,
+  });
+
+  return "changed";
 }
 
 export async function deleteBoardPost(

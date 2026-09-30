@@ -1,3 +1,4 @@
+import type { Prisma } from "../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import {
   toBoardAuthor,
@@ -8,6 +9,7 @@ import {
   canDeleteContent,
   canInteractWithPost,
 } from "@/lib/board/permissions";
+import { createBoardReplyNotification } from "@/lib/notifications/write";
 
 const publicAuthorSelect = {
   id: true,
@@ -32,28 +34,9 @@ export async function createBoardComment(
   postId: string,
   body: string,
 ): Promise<BoardCommentView | "not_found"> {
-  const created = await prisma.$transaction(async (tx) => {
-    const post = await tx.boardPost.findUnique({
-      where: { id: postId },
-      select: { deletedAt: true },
-    });
-    if (!post || !canInteractWithPost(post.deletedAt)) {
-      return "not_found";
-    }
-
-    const created = await tx.boardComment.create({
-      data: { postId, authorId: actor.id, body },
-      select: {
-        id: true,
-        postId: true,
-        authorId: true,
-        body: true,
-        createdAt: true,
-      },
-    });
-
-    return created;
-  });
+  const created = await prisma.$transaction((tx) =>
+    createBoardCommentInTransaction(tx, actor, postId, body),
+  );
 
   if (created === "not_found") {
     return created;
@@ -72,6 +55,46 @@ export async function createBoardComment(
     author: toBoardAuthor(author),
     canDelete: canDeleteContent(actor, created.authorId),
   };
+}
+
+export async function createBoardCommentInTransaction(
+  tx: Prisma.TransactionClient,
+  actor: BoardActor,
+  postId: string,
+  body: string,
+) {
+  const post = await tx.boardPost.findUnique({
+    where: { id: postId },
+    select: {
+      authorId: true,
+      deletedAt: true,
+      author: { select: { status: true, deletedAt: true } },
+    },
+  });
+  if (!post || !canInteractWithPost(post.deletedAt)) {
+    return "not_found" as const;
+  }
+
+  const created = await tx.boardComment.create({
+    data: { postId, authorId: actor.id, body },
+    select: {
+      id: true,
+      postId: true,
+      authorId: true,
+      body: true,
+      createdAt: true,
+    },
+  });
+
+  await createBoardReplyNotification(tx, {
+    postAuthorId: post.authorId,
+    postAuthorStatus: post.author.status,
+    postAuthorDeletedAt: post.author.deletedAt,
+    actorId: actor.id,
+    boardCommentId: created.id,
+  });
+
+  return created;
 }
 
 export async function deleteBoardComment(
