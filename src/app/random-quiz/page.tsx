@@ -31,13 +31,13 @@ async function fetchRandomQuestion() {
     throw new Error(await readError(response, "問題を読み込めませんでした。"));
   }
 
-  const data = (await response.json()) as { question: QuizQuestion };
-  return data.question;
+  return (await response.json()) as { question: QuizQuestion; attemptId: string | null };
 }
 
 export default function RandomQuizPage() {
   const [me, setMe] = useState<MeResponse | null>(null);
-  const [question, setQuestion] = useState<QuizQuestion | null>(null);
+  const [randomAttempt, setRandomAttempt] = useState<{ question: QuizQuestion; attemptId: string | null } | null>(null);
+  const question = randomAttempt?.question ?? null;
   const [selectedChoiceId, setSelectedChoiceId] = useState<string | null>(null);
   const [answerResult, setAnswerResult] = useState<QuizAnswerResult | null>(null);
   const [loading, setLoading] = useState(true);
@@ -53,9 +53,9 @@ export default function RandomQuizPage() {
     setAnimateAnswerResult(false);
 
     try {
-      setQuestion(await fetchRandomQuestion());
+      setRandomAttempt(await fetchRandomQuestion());
     } catch (cause) {
-      setQuestion(null);
+      setRandomAttempt(null);
       setError(cause instanceof Error ? cause.message : "問題を読み込めませんでした。");
     } finally {
       setLoading(false);
@@ -74,11 +74,11 @@ export default function RandomQuizPage() {
 
     fetchRandomQuestion()
       .then((randomQuestion) => {
-        if (active) setQuestion(randomQuestion);
+        if (active) setRandomAttempt(randomQuestion);
       })
       .catch((cause) => {
         if (!active) return;
-        setQuestion(null);
+        setRandomAttempt(null);
         setError(cause instanceof Error ? cause.message : "問題を読み込めませんでした。");
       })
       .finally(() => {
@@ -91,7 +91,7 @@ export default function RandomQuizPage() {
   }, []);
 
   async function submitAnswer() {
-    if (!question || !selectedChoiceId || answerResult) return;
+    if (!question || !selectedChoiceId || answerResult || answering) return;
 
     setAnswering(true);
     setError("");
@@ -102,6 +102,7 @@ export default function RandomQuizPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           questionId: question.id,
+          attemptId: randomAttempt?.attemptId,
           selectedChoiceId,
         }),
       });
@@ -145,7 +146,7 @@ export default function RandomQuizPage() {
             <button
               type="button"
               onClick={loadQuestion}
-              disabled={loading}
+              disabled={loading || answering}
               className="rounded-md border border-slate-300 bg-white px-4 py-2 text-xs font-black text-slate-700 transition hover:border-blue-400 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-60"
             >
               別の問題を表示

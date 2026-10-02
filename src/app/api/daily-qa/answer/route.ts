@@ -8,6 +8,8 @@ import {
   toPublicQuizQuestion,
 } from "@/lib/quiz-question";
 import { getTokyoDate } from "@/lib/tokyo-date";
+import { recordTitleAnswer } from "@/lib/titles/learning-events";
+import { lockTitleOwner } from "@/lib/titles/unlocks";
 
 export const dynamic = "force-dynamic";
 
@@ -85,7 +87,8 @@ export async function POST(request: Request) {
     return badRequest("questionId and selectedChoiceId are required");
   }
 
-  const dateString = getTokyoDate();
+  const now = new Date();
+  const dateString = getTokyoDate(now);
   const answerDate = new Date(`${dateString}T00:00:00.000Z`);
   const existingAnswer = await findStoredAnswer(user.id, answerDate);
 
@@ -120,6 +123,7 @@ export async function POST(request: Request) {
 
   try {
     const result = await prisma.$transaction(async (tx) => {
+      await lockTitleOwner(tx, user.id);
       const dailyAnswer = await tx.dailyQaAnswer.create({
         data: {
           userId: user.id,
@@ -127,10 +131,13 @@ export async function POST(request: Request) {
           selectedChoiceId: evaluation.answer.selectedChoiceId,
           isCorrect: evaluation.answer.isCorrect,
           answerDate,
+          answeredAt: now,
           answerPointAwarded: awardsPoints,
           correctPointAwarded: awardsPoints && evaluation.answer.isCorrect,
         },
       });
+
+      if (user.role.name === "student") await recordTitleAnswer(tx, user.id, now);
 
       if (!awardsPoints) {
         return { totalPoints: null };
@@ -169,7 +176,7 @@ export async function POST(request: Request) {
       });
 
       return profile;
-    });
+    }, { timeout: 30_000 });
 
     return Response.json({
       date: dateString,
