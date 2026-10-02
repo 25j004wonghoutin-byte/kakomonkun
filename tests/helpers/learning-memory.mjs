@@ -1,4 +1,5 @@
 import { makeTitleMemory } from "./title-memory.mjs";
+import { TITLE_CATALOG } from "../../src/lib/titles/catalog.ts";
 
 // Serialized boundary transactions model interleavings, not PostgreSQL lock enforcement.
 export function makeLearningMemory(overrides = {}) {
@@ -13,7 +14,7 @@ export function makeLearningMemory(overrides = {}) {
   const mutate = (row, data) => {
     for (const [key, value] of Object.entries(data)) {
       if (value === undefined) continue;
-      row[key] = value && typeof value === "object" && "increment" in value ? (row[key] ?? 0) + value.increment : value;
+      row[key] = value && typeof value === "object" && "increment" in value ? (row[key] ?? 0) + value.increment : value && typeof value === "object" && "decrement" in value ? (row[key] ?? 0) - value.decrement : value;
     }
     return row;
   };
@@ -25,6 +26,18 @@ export function makeLearningMemory(overrides = {}) {
     tx.question = { findUnique: async ({ where }) => question(where.id) ?? null };
     tx.studentProfile.update = async ({ data }) => mutate(state.profile, data);
     tx.studentProfile.upsert = async ({ create, update }) => state.profile ? mutate(state.profile, update) : (state.profile = create);
+    tx.studentProfile.findUniqueOrThrow = async () => { if (!state.profile) throw Error("profile not found"); return state.profile; };
+    tx.studentProfile.updateMany = async ({ where, data }) => {
+      if (!state.profile || state.profile.totalPoints < where.totalPoints.gte) return { count: 0 };
+      mutate(state.profile, data); return { count: 1 };
+    };
+    tx.title.findUnique = async ({ where }) => state.catalogTitles?.find((row) => row.id === where.id) ?? TITLE_CATALOG.map((row) => ({ id: row.key, catalogKey: row.key, name: row.name, pricePoints: row.pricePoints, acquisitionKind: row.acquisitionKind, isActive: true })).find((row) => row.id === where.id) ?? null;
+    tx.userTitle.findUnique = async ({ where }) => state.owned.includes(where.userId_titleId.titleId) ? { titleId: where.userId_titleId.titleId } : null;
+    tx.userTitle.create = async ({ data }) => {
+      if (state.owned.includes(data.titleId)) throw Object.assign(new Error("duplicate ownership"), { code: "P2002" });
+      state.owned.push(data.titleId); return data;
+    };
+    tx.userTitleUnlock.findUnique = async ({ where }) => state.unlocks.find((row) => row.userId === where.userId_titleId.userId && row.titleId === where.userId_titleId.titleId) ?? null;
     tx.randomQuizAttempt = {
       create: async ({ data }) => { const row = { id: `attempt-${state.random.length + 1}`, selectedChoiceId: null, isCorrect: null, answerDate: null, answeredAt: null, answerSequence: null, ...data }; state.random.push(row); return row; },
       findUnique: async ({ where }) => state.random.find((row) => row.id === where.id) ?? null,
