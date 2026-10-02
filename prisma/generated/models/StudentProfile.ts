@@ -50,6 +50,8 @@ export type StudentProfileMinAggregateOutputType = {
   totalPracticeCount: number | null
   totalCorrectCount: number | null
   totalAnswerCount: number | null
+  titleBackfilledAt: Date | null
+  titleTrackingStartedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -64,6 +66,8 @@ export type StudentProfileMaxAggregateOutputType = {
   totalPracticeCount: number | null
   totalCorrectCount: number | null
   totalAnswerCount: number | null
+  titleBackfilledAt: Date | null
+  titleTrackingStartedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -78,6 +82,8 @@ export type StudentProfileCountAggregateOutputType = {
   totalPracticeCount: number
   totalCorrectCount: number
   totalAnswerCount: number
+  titleBackfilledAt: number
+  titleTrackingStartedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -108,6 +114,8 @@ export type StudentProfileMinAggregateInputType = {
   totalPracticeCount?: true
   totalCorrectCount?: true
   totalAnswerCount?: true
+  titleBackfilledAt?: true
+  titleTrackingStartedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -122,6 +130,8 @@ export type StudentProfileMaxAggregateInputType = {
   totalPracticeCount?: true
   totalCorrectCount?: true
   totalAnswerCount?: true
+  titleBackfilledAt?: true
+  titleTrackingStartedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -136,6 +146,8 @@ export type StudentProfileCountAggregateInputType = {
   totalPracticeCount?: true
   totalCorrectCount?: true
   totalAnswerCount?: true
+  titleBackfilledAt?: true
+  titleTrackingStartedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -237,6 +249,8 @@ export type StudentProfileGroupByOutputType = {
   totalPracticeCount: number
   totalCorrectCount: number
   totalAnswerCount: number
+  titleBackfilledAt: Date | null
+  titleTrackingStartedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: StudentProfileCountAggregateOutputType | null
@@ -274,6 +288,8 @@ export type StudentProfileWhereInput = {
   totalPracticeCount?: Prisma.IntFilter<"StudentProfile"> | number
   totalCorrectCount?: Prisma.IntFilter<"StudentProfile"> | number
   totalAnswerCount?: Prisma.IntFilter<"StudentProfile"> | number
+  titleBackfilledAt?: Prisma.DateTimeNullableFilter<"StudentProfile"> | Date | string | null
+  titleTrackingStartedAt?: Prisma.DateTimeNullableFilter<"StudentProfile"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -290,6 +306,8 @@ export type StudentProfileOrderByWithRelationInput = {
   totalPracticeCount?: Prisma.SortOrder
   totalCorrectCount?: Prisma.SortOrder
   totalAnswerCount?: Prisma.SortOrder
+  titleBackfilledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  titleTrackingStartedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -309,6 +327,8 @@ export type StudentProfileWhereUniqueInput = Prisma.AtLeast<{
   totalPracticeCount?: Prisma.IntFilter<"StudentProfile"> | number
   totalCorrectCount?: Prisma.IntFilter<"StudentProfile"> | number
   totalAnswerCount?: Prisma.IntFilter<"StudentProfile"> | number
+  titleBackfilledAt?: Prisma.DateTimeNullableFilter<"StudentProfile"> | Date | string | null
+  titleTrackingStartedAt?: Prisma.DateTimeNullableFilter<"StudentProfile"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -325,6 +345,8 @@ export type StudentProfileOrderByWithAggregationInput = {
   totalPracticeCount?: Prisma.SortOrder
   totalCorrectCount?: Prisma.SortOrder
   totalAnswerCount?: Prisma.SortOrder
+  titleBackfilledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  titleTrackingStartedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.StudentProfileCountOrderByAggregateInput
@@ -347,6 +369,8 @@ export type StudentProfileScalarWhereWithAggregatesInput = {
   totalPracticeCount?: Prisma.IntWithAggregatesFilter<"StudentProfile"> | number
   totalCorrectCount?: Prisma.IntWithAggregatesFilter<"StudentProfile"> | number
   totalAnswerCount?: Prisma.IntWithAggregatesFilter<"StudentProfile"> | number
+  titleBackfilledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"StudentProfile"> | Date | string | null
+  titleTrackingStartedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"StudentProfile"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
 }
@@ -359,6 +383,8 @@ export type StudentProfileCreateInput = {
   totalPracticeCount?: number
   totalCorrectCount?: number
   totalAnswerCount?: number
+  titleBackfilledAt?: Date | string | null
+  titleTrackingStartedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutStudentProfileInput
@@ -375,6 +401,8 @@ export type StudentProfileUncheckedCreateInput = {
   totalPracticeCount?: number
   totalCorrectCount?: number
   totalAnswerCount?: number
+  titleBackfilledAt?: Date | string | null
+  titleTrackingStartedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -387,6 +415,8 @@ export type StudentProfileUpdateInput = {
   totalPracticeCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalCorrectCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalAnswerCount?: Prisma.IntFieldUpdateOperationsInput | number
+  titleBackfilledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  titleTrackingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutStudentProfileNestedInput
@@ -403,6 +433,8 @@ export type StudentProfileUncheckedUpdateInput = {
   totalPracticeCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalCorrectCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalAnswerCount?: Prisma.IntFieldUpdateOperationsInput | number
+  titleBackfilledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  titleTrackingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -417,6 +449,8 @@ export type StudentProfileCreateManyInput = {
   totalPracticeCount?: number
   totalCorrectCount?: number
   totalAnswerCount?: number
+  titleBackfilledAt?: Date | string | null
+  titleTrackingStartedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -429,6 +463,8 @@ export type StudentProfileUpdateManyMutationInput = {
   totalPracticeCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalCorrectCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalAnswerCount?: Prisma.IntFieldUpdateOperationsInput | number
+  titleBackfilledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  titleTrackingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -443,6 +479,8 @@ export type StudentProfileUncheckedUpdateManyInput = {
   totalPracticeCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalCorrectCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalAnswerCount?: Prisma.IntFieldUpdateOperationsInput | number
+  titleBackfilledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  titleTrackingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -462,6 +500,8 @@ export type StudentProfileCountOrderByAggregateInput = {
   totalPracticeCount?: Prisma.SortOrder
   totalCorrectCount?: Prisma.SortOrder
   totalAnswerCount?: Prisma.SortOrder
+  titleBackfilledAt?: Prisma.SortOrder
+  titleTrackingStartedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -483,6 +523,8 @@ export type StudentProfileMaxOrderByAggregateInput = {
   totalPracticeCount?: Prisma.SortOrder
   totalCorrectCount?: Prisma.SortOrder
   totalAnswerCount?: Prisma.SortOrder
+  titleBackfilledAt?: Prisma.SortOrder
+  titleTrackingStartedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -497,6 +539,8 @@ export type StudentProfileMinOrderByAggregateInput = {
   totalPracticeCount?: Prisma.SortOrder
   totalCorrectCount?: Prisma.SortOrder
   totalAnswerCount?: Prisma.SortOrder
+  titleBackfilledAt?: Prisma.SortOrder
+  titleTrackingStartedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -608,6 +652,8 @@ export type StudentProfileCreateWithoutUserInput = {
   totalPracticeCount?: number
   totalCorrectCount?: number
   totalAnswerCount?: number
+  titleBackfilledAt?: Date | string | null
+  titleTrackingStartedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   currentTitle?: Prisma.TitleCreateNestedOneWithoutEquippedStudentProfilesInput
@@ -622,6 +668,8 @@ export type StudentProfileUncheckedCreateWithoutUserInput = {
   totalPracticeCount?: number
   totalCorrectCount?: number
   totalAnswerCount?: number
+  titleBackfilledAt?: Date | string | null
+  titleTrackingStartedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -650,6 +698,8 @@ export type StudentProfileUpdateWithoutUserInput = {
   totalPracticeCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalCorrectCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalAnswerCount?: Prisma.IntFieldUpdateOperationsInput | number
+  titleBackfilledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  titleTrackingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   currentTitle?: Prisma.TitleUpdateOneWithoutEquippedStudentProfilesNestedInput
@@ -664,6 +714,8 @@ export type StudentProfileUncheckedUpdateWithoutUserInput = {
   totalPracticeCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalCorrectCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalAnswerCount?: Prisma.IntFieldUpdateOperationsInput | number
+  titleBackfilledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  titleTrackingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -676,6 +728,8 @@ export type StudentProfileCreateWithoutCurrentTitleInput = {
   totalPracticeCount?: number
   totalCorrectCount?: number
   totalAnswerCount?: number
+  titleBackfilledAt?: Date | string | null
+  titleTrackingStartedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutStudentProfileInput
@@ -690,6 +744,8 @@ export type StudentProfileUncheckedCreateWithoutCurrentTitleInput = {
   totalPracticeCount?: number
   totalCorrectCount?: number
   totalAnswerCount?: number
+  titleBackfilledAt?: Date | string | null
+  titleTrackingStartedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -733,6 +789,8 @@ export type StudentProfileScalarWhereInput = {
   totalPracticeCount?: Prisma.IntFilter<"StudentProfile"> | number
   totalCorrectCount?: Prisma.IntFilter<"StudentProfile"> | number
   totalAnswerCount?: Prisma.IntFilter<"StudentProfile"> | number
+  titleBackfilledAt?: Prisma.DateTimeNullableFilter<"StudentProfile"> | Date | string | null
+  titleTrackingStartedAt?: Prisma.DateTimeNullableFilter<"StudentProfile"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
 }
@@ -746,6 +804,8 @@ export type StudentProfileCreateManyCurrentTitleInput = {
   totalPracticeCount?: number
   totalCorrectCount?: number
   totalAnswerCount?: number
+  titleBackfilledAt?: Date | string | null
+  titleTrackingStartedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -758,6 +818,8 @@ export type StudentProfileUpdateWithoutCurrentTitleInput = {
   totalPracticeCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalCorrectCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalAnswerCount?: Prisma.IntFieldUpdateOperationsInput | number
+  titleBackfilledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  titleTrackingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutStudentProfileNestedInput
@@ -772,6 +834,8 @@ export type StudentProfileUncheckedUpdateWithoutCurrentTitleInput = {
   totalPracticeCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalCorrectCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalAnswerCount?: Prisma.IntFieldUpdateOperationsInput | number
+  titleBackfilledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  titleTrackingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -785,6 +849,8 @@ export type StudentProfileUncheckedUpdateManyWithoutCurrentTitleInput = {
   totalPracticeCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalCorrectCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalAnswerCount?: Prisma.IntFieldUpdateOperationsInput | number
+  titleBackfilledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  titleTrackingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -801,6 +867,8 @@ export type StudentProfileSelect<ExtArgs extends runtime.Types.Extensions.Intern
   totalPracticeCount?: boolean
   totalCorrectCount?: boolean
   totalAnswerCount?: boolean
+  titleBackfilledAt?: boolean
+  titleTrackingStartedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -817,6 +885,8 @@ export type StudentProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   totalPracticeCount?: boolean
   totalCorrectCount?: boolean
   totalAnswerCount?: boolean
+  titleBackfilledAt?: boolean
+  titleTrackingStartedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -833,6 +903,8 @@ export type StudentProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   totalPracticeCount?: boolean
   totalCorrectCount?: boolean
   totalAnswerCount?: boolean
+  titleBackfilledAt?: boolean
+  titleTrackingStartedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -849,11 +921,13 @@ export type StudentProfileSelectScalar = {
   totalPracticeCount?: boolean
   totalCorrectCount?: boolean
   totalAnswerCount?: boolean
+  titleBackfilledAt?: boolean
+  titleTrackingStartedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type StudentProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "studentNo" | "avatarUrl" | "bio" | "currentTitleId" | "totalPoints" | "totalPracticeCount" | "totalCorrectCount" | "totalAnswerCount" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
+export type StudentProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "studentNo" | "avatarUrl" | "bio" | "currentTitleId" | "totalPoints" | "totalPracticeCount" | "totalCorrectCount" | "totalAnswerCount" | "titleBackfilledAt" | "titleTrackingStartedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
 export type StudentProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   currentTitle?: boolean | Prisma.StudentProfile$currentTitleArgs<ExtArgs>
@@ -883,6 +957,8 @@ export type $StudentProfilePayload<ExtArgs extends runtime.Types.Extensions.Inte
     totalPracticeCount: number
     totalCorrectCount: number
     totalAnswerCount: number
+    titleBackfilledAt: Date | null
+    titleTrackingStartedAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["studentProfile"]>
@@ -1319,6 +1395,8 @@ export interface StudentProfileFieldRefs {
   readonly totalPracticeCount: Prisma.FieldRef<"StudentProfile", 'Int'>
   readonly totalCorrectCount: Prisma.FieldRef<"StudentProfile", 'Int'>
   readonly totalAnswerCount: Prisma.FieldRef<"StudentProfile", 'Int'>
+  readonly titleBackfilledAt: Prisma.FieldRef<"StudentProfile", 'DateTime'>
+  readonly titleTrackingStartedAt: Prisma.FieldRef<"StudentProfile", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"StudentProfile", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"StudentProfile", 'DateTime'>
 }

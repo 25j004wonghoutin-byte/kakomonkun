@@ -37,6 +37,10 @@ model User {
   createdMockExams  MockExam[]         @relation("MockExamCreator")
   mockAttempts      MockAttempt[]
   userTitles        UserTitle[]
+  titleUnlocks      UserTitleUnlock[]
+  randomAttempts    RandomQuizAttempt[]
+  activityDays      StudentActivityDay[]
+  navigationProgress StudentNavigationProgress[]
   monthlyRankings   MonthlyRanking[]
   practiceSessions  PracticeSession[]
   pointTransactions PointTransaction[]
@@ -63,6 +67,8 @@ model StudentProfile {
   totalPracticeCount Int      @default(0) @map("total_practice_count")
   totalCorrectCount  Int      @default(0) @map("total_correct_count")
   totalAnswerCount   Int      @default(0) @map("total_answer_count")
+  titleBackfilledAt  DateTime? @map("title_backfilled_at") @db.Timestamptz(3)
+  titleTrackingStartedAt DateTime? @map("title_tracking_started_at") @db.Timestamptz(3)
   createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
   user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -137,6 +143,7 @@ model Question {
   mockAnswers              MockAnswer[]
   practiceSessionQuestions PracticeSessionQuestion[]
   practiceAnswers          PracticeAnswer[]
+  randomAttempts           RandomQuizAttempt[]
   aiExplanations           AiExplanation[]
   aiUsageLogs              AiUsageLog[]
 
@@ -161,6 +168,7 @@ model QuestionChoice {
   dailyQaAnswers  DailyQaAnswer[]
   mockAnswers     MockAnswer[]
   practiceAnswers PracticeAnswer[]
+  randomAttempts  RandomQuizAttempt[]
 
   @@unique([questionId, choiceLabel], map: "question_choices_question_id_choice_label_key")
   @@unique([questionId, sortOrder], map: "question_choices_question_id_sort_order_key")
@@ -358,6 +366,8 @@ model Title {
   name                    String           @unique(map: "titles_name_key") @db.VarChar(100)
   description             String?
   pricePoints             Int              @map("price_points")
+  catalogKey              String?          @unique(map: "titles_catalog_key_key") @map("catalog_key") @db.VarChar(30)
+  acquisitionKind         String?          @map("acquisition_kind") @db.VarChar(30)
   rarity                  String           @default("normal") @db.VarChar(30)
   isActive                Boolean          @default(true) @map("is_active")
   sortOrder               Int              @default(0) @map("sort_order")
@@ -365,6 +375,7 @@ model Title {
   updatedAt               DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
   equippedStudentProfiles StudentProfile[] @relation("EquippedTitle")
   userTitles              UserTitle[]
+  unlocks                 UserTitleUnlock[]
   notifications           Notification[]
 
   @@index([isActive, sortOrder], map: "idx_titles_active_sort_order")
@@ -384,6 +395,64 @@ model UserTitle {
   @@unique([userId, titleId], map: "user_titles_user_id_title_id_key")
   @@index([titleId], map: "idx_user_titles_title_id")
   @@map("user_titles")
+}
+
+model UserTitleUnlock {
+  userId     String   @map("user_id") @db.Uuid
+  titleId    String   @map("title_id") @db.Uuid
+  unlockedAt DateTime @default(now()) @map("unlocked_at") @db.Timestamptz(3)
+  source     String   @db.VarChar(30)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title      Title    @relation(fields: [titleId], references: [id], onDelete: Restrict)
+
+  @@id([userId, titleId])
+  @@index([titleId], map: "idx_user_title_unlocks_title_id")
+  @@map("user_title_unlocks")
+}
+
+model RandomQuizAttempt {
+  id               String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String          @map("user_id") @db.Uuid
+  questionId       String          @map("question_id") @db.Uuid
+  issuedAt         DateTime        @default(now()) @map("issued_at") @db.Timestamptz(3)
+  selectedChoiceId String?         @map("selected_choice_id") @db.Uuid
+  isCorrect        Boolean?        @map("is_correct")
+  answerDate       DateTime?       @map("answer_date") @db.Date
+  answeredAt       DateTime?       @map("answered_at") @db.Timestamptz(3)
+  answerSequence   Int?            @map("answer_sequence")
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question         Question        @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  selectedChoice   QuestionChoice? @relation(fields: [selectedChoiceId], references: [id], onDelete: Restrict)
+
+  @@unique([userId, answerSequence], map: "random_quiz_attempts_user_sequence_key")
+  @@index([userId, answerDate, answerSequence], map: "idx_random_quiz_attempts_user_date_sequence")
+  @@index([questionId], map: "idx_random_quiz_attempts_question_id")
+  @@index([selectedChoiceId], map: "idx_random_quiz_attempts_selected_choice_id")
+  @@map("random_quiz_attempts")
+}
+
+model StudentActivityDay {
+  userId       String   @map("user_id") @db.Uuid
+  activityDate DateTime @map("activity_date") @db.Date
+  hasAnswered  Boolean  @default(false) @map("has_answered")
+  firstSeenAt  DateTime @default(now()) @map("first_seen_at") @db.Timestamptz(3)
+  lastSeenAt   DateTime @default(now()) @map("last_seen_at") @db.Timestamptz(3)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, activityDate])
+  @@map("student_activity_days")
+}
+
+model StudentNavigationProgress {
+  userId       String @map("user_id") @db.Uuid
+  tabId        String @map("tab_id") @db.VarChar(100)
+  lastSequence Int    @default(0) @map("last_sequence")
+  stage        String @default("idle") @db.VarChar(30)
+  roundTrips   Int    @default(0) @map("round_trips")
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, tabId])
+  @@map("student_navigation_progress")
 }
 
 model MonthlyRanking {

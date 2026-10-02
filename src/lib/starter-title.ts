@@ -10,13 +10,15 @@ export async function ensureStarterTitleForStudent(
     where: { name: STARTER_TITLE_NAME },
     create: {
       name: STARTER_TITLE_NAME,
+      catalogKey: "v1-014",
+      acquisitionKind: "starter",
       description: "学習を始めた学生の初期称号",
       pricePoints: 0,
       rarity: "normal",
       isActive: true,
       sortOrder: 0,
     },
-    update: {},
+    update: { catalogKey: "v1-014", acquisitionKind: "starter" },
     select: { id: true },
   });
 

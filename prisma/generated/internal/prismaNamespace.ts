@@ -403,6 +403,10 @@ export const ModelName = {
   MockAnswer: 'MockAnswer',
   Title: 'Title',
   UserTitle: 'UserTitle',
+  UserTitleUnlock: 'UserTitleUnlock',
+  RandomQuizAttempt: 'RandomQuizAttempt',
+  StudentActivityDay: 'StudentActivityDay',
+  StudentNavigationProgress: 'StudentNavigationProgress',
   MonthlyRanking: 'MonthlyRanking',
   AiExplanation: 'AiExplanation',
   AiUsageLog: 'AiUsageLog',
@@ -426,7 +430,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "role" | "user" | "studentProfile" | "teacherProfile" | "exam" | "questionCategory" | "question" | "questionChoice" | "dailyQaAnswer" | "practiceSession" | "practiceSessionQuestion" | "practiceAnswer" | "pointTransaction" | "mockExam" | "mockExamQuestion" | "mockAttempt" | "mockAnswer" | "title" | "userTitle" | "monthlyRanking" | "aiExplanation" | "aiUsageLog" | "boardPost" | "boardComment" | "boardPostLike" | "boardDeleteLog" | "notification"
+    modelProps: "role" | "user" | "studentProfile" | "teacherProfile" | "exam" | "questionCategory" | "question" | "questionChoice" | "dailyQaAnswer" | "practiceSession" | "practiceSessionQuestion" | "practiceAnswer" | "pointTransaction" | "mockExam" | "mockExamQuestion" | "mockAttempt" | "mockAnswer" | "title" | "userTitle" | "userTitleUnlock" | "randomQuizAttempt" | "studentActivityDay" | "studentNavigationProgress" | "monthlyRanking" | "aiExplanation" | "aiUsageLog" | "boardPost" | "boardComment" | "boardPostLike" | "boardDeleteLog" | "notification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1836,6 +1840,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    UserTitleUnlock: {
+      payload: Prisma.$UserTitleUnlockPayload<ExtArgs>
+      fields: Prisma.UserTitleUnlockFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserTitleUnlockFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTitleUnlockPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserTitleUnlockFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTitleUnlockPayload>
+        }
+        findFirst: {
+          args: Prisma.UserTitleUnlockFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTitleUnlockPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserTitleUnlockFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTitleUnlockPayload>
+        }
+        findMany: {
+          args: Prisma.UserTitleUnlockFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTitleUnlockPayload>[]
+        }
+        create: {
+          args: Prisma.UserTitleUnlockCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTitleUnlockPayload>
+        }
+        createMany: {
+          args: Prisma.UserTitleUnlockCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserTitleUnlockCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTitleUnlockPayload>[]
+        }
+        delete: {
+          args: Prisma.UserTitleUnlockDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTitleUnlockPayload>
+        }
+        update: {
+          args: Prisma.UserTitleUnlockUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTitleUnlockPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserTitleUnlockDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserTitleUnlockUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserTitleUnlockUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTitleUnlockPayload>[]
+        }
+        upsert: {
+          args: Prisma.UserTitleUnlockUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTitleUnlockPayload>
+        }
+        aggregate: {
+          args: Prisma.UserTitleUnlockAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserTitleUnlock>
+        }
+        groupBy: {
+          args: Prisma.UserTitleUnlockGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserTitleUnlockGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserTitleUnlockCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserTitleUnlockCountAggregateOutputType> | number
+        }
+      }
+    }
+    RandomQuizAttempt: {
+      payload: Prisma.$RandomQuizAttemptPayload<ExtArgs>
+      fields: Prisma.RandomQuizAttemptFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RandomQuizAttemptFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RandomQuizAttemptPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RandomQuizAttemptFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RandomQuizAttemptPayload>
+        }
+        findFirst: {
+          args: Prisma.RandomQuizAttemptFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RandomQuizAttemptPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RandomQuizAttemptFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RandomQuizAttemptPayload>
+        }
+        findMany: {
+          args: Prisma.RandomQuizAttemptFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RandomQuizAttemptPayload>[]
+        }
+        create: {
+          args: Prisma.RandomQuizAttemptCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RandomQuizAttemptPayload>
+        }
+        createMany: {
+          args: Prisma.RandomQuizAttemptCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RandomQuizAttemptCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RandomQuizAttemptPayload>[]
+        }
+        delete: {
+          args: Prisma.RandomQuizAttemptDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RandomQuizAttemptPayload>
+        }
+        update: {
+          args: Prisma.RandomQuizAttemptUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RandomQuizAttemptPayload>
+        }
+        deleteMany: {
+          args: Prisma.RandomQuizAttemptDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RandomQuizAttemptUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RandomQuizAttemptUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RandomQuizAttemptPayload>[]
+        }
+        upsert: {
+          args: Prisma.RandomQuizAttemptUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RandomQuizAttemptPayload>
+        }
+        aggregate: {
+          args: Prisma.RandomQuizAttemptAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRandomQuizAttempt>
+        }
+        groupBy: {
+          args: Prisma.RandomQuizAttemptGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RandomQuizAttemptGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RandomQuizAttemptCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RandomQuizAttemptCountAggregateOutputType> | number
+        }
+      }
+    }
+    StudentActivityDay: {
+      payload: Prisma.$StudentActivityDayPayload<ExtArgs>
+      fields: Prisma.StudentActivityDayFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StudentActivityDayFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentActivityDayPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StudentActivityDayFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentActivityDayPayload>
+        }
+        findFirst: {
+          args: Prisma.StudentActivityDayFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentActivityDayPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StudentActivityDayFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentActivityDayPayload>
+        }
+        findMany: {
+          args: Prisma.StudentActivityDayFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentActivityDayPayload>[]
+        }
+        create: {
+          args: Prisma.StudentActivityDayCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentActivityDayPayload>
+        }
+        createMany: {
+          args: Prisma.StudentActivityDayCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StudentActivityDayCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentActivityDayPayload>[]
+        }
+        delete: {
+          args: Prisma.StudentActivityDayDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentActivityDayPayload>
+        }
+        update: {
+          args: Prisma.StudentActivityDayUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentActivityDayPayload>
+        }
+        deleteMany: {
+          args: Prisma.StudentActivityDayDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StudentActivityDayUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StudentActivityDayUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentActivityDayPayload>[]
+        }
+        upsert: {
+          args: Prisma.StudentActivityDayUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentActivityDayPayload>
+        }
+        aggregate: {
+          args: Prisma.StudentActivityDayAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStudentActivityDay>
+        }
+        groupBy: {
+          args: Prisma.StudentActivityDayGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentActivityDayGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StudentActivityDayCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentActivityDayCountAggregateOutputType> | number
+        }
+      }
+    }
+    StudentNavigationProgress: {
+      payload: Prisma.$StudentNavigationProgressPayload<ExtArgs>
+      fields: Prisma.StudentNavigationProgressFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StudentNavigationProgressFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentNavigationProgressPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StudentNavigationProgressFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentNavigationProgressPayload>
+        }
+        findFirst: {
+          args: Prisma.StudentNavigationProgressFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentNavigationProgressPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StudentNavigationProgressFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentNavigationProgressPayload>
+        }
+        findMany: {
+          args: Prisma.StudentNavigationProgressFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentNavigationProgressPayload>[]
+        }
+        create: {
+          args: Prisma.StudentNavigationProgressCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentNavigationProgressPayload>
+        }
+        createMany: {
+          args: Prisma.StudentNavigationProgressCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StudentNavigationProgressCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentNavigationProgressPayload>[]
+        }
+        delete: {
+          args: Prisma.StudentNavigationProgressDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentNavigationProgressPayload>
+        }
+        update: {
+          args: Prisma.StudentNavigationProgressUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentNavigationProgressPayload>
+        }
+        deleteMany: {
+          args: Prisma.StudentNavigationProgressDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StudentNavigationProgressUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StudentNavigationProgressUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentNavigationProgressPayload>[]
+        }
+        upsert: {
+          args: Prisma.StudentNavigationProgressUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentNavigationProgressPayload>
+        }
+        aggregate: {
+          args: Prisma.StudentNavigationProgressAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStudentNavigationProgress>
+        }
+        groupBy: {
+          args: Prisma.StudentNavigationProgressGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentNavigationProgressGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StudentNavigationProgressCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentNavigationProgressCountAggregateOutputType> | number
+        }
+      }
+    }
     MonthlyRanking: {
       payload: Prisma.$MonthlyRankingPayload<ExtArgs>
       fields: Prisma.MonthlyRankingFieldRefs
@@ -2504,6 +2804,8 @@ export const StudentProfileScalarFieldEnum = {
   totalPracticeCount: 'totalPracticeCount',
   totalCorrectCount: 'totalCorrectCount',
   totalAnswerCount: 'totalAnswerCount',
+  titleBackfilledAt: 'titleBackfilledAt',
+  titleTrackingStartedAt: 'titleTrackingStartedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2727,6 +3029,8 @@ export const TitleScalarFieldEnum = {
   name: 'name',
   description: 'description',
   pricePoints: 'pricePoints',
+  catalogKey: 'catalogKey',
+  acquisitionKind: 'acquisitionKind',
   rarity: 'rarity',
   isActive: 'isActive',
   sortOrder: 'sortOrder',
@@ -2747,6 +3051,53 @@ export const UserTitleScalarFieldEnum = {
 } as const
 
 export type UserTitleScalarFieldEnum = (typeof UserTitleScalarFieldEnum)[keyof typeof UserTitleScalarFieldEnum]
+
+
+export const UserTitleUnlockScalarFieldEnum = {
+  userId: 'userId',
+  titleId: 'titleId',
+  unlockedAt: 'unlockedAt',
+  source: 'source'
+} as const
+
+export type UserTitleUnlockScalarFieldEnum = (typeof UserTitleUnlockScalarFieldEnum)[keyof typeof UserTitleUnlockScalarFieldEnum]
+
+
+export const RandomQuizAttemptScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  questionId: 'questionId',
+  issuedAt: 'issuedAt',
+  selectedChoiceId: 'selectedChoiceId',
+  isCorrect: 'isCorrect',
+  answerDate: 'answerDate',
+  answeredAt: 'answeredAt',
+  answerSequence: 'answerSequence'
+} as const
+
+export type RandomQuizAttemptScalarFieldEnum = (typeof RandomQuizAttemptScalarFieldEnum)[keyof typeof RandomQuizAttemptScalarFieldEnum]
+
+
+export const StudentActivityDayScalarFieldEnum = {
+  userId: 'userId',
+  activityDate: 'activityDate',
+  hasAnswered: 'hasAnswered',
+  firstSeenAt: 'firstSeenAt',
+  lastSeenAt: 'lastSeenAt'
+} as const
+
+export type StudentActivityDayScalarFieldEnum = (typeof StudentActivityDayScalarFieldEnum)[keyof typeof StudentActivityDayScalarFieldEnum]
+
+
+export const StudentNavigationProgressScalarFieldEnum = {
+  userId: 'userId',
+  tabId: 'tabId',
+  lastSequence: 'lastSequence',
+  stage: 'stage',
+  roundTrips: 'roundTrips'
+} as const
+
+export type StudentNavigationProgressScalarFieldEnum = (typeof StudentNavigationProgressScalarFieldEnum)[keyof typeof StudentNavigationProgressScalarFieldEnum]
 
 
 export const MonthlyRankingScalarFieldEnum = {
@@ -3069,6 +3420,10 @@ export type GlobalOmitConfig = {
   mockAnswer?: Prisma.MockAnswerOmit
   title?: Prisma.TitleOmit
   userTitle?: Prisma.UserTitleOmit
+  userTitleUnlock?: Prisma.UserTitleUnlockOmit
+  randomQuizAttempt?: Prisma.RandomQuizAttemptOmit
+  studentActivityDay?: Prisma.StudentActivityDayOmit
+  studentNavigationProgress?: Prisma.StudentNavigationProgressOmit
   monthlyRanking?: Prisma.MonthlyRankingOmit
   aiExplanation?: Prisma.AiExplanationOmit
   aiUsageLog?: Prisma.AiUsageLogOmit

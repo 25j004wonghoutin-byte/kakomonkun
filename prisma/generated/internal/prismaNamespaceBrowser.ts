@@ -70,6 +70,10 @@ export const ModelName = {
   MockAnswer: 'MockAnswer',
   Title: 'Title',
   UserTitle: 'UserTitle',
+  UserTitleUnlock: 'UserTitleUnlock',
+  RandomQuizAttempt: 'RandomQuizAttempt',
+  StudentActivityDay: 'StudentActivityDay',
+  StudentNavigationProgress: 'StudentNavigationProgress',
   MonthlyRanking: 'MonthlyRanking',
   AiExplanation: 'AiExplanation',
   AiUsageLog: 'AiUsageLog',
@@ -133,6 +137,8 @@ export const StudentProfileScalarFieldEnum = {
   totalPracticeCount: 'totalPracticeCount',
   totalCorrectCount: 'totalCorrectCount',
   totalAnswerCount: 'totalAnswerCount',
+  titleBackfilledAt: 'titleBackfilledAt',
+  titleTrackingStartedAt: 'titleTrackingStartedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -356,6 +362,8 @@ export const TitleScalarFieldEnum = {
   name: 'name',
   description: 'description',
   pricePoints: 'pricePoints',
+  catalogKey: 'catalogKey',
+  acquisitionKind: 'acquisitionKind',
   rarity: 'rarity',
   isActive: 'isActive',
   sortOrder: 'sortOrder',
@@ -376,6 +384,53 @@ export const UserTitleScalarFieldEnum = {
 } as const
 
 export type UserTitleScalarFieldEnum = (typeof UserTitleScalarFieldEnum)[keyof typeof UserTitleScalarFieldEnum]
+
+
+export const UserTitleUnlockScalarFieldEnum = {
+  userId: 'userId',
+  titleId: 'titleId',
+  unlockedAt: 'unlockedAt',
+  source: 'source'
+} as const
+
+export type UserTitleUnlockScalarFieldEnum = (typeof UserTitleUnlockScalarFieldEnum)[keyof typeof UserTitleUnlockScalarFieldEnum]
+
+
+export const RandomQuizAttemptScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  questionId: 'questionId',
+  issuedAt: 'issuedAt',
+  selectedChoiceId: 'selectedChoiceId',
+  isCorrect: 'isCorrect',
+  answerDate: 'answerDate',
+  answeredAt: 'answeredAt',
+  answerSequence: 'answerSequence'
+} as const
+
+export type RandomQuizAttemptScalarFieldEnum = (typeof RandomQuizAttemptScalarFieldEnum)[keyof typeof RandomQuizAttemptScalarFieldEnum]
+
+
+export const StudentActivityDayScalarFieldEnum = {
+  userId: 'userId',
+  activityDate: 'activityDate',
+  hasAnswered: 'hasAnswered',
+  firstSeenAt: 'firstSeenAt',
+  lastSeenAt: 'lastSeenAt'
+} as const
+
+export type StudentActivityDayScalarFieldEnum = (typeof StudentActivityDayScalarFieldEnum)[keyof typeof StudentActivityDayScalarFieldEnum]
+
+
+export const StudentNavigationProgressScalarFieldEnum = {
+  userId: 'userId',
+  tabId: 'tabId',
+  lastSequence: 'lastSequence',
+  stage: 'stage',
+  roundTrips: 'roundTrips'
+} as const
+
+export type StudentNavigationProgressScalarFieldEnum = (typeof StudentNavigationProgressScalarFieldEnum)[keyof typeof StudentNavigationProgressScalarFieldEnum]
 
 
 export const MonthlyRankingScalarFieldEnum = {

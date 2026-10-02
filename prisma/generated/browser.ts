@@ -113,6 +113,26 @@ export type Title = Prisma.TitleModel
  */
 export type UserTitle = Prisma.UserTitleModel
 /**
+ * Model UserTitleUnlock
+ *
+ */
+export type UserTitleUnlock = Prisma.UserTitleUnlockModel
+/**
+ * Model RandomQuizAttempt
+ *
+ */
+export type RandomQuizAttempt = Prisma.RandomQuizAttemptModel
+/**
+ * Model StudentActivityDay
+ *
+ */
+export type StudentActivityDay = Prisma.StudentActivityDayModel
+/**
+ * Model StudentNavigationProgress
+ *
+ */
+export type StudentNavigationProgress = Prisma.StudentNavigationProgressModel
+/**
  * Model MonthlyRanking
  *
  */

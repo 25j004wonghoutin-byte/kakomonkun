@@ -41,6 +41,8 @@ export type TitleMinAggregateOutputType = {
   name: string | null
   description: string | null
   pricePoints: number | null
+  catalogKey: string | null
+  acquisitionKind: string | null
   rarity: string | null
   isActive: boolean | null
   sortOrder: number | null
@@ -53,6 +55,8 @@ export type TitleMaxAggregateOutputType = {
   name: string | null
   description: string | null
   pricePoints: number | null
+  catalogKey: string | null
+  acquisitionKind: string | null
   rarity: string | null
   isActive: boolean | null
   sortOrder: number | null
@@ -65,6 +69,8 @@ export type TitleCountAggregateOutputType = {
   name: number
   description: number
   pricePoints: number
+  catalogKey: number
+  acquisitionKind: number
   rarity: number
   isActive: number
   sortOrder: number
@@ -89,6 +95,8 @@ export type TitleMinAggregateInputType = {
   name?: true
   description?: true
   pricePoints?: true
+  catalogKey?: true
+  acquisitionKind?: true
   rarity?: true
   isActive?: true
   sortOrder?: true
@@ -101,6 +109,8 @@ export type TitleMaxAggregateInputType = {
   name?: true
   description?: true
   pricePoints?: true
+  catalogKey?: true
+  acquisitionKind?: true
   rarity?: true
   isActive?: true
   sortOrder?: true
@@ -113,6 +123,8 @@ export type TitleCountAggregateInputType = {
   name?: true
   description?: true
   pricePoints?: true
+  catalogKey?: true
+  acquisitionKind?: true
   rarity?: true
   isActive?: true
   sortOrder?: true
@@ -212,6 +224,8 @@ export type TitleGroupByOutputType = {
   name: string
   description: string | null
   pricePoints: number
+  catalogKey: string | null
+  acquisitionKind: string | null
   rarity: string
   isActive: boolean
   sortOrder: number
@@ -247,6 +261,8 @@ export type TitleWhereInput = {
   name?: Prisma.StringFilter<"Title"> | string
   description?: Prisma.StringNullableFilter<"Title"> | string | null
   pricePoints?: Prisma.IntFilter<"Title"> | number
+  catalogKey?: Prisma.StringNullableFilter<"Title"> | string | null
+  acquisitionKind?: Prisma.StringNullableFilter<"Title"> | string | null
   rarity?: Prisma.StringFilter<"Title"> | string
   isActive?: Prisma.BoolFilter<"Title"> | boolean
   sortOrder?: Prisma.IntFilter<"Title"> | number
@@ -254,6 +270,7 @@ export type TitleWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Title"> | Date | string
   equippedStudentProfiles?: Prisma.StudentProfileListRelationFilter
   userTitles?: Prisma.UserTitleListRelationFilter
+  unlocks?: Prisma.UserTitleUnlockListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
 }
 
@@ -262,6 +279,8 @@ export type TitleOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   pricePoints?: Prisma.SortOrder
+  catalogKey?: Prisma.SortOrderInput | Prisma.SortOrder
+  acquisitionKind?: Prisma.SortOrderInput | Prisma.SortOrder
   rarity?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
@@ -269,17 +288,20 @@ export type TitleOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   equippedStudentProfiles?: Prisma.StudentProfileOrderByRelationAggregateInput
   userTitles?: Prisma.UserTitleOrderByRelationAggregateInput
+  unlocks?: Prisma.UserTitleUnlockOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
 }
 
 export type TitleWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   name?: string
+  catalogKey?: string
   AND?: Prisma.TitleWhereInput | Prisma.TitleWhereInput[]
   OR?: Prisma.TitleWhereInput[]
   NOT?: Prisma.TitleWhereInput | Prisma.TitleWhereInput[]
   description?: Prisma.StringNullableFilter<"Title"> | string | null
   pricePoints?: Prisma.IntFilter<"Title"> | number
+  acquisitionKind?: Prisma.StringNullableFilter<"Title"> | string | null
   rarity?: Prisma.StringFilter<"Title"> | string
   isActive?: Prisma.BoolFilter<"Title"> | boolean
   sortOrder?: Prisma.IntFilter<"Title"> | number
@@ -287,14 +309,17 @@ export type TitleWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Title"> | Date | string
   equippedStudentProfiles?: Prisma.StudentProfileListRelationFilter
   userTitles?: Prisma.UserTitleListRelationFilter
+  unlocks?: Prisma.UserTitleUnlockListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
-}, "id" | "name">
+}, "id" | "name" | "catalogKey">
 
 export type TitleOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   pricePoints?: Prisma.SortOrder
+  catalogKey?: Prisma.SortOrderInput | Prisma.SortOrder
+  acquisitionKind?: Prisma.SortOrderInput | Prisma.SortOrder
   rarity?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
@@ -315,6 +340,8 @@ export type TitleScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Title"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Title"> | string | null
   pricePoints?: Prisma.IntWithAggregatesFilter<"Title"> | number
+  catalogKey?: Prisma.StringNullableWithAggregatesFilter<"Title"> | string | null
+  acquisitionKind?: Prisma.StringNullableWithAggregatesFilter<"Title"> | string | null
   rarity?: Prisma.StringWithAggregatesFilter<"Title"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"Title"> | boolean
   sortOrder?: Prisma.IntWithAggregatesFilter<"Title"> | number
@@ -327,6 +354,8 @@ export type TitleCreateInput = {
   name: string
   description?: string | null
   pricePoints: number
+  catalogKey?: string | null
+  acquisitionKind?: string | null
   rarity?: string
   isActive?: boolean
   sortOrder?: number
@@ -334,6 +363,7 @@ export type TitleCreateInput = {
   updatedAt?: Date | string
   equippedStudentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutCurrentTitleInput
   userTitles?: Prisma.UserTitleCreateNestedManyWithoutTitleInput
+  unlocks?: Prisma.UserTitleUnlockCreateNestedManyWithoutTitleInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTitleInput
 }
 
@@ -342,6 +372,8 @@ export type TitleUncheckedCreateInput = {
   name: string
   description?: string | null
   pricePoints: number
+  catalogKey?: string | null
+  acquisitionKind?: string | null
   rarity?: string
   isActive?: boolean
   sortOrder?: number
@@ -349,6 +381,7 @@ export type TitleUncheckedCreateInput = {
   updatedAt?: Date | string
   equippedStudentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutCurrentTitleInput
   userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutTitleInput
+  unlocks?: Prisma.UserTitleUnlockUncheckedCreateNestedManyWithoutTitleInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTitleInput
 }
 
@@ -357,6 +390,8 @@ export type TitleUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePoints?: Prisma.IntFieldUpdateOperationsInput | number
+  catalogKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acquisitionKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rarity?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
@@ -364,6 +399,7 @@ export type TitleUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   equippedStudentProfiles?: Prisma.StudentProfileUpdateManyWithoutCurrentTitleNestedInput
   userTitles?: Prisma.UserTitleUpdateManyWithoutTitleNestedInput
+  unlocks?: Prisma.UserTitleUnlockUpdateManyWithoutTitleNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTitleNestedInput
 }
 
@@ -372,6 +408,8 @@ export type TitleUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePoints?: Prisma.IntFieldUpdateOperationsInput | number
+  catalogKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acquisitionKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rarity?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
@@ -379,6 +417,7 @@ export type TitleUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   equippedStudentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutCurrentTitleNestedInput
   userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutTitleNestedInput
+  unlocks?: Prisma.UserTitleUnlockUncheckedUpdateManyWithoutTitleNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTitleNestedInput
 }
 
@@ -387,6 +426,8 @@ export type TitleCreateManyInput = {
   name: string
   description?: string | null
   pricePoints: number
+  catalogKey?: string | null
+  acquisitionKind?: string | null
   rarity?: string
   isActive?: boolean
   sortOrder?: number
@@ -399,6 +440,8 @@ export type TitleUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePoints?: Prisma.IntFieldUpdateOperationsInput | number
+  catalogKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acquisitionKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rarity?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
@@ -411,6 +454,8 @@ export type TitleUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePoints?: Prisma.IntFieldUpdateOperationsInput | number
+  catalogKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acquisitionKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rarity?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
@@ -428,6 +473,8 @@ export type TitleCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   pricePoints?: Prisma.SortOrder
+  catalogKey?: Prisma.SortOrder
+  acquisitionKind?: Prisma.SortOrder
   rarity?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
@@ -445,6 +492,8 @@ export type TitleMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   pricePoints?: Prisma.SortOrder
+  catalogKey?: Prisma.SortOrder
+  acquisitionKind?: Prisma.SortOrder
   rarity?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
@@ -457,6 +506,8 @@ export type TitleMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   pricePoints?: Prisma.SortOrder
+  catalogKey?: Prisma.SortOrder
+  acquisitionKind?: Prisma.SortOrder
   rarity?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
@@ -504,6 +555,20 @@ export type TitleUpdateOneRequiredWithoutUserTitlesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TitleUpdateToOneWithWhereWithoutUserTitlesInput, Prisma.TitleUpdateWithoutUserTitlesInput>, Prisma.TitleUncheckedUpdateWithoutUserTitlesInput>
 }
 
+export type TitleCreateNestedOneWithoutUnlocksInput = {
+  create?: Prisma.XOR<Prisma.TitleCreateWithoutUnlocksInput, Prisma.TitleUncheckedCreateWithoutUnlocksInput>
+  connectOrCreate?: Prisma.TitleCreateOrConnectWithoutUnlocksInput
+  connect?: Prisma.TitleWhereUniqueInput
+}
+
+export type TitleUpdateOneRequiredWithoutUnlocksNestedInput = {
+  create?: Prisma.XOR<Prisma.TitleCreateWithoutUnlocksInput, Prisma.TitleUncheckedCreateWithoutUnlocksInput>
+  connectOrCreate?: Prisma.TitleCreateOrConnectWithoutUnlocksInput
+  upsert?: Prisma.TitleUpsertWithoutUnlocksInput
+  connect?: Prisma.TitleWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TitleUpdateToOneWithWhereWithoutUnlocksInput, Prisma.TitleUpdateWithoutUnlocksInput>, Prisma.TitleUncheckedUpdateWithoutUnlocksInput>
+}
+
 export type TitleCreateNestedOneWithoutNotificationsInput = {
   create?: Prisma.XOR<Prisma.TitleCreateWithoutNotificationsInput, Prisma.TitleUncheckedCreateWithoutNotificationsInput>
   connectOrCreate?: Prisma.TitleCreateOrConnectWithoutNotificationsInput
@@ -525,12 +590,15 @@ export type TitleCreateWithoutEquippedStudentProfilesInput = {
   name: string
   description?: string | null
   pricePoints: number
+  catalogKey?: string | null
+  acquisitionKind?: string | null
   rarity?: string
   isActive?: boolean
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   userTitles?: Prisma.UserTitleCreateNestedManyWithoutTitleInput
+  unlocks?: Prisma.UserTitleUnlockCreateNestedManyWithoutTitleInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTitleInput
 }
 
@@ -539,12 +607,15 @@ export type TitleUncheckedCreateWithoutEquippedStudentProfilesInput = {
   name: string
   description?: string | null
   pricePoints: number
+  catalogKey?: string | null
+  acquisitionKind?: string | null
   rarity?: string
   isActive?: boolean
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutTitleInput
+  unlocks?: Prisma.UserTitleUnlockUncheckedCreateNestedManyWithoutTitleInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTitleInput
 }
 
@@ -569,12 +640,15 @@ export type TitleUpdateWithoutEquippedStudentProfilesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePoints?: Prisma.IntFieldUpdateOperationsInput | number
+  catalogKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acquisitionKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rarity?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userTitles?: Prisma.UserTitleUpdateManyWithoutTitleNestedInput
+  unlocks?: Prisma.UserTitleUnlockUpdateManyWithoutTitleNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTitleNestedInput
 }
 
@@ -583,12 +657,15 @@ export type TitleUncheckedUpdateWithoutEquippedStudentProfilesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePoints?: Prisma.IntFieldUpdateOperationsInput | number
+  catalogKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acquisitionKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rarity?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutTitleNestedInput
+  unlocks?: Prisma.UserTitleUnlockUncheckedUpdateManyWithoutTitleNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTitleNestedInput
 }
 
@@ -597,12 +674,15 @@ export type TitleCreateWithoutUserTitlesInput = {
   name: string
   description?: string | null
   pricePoints: number
+  catalogKey?: string | null
+  acquisitionKind?: string | null
   rarity?: string
   isActive?: boolean
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   equippedStudentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutCurrentTitleInput
+  unlocks?: Prisma.UserTitleUnlockCreateNestedManyWithoutTitleInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTitleInput
 }
 
@@ -611,12 +691,15 @@ export type TitleUncheckedCreateWithoutUserTitlesInput = {
   name: string
   description?: string | null
   pricePoints: number
+  catalogKey?: string | null
+  acquisitionKind?: string | null
   rarity?: string
   isActive?: boolean
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   equippedStudentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutCurrentTitleInput
+  unlocks?: Prisma.UserTitleUnlockUncheckedCreateNestedManyWithoutTitleInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTitleInput
 }
 
@@ -641,12 +724,15 @@ export type TitleUpdateWithoutUserTitlesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePoints?: Prisma.IntFieldUpdateOperationsInput | number
+  catalogKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acquisitionKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rarity?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   equippedStudentProfiles?: Prisma.StudentProfileUpdateManyWithoutCurrentTitleNestedInput
+  unlocks?: Prisma.UserTitleUnlockUpdateManyWithoutTitleNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTitleNestedInput
 }
 
@@ -655,12 +741,99 @@ export type TitleUncheckedUpdateWithoutUserTitlesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePoints?: Prisma.IntFieldUpdateOperationsInput | number
+  catalogKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acquisitionKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rarity?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   equippedStudentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutCurrentTitleNestedInput
+  unlocks?: Prisma.UserTitleUnlockUncheckedUpdateManyWithoutTitleNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTitleNestedInput
+}
+
+export type TitleCreateWithoutUnlocksInput = {
+  id?: string
+  name: string
+  description?: string | null
+  pricePoints: number
+  catalogKey?: string | null
+  acquisitionKind?: string | null
+  rarity?: string
+  isActive?: boolean
+  sortOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  equippedStudentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutCurrentTitleInput
+  userTitles?: Prisma.UserTitleCreateNestedManyWithoutTitleInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTitleInput
+}
+
+export type TitleUncheckedCreateWithoutUnlocksInput = {
+  id?: string
+  name: string
+  description?: string | null
+  pricePoints: number
+  catalogKey?: string | null
+  acquisitionKind?: string | null
+  rarity?: string
+  isActive?: boolean
+  sortOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  equippedStudentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutCurrentTitleInput
+  userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutTitleInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTitleInput
+}
+
+export type TitleCreateOrConnectWithoutUnlocksInput = {
+  where: Prisma.TitleWhereUniqueInput
+  create: Prisma.XOR<Prisma.TitleCreateWithoutUnlocksInput, Prisma.TitleUncheckedCreateWithoutUnlocksInput>
+}
+
+export type TitleUpsertWithoutUnlocksInput = {
+  update: Prisma.XOR<Prisma.TitleUpdateWithoutUnlocksInput, Prisma.TitleUncheckedUpdateWithoutUnlocksInput>
+  create: Prisma.XOR<Prisma.TitleCreateWithoutUnlocksInput, Prisma.TitleUncheckedCreateWithoutUnlocksInput>
+  where?: Prisma.TitleWhereInput
+}
+
+export type TitleUpdateToOneWithWhereWithoutUnlocksInput = {
+  where?: Prisma.TitleWhereInput
+  data: Prisma.XOR<Prisma.TitleUpdateWithoutUnlocksInput, Prisma.TitleUncheckedUpdateWithoutUnlocksInput>
+}
+
+export type TitleUpdateWithoutUnlocksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pricePoints?: Prisma.IntFieldUpdateOperationsInput | number
+  catalogKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acquisitionKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rarity?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  equippedStudentProfiles?: Prisma.StudentProfileUpdateManyWithoutCurrentTitleNestedInput
+  userTitles?: Prisma.UserTitleUpdateManyWithoutTitleNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTitleNestedInput
+}
+
+export type TitleUncheckedUpdateWithoutUnlocksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pricePoints?: Prisma.IntFieldUpdateOperationsInput | number
+  catalogKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acquisitionKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rarity?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  equippedStudentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutCurrentTitleNestedInput
+  userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutTitleNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTitleNestedInput
 }
 
@@ -669,6 +842,8 @@ export type TitleCreateWithoutNotificationsInput = {
   name: string
   description?: string | null
   pricePoints: number
+  catalogKey?: string | null
+  acquisitionKind?: string | null
   rarity?: string
   isActive?: boolean
   sortOrder?: number
@@ -676,6 +851,7 @@ export type TitleCreateWithoutNotificationsInput = {
   updatedAt?: Date | string
   equippedStudentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutCurrentTitleInput
   userTitles?: Prisma.UserTitleCreateNestedManyWithoutTitleInput
+  unlocks?: Prisma.UserTitleUnlockCreateNestedManyWithoutTitleInput
 }
 
 export type TitleUncheckedCreateWithoutNotificationsInput = {
@@ -683,6 +859,8 @@ export type TitleUncheckedCreateWithoutNotificationsInput = {
   name: string
   description?: string | null
   pricePoints: number
+  catalogKey?: string | null
+  acquisitionKind?: string | null
   rarity?: string
   isActive?: boolean
   sortOrder?: number
@@ -690,6 +868,7 @@ export type TitleUncheckedCreateWithoutNotificationsInput = {
   updatedAt?: Date | string
   equippedStudentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutCurrentTitleInput
   userTitles?: Prisma.UserTitleUncheckedCreateNestedManyWithoutTitleInput
+  unlocks?: Prisma.UserTitleUnlockUncheckedCreateNestedManyWithoutTitleInput
 }
 
 export type TitleCreateOrConnectWithoutNotificationsInput = {
@@ -713,6 +892,8 @@ export type TitleUpdateWithoutNotificationsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePoints?: Prisma.IntFieldUpdateOperationsInput | number
+  catalogKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acquisitionKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rarity?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
@@ -720,6 +901,7 @@ export type TitleUpdateWithoutNotificationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   equippedStudentProfiles?: Prisma.StudentProfileUpdateManyWithoutCurrentTitleNestedInput
   userTitles?: Prisma.UserTitleUpdateManyWithoutTitleNestedInput
+  unlocks?: Prisma.UserTitleUnlockUpdateManyWithoutTitleNestedInput
 }
 
 export type TitleUncheckedUpdateWithoutNotificationsInput = {
@@ -727,6 +909,8 @@ export type TitleUncheckedUpdateWithoutNotificationsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePoints?: Prisma.IntFieldUpdateOperationsInput | number
+  catalogKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acquisitionKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rarity?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
@@ -734,6 +918,7 @@ export type TitleUncheckedUpdateWithoutNotificationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   equippedStudentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutCurrentTitleNestedInput
   userTitles?: Prisma.UserTitleUncheckedUpdateManyWithoutTitleNestedInput
+  unlocks?: Prisma.UserTitleUnlockUncheckedUpdateManyWithoutTitleNestedInput
 }
 
 
@@ -744,12 +929,14 @@ export type TitleUncheckedUpdateWithoutNotificationsInput = {
 export type TitleCountOutputType = {
   equippedStudentProfiles: number
   userTitles: number
+  unlocks: number
   notifications: number
 }
 
 export type TitleCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   equippedStudentProfiles?: boolean | TitleCountOutputTypeCountEquippedStudentProfilesArgs
   userTitles?: boolean | TitleCountOutputTypeCountUserTitlesArgs
+  unlocks?: boolean | TitleCountOutputTypeCountUnlocksArgs
   notifications?: boolean | TitleCountOutputTypeCountNotificationsArgs
 }
 
@@ -780,6 +967,13 @@ export type TitleCountOutputTypeCountUserTitlesArgs<ExtArgs extends runtime.Type
 /**
  * TitleCountOutputType without action
  */
+export type TitleCountOutputTypeCountUnlocksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserTitleUnlockWhereInput
+}
+
+/**
+ * TitleCountOutputType without action
+ */
 export type TitleCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.NotificationWhereInput
 }
@@ -790,6 +984,8 @@ export type TitleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   name?: boolean
   description?: boolean
   pricePoints?: boolean
+  catalogKey?: boolean
+  acquisitionKind?: boolean
   rarity?: boolean
   isActive?: boolean
   sortOrder?: boolean
@@ -797,6 +993,7 @@ export type TitleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   updatedAt?: boolean
   equippedStudentProfiles?: boolean | Prisma.Title$equippedStudentProfilesArgs<ExtArgs>
   userTitles?: boolean | Prisma.Title$userTitlesArgs<ExtArgs>
+  unlocks?: boolean | Prisma.Title$unlocksArgs<ExtArgs>
   notifications?: boolean | Prisma.Title$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.TitleCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["title"]>
@@ -806,6 +1003,8 @@ export type TitleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   name?: boolean
   description?: boolean
   pricePoints?: boolean
+  catalogKey?: boolean
+  acquisitionKind?: boolean
   rarity?: boolean
   isActive?: boolean
   sortOrder?: boolean
@@ -818,6 +1017,8 @@ export type TitleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   name?: boolean
   description?: boolean
   pricePoints?: boolean
+  catalogKey?: boolean
+  acquisitionKind?: boolean
   rarity?: boolean
   isActive?: boolean
   sortOrder?: boolean
@@ -830,6 +1031,8 @@ export type TitleSelectScalar = {
   name?: boolean
   description?: boolean
   pricePoints?: boolean
+  catalogKey?: boolean
+  acquisitionKind?: boolean
   rarity?: boolean
   isActive?: boolean
   sortOrder?: boolean
@@ -837,10 +1040,11 @@ export type TitleSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TitleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "pricePoints" | "rarity" | "isActive" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["title"]>
+export type TitleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "pricePoints" | "catalogKey" | "acquisitionKind" | "rarity" | "isActive" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["title"]>
 export type TitleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   equippedStudentProfiles?: boolean | Prisma.Title$equippedStudentProfilesArgs<ExtArgs>
   userTitles?: boolean | Prisma.Title$userTitlesArgs<ExtArgs>
+  unlocks?: boolean | Prisma.Title$unlocksArgs<ExtArgs>
   notifications?: boolean | Prisma.Title$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.TitleCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -852,6 +1056,7 @@ export type $TitlePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     equippedStudentProfiles: Prisma.$StudentProfilePayload<ExtArgs>[]
     userTitles: Prisma.$UserTitlePayload<ExtArgs>[]
+    unlocks: Prisma.$UserTitleUnlockPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -859,6 +1064,8 @@ export type $TitlePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     name: string
     description: string | null
     pricePoints: number
+    catalogKey: string | null
+    acquisitionKind: string | null
     rarity: string
     isActive: boolean
     sortOrder: number
@@ -1260,6 +1467,7 @@ export interface Prisma__TitleClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   equippedStudentProfiles<T extends Prisma.Title$equippedStudentProfilesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Title$equippedStudentProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   userTitles<T extends Prisma.Title$userTitlesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Title$userTitlesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserTitlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  unlocks<T extends Prisma.Title$unlocksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Title$unlocksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserTitleUnlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.Title$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Title$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1294,6 +1502,8 @@ export interface TitleFieldRefs {
   readonly name: Prisma.FieldRef<"Title", 'String'>
   readonly description: Prisma.FieldRef<"Title", 'String'>
   readonly pricePoints: Prisma.FieldRef<"Title", 'Int'>
+  readonly catalogKey: Prisma.FieldRef<"Title", 'String'>
+  readonly acquisitionKind: Prisma.FieldRef<"Title", 'String'>
   readonly rarity: Prisma.FieldRef<"Title", 'String'>
   readonly isActive: Prisma.FieldRef<"Title", 'Boolean'>
   readonly sortOrder: Prisma.FieldRef<"Title", 'Int'>
@@ -1737,6 +1947,30 @@ export type Title$userTitlesArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.UserTitleScalarFieldEnum | Prisma.UserTitleScalarFieldEnum[]
+}
+
+/**
+ * Title.unlocks
+ */
+export type Title$unlocksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserTitleUnlock
+   */
+  select?: Prisma.UserTitleUnlockSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserTitleUnlock
+   */
+  omit?: Prisma.UserTitleUnlockOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserTitleUnlockInclude<ExtArgs> | null
+  where?: Prisma.UserTitleUnlockWhereInput
+  orderBy?: Prisma.UserTitleUnlockOrderByWithRelationInput | Prisma.UserTitleUnlockOrderByWithRelationInput[]
+  cursor?: Prisma.UserTitleUnlockWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserTitleUnlockScalarFieldEnum | Prisma.UserTitleUnlockScalarFieldEnum[]
 }
 
 /**
