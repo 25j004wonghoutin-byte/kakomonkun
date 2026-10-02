@@ -210,4 +210,4 @@ Specの66件、無料/有料/初期、永久資格、全モード反復、最大
 
 ## 実行結果（2026-10-02）
 
-Task 1〜8実装済み。Task 9の不足テストとしてランダム200連続の実サービス経由ケースを追加、187/187 PASS。typecheck・全体lint・build・対象diff検査PASS、読み取りDB整合とPC/モバイルの確認を実施。実DB競合テストは専用DB未指定で未実施。ブラウザーの購入は確認後取消し、実購入をしたとは扱わない。詳細・文字コードは `../reports/2026-10-02-title-conditions-verification.md`。残りはwhole-branch review、重要指摘を一度の修正工程で検証、引継ぎ。push未実行。
+Task 1〜9実装・検証済み。Task 9のランダム200連続を含め187/187 PASS後、whole-branch reviewの重要3件を一度の修正工程でRED→GREEN検証し、全194/194 PASS。typecheck・全体lint・build・対象diff検査PASS、読み取りDB整合とPC/モバイルの確認を実施。実DB競合テストは専用DB未指定で未実施。ブラウザーの購入は確認後取消し、実購入をしたとは扱わない。修正後はChrome隔離画面の実Web Locks・実クライアントでタブ分離/再読込/送信順も確認した。詳細・軽微2件・判断全件・文字コードは `../reports/2026-10-02-title-conditions-verification.md`。push未実行。

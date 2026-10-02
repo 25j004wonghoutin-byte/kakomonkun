@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { createTitleActivityClient } from "@/lib/titles/activity-client";
+import { createTitleActivityClient, createTitleTabClaim } from "@/lib/titles/activity-client";
 import { getTokyoDate } from "@/lib/tokyo-date";
 
 let activityClient: ReturnType<typeof createTitleActivityClient> | null = null;
@@ -17,6 +17,9 @@ export function TitleActivityTracker() {
       try { storage = window.sessionStorage; } catch { /* private mode */ }
       activityClient = createTitleActivityClient({
         storage,
+        // Web Locks未対応ではdocumentごとに新しいIDを使い、別タブの合成を防ぐ。
+        reuseSavedState: Boolean(navigator.locks),
+        claimTabId: navigator.locks ? createTitleTabClaim(navigator.locks) : undefined,
         uuid: () => crypto.randomUUID(),
         isVisible: () => document.visibilityState === "visible",
         date: () => getTokyoDate(),

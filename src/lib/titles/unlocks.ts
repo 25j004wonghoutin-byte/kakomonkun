@@ -6,7 +6,8 @@ import { collectTitleFacts } from "./facts";
 import { evaluateTitleRules } from "./rules";
 
 export async function lockTitleOwner(tx: Prisma.TransactionClient, userId: string): Promise<void> {
-  await tx.$queryRaw`SELECT id FROM public.users WHERE id = ${userId}::uuid FOR UPDATE`;
+  // 同一学生の書き込みは直列化し、他の学生からの通知FK参照は妨げない。
+  await tx.$queryRaw`SELECT id FROM public.users WHERE id = ${userId}::uuid FOR NO KEY UPDATE`;
   await tx.$queryRaw`SELECT user_id FROM public.student_profiles WHERE user_id = ${userId}::uuid FOR UPDATE`;
 }
 
