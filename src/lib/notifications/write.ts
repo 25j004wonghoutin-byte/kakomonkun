@@ -85,6 +85,23 @@ export async function createBoardPinnedNotifications(
   return created.count;
 }
 
+export async function createTitleUnlockNotifications(
+  tx: Prisma.TransactionClient,
+  userId: string,
+  titleIds: readonly string[],
+): Promise<number> {
+  if (titleIds.length === 0) return 0;
+  const created = await tx.notification.createMany({
+    data: [...new Set(titleIds)].map((titleId) => ({
+      recipientId: userId,
+      type: "title_unlocked",
+      titleId,
+    })),
+    skipDuplicates: true,
+  });
+  return created.count;
+}
+
 export function notificationReadWhere(
   recipientId: string,
   notificationId: string,

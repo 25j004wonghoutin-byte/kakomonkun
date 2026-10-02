@@ -34,7 +34,7 @@ test("notification presentation has no reply icon contract", () => {
   );
   assert.equal(
     notificationMessage({ type: "title_unlocked", actorName: null }),
-    "新しい称号を獲得しました",
+    "新しい称号の購入条件を達成しました",
   );
   assert.equal(
     notificationTarget({ type: "title_unlocked", postId: null }),

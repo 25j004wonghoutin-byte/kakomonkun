@@ -26,7 +26,7 @@ export function notificationMessage(value: {
     return "管理者から新しいお知らせがあります";
   }
 
-  return "新しい称号を獲得しました";
+  return "新しい称号の購入条件を達成しました";
 }
 
 export function notificationTarget(value: {
