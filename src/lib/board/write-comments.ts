@@ -1,5 +1,4 @@
 import type { Prisma } from "../../../prisma/generated/client";
-import { prisma } from "@/lib/prisma";
 import {
   toBoardAuthor,
   type BoardActor,
@@ -10,6 +9,8 @@ import {
   canInteractWithPost,
 } from "@/lib/board/permissions";
 import { createBoardReplyNotification } from "@/lib/notifications/write";
+import { recordTitleActivity } from "@/lib/titles/activity";
+import { lockTitleOwner } from "@/lib/titles/unlocks";
 
 const publicAuthorSelect = {
   id: true,
@@ -34,8 +35,10 @@ export async function createBoardComment(
   postId: string,
   body: string,
 ): Promise<BoardCommentView | "not_found"> {
+  const { prisma } = await import("@/lib/prisma");
   const created = await prisma.$transaction((tx) =>
     createBoardCommentInTransaction(tx, actor, postId, body),
+    { timeout: 30_000 },
   );
 
   if (created === "not_found") {
@@ -62,7 +65,9 @@ export async function createBoardCommentInTransaction(
   actor: BoardActor,
   postId: string,
   body: string,
+  now = new Date(),
 ) {
+  if (actor.roleName === "student") await lockTitleOwner(tx, actor.id);
   const post = await tx.boardPost.findUnique({
     where: { id: postId },
     select: {
@@ -94,6 +99,8 @@ export async function createBoardCommentInTransaction(
     boardCommentId: created.id,
   });
 
+  if (actor.roleName === "student") await recordTitleActivity(tx, actor.id, { now });
+
   return created;
 }
 
@@ -102,6 +109,7 @@ export async function deleteBoardComment(
   commentId: string,
   reason?: string,
 ): Promise<BoardCommentMutationResult> {
+  const { prisma } = await import("@/lib/prisma");
   const deletionReason =
     actor.roleName === "teacher" && reason
       ? reason.trim().slice(0, 200) || undefined

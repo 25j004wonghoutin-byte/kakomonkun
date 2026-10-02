@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/lib/auth";
 import { badRequest, forbidden, unauthorized } from "@/lib/http";
 import { prisma } from "@/lib/prisma";
+import { updateStudentProfile } from "@/lib/titles/community-events";
 
 type UpdateProfileBody = {
   displayName?: unknown;
@@ -37,20 +38,9 @@ export async function PATCH(request: Request) {
     return badRequest("bio must be 200 characters or fewer");
   }
 
-  const result = await prisma.$transaction(async (tx) => {
-    const updatedUser = await tx.user.update({
-      where: { id: user.id },
-      data: { displayName },
-      select: { displayName: true },
-    });
-    const updatedProfile = await tx.studentProfile.update({
-      where: { userId: user.id },
-      data: { bio: normalizedBio || null },
-      select: { bio: true },
-    });
-
-    return { ...updatedUser, ...updatedProfile };
-  });
+  const result = await prisma.$transaction((tx) => updateStudentProfile(
+    tx, user.id, displayName, normalizedBio || null, new Date(),
+  ), { timeout: 30_000 });
 
   return Response.json(result);
 }

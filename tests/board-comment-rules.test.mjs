@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 import { parseBoardBody, isUuid } from "../src/lib/board/validation.ts";
 import { canInteractWithPost } from "../src/lib/board/permissions.ts";
+import { makeLearningMemory } from "./helpers/learning-memory.mjs";
 
 const require = createRequire(import.meta.url);
 const originalResolveFilename = Module._resolveFilename;
@@ -54,8 +55,14 @@ test("reply creation emits its notification through the same transaction client"
   );
   let commentCreated = false;
   let insertedNotification;
+  const memory = makeLearningMemory({
+      user: { id: "reply-author", displayName: "返信者", role: { name: "student" }, status: "active", deletedAt: null },
+      profile: { userId: "reply-author", titleTrackingStartedAt: null, titleBackfilledAt: null, totalPoints: 0 },
+    });
   const tx = {
+    ...memory.tx,
     boardPost: {
+      ...memory.tx.boardPost,
       async findUnique() {
         return {
           authorId: "post-author",
@@ -65,6 +72,7 @@ test("reply creation emits its notification through the same transaction client"
       },
     },
     boardComment: {
+      ...memory.tx.boardComment,
       async create() {
         commentCreated = true;
         return {

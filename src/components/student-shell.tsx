@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { NotificationBell } from "@/components/notification-bell";
+import { TitleActivityTracker } from "@/components/title-activity-tracker";
 
 type NavigationItem = {
   label: string;
@@ -96,6 +97,7 @@ export function StudentShell({
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f5f7fb] text-slate-900">
+      <TitleActivityTracker />
       <div className="flex min-h-screen">
         <aside
           className={`fixed inset-y-0 left-0 z-30 w-[230px] shrink-0 bg-[#031f3d] text-white shadow-2xl transition-all duration-300 lg:static lg:translate-x-0 ${

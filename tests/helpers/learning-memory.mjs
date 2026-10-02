@@ -21,6 +21,7 @@ export function makeLearningMemory(overrides = {}) {
     const tx = makeTitleMemory(state).tx;
     const question = (id) => state.questions.find((row) => row.id === id);
     const enrich = (row) => ({ ...row, question: question(row.questionId) });
+    tx.user.update = async ({ data }) => mutate(state.user, data);
     tx.question = { findUnique: async ({ where }) => question(where.id) ?? null };
     tx.studentProfile.update = async ({ data }) => mutate(state.profile, data);
     tx.studentProfile.upsert = async ({ create, update }) => state.profile ? mutate(state.profile, update) : (state.profile = create);
@@ -51,6 +52,23 @@ export function makeLearningMemory(overrides = {}) {
     tx.pointTransaction = {
       count: async ({ where }) => state.points.filter((row) => row.userId === where.userId && row.reason === where.reason && +row.transactionDate === +where.transactionDate).length,
       create: async ({ data }) => { state.points.push(data); return data; },
+    };
+    tx.studentNavigationProgress.findUnique = async ({ where }) => state.navigation.find((row) => row.userId === where.userId_tabId.userId && row.tabId === where.userId_tabId.tabId) ?? null;
+    tx.studentNavigationProgress.upsert = async ({ where, create, update }) => {
+      const row = state.navigation.find((item) => item.userId === where.userId_tabId.userId && item.tabId === where.userId_tabId.tabId);
+      if (row) return mutate(row, update);
+      state.navigation.push(create); return create;
+    };
+    tx.boardPost.findUnique = async ({ where }) => state.posts.find((row) => row.id === where.id) ?? null;
+    tx.boardPost.create = async ({ data }) => { const row = { id: `post-${state.posts.length + 1}`, isPinned: false, deletedAt: null, createdAt: new Date(), ...data }; state.posts.push(row); return row; };
+    tx.boardComment.create = async ({ data }) => { const row = { id: `comment-${state.comments.length + 1}`, createdAt: new Date(), deletedAt: null, ...data }; state.comments.push(row); return row; };
+    tx.notification.createMany = async ({ data }) => {
+      if (state.failNotifications) throw new Error("notification save failed");
+      let count = 0;
+      for (const row of data) {
+        if (!state.notifications.some((saved) => saved.type === row.type && saved.recipientId === row.recipientId && saved.titleId === row.titleId && saved.boardCommentId === row.boardCommentId && saved.boardPostId === row.boardPostId)) { state.notifications.push(row); count++; }
+      }
+      return { count };
     };
     return tx;
   };

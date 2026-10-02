@@ -1,7 +1,8 @@
 import type { Prisma } from "../../../prisma/generated/client";
 import { getPracticeCompletionPoints } from "../practice-config";
 import { getTokyoDate } from "../tokyo-date";
-import { lockTitleOwner, syncTitleUnlocks } from "./unlocks";
+import { lockTitleOwner } from "./unlocks";
+import { recordTitleActivity } from "./activity";
 
 export class LearningEventError extends Error {
   constructor(public readonly status: 400 | 403 | 404 | 409, message: string) {
@@ -13,17 +14,7 @@ type LearningUser = { id: string; isStudent: boolean };
 
 /** 回答保存と同じtransaction内で呼ぶ。教師には呼ばない。 */
 export async function recordTitleAnswer(tx: Prisma.TransactionClient, userId: string, now: Date): Promise<void> {
-  const profile = await tx.studentProfile.findUnique({ where: { userId }, select: { titleTrackingStartedAt: true } });
-  if (profile?.titleTrackingStartedAt === null) {
-    await tx.studentProfile.update({ where: { userId }, data: { titleTrackingStartedAt: now } });
-  }
-  const activityDate = new Date(`${getTokyoDate(now)}T00:00:00.000Z`);
-  await tx.studentActivityDay.upsert({
-    where: { userId_activityDate: { userId, activityDate } },
-    create: { userId, activityDate, hasAnswered: true, firstSeenAt: now, lastSeenAt: now },
-    update: { hasAnswered: true, lastSeenAt: now },
-  });
-  await syncTitleUnlocks(tx, userId, { now, source: "event" });
+  await recordTitleActivity(tx, userId, { now, hasAnswered: true });
 }
 
 async function lockPracticeSession(tx: Prisma.TransactionClient, user: LearningUser, sessionId: string) {
@@ -89,7 +80,7 @@ export async function finishPracticeSession(tx: Prisma.TransactionClient, user: 
       create: { userId: user.id, totalPoints: earnedPoints, totalPracticeCount: 1, totalCorrectCount: session.correctCount, totalAnswerCount: session.answeredCount },
       update: { totalPoints: { increment: earnedPoints }, totalPracticeCount: { increment: 1 }, totalCorrectCount: { increment: session.correctCount }, totalAnswerCount: { increment: session.answeredCount } },
     });
-    await syncTitleUnlocks(tx, user.id, { now, source: "event" });
+    await recordTitleActivity(tx, user.id, { now });
   }
   return { sessionId: result.id, correctCount: result.correctCount, answeredCount: result.answeredCount, earnedPoints: result.earnedPoints, answeredAllQuestions, completionPoints, correctBonusPoints };
 }
