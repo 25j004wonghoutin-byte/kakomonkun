@@ -20,7 +20,11 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 export const prisma =
-  globalForPrisma.prisma ?? new PrismaClient({ adapter });
+  globalForPrisma.prisma ?? new PrismaClient({
+    adapter,
+    // Queue behind the single connection instead of using Prisma's 2s default.
+    transactionOptions: { maxWait: 10_000 },
+  });
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;

@@ -33,7 +33,8 @@ export function TitleShop({ initialData }: { initialData: TitleShopInitialData }
 
   useEffect(() => {
     if (!selected) return;
-    confirmButtonRef.current?.focus();
+    if (submitting) dialogRef.current?.focus();
+    else confirmButtonRef.current?.focus();
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const onKey = (event: KeyboardEvent) => {
@@ -43,6 +44,11 @@ export function TitleShop({ initialData }: { initialData: TitleShopInitialData }
       }
       if (event.key === "Tab") {
         const buttons = [...(dialogRef.current?.querySelectorAll<HTMLButtonElement>("button:not(:disabled)") ?? [])];
+        if (buttons.length === 0) {
+          event.preventDefault();
+          dialogRef.current?.focus();
+          return;
+        }
         const first = buttons[0], last = buttons.at(-1);
         if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
