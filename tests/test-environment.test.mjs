@@ -103,6 +103,27 @@ test("setup refuses every nonempty public schema, without deleting data", () => 
   for (const count of [1, 30, null, undefined, -1]) assert.throws(() => environment.assertEmptyTestDatabase(count), /not empty/);
 });
 
+test("avatar server receives only explicitly configured test secrets", () => {
+  const result = environment.buildTestProcessEnv({ ...valid(), TEST_SUPABASE_SECRET_KEY: "sb_secret_test_fixture" }, {
+    SUPABASE_SECRET_KEY: "production", TEST_SUPABASE_SECRET_KEY: "inherited", TEST_SUPABASE_SERVICE_ROLE_KEY: "inherited",
+  });
+  assert.equal(result.SUPABASE_SECRET_KEY, "sb_secret_test_fixture");
+  assert.equal(result.SUPABASE_SERVICE_ROLE_KEY, "");
+  assert.notEqual(result.TEST_SUPABASE_SERVICE_ROLE_KEY, "inherited");
+  assert.equal(environment.buildTestProcessEnv(valid(), { TEST_SUPABASE_SECRET_KEY: "inherited" }).SUPABASE_SECRET_KEY, "");
+});
+
+test("avatar test secret rejects a public key or legacy key from another project", () => {
+  const jwt = (payload) => `header.${Buffer.from(JSON.stringify(payload)).toString("base64url")}.signature`;
+  for (const input of [
+    { TEST_SUPABASE_SECRET_KEY: "sb_publishable_DO_NOT_LOG" },
+    { TEST_SUPABASE_SERVICE_ROLE_KEY: jwt({ role: "anon", ref: "grzylombpqmidltnbwhx" }) },
+    { TEST_SUPABASE_SERVICE_ROLE_KEY: jwt({ role: "service_role", ref: "other" }) },
+  ]) assert.throws(() => validate({ ...valid(), ...input }), (e) => /Invalid test configuration/.test(e.message) && !e.message.includes("DO_NOT_LOG"));
+  const legacy = jwt({ role: "service_role", ref: "grzylombpqmidltnbwhx" });
+  assert.equal(environment.buildTestProcessEnv({ ...valid(), TEST_SUPABASE_SERVICE_ROLE_KEY: legacy }).SUPABASE_SERVICE_ROLE_KEY, legacy);
+});
+
 function readNextConfig(testMode) {
   const url = new URL("../next.config.ts", import.meta.url);
   const exports = {};

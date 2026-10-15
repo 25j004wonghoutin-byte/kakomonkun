@@ -28,12 +28,23 @@ export function validateTestConfig(input) {
     } catch { /* Reject malformed or privileged keys without logging the value. */ }
   }
   if (!publicKey) invalid("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY");
+  const secret = input.TEST_SUPABASE_SECRET_KEY || "";
+  const legacySecret = input.TEST_SUPABASE_SERVICE_ROLE_KEY || "";
+  if (secret && (typeof secret !== "string" || !/^sb_secret_[a-zA-Z0-9_-]+$/.test(secret))) invalid("TEST_SUPABASE_SECRET_KEY");
+  if (legacySecret) {
+    try {
+      const payload = JSON.parse(Buffer.from(legacySecret.split(".")[1], "base64url").toString("utf8"));
+      if (payload.role !== "service_role" || payload.ref !== TEST_PROJECT_REF) invalid("TEST_SUPABASE_SERVICE_ROLE_KEY");
+    } catch { invalid("TEST_SUPABASE_SERVICE_ROLE_KEY"); }
+  }
   return {
     TEST_SUPABASE_PROJECT_REF: TEST_PROJECT_REF,
     NEXT_PUBLIC_SUPABASE_URL: input.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: key,
     DATABASE_URL: input.DATABASE_URL,
     DIRECT_URL: input.DIRECT_URL,
+    TEST_SUPABASE_SECRET_KEY: secret,
+    TEST_SUPABASE_SERVICE_ROLE_KEY: legacySecret,
   };
 }
 
@@ -50,11 +61,11 @@ export function buildTestProcessEnv(input, base = process.env) {
   const config = validateTestConfig(input);
   const env = { ...base };
   for (const name of Object.keys(env)) {
-    if (/^(?:SUPABASE_|NEXT_PUBLIC_SUPABASE_|TEACHER_|GEMINI_|KAKOMON_SEED_)/.test(name)) env[name] = "";
+    if (/^(?:SUPABASE_|TEST_SUPABASE_|NEXT_PUBLIC_SUPABASE_|TEACHER_|GEMINI_|KAKOMON_SEED_)/.test(name)) env[name] = "";
   }
   return {
     ...env, ...config, NODE_ENV: "development", KAKOMON_TEST_ENV: "1",
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: "", SUPABASE_SERVICE_ROLE_KEY: "", SUPABASE_SECRET_KEY: "",
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: "", SUPABASE_SERVICE_ROLE_KEY: config.TEST_SUPABASE_SERVICE_ROLE_KEY, SUPABASE_SECRET_KEY: config.TEST_SUPABASE_SECRET_KEY,
     TEACHER_ACCOUNT_NAME: "test-teacher", GEMINI_API_KEY: "", GEMINI_MODEL: "",
   };
 }
