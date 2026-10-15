@@ -8,7 +8,7 @@ import { PageHeading } from "@/components/ui";
 import { readJsonResponse } from "@/lib/read-json-response";
 import type { TitleShopItem } from "@/lib/titles/contract";
 import { titleShopAction } from "@/lib/titles/shop";
-import { TitleShopCard, TitleShopDialog } from "./title-shop-parts";
+import { TitleShopDialog, TitleShopList } from "./title-shop-parts";
 
 export type TitleShopInitialData = {
   displayName: string;
@@ -115,9 +115,7 @@ export function TitleShop({ initialData }: { initialData: TitleShopInitialData }
           <h2 className="text-lg font-black text-slate-950">称号一覧</h2>
           <p className="text-xs font-bold leading-5 text-slate-500 sm:text-right">購入した称号は、マイページから装備できます。<br />称号名・価格は暫定値です。</p>
         </div>
-        <section aria-label="販売中の称号" className="grid gap-3 md:grid-cols-2">
-          {titles.map((title) => <TitleShopCard key={title.id} title={title} totalPoints={totalPoints} onSelect={selectTitle} />)}
-        </section>
+        <TitleShopList titles={titles} totalPoints={totalPoints} onSelect={selectTitle} />
         {message ? <p className="mt-4 text-sm font-black text-emerald-700" role="status">{message}</p> : null}
         {error && !selected ? <p className="mt-4 text-sm font-black text-rose-700" role="alert">{error}</p> : null}
       </div>

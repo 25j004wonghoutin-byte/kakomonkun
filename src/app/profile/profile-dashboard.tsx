@@ -339,35 +339,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                 </div>
               )}
 
-              {ownedTitles.length > 0 ? (
-                <div className="divide-y divide-slate-100 px-5">
-                  {ownedTitles.slice(0, 3).map((ownedTitle) => (
-                    <div
-                      key={ownedTitle.id}
-                      className="grid min-h-[62px] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 py-2"
-                    >
-                      <TitleSymbol rarity={ownedTitle.rarity} />
-                      <div className="min-w-0">
-                        <strong className="block break-words text-xs font-black text-slate-900">
-                          {ownedTitle.name}
-                        </strong>
-                        <span className="mt-0.5 block text-[9px] font-bold uppercase text-slate-500">
-                          {ownedTitle.rarity}
-                        </span>
-                      </div>
-                      {ownedTitle.id === profile.currentTitle?.id ? (
-                        <span className="text-[10px] font-black text-emerald-700">装備中</span>
-                      ) : null}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="px-5 py-5 text-center text-xs font-semibold leading-5 text-slate-500">
-                  まだ称号を持っていません。
-                </p>
-              )}
-
-              <div className="grid gap-2 border-t border-slate-200 p-4">
+              <div className="grid gap-2 p-4">
                 <button
                   type="button"
                   onClick={openTitleDialog}
@@ -516,9 +488,9 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
         ref={titleDialogRef}
         aria-labelledby="title-equip-heading"
         onClose={() => setTitleError("")}
-        className="m-auto w-[calc(100%-2rem)] max-w-lg rounded-lg border-0 p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/50"
+        className="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-hidden rounded-lg border-0 p-0 text-slate-900 shadow-2xl open:flex open:flex-col backdrop:bg-slate-950/50"
       >
-        <div className="flex min-h-[66px] items-center justify-between gap-4 border-b border-slate-200 px-5 py-3">
+        <div className="flex min-h-[66px] shrink-0 items-center justify-between gap-4 border-b border-slate-200 px-5 py-3">
           <h2 id="title-equip-heading" className="text-lg font-black">
             装備する称号
           </h2>
@@ -531,7 +503,8 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
             ×
           </button>
         </div>
-        <div className="max-h-[55vh] space-y-2 overflow-y-auto p-5">
+        {/* Five 68px rows, four 8px gaps, and 2px padding on each edge. */}
+        <div className="m-5 min-h-0 max-h-[376px] space-y-2 overflow-y-auto overscroll-contain p-0.5">
           {ownedTitles.map((ownedTitle) => {
             const selected = selectedTitleId === ownedTitle.id;
             return (
@@ -559,13 +532,13 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
               </button>
             );
           })}
-          {titleError ? (
-            <p role="alert" className="rounded-md bg-rose-50 px-3 py-2 text-sm font-bold text-rose-700">
-              {titleError}
-            </p>
-          ) : null}
         </div>
-        <div className="flex flex-col-reverse gap-2 border-t border-slate-200 px-5 py-4 sm:flex-row sm:justify-end">
+        {titleError ? (
+          <p role="alert" className="mx-5 mb-4 shrink-0 rounded-md bg-rose-50 px-3 py-2 text-sm font-bold text-rose-700">
+            {titleError}
+          </p>
+        ) : null}
+        <div className="flex shrink-0 flex-col-reverse gap-2 border-t border-slate-200 px-5 py-4 sm:flex-row sm:justify-end">
           <button
             type="button"
             onClick={() => titleDialogRef.current?.close()}

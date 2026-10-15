@@ -1,8 +1,50 @@
 "use client";
 
-import type { RefObject } from "react";
+import { useId, useRef, useState, type KeyboardEvent, type RefObject } from "react";
 import type { TitleShopItem } from "@/lib/titles/contract";
-import { titleShopAction } from "@/lib/titles/shop";
+import { paginateTitleShop, titleShopAction } from "@/lib/titles/shop";
+
+export function TitleShopList({ titles, totalPoints, onSelect }: {
+  titles: TitleShopItem[]; totalPoints: number; onSelect: (title: TitleShopItem, button: HTMLButtonElement) => void;
+}) {
+  const [requestedPage, setRequestedPage] = useState(1);
+  const { items, page, pageCount } = paginateTitleShop(titles, requestedPage);
+  const panelRef = useRef<HTMLElement>(null);
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const id = useId();
+  const panelId = `${id}-titles`;
+  const tabId = (number: number) => `${id}-page-${number}`;
+
+  function changePage(nextPage: number) {
+    if (nextPage === page) return;
+    setRequestedPage(nextPage);
+    requestAnimationFrame(() => panelRef.current?.scrollIntoView({ block: "start", behavior: "instant" }));
+  }
+  function handleTabKey(event: KeyboardEvent<HTMLButtonElement>) {
+    let nextPage;
+    if (event.key === "ArrowRight") nextPage = page % pageCount + 1;
+    else if (event.key === "ArrowLeft") nextPage = (page + pageCount - 2) % pageCount + 1;
+    else if (event.key === "Home") nextPage = 1;
+    else if (event.key === "End") nextPage = pageCount;
+    else return;
+    event.preventDefault();
+    tabsRef.current?.querySelectorAll<HTMLButtonElement>("button")[nextPage - 1]?.focus({ preventScroll: true });
+    changePage(nextPage);
+  }
+
+  return <div className="flex flex-col">
+    {pageCount > 1 ? <div ref={tabsRef} role="tablist" aria-label="称号のページ" className="order-last mt-5 flex flex-wrap justify-center gap-1 border-t border-slate-200 pt-3">
+      {Array.from({ length: pageCount }, (_, index) => index + 1).map((number) => <button
+        key={number} id={tabId(number)} type="button" role="tab" aria-label={`${number}ページ目`} aria-selected={number === page} aria-controls={panelId} tabIndex={number === page ? 0 : -1}
+        onClick={() => changePage(number)} onKeyDown={handleTabKey}
+        className={`min-h-11 min-w-11 border-b-2 px-3 text-sm font-black transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${number === page ? "border-blue-600 text-blue-700" : "border-transparent text-slate-500"}`}
+      >{number}</button>)}
+    </div> : null}
+    <section ref={panelRef} id={panelId} role={pageCount > 1 ? "tabpanel" : undefined} tabIndex={pageCount > 1 ? 0 : undefined} aria-labelledby={pageCount > 1 ? tabId(page) : undefined} aria-label="販売中の称号" className="grid scroll-mt-24 gap-3 md:grid-cols-2">
+      {items.map((title) => <TitleShopCard key={title.id} title={title} totalPoints={totalPoints} onSelect={onSelect} />)}
+    </section>
+  </div>;
+}
 
 export function TitleShopCard({ title, totalPoints, onSelect }: { title: TitleShopItem; totalPoints: number; onSelect: (title: TitleShopItem, button: HTMLButtonElement) => void }) {
   const action = titleShopAction(title, totalPoints);

@@ -49,3 +49,10 @@ export function titleShopAction(title: TitleShopItem, totalPoints: number): "non
   if (title.state === "locked") return "condition";
   return totalPoints < title.pricePoints ? "none" : "purchase";
 }
+
+export function paginateTitleShop(titles: readonly TitleShopItem[], requestedPage: number) {
+  const pageSize = 10;
+  const pageCount = Math.max(1, Math.ceil(titles.length / pageSize));
+  const page = Math.min(pageCount, Math.max(1, Math.floor(requestedPage) || 1));
+  return { items: titles.slice((page - 1) * pageSize, page * pageSize), page, pageCount };
+}
