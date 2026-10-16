@@ -50,6 +50,23 @@ export function titleShopAction(title: TitleShopItem, totalPoints: number): "non
   return totalPoints < title.pricePoints ? "none" : "purchase";
 }
 
+export type TitleShopFilter = "all" | "available" | "owned" | "locked" | "insufficient";
+export type TitleShopSort = "default" | "price-asc" | "price-desc";
+
+export function selectTitleShopItems(titles: readonly TitleShopItem[], totalPoints: number, filter: TitleShopFilter, sort: TitleShopSort) {
+  const items = titles.filter((title) => {
+    if (filter === "all") return true;
+    if (filter === "owned") return title.owned;
+    if (title.owned || title.state === "starter") return false;
+    const action = titleShopAction(title, totalPoints);
+    if (filter === "available") return action === "purchase";
+    if (filter === "locked") return action === "condition";
+    return action === "none";
+  });
+  if (sort === "default") return items;
+  return items.toSorted((left, right) => sort === "price-asc" ? left.pricePoints - right.pricePoints : right.pricePoints - left.pricePoints);
+}
+
 export function paginateTitleShop(titles: readonly TitleShopItem[], requestedPage: number) {
   const pageSize = 10;
   const pageCount = Math.max(1, Math.ceil(titles.length / pageSize));

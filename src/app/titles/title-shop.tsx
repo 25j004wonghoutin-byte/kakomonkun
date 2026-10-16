@@ -30,6 +30,7 @@ export function TitleShop({ initialData }: { initialData: TitleShopInitialData }
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLElement>(null);
   const openerRef = useRef<HTMLButtonElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!selected) return;
@@ -89,7 +90,11 @@ export function TitleShop({ initialData }: { initialData: TitleShopInitialData }
       setOptimistic((current) => ({ base: initialData, ownedIds: [...(current?.base === initialData ? current.ownedIds : []), selected.title.id], totalPoints: newPoints }));
       setMessage(`「${selected.title.name}」を購入しました。`);
       setSelected(null);
-      requestAnimationFrame(() => (openerRef.current?.closest("article") as HTMLElement | null)?.focus());
+      requestAnimationFrame(() => {
+        const card = openerRef.current?.closest("article") as HTMLElement | null;
+        if (card?.isConnected) card.focus();
+        else listRef.current?.focus();
+      });
       // 20種類・対象58種類の購入直後アンロックも最新のserver propsへ反映する。
       router.refresh();
     } catch (cause) {
@@ -115,7 +120,9 @@ export function TitleShop({ initialData }: { initialData: TitleShopInitialData }
           <h2 className="text-lg font-black text-slate-950">称号一覧</h2>
           <p className="text-xs font-bold leading-5 text-slate-500 sm:text-right">購入した称号は、マイページから装備できます。<br />称号名・価格は暫定値です。</p>
         </div>
-        <TitleShopList titles={titles} totalPoints={totalPoints} onSelect={selectTitle} />
+        <div ref={listRef} role="region" aria-label="称号一覧" tabIndex={-1} className="rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-500">
+          <TitleShopList titles={titles} totalPoints={totalPoints} onSelect={selectTitle} />
+        </div>
         {message ? <p className="mt-4 text-sm font-black text-emerald-700" role="status">{message}</p> : null}
         {error && !selected ? <p className="mt-4 text-sm font-black text-rose-700" role="alert">{error}</p> : null}
       </div>
