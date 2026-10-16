@@ -16,10 +16,11 @@ export async function GET() {
     profile: user.studentProfile
       ? {
           totalPoints: user.studentProfile.totalPoints,
+          avatarUrl: user.studentProfile.avatarUrl,
           totalPracticeCount: user.studentProfile.totalPracticeCount,
           totalCorrectCount: user.studentProfile.totalCorrectCount,
           totalAnswerCount: user.studentProfile.totalAnswerCount,
         }
       : null,
-  });
+  }, { headers: { "Cache-Control": "private, no-store, max-age=0", Vary: "Cookie" } });
 }

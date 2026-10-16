@@ -10,15 +10,20 @@ import type {
 import { readJsonResponse } from "@/lib/read-json-response";
 import { scheduleBoardDialogOpen } from "./dialog-lifecycle";
 import { BoardAuthorName, TeacherBadge } from "./post-card";
+import { StudentAvatar } from "@/components/student-avatar";
 
 export function ReplyDialog({
   post,
   viewerName,
+  viewerAvatarUrl = null,
+  viewerIsTeacher = false,
   onClose,
   onSent,
 }: {
   post: BoardPostView;
   viewerName: string;
+  viewerAvatarUrl?: string | null;
+  viewerIsTeacher?: boolean;
   onClose: () => void;
   onSent: (postId: string, comment: BoardCommentView) => void;
 }) {
@@ -165,7 +170,7 @@ export function ReplyDialog({
             aria-hidden="true"
             className="grid size-10 shrink-0 place-items-center rounded-full bg-blue-100 text-sm font-black text-blue-700 sm:size-11"
           >
-            {viewerName.slice(0, 1)}
+            {viewerIsTeacher ? viewerName.slice(0, 1) : <StudentAvatar avatarUrl={viewerAvatarUrl} displayName={viewerName} size={40} />}
           </span>
           <label className="min-w-0 flex-1">
             <span className="sr-only">返信本文</span>
@@ -244,17 +249,8 @@ function AuthorAvatar({ post }: { post: BoardPostView }) {
       href={`/board/users/${post.author.id}`}
       aria-label={`${post.author.displayName}さんのプロフィール`}
       className="grid size-10 shrink-0 place-items-center rounded-full bg-blue-100 bg-cover bg-center text-sm font-black text-blue-700 sm:size-11"
-      style={
-        post.author.avatarUrl
-          ? { backgroundImage: `url(${post.author.avatarUrl})` }
-          : undefined
-      }
     >
-      {post.author.avatarUrl ? (
-        <span className="sr-only">{post.author.displayName}</span>
-      ) : (
-        post.author.displayName.slice(0, 1)
-      )}
+      {post.author.isTeacher ? post.author.displayName.slice(0, 1) : <StudentAvatar avatarUrl={post.author.avatarUrl} displayName={post.author.displayName} size={40} />}
     </Link>
   );
 }
@@ -265,17 +261,8 @@ function CommentAvatar({ comment }: { comment: BoardCommentView }) {
       href={`/board/users/${comment.author.id}`}
       aria-label={`${comment.author.displayName}さんのプロフィール`}
       className="grid size-10 shrink-0 place-items-center rounded-full bg-blue-100 bg-cover bg-center text-sm font-black text-blue-700"
-      style={
-        comment.author.avatarUrl
-          ? { backgroundImage: `url(${comment.author.avatarUrl})` }
-          : undefined
-      }
     >
-      {comment.author.avatarUrl ? (
-        <span className="sr-only">{comment.author.displayName}</span>
-      ) : (
-        comment.author.displayName.slice(0, 1)
-      )}
+      {comment.author.isTeacher ? comment.author.displayName.slice(0, 1) : <StudentAvatar avatarUrl={comment.author.avatarUrl} displayName={comment.author.displayName} size={40} />}
     </Link>
   );
 }

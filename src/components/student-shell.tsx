@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { NotificationBell } from "@/components/notification-bell";
 import { TitleActivityTracker } from "@/components/title-activity-tracker";
+import { StudentAvatar as ProfileImage } from "@/components/student-avatar";
 
 type NavigationItem = {
   label: string;
@@ -40,36 +41,40 @@ const navigation: NavigationItem[] = [
 type StudentShellProps = {
   children: ReactNode;
   userName?: string;
+  avatarUrl?: string | null;
   points?: number;
 };
 
 export function StudentShell({
   children,
   userName,
+  avatarUrl,
 }: StudentShellProps) {
   const pathname = usePathname();
   const [fetchedUserName, setFetchedUserName] = useState<string | null>(null);
+  const [fetchedAvatarUrl, setFetchedAvatarUrl] = useState<string | null>(null);
   const [userFetchComplete, setUserFetchComplete] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [desktopSidebarVisible, setDesktopSidebarVisible] = useState(true);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   useEffect(() => {
-    if (userName !== undefined) {
+    if (userName !== undefined && avatarUrl !== undefined) {
       return;
     }
 
     let active = true;
 
-    fetch("/api/me")
+    fetch("/api/me", { cache: "no-store" })
       .then((response) => (response.ok ? response.json() : Promise.reject()))
-      .then((data: { displayName?: unknown }) => {
+      .then((data: { displayName?: unknown; profile?: { avatarUrl?: unknown } | null }) => {
         if (!active) return;
         setFetchedUserName(
           typeof data.displayName === "string" && data.displayName.trim()
             ? data.displayName
             : null,
         );
+        setFetchedAvatarUrl(typeof data.profile?.avatarUrl === "string" ? data.profile.avatarUrl : null);
       })
       .catch(() => {
         if (active) setFetchedUserName(null);
@@ -81,9 +86,10 @@ export function StudentShell({
     return () => {
       active = false;
     };
-  }, [userName]);
+  }, [userName, avatarUrl]);
 
   const resolvedUserName = userName ?? fetchedUserName;
+  const resolvedAvatarUrl = avatarUrl !== undefined ? avatarUrl : fetchedAvatarUrl;
   const userLoading = userName === undefined && !userFetchComplete;
 
   function toggleSidebar() {
@@ -184,9 +190,7 @@ export function StudentShell({
                     }}
                     className="flex items-center gap-3 rounded-full py-1 pl-1 pr-2 transition hover:bg-slate-100"
                   >
-                    <span className="grid size-11 place-items-center rounded-full border-2 border-blue-100 bg-blue-50 text-xl">
-                      <StudentAvatar />
-                    </span>
+                    <ProfileImage avatarUrl={resolvedAvatarUrl} displayName={resolvedUserName ?? "学生"} size={44} className="border-2 border-blue-100 text-xl" fallback={<StudentAvatar />} />
                     {userLoading || !resolvedUserName ? (
                       <span
                         aria-label="ユーザー情報を読み込み中"

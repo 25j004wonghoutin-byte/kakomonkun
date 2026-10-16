@@ -25,7 +25,7 @@ export default async function BoardPage() {
       <BoardFeed
         initialPosts={initial.posts}
         initialNextCursor={initial.nextCursor}
-        viewer={{ ...actor, displayName: user.displayName }}
+        viewer={{ ...actor, displayName: user.displayName, avatarUrl: user.role.name === "student" ? user.studentProfile?.avatarUrl ?? null : null }}
       />
     </RoleShell>
   );

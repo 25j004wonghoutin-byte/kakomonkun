@@ -10,8 +10,9 @@ import type {
 import { readJsonResponse } from "@/lib/read-json-response";
 import { PostCard } from "./post-card";
 import { ReplyDialog } from "./reply-dialog";
+import { StudentAvatar } from "@/components/student-avatar";
 
-type BoardViewer = BoardActor & { displayName: string };
+type BoardViewer = BoardActor & { displayName: string; avatarUrl?: string | null };
 
 type BoardListResponse = {
   posts: BoardPostView[];
@@ -289,7 +290,7 @@ export function BoardFeed({
         </div>
 
         <div className="flex gap-3 border-b-8 border-[#f5f7fb] px-4 py-5 sm:gap-4 sm:px-6">
-          <ViewerAvatar name={viewer.displayName} />
+          <ViewerAvatar name={viewer.displayName} avatarUrl={viewer.avatarUrl ?? null} isTeacher={viewer.roleName === "teacher"} />
           <div className="min-w-0 flex-1">
             <label htmlFor="board-post-draft" className="sr-only">
               投稿本文
@@ -365,6 +366,8 @@ export function BoardFeed({
         <ReplyDialog
           post={replyPost}
           viewerName={viewer.displayName}
+          viewerAvatarUrl={viewer.avatarUrl ?? null}
+          viewerIsTeacher={viewer.roleName === "teacher"}
           onClose={closeReply}
           onSent={handleReplySent}
         />
@@ -373,13 +376,13 @@ export function BoardFeed({
   );
 }
 
-function ViewerAvatar({ name }: { name: string }) {
+function ViewerAvatar({ name, avatarUrl, isTeacher }: { name: string; avatarUrl: string | null; isTeacher: boolean }) {
   return (
     <span
       aria-hidden="true"
       className="grid size-10 shrink-0 place-items-center rounded-full bg-blue-100 text-sm font-black text-blue-700 sm:size-11"
     >
-      {name.slice(0, 1)}
+      {isTeacher ? name.slice(0, 1) : <StudentAvatar avatarUrl={avatarUrl} displayName={name} size={40} />}
     </span>
   );
 }

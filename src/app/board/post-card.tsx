@@ -1,5 +1,7 @@
 "use client";
 
+import { StudentAvatar } from "@/components/student-avatar";
+
 import Link from "next/link";
 import type { BoardAuthorView, BoardPostView } from "@/lib/board/contract";
 
@@ -161,17 +163,8 @@ function AuthorAvatar({ post }: { post: BoardPostView }) {
       href={`/board/users/${post.author.id}`}
       aria-label={`${post.author.displayName}${post.author.isTeacher ? "" : "さん"}のプロフィール`}
       className={className}
-      style={
-        post.author.avatarUrl
-          ? { backgroundImage: `url(${post.author.avatarUrl})` }
-          : undefined
-      }
     >
-      {post.author.avatarUrl ? (
-        <span className="sr-only">{post.author.displayName}</span>
-      ) : (
-        post.author.displayName.slice(0, 1)
-      )}
+      {post.author.isTeacher ? post.author.displayName.slice(0, 1) : <StudentAvatar avatarUrl={post.author.avatarUrl} displayName={post.author.displayName} size={40} />}
     </Link>
   );
 }

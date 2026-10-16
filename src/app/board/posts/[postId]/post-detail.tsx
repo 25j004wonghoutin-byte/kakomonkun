@@ -8,6 +8,7 @@ import type {
   BoardThreadView,
 } from "@/lib/board/contract";
 import { readJsonResponse } from "@/lib/read-json-response";
+import { StudentAvatar } from "@/components/student-avatar";
 import {
   BoardAuthorName,
   PostCard,
@@ -25,9 +26,13 @@ const dateFormatter = new Intl.DateTimeFormat("ja-JP", {
 export function PostDetail({
   initialThread,
   viewerName,
+  viewerAvatarUrl = null,
+  viewerIsTeacher = false,
 }: {
   initialThread: BoardThreadView;
   viewerName: string;
+  viewerAvatarUrl?: string | null;
+  viewerIsTeacher?: boolean;
 }) {
   const [post, setPost] = useState(initialThread.post);
   const [comments, setComments] = useState(initialThread.comments);
@@ -180,9 +185,8 @@ export function PostDetail({
               href={`/board/users/${comment.author.id}`}
               aria-label={`${comment.author.displayName}さんのプロフィール`}
               className="grid size-10 shrink-0 place-items-center rounded-full bg-blue-100 bg-cover bg-center text-sm font-black text-blue-700"
-              style={comment.author.avatarUrl ? { backgroundImage: `url(${comment.author.avatarUrl})` } : undefined}
             >
-              {comment.author.avatarUrl ? <span className="sr-only">{comment.author.displayName}</span> : comment.author.displayName.slice(0, 1)}
+              {comment.author.isTeacher ? comment.author.displayName.slice(0, 1) : <StudentAvatar avatarUrl={comment.author.avatarUrl} displayName={comment.author.displayName} size={40} />}
             </Link>
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
@@ -200,7 +204,7 @@ export function PostDetail({
         ))}
 
         <div className="flex gap-3 px-4 py-5 sm:gap-4 sm:px-6">
-          <span aria-hidden="true" className="grid size-10 shrink-0 place-items-center rounded-full bg-blue-100 text-sm font-black text-blue-700">{viewerName.slice(0, 1)}</span>
+          <span aria-hidden="true" className="grid size-10 shrink-0 place-items-center rounded-full bg-blue-100 text-sm font-black text-blue-700">{viewerIsTeacher ? viewerName.slice(0, 1) : <StudentAvatar avatarUrl={viewerAvatarUrl} displayName={viewerName} size={40} />}</span>
           <div className="min-w-0 flex-1">
             <p className="mb-2 flex flex-wrap items-center gap-1 text-xs text-slate-500">
               <span>返信先：</span>

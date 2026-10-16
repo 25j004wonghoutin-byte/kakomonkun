@@ -1,5 +1,7 @@
 "use client";
 
+import { StudentAvatar } from "@/components/student-avatar";
+
 import Link from "next/link";
 import { useState } from "react";
 import type { BoardPostView, BoardPublicProfileView } from "@/lib/board/contract";
@@ -145,9 +147,8 @@ export function PublicProfile({
           <div
             aria-hidden="true"
             className="-mt-11 grid size-20 place-items-center rounded-full border-4 border-white bg-blue-100 bg-cover bg-center text-2xl font-black text-blue-700"
-            style={initialProfile.avatarUrl ? { backgroundImage: `url(${initialProfile.avatarUrl})` } : undefined}
           >
-            {initialProfile.avatarUrl ? null : initialProfile.displayName.slice(0, 1)}
+            {initialProfile.isTeacher ? initialProfile.displayName.slice(0, 1) : <StudentAvatar avatarUrl={initialProfile.avatarUrl} displayName={initialProfile.displayName} size={72} />}
           </div>
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <h3 className={`text-xl font-black ${initialProfile.isTeacher ? "text-violet-800" : "text-slate-950"}`}>{initialProfile.displayName}</h3>

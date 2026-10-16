@@ -10,6 +10,8 @@ import type {
   ProfileTitleData,
 } from "@/lib/profile-data";
 import { readJsonResponse } from "@/lib/read-json-response";
+import { StudentAvatar } from "@/components/student-avatar";
+import { AvatarEditor } from "./avatar-editor";
 
 const activityDateFormatter = new Intl.DateTimeFormat("ja-JP", {
   month: "numeric",
@@ -34,6 +36,7 @@ type EquipTitleResponse = {
 
 export function ProfileDashboard({ initialData }: { initialData: ProfilePageData }) {
   const [profile, setProfile] = useState(initialData.profile);
+  const [avatarEditorOpen, setAvatarEditorOpen] = useState(false);
   const [ownedTitles, setOwnedTitles] = useState(initialData.ownedTitles);
   const [period, setPeriod] = useState<Period>("overall");
   const [showAllPoints, setShowAllPoints] = useState(false);
@@ -140,7 +143,8 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
   }
 
   return (
-    <StudentShell userName={profile.displayName} points={profile.totalPoints}>
+    <StudentShell userName={profile.displayName} points={profile.totalPoints} avatarUrl={profile.avatarUrl}>
+      <AvatarEditor open={avatarEditorOpen} currentAvatarUrl={profile.avatarUrl} onClose={() => setAvatarEditorOpen(false)} onSaved={avatarUrl => setProfile(current => ({ ...current, avatarUrl }))} />
       <div className="mx-auto w-full max-w-[1120px] min-w-0">
         <div className="mb-5">
           <p className="mb-1 text-xs font-black text-blue-600">MY PAGE</p>
@@ -151,7 +155,10 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
           aria-labelledby="profile-name"
           className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-4 rounded-lg border border-l-4 border-slate-200 border-l-blue-600 bg-white p-5 shadow-[0_14px_40px_-30px_rgba(15,23,42,0.55)] sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-5 sm:p-6"
         >
-          <ProfileAvatar displayName={profile.displayName} avatarUrl={profile.avatarUrl} />
+          <div className="flex flex-col items-center gap-2">
+            <StudentAvatar displayName={profile.displayName} avatarUrl={profile.avatarUrl} size={72} className="border-4 border-blue-100 text-2xl" />
+            <button type="button" onClick={() => setAvatarEditorOpen(true)} className="min-h-9 rounded px-1 text-xs font-bold text-blue-600 hover:bg-blue-50">アイコンを変更</button>
+          </div>
           <div className="min-w-0">
             <div className="flex min-w-0 flex-wrap items-center gap-2.5">
               <h2 id="profile-name" className="min-w-0 break-all text-xl font-black text-slate-950">
@@ -557,19 +564,6 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
         </div>
       </dialog>
     </StudentShell>
-  );
-}
-
-function ProfileAvatar({ displayName, avatarUrl }: { displayName: string; avatarUrl: string | null }) {
-  return (
-    <span
-      role="img"
-      aria-label={`${displayName}のプロフィール画像`}
-      className="grid size-[72px] shrink-0 place-items-center rounded-full border-4 border-blue-100 bg-blue-50 bg-cover bg-center text-2xl font-black text-blue-800"
-      style={avatarUrl ? { backgroundImage: `url(${JSON.stringify(avatarUrl)})` } : undefined}
-    >
-      {avatarUrl ? null : displayName.trim().charAt(0).toUpperCase() || "学"}
-    </span>
   );
 }
 
