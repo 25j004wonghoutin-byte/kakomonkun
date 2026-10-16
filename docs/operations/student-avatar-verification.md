@@ -2,7 +2,7 @@
 
 確認日: 2026-10-16（日本時間）。対象設計: `docs/superpowers/specs/2026-10-15-student-avatar-design.md`。実装計画: `docs/superpowers/plans/2026-10-15-student-avatar-implementation.md`。
 
-状態: 実装・全体検証・独立レビューと指摘修正済み。本番Storage設定は2026-10-16に承認を受けて適用・確認済み。Vercelの本番環境変数確認・push・deployは未実施。
+状態: 実装・全体検証・独立レビューと指摘修正済み。本番Storage設定は2026-10-16に承認を受けて適用・確認済み。Vercelの本番キー設定は同日ユーザーから設定済みの連絡あり（こちらで値を独立照合したとは扱わない）。push・deployは未実施。
 
 ## 確認環境
 
@@ -61,13 +61,13 @@ PC・スマートフォンとも、ページ同一性、正常な本文表示、
 ## 残る確認範囲と本番導入
 
 - Safari/iOS実機・Firefoxでは未検証。今回のスマートフォン確認はChromeのエミュレーション。WebP出力やImageBitmap非対応時は説明を表示する。
-- Vercel本番の環境変数・公開後のアプリ全経路・利用量は未確認。Storage単体の本番確認は下記の範囲で完了している。
+- Vercel本番のキーはユーザー確認済みだが、こちらでの値の独立照合・公開後のアプリ全経路・利用量は未確認。Storage単体の本番確認は下記の範囲で完了している。
 - 本番Storageには本番プロジェクトのサーバー専用キー、非公開bucket設定、対象限定RLSを利用する。今後画像を保存・清掃する際はDBと画像本体を別々にバックアップする。手順は `student-avatars.md` を参照。今回の追加設定では既存画像・画像参照は0件で、既存データを変更していない。フルDBの新規バックアップ・復元試験を実施したとは扱わない。
 - アプリ用DBテーブル／カラムの追加はない。本番Storage設定だけ承認済みで、アプリのpush・deployは未実施。
 
 ## 本番Storage設定（2026-10-16承認・実施）
 
-- 対象: `ckgoikdjhtklhbzdgxxs`。MCPの接続先とローカル本番設定のproject一致を確認し、本番キーでStorage読取が成功してから実行した。キーの新規発行・変更・表示はしていない。Vercelに同じキーが設定済みかは未確認。
+- 対象: `ckgoikdjhtklhbzdgxxs`。MCPの接続先とローカル本番設定のproject一致を確認し、本番キーでStorage読取が成功してから実行した。キーの新規発行・変更・表示はしていない。Vercel Productionの本番キーもユーザーより設定済みの連絡あり。秘密値はチャットへ受け取らず、独立照合はしていない。
 - 実行前: bucket 0件、Storage policy 0件、非null画像参照0件。Storage APIで `student-avatars` を新規作成し、private・2097152 bytes・MIME `image/webp` のみを確認。
 - `student_avatars_server_only` をRESTRICTIVE / ALL / anon・authenticatedで適用。条件はUSING・WITH CHECKとも `bucket_id <> 'student-avatars'`。適用前にbucket設定一致と同名policy不存在を検査し、既存設定の上書きはしなかった。Supabase migration履歴: `20261016042304_student_avatars_server_only`。policy本体は `supabase/avatar-storage-policy.sql` と同じ。
 - 検証用の512px WebPでサーバー経由保存・取得のSHA256一致を確認。匿名の直接取得・署名URL発行・アップロードは拒否、一覧には画像が出ず、削除要求でも画像が保持された。public URLも拒否。Prismaでanon・authenticated roleに切り替えた読取は各0行。
