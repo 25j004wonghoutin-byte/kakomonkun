@@ -68,3 +68,10 @@ test("stale missing malformed references are 404 and internal failures are safe 
   assert.equal(error.status, 500); assert.equal(error.headers.get("cache-control"), "private, no-store, max-age=0");
   assert.equal((await error.text()).includes("DO_NOT_LOG"), false);
 });
+
+test("same-origin avatar uploads respect the request Host when Next uses an internal localhost URL", async () => {
+  const {handlers}=make();
+  function request(host){const form=new FormData();form.set("image",new Blob(["crop"]),"a.webp");form.set("expectedAvatarUrl","null");return new Request("http://localhost:3001/api/profile/avatar",{method:"POST",headers:{origin:"http://127.0.0.1:3001",host,"x-forwarded-host":"evil.example"},body:form});}
+  assert.equal((await handlers.post(request("127.0.0.1:3001"))).status,200);
+  for(const host of ["evil.example","127.0.0.1:3001@evil.example","127.0.0.1:3001/path"])assert.equal((await handlers.post(request(host))).status,403);
+});

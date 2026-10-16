@@ -11,7 +11,7 @@ export function StudentAvatar({ avatarUrl, displayName, size, className = "", fa
   return <span className={`relative grid shrink-0 place-items-center overflow-hidden rounded-full bg-blue-50 font-black text-blue-700 ${className}`} style={{ width: size, height: size }}>
     {url && failedUrl !== url ? (
       // eslint-disable-next-line @next/next/no-img-element -- Authenticated images must be requested directly with the browser session, without the shared optimizer.
-      <img src={url} alt={`${displayName}のアイコン`} width={size} height={size} onError={() => setFailedUrl(url)} className="h-full w-full object-cover" />
+      <img ref={image => { if (image?.complete && image.naturalWidth === 0) setFailedUrl(url); }} src={url} alt={`${displayName}のアイコン`} width={size} height={size} onError={() => setFailedUrl(url)} className="h-full w-full object-cover" />
     ) : fallback ?? (displayName.trim().charAt(0).toUpperCase() || "学")}
   </span>;
 }

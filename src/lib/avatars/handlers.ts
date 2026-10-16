@@ -26,7 +26,17 @@ export function createAvatarHandlers({ getUser, service, normalizeImage }: Depen
     return user;
   }
   function sameOrigin(request: Request) {
-    if (request.headers.get("origin") !== new URL(request.url).origin) throw new AvatarError("origin", 403, "この操作は利用できません。");
+    const denied = () => new AvatarError("origin", 403, "この操作は利用できません。");
+    const target = new URL(request.url);
+    const host = request.headers.get("host");
+    if (host) {
+      try {
+        const authority = new URL(`${target.protocol}//${host}`);
+        if (authority.host !== host.toLowerCase() || authority.username || authority.password || authority.pathname !== "/" || authority.search || authority.hash) throw denied();
+        target.host = host;
+      } catch { throw denied(); }
+    }
+    if (request.headers.get("origin") !== target.origin) throw denied();
   }
   async function safe(work: () => Promise<Response>): Promise<Response> {
     try { return await work(); }
