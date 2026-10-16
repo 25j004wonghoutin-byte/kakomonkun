@@ -2,11 +2,11 @@
 
 確認日: 2026-10-16（日本時間）。対象設計: `docs/superpowers/specs/2026-10-15-student-avatar-design.md`。実装計画: `docs/superpowers/plans/2026-10-15-student-avatar-implementation.md`。
 
-状態: 実装・全体検証・独立レビューと指摘修正済み。本番設定・push・deployは未実施。
+状態: 実装・全体検証・独立レビューと指摘修正済み。本番Storage設定は2026-10-16に承認を受けて適用・確認済み。Vercelの本番環境変数確認・push・deployは未実施。
 
 ## 確認環境
 
-- 指定フォルダーの `codex/title-conditions` ブランチ。DB・Storageは専用Supabase `grzylombpqmidltnbwhx`。本番プロジェクトは操作していない。
+- 初期実装は指定フォルダーの `codex/title-conditions` ブランチ。DB・Storageは専用Supabase `grzylombpqmidltnbwhx`。初期検証では本番を操作していない。その後mainへ統合し、本番Storageだけを下記の承認範囲で設定した。
 - 開発サーバー: http://127.0.0.1:3001 。本番形式の一時確認サーバーは127.0.0.1:3002で実行し終了済み。
 - Browserプラグインがないため、既存のPlaywrightとインストール済みChromeで検証。PC1366×1000、スマートフォン390×844のタッチ対応エミュレーション。
 - テスト用Authアカウントとアプリ内の学生A/B・教師を一時作成し、検証後にそのユーザー・画像・一時RLSポリシーだけを削除。通常のtest-student等のアカウントは削除していない。
@@ -61,9 +61,20 @@ PC・スマートフォンとも、ページ同一性、正常な本文表示、
 ## 残る確認範囲と本番導入
 
 - Safari/iOS実機・Firefoxでは未検証。今回のスマートフォン確認はChromeのエミュレーション。WebP出力やImageBitmap非対応時は説明を表示する。
-- 専用テスト環境での確認であり、Vercel本番の環境変数・Storage設定・既存データ・利用量は別途確認する。
-- 本番には本番プロジェクトのサーバー専用キー、同じ非公開bucket設定、対象限定RLSが必要。SQLを適用する前に接続先を確認し、DBと画像本体を別々にバックアップする。手順は `student-avatars.md` を参照。
-- DBテーブル／カラムの追加はない。アプリのpush・本番設定・deployはユーザーの確認後に行う。
+- Vercel本番の環境変数・公開後のアプリ全経路・利用量は未確認。Storage単体の本番確認は下記の範囲で完了している。
+- 本番Storageには本番プロジェクトのサーバー専用キー、非公開bucket設定、対象限定RLSを利用する。今後画像を保存・清掃する際はDBと画像本体を別々にバックアップする。手順は `student-avatars.md` を参照。今回の追加設定では既存画像・画像参照は0件で、既存データを変更していない。フルDBの新規バックアップ・復元試験を実施したとは扱わない。
+- アプリ用DBテーブル／カラムの追加はない。本番Storage設定だけ承認済みで、アプリのpush・deployは未実施。
+
+## 本番Storage設定（2026-10-16承認・実施）
+
+- 対象: `ckgoikdjhtklhbzdgxxs`。MCPの接続先とローカル本番設定のproject一致を確認し、本番キーでStorage読取が成功してから実行した。キーの新規発行・変更・表示はしていない。Vercelに同じキーが設定済みかは未確認。
+- 実行前: bucket 0件、Storage policy 0件、非null画像参照0件。Storage APIで `student-avatars` を新規作成し、private・2097152 bytes・MIME `image/webp` のみを確認。
+- `student_avatars_server_only` をRESTRICTIVE / ALL / anon・authenticatedで適用。条件はUSING・WITH CHECKとも `bucket_id <> 'student-avatars'`。適用前にbucket設定一致と同名policy不存在を検査し、既存設定の上書きはしなかった。Supabase migration履歴: `20261016042304_student_avatars_server_only`。policy本体は `supabase/avatar-storage-policy.sql` と同じ。
+- 検証用の512px WebPでサーバー経由保存・取得のSHA256一致を確認。匿名の直接取得・署名URL発行・アップロードは拒否、一覧には画像が出ず、削除要求でも画像が保持された。public URLも拒否。Prismaでanon・authenticated roleに切り替えた読取は各0行。
+- 検証用画像だけをStorage APIで削除し、最終的にStorage一覧・storage.objectsとも0件を確認。アプリ内ユーザー・プロフィールは追加／更新／削除していない。他bucket・他Storage policyも0件のまま。
+- 削除直後のStorage downloadがキャッシュ済み画像を返す場合を実測。削除API成功・metadata削除と区別して扱う。アプリはStorage取得前にDBの現在参照を照合するため、旧versionや削除済み参照を配信しない設計で、専用テスト環境のAPI検証済み。本番アプリ経由の確認はdeploy後に残す。
+- Security Advisorには今回のStorageに関する指摘なし。既存31件のRLS有効・policyなしINFOは今回変更していない（ブラウザー直接DB利用向けの許可policyを追加していない）。既存の漏えいパスワード保護無効WARNも対象外のため変更なし。[RLS INFOの説明](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy)、[Auth警告の説明](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection)。
+- 称号ショップのソート・フィルターは `457e27b` でmainへ追加。コミットだけを別フォルダーへ展開し、2104ファイルのGit blob一致を確認して、全体312成功・0失敗・3明示skip、lint警告0、build・typecheck成功。依存は既存ロック済みパッケージの独立コピーを利用し、新規インストールや本番DB接続は行わなかった。
 
 ## 最終レビュー
 
@@ -77,7 +88,7 @@ PC・スマートフォンとも、ページ同一性、正常な本文表示、
 
 6. 実DB・Storage・Auth・ブラウザー操作はレビュー担当の再実行対象外だが、主担当による実接続6件・実Chrome操作・検証コードを根拠に今回のテスト範囲では受入。誤っていればmockでは見えない実サービス障害が残る。
 7. Safari/iOS実機・Firefox互換性は未検証のまま明示し、確認済みとは扱わない。誤っていれば対象ブラウザーで画像選択・WebP出力の差が残る。
-8. 本番設定・deploy・バックアップ復元は未実施として別承認の作業に残す。テスト成功を本番検証や復元成功に読み替えない。誤って省略すれば本番の設定不足や復旧不能を見落とす。
+8. 独立レビュー時点では本番設定・deploy・バックアップ復元を未実施として別承認の作業に残した。その後、本番Storageだけは上記の承認を受けて設定したが、テスト成功を本番アプリ検証や復元成功に読み替えない。誤って省略すれば本番の設定不足や復旧不能を見落とす。
 9. 称号ショップ・問題データ・生成物の既存dirty変更はアイコン機能レビュー／コミットから除外。24ファイルの保護ハッシュを再確認。誤っていれば無関係の変更を取り込む危険がある。
 
 ## 変更テキストの文字コード確認
