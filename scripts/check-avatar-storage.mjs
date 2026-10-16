@@ -49,7 +49,10 @@ export async function checkAvatarStorage({ setup = false } = {}) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const {values} = parseArgs({options:{test:{type:"boolean"},"setup-test":{type:"boolean"}},strict:true,allowPositionals:false});
   if (!values.test || values["setup-test"] && !values.test) throw new Error("Explicit --test is required");
-  checkAvatarStorage({setup:!!values["setup-test"]}).then(result=>console.log(JSON.stringify(result,null,2))).catch(()=>{
+  checkAvatarStorage({setup:!!values["setup-test"]}).then(result=>{
+    console.log(JSON.stringify(result,null,2));
+    if (!result.validBucket || !result.validPolicy) process.exitCode=1;
+  }).catch(()=>{
     console.error("Avatar test storage check failed. Verify dedicated test credentials, project and connectivity. Credentials are not logged.");process.exitCode=1;
   });
 }
