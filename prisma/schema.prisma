@@ -396,7 +396,7 @@ model MockAttemptStartRequest {
   mockExamId String @map("mock_exam_id") @db.Uuid
   attemptId String @map("attempt_id") @db.Uuid
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  attempt MockAttempt @relation(fields: [attemptId, mockExamId, userId], references: [id, mockExamId, userId], onDelete: Restrict)
+  attempt MockAttempt @relation(fields: [attemptId, mockExamId, userId], references: [id, mockExamId, userId], onDelete: Restrict, map: "mock_attempt_start_requests_attempt_fkey")
 
   @@id([userId, requestId], map: "mock_attempt_start_requests_pkey")
   @@index([attemptId, mockExamId, userId], map: "idx_mock_attempt_start_requests_attempt")
