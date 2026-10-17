@@ -477,6 +477,7 @@ Task 12以降のランキング称号・通知・ジョブ・教師画面・運�
 | tests/mock-reminders.integration.test.mjs | 新規CRLF・英文のみ |
 | tests/notifications-contract.test.mjs | CRLF保持・通知文assert正常 |
 | tests/notification-read-rules.test.mjs | LF保持・既存日本語と模試通知文正常 |
+| .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/progress.md | UTF-8/BOMなし/CRLF保持・strict再読と日本語の検証記録正常（未追跡の進捗台帳） |
 | docs/operations/monthly-mock-exam-verification.md | CRLF保持・本文正常 |
 
 Task 14〜17の教師画面・署名付きジョブ・Cron/運用・最終受入れが残る。実装済みの通知処理を、実運用の配信開始とは扱わない。
