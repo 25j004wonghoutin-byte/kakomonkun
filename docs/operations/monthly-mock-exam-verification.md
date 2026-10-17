@@ -118,3 +118,40 @@ lint警告の場所は `output/ipa-answer-audit-2026-10-14/db-correction.mjs:162
 ### Task 2時点の残作業
 
 問題セット準備、採点・受験API、画面、ランキング確定・報酬、称号連携、通知配信、署名ジョブ、Cronと最終受入れはまだ未完了。今回の成功はDBの足場の確認であり、模擬試験機能全体の完成を意味しない。
+
+## Task 3 — 2026-10-17
+
+実装コミット: `39a9f3e`。月・試験ごとのSerializableトランザクションとロックで60問/100問を重複なし抽選し、問題・4択・正解・出典を固定する。一度readyになったセットは再実行でも抽選しない。候補不足や途中失敗では部分公開しない。
+
+配信画像1,180パスのSHA256 manifestを生成し、本番ビルド時に実ファイルと照合する。`node scripts/build-mock-asset-manifest.mjs --check` で確認できる。画像追加時は同じスクリプトの `--write` で更新するが、既存パスの削除・内容上書きは再生成でも拒否する。採用済み画像はパス・内容とも保持し、誤画像の訂正が必要なら別名資産を追加して将来の問題だけを修正する。manifestの手動書換えで検査を迂回しない。
+
+| 確認 | 結果 |
+| --- | --- |
+| 単体RED→GREEN | 未実装、ビルド検証未接続、日本語画像パス、保持検査の失敗を確認後、7件成功 |
+| 実DB | 7件成功。60/100問とも別接続の同時準備が同一ID・順序、候補不足/別試験拒否、途中失敗rollback、固定後の元データ変更不変を確認 |
+| 最終task-done | 14件成功・失敗0・skip 0 |
+| 全体suite | 356件中351成功・失敗0・opt-in 5件skip |
+| 型・lint・差分検査 | typecheck/lint exit 0。既存lint警告1件。対象/staged whitespace問題なし |
+| 実登録プールの読み取り専用確認 | テストDBでITパスポート600/631、基本情報1,940/2,000が有効。最初の接続開始タイムアウト後、待機時間明示の再実行は成功 |
+
+実DBテストの候補取得はPrisma query extensionで自作UUID行だけに絞り、既存問題を編集しない。本番コードの試験・公開状態条件はANDのまま維持する。全体suiteで既存の設定テスト1件が関数形式のnext.configに未追従と判明し、同じ出力ディレクトリ検証をawait呼出しに直した。
+
+Prisma内部のrelation読込みがpgへ並行queryを送る非推奨警告をスタックで確認した。現在のpgではテストは成功しているが、将来のpg 9更新前にadapter対応を確認する。依存更新は今回行っていない。
+
+### Task 3 テキスト形式
+
+各ファイルをstrict UTF-8で再読し、BOMなし・CRLF、U+FFFDなし、代表日本語行と差分を確認した。既存2ファイルの形式は保持、新規6ファイルはリポジトリー規約に合わせた。
+
+| パス | エンコーディング / BOM / 改行 | 再読結果 |
+| --- | --- | --- |
+| next.config.ts | UTF-8保持 / なし / CRLF保持 | 英文、正常 |
+| scripts/build-mock-asset-manifest.mjs | UTF-8新規 / なし / CRLF | 「過去に記録したパス」正常 |
+| src/lib/mock-exams/question-assets.json | UTF-8新規 / なし / CRLF | 「スクリーンショット」のパス正常 |
+| src/lib/mock-exams/question-pool.ts | UTF-8新規 / なし / CRLF | 「有効な問題が不足」正常 |
+| src/lib/mock-exams/prepare.ts | UTF-8新規 / なし / CRLF | 「模擬試験を準備」正常 |
+| tests/mock-question-pool.test.mjs | UTF-8新規 / なし / CRLF | 「正しい説明はどれか。」正常 |
+| tests/mock-prepare.integration.test.mjs | UTF-8新規 / なし / CRLF | 「元データを変更した検証」正常 |
+| tests/test-environment.test.mjs | UTF-8保持 / なし / CRLF保持 | 英文、正常 |
+| docs/operations/monthly-mock-exam-verification.md | UTF-8保持 / なし / CRLF保持 | 本文日本語正常 |
+
+Task 4以降の採点・受験・API/UI・順位確定/報酬/称号/通知/Cronと最終受入れは未完了。本番変更・pushは未実施。
