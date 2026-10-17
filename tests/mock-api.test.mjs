@@ -64,6 +64,15 @@ test("private mock API boundary", async t => {
       }
       assert.equal(calls.length,0);
     });
+    await t.test("same-origin mutations use a validated Host when Next's internal URL differs",async()=>{
+      const request=new Request("http://localhost:3001/api/mock-exams/start",{method:"POST",headers:{host:"127.0.0.1:3001",origin:"http://127.0.0.1:3001","content-type":"application/json"},body:JSON.stringify({requestId:randomUUID()})});
+      assert.equal((await handlers.start(request,{mockExamId:exam})).status,200);
+      calls=[];
+      for(const host of ["app.example/path","app.example@evil.example","app.example?x=1"]){
+        const bad=await handlers.start(req("",{requestId:randomUUID()},{host}),{mockExamId:exam});assert.equal(bad.status,403);
+      }
+      assert.equal(calls.length,0);
+    });
     await t.test("domain statuses survive but unknown internals are never exposed",async()=>{
       for(const status of [403,404,409,503]){failure=new MockError("domain_error",status,"操作できません。");const r=await handlers.result(req(""),{attemptId:attempt});assert.equal(r.status,status);checkPrivate(r);assert.equal((await r.json()).error,"操作できません。");}
       failure=new Error("postgresql://private:secret@internal Prisma stack");

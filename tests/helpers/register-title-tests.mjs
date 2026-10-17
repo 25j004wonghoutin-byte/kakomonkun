@@ -7,6 +7,9 @@ const root = new URL("../../", import.meta.url);
 
 registerHooks({
   resolve(specifier, context, nextResolve) {
+    if (["next/link", "next/image", "next/navigation"].includes(specifier)) {
+      return nextResolve(`${specifier}.js`, context);
+    }
     const local = specifier.startsWith("@/")
       ? new URL(`src/${specifier.slice(2)}`, root)
       : specifier.startsWith(".") && context.parentURL?.startsWith(root.href)

@@ -30,6 +30,17 @@ function month(value:unknown):string{
   if(typeof value!=="string")throw invalid();
   getMockSchedule(value);return value;
 }
+function sameOrigin(request:Request):boolean{
+  const target=new URL(request.url),host=request.headers.get("host");
+  if(host){
+    try{
+      const authority=new URL(`${target.protocol}//${host}`);
+      if(authority.host!==host.toLowerCase()||authority.username||authority.password||authority.pathname!=="/"||authority.search||authority.hash)return false;
+      target.host=host;
+    }catch{return false;}
+  }
+  return request.headers.get("origin")===target.origin;
+}
 
 export function createMockHandlers({getUser,services}:{getUser:()=>Promise<MockActor|null>;services:MockServices}){
   function run(request:Request,mutation:boolean,work:(actor:MockActor)=>Promise<unknown>):Promise<Response>{
@@ -39,7 +50,7 @@ export function createMockHandlers({getUser,services}:{getUser:()=>Promise<MockA
         if(!actor)throw new MockError("unauthorized",401,"ログインしてください。");
         assertMockStudent(actor);
         if(!readMockEnvironment(process.env).enabled)throw new MockError("mock_disabled",503,"模擬試験は現在準備中です。");
-        if(mutation&&request.headers.get("origin")!==new URL(request.url).origin)throw new MockError("origin",403,"この操作は利用できません。");
+        if(mutation&&!sameOrigin(request))throw new MockError("origin",403,"この操作は利用できません。");
         return Response.json(await work(actor),{headers:mockHeaders});
       } catch(cause){
         return Response.json({error:cause instanceof MockError?cause.message:"模擬試験を処理できませんでした。しばらくしてからお試しください。",code:cause instanceof MockError?cause.code:"internal_error"},
