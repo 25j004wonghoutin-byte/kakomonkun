@@ -20,5 +20,9 @@ export function makeTitleFacts(overrides = {}) {
     nameChanged: false,
     ...overrides,
     categoryCorrect: { technology: 0, management: 0, strategy: 0, ...overrides.categoryCorrect },
+    ranking: Object.fromEntries(["it_passport", "fe"].map((code) => [code, {
+      topThreeMaxRun: 0, ...overrides.ranking?.[code],
+      rankCounts: { 1: 0, 2: 0, 3: 0, ...overrides.ranking?.[code]?.rankCounts },
+    }])),
   };
 }

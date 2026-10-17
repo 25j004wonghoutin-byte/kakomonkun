@@ -43,11 +43,16 @@ test("final ranks are frozen only after grading; rewards are per-user atomic, re
       assert.deepEqual(results.map(r=>r.rewardPoints),[150,150]);assert.equal(results.filter(r=>r.alreadyProcessed).length,1);
       assert.equal((await f.db.studentProfile.findUniqueOrThrow({where:{userId:f.actor.id}})).totalPoints,170);
       assert.equal(await f.db.pointTransaction.count({where:{userId:f.actor.id,reason:"mock_rank_reward",sourceType:"monthly_ranking",sourceId:rank.id}}),1);
+      const title=await f.db.title.findUniqueOrThrow({where:{catalogKey:"v1-009"}});
+      assert.equal(await f.db.userTitleUnlock.count({where:{userId:f.actor.id,titleId:title.id}}),1);
+      assert.equal(await f.db.notification.count({where:{recipientId:f.actor.id,titleId:title.id}}),1);
+      assert.equal(await f.db.userTitle.count({where:{userId:f.actor.id,titleId:title.id}}),0);
     });
     await t.test("failure after eligibility notification rolls back points, ledger, unlock and processed marker",async()=>{
       const actor=f.actors[2],rank=ranks.find(r=>r.userId===actor.id);
       await f.db.studentActivityDay.createMany({data:Array.from({length:365},(_,i)=>({userId:actor.id,activityDate:new Date(Date.UTC(2040,0,1+i)),hasAnswered:true,firstSeenAt:new Date(Date.UTC(2040,0,1+i)),lastSeenAt:new Date(Date.UTC(2040,0,1+i))}))});
       const title=await f.db.title.findUniqueOrThrow({where:{catalogKey:"v1-066"}});
+      const medal=await f.db.title.findUniqueOrThrow({where:{catalogKey:"v1-043"}});
       const broken=f.db.$extends({query:{notification:{async createMany({args,query}){await query(args);throw new Error("Fault after reward eligibility notification");}}}});
       await assert.rejects(reward(broken,rank.id,f.clock),/Fault after reward eligibility notification/);
       assert.equal((await f.db.studentProfile.findUniqueOrThrow({where:{userId:actor.id}})).totalPoints,20);
@@ -55,10 +60,14 @@ test("final ranks are frozen only after grading; rewards are per-user atomic, re
       assert.equal((await f.db.monthlyRanking.findUniqueOrThrow({where:{id:rank.id}})).rewardProcessedAt,null);
       assert.equal(await f.db.userTitleUnlock.count({where:{userId:actor.id,titleId:title.id}}),0);
       assert.equal(await f.db.notification.count({where:{recipientId:actor.id,titleId:title.id}}),0);
+      assert.equal(await f.db.userTitleUnlock.count({where:{userId:actor.id,titleId:medal.id}}),0);
+      assert.equal(await f.db.notification.count({where:{recipientId:actor.id,titleId:medal.id}}),0);
       assert.deepEqual(await reward(f.db,rank.id,f.clock),{rewardPoints:75,alreadyProcessed:false});
       assert.deepEqual(await reward(f.db,rank.id,f.clock),{rewardPoints:75,alreadyProcessed:true});
       assert.equal((await f.db.studentProfile.findUniqueOrThrow({where:{userId:actor.id}})).totalPoints,95);
       assert.equal(await f.db.notification.count({where:{recipientId:actor.id,titleId:title.id}}),1);
+      assert.equal(await f.db.notification.count({where:{recipientId:actor.id,titleId:medal.id}}),1);
+      assert.equal(await f.db.userTitleUnlock.count({where:{userId:actor.id,titleId:medal.id}}),1);
       assert.equal(await f.db.studentActivityDay.count({where:{userId:actor.id}}),365);
     });
     await t.test("resume processes only unpaid rows, then marks completion without replacing snapshot IDs",async()=>{

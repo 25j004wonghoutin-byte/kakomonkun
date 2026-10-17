@@ -103,7 +103,7 @@ for (const [key, field] of [["v1-008", "hasCompletedPractice"], ["v1-016", "hasZ
   });
 }
 
-test("ranking, paid and starter are never conditional unlock candidates", async () => {
+test("without finalized per-exam facts legacy rank scalars, paid and starter never unlock", async () => {
   const { evaluateTitleRules } = await getRules();
   const keys = evaluateTitleRules(makeTitleFacts({ monthlyRank: 1, monthlyRankCount: 100, monthlyTopMaxRun: 100 }), TITLE_CATALOG);
   assert.deepEqual(keys, []);

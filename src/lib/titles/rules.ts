@@ -72,10 +72,15 @@ function conditionMet(facts: TitleFacts, condition: TitleCondition): boolean {
     case "name_changed": return facts.nameChanged;
     case "board_post_count": return facts.boardPostCount >= condition.count;
     case "board_comment_count": return facts.boardCommentCount >= condition.count;
-    // 月間順位の確定機能ができるまでは、暫定順位から付与しない。
     case "monthly_rank":
-    case "monthly_rank_count":
-    case "monthly_top_run": return false;
+    case "monthly_rank_count": {
+      const rank = condition.rank;
+      const count = condition.type === "monthly_rank" ? 1 : condition.count;
+      return (rank === 1 || rank === 2 || rank === 3)
+        && Object.values(facts.ranking).some((exam) => exam.rankCounts[rank] >= count);
+    }
+    case "monthly_top_run": return condition.rank === 3
+      && Object.values(facts.ranking).some((exam) => exam.topThreeMaxRun >= condition.count);
   }
 }
 

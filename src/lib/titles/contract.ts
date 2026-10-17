@@ -1,3 +1,5 @@
+import type { ExamCode } from "../mock-exams/contract";
+
 export type TitleCategory = "technology" | "management" | "strategy";
 
 export type TitleCondition =
@@ -27,7 +29,13 @@ export type TitleDefinition = {
   readonly implemented: boolean;
 };
 
+export type RankingTitleFacts = Record<ExamCode, {
+  rankCounts: Record<1 | 2 | 3, number>;
+  topThreeMaxRun: number;
+}>;
+
 export type TitleFacts = {
+  ranking: RankingTitleFacts;
   answerCount: number;
   categoryCorrect: Record<TitleCategory, number>;
   dailyAnswerMaxRun: number;

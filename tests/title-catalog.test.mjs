@@ -24,7 +24,7 @@ test("catalog_counts: all approved titles have unique keys and valid acquisition
   }
   const ranking = TITLE_CATALOG.filter((title) => title.condition?.type.startsWith("monthly_"));
   assert.equal(ranking.length, 7);
-  assert.ok(ranking.every((title) => !title.implemented));
+  assert.ok(ranking.every((title) => title.implemented));
   assert.ok(TITLE_CATALOG.filter((title) => !ranking.includes(title)).every((title) => title.implemented));
 });
 

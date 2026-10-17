@@ -47,6 +47,7 @@ export async function syncTitleUnlocks(
   return { newlyUnlockedKeys: candidates.flatMap((title) => insertedIds.has(title.id) && title.catalogKey ? [title.catalogKey] : []) };
 }
 
+/** 初回の遡及完了印は保持し、ショップ再訪時にも新しい確定実績を同期する。 */
 export async function backfillTitleUnlocks(
   prisma: PrismaClient,
   userId: string,
@@ -56,7 +57,8 @@ export async function backfillTitleUnlocks(
     await lockTitleOwner(tx, userId);
     if (!await isActiveStudent(tx, userId)) return { newlyUnlockedKeys: [] };
     const profile = await tx.studentProfile.findUnique({ where: { userId }, select: { titleBackfilledAt: true, titleTrackingStartedAt: true } });
-    if (!profile || profile.titleBackfilledAt !== null) return { newlyUnlockedKeys: [] };
+    if (!profile) return { newlyUnlockedKeys: [] };
+    if (profile.titleBackfilledAt !== null) return syncTitleUnlocks(tx, userId, { now, source: "event" });
     if (profile.titleTrackingStartedAt === null) {
       await tx.studentProfile.update({ where: { userId }, data: { titleTrackingStartedAt: now } });
     }

@@ -22,8 +22,8 @@ export function titleConditionText(condition: TitleCondition): string {
     case "owned_set": return `ランキング系と「過去問くん」を除く、今回の対象称号${condition.keys.length}種類をすべて所持する`;
     case "name_changed": return "プロフィールの表示名を初めて別の名前に変更する（自己紹介だけの変更は対象外）";
     case "monthly_rank": return `確定した月間ランキングで${condition.rank}位になる`;
-    case "monthly_rank_count": return `確定した月間ランキングで${condition.rank}位を累計${condition.count}回獲得する`;
-    case "monthly_top_run": return `確定した月間ランキングで${condition.rank}位以内に${condition.count}か月連続で入る`;
+    case "monthly_rank_count": return `同じ試験の確定した月間ランキングで${condition.rank}位を累計${condition.count}回獲得する`;
+    case "monthly_top_run": return `同じ試験の確定した月間ランキングで${condition.rank}位以内に${condition.count}か月連続で入る`;
     case "board_post_count": return `掲示板に累計${condition.count}回投稿する（削除済みの投稿も対象）`;
     case "board_comment_count": return `掲示板に累計${condition.count}回返信する（自己返信・削除済みの返信も対象）`;
   }

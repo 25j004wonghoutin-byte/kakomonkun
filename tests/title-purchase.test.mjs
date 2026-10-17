@@ -49,8 +49,17 @@ test("failed eligibility notification rolls back the complete purchase", async (
   const db = makeLearningMemory({ profile: profile(2), owned: Array.from({ length: 19 }, (_, i) => `legacy-${i}`), failNotifications: true });
   await assert.rejects(purchase(db, "v1-049"), /notification save failed/); assert.equal(db.state.profile.totalPoints, 2); assert.equal(db.state.owned.length, 19); assert.equal(db.state.points.length, 0); assert.equal(db.state.unlocks.length, 0);
 });
-for (const id of ["v1-014", "v1-009", "unknown"]) test(`starter, unimplemented or unknown title ${id} is unavailable`, async () => {
+for (const id of ["v1-014", "unknown"]) test(`starter or unknown title ${id} is unavailable`, async () => {
   const db = makeLearningMemory({ profile: profile(1000), unlocks: [unlock(id)] }); await assert.rejects(purchase(db, id), (error) => error.code === "unavailable");
+});
+
+test("ranking title requires permanent qualification and is manually purchased for zero without equip", async () => {
+  const db = makeLearningMemory({ profile: profile(0) });
+  await assert.rejects(purchase(db, "v1-009"), error => error.code === "locked");
+  db.state.unlocks.push(unlock("v1-009"));
+  const result = await purchase(db, "v1-009");
+  assert.equal(result.totalPoints, 0); assert.deepEqual(db.state.owned, ["v1-009"]);
+  assert.equal(db.state.points.length, 0); assert.equal(db.state.profile.currentTitleId, "legacy-equipped");
 });
 test("legacy-only and inactive catalog titles are not new sales", async () => {
   const db = makeLearningMemory({ profile: profile(1000), catalogTitles: [

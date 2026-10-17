@@ -5,7 +5,7 @@ export function makeTitleMemory(overrides = {}) {
   const state = {
     user: { id: "student", role: { name: "student" }, status: "active", deletedAt: null },
     profile: { titleTrackingStartedAt: null, titleBackfilledAt: null, totalAnswerCount: 99999 },
-    daily: [], random: [], practiceAnswers: [], mockAnswers: [], sessions: [], activities: [],
+    daily: [], random: [], practiceAnswers: [], mockAnswers: [], rankings: [], sessions: [], activities: [],
     navigation: [], posts: [], comments: [], owned: [], unlocks: [], notifications: [], locks: [],
     failNotifications: false,
     ...overrides,
@@ -37,6 +37,8 @@ export function makeTitleMemory(overrides = {}) {
       },
     },
     mockExamQuestion: {findMany:async({where})=>[...new Map(draft.mockAnswers.filter(row=>where.id.in.includes(row.mockQuestionId)).map(row=>[row.mockQuestionId,{id:row.mockQuestionId,categoryCode:row.mockQuestion.categoryCode}])).values()]},
+    monthlyRanking: {findMany:async({where})=>draft.rankings.filter(row=>row.userId===where.userId&&row.isFinal===where.isFinal
+      &&row.mockExam?.rankingFinalizedAt!=null&&where.mockExam.exam.code.in.includes(row.mockExam.exam.code))},
     studentActivityDay: { findMany: async () => draft.activities },
     studentNavigationProgress: { findMany: async () => draft.navigation },
     boardPost: { count: async (args) => draft.posts.filter((row) => args.where?.deletedAt === null ? row.deletedAt === null : true).length },

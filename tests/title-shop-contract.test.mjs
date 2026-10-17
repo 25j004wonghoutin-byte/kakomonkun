@@ -10,14 +10,20 @@ test("locked title click selects condition details, not a purchase", () => {
 test("free eligible title still selects purchase confirmation", () => {
   const [item] = items([row("v1-002", { userTitleUnlocks: [{ titleId: "v1-002" }] })]); assert.equal(item.state, "available"); assert.equal(shop.titleShopAction(item, 0), "purchase");
 });
-test("existing owned titles precede unmet eligibility and disabled ranking", () => {
+test("existing owned titles precede unmet ranking eligibility", () => {
   const [item] = items([row("v1-009", { userTitles: [{ id: "owned" }] })]); assert.equal(item.state, "owned"); assert.equal(shop.titleShopAction(item, 0), "none");
 });
 test("paid titles dynamically become insufficient after spending points", () => {
   const [item] = items([row("v1-049", { pricePoints: 2, acquisitionKind: "points" })], 2); assert.equal(item.state, "available"); assert.equal(shop.titleShopAction(item, 1), "none");
 });
-test("future ranking remains locked even if an unrelated unlock record exists", () => {
-  const [item] = items([row("v1-009", { userTitleUnlocks: [{ titleId: "v1-009" }] })]); assert.equal(item.state, "locked"); assert.equal(item.implemented, false); assert.match(item.conditionText, /未実装/);
+test("ranking is locked without qualification and available only with its permanent unlock", () => {
+  const [locked] = items([row("v1-009")]); assert.equal(locked.state, "locked"); assert.equal(locked.implemented, true); assert.doesNotMatch(locked.conditionText, /未実装/);
+  const [eligible] = items([row("v1-009", { userTitleUnlocks: [{ titleId: "v1-009" }] })]); assert.equal(eligible.state, "available"); assert.equal(shop.titleShopAction(eligible, 0), "purchase");
+});
+
+test("ranking condition details explain the same-exam count and calendar streak", () => {
+  assert.match(shop.titleConditionText({ type: "monthly_rank_count", rank: 2, count: 3 }), /同じ試験/);
+  assert.match(shop.titleConditionText({ type: "monthly_top_run", rank: 3, count: 5 }), /同じ試験/);
 });
 test("starter remains visible and legacy-only rows are not offered for new sales", () => {
   const result = items([row("v1-014", { acquisitionKind: "starter", userTitles: [{ id: "owned" }] }), row(null, { id: "legacy", name: "旧称号", acquisitionKind: null, userTitles: [{ id: "owned" }] })]);
