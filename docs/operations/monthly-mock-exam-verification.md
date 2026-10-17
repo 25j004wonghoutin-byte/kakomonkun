@@ -275,3 +275,24 @@ HTTP単体7件成功。専用DBの新規読取＋Task 4/6回帰は27件成功・
 | docs/operations/monthly-mock-exam-verification.md | 保持・本文正常 |
 
 Task 8以降は未完了。学生画面・ランキング・最終順位/報酬・称号・通知・Cron運用と本番リリースの完了を意味しない。
+
+## Task 8 — 2026-10-17
+
+模試の提出済み・非null最終回答を本人に限定してPrisma count/groupByで集約し、累計回答数と固定カテゴリ別正解数に加えた。同一問題の2回提出は2回分、受験中・空欄・他人の回答は除外。再提出は同じ集計のまま。固定問題のID/カテゴリだけを参照し、全回答本文を読み出さない。機能停止時は新テーブルを参照せずゼロ集計。既存3引数の称号集計呼出しと互換にした。
+
+提出と同じトランザクションで既存の永久アンロック・通知まで実行する。採点日を回答日として作らず、過去問練習完了・60問満点/0点・日次/ランダム連続は変更していない。単体12件成功、専用DBのTask 4回帰10件成功。通知の実書込み後に故障を注入し、ポイント・累計・採点状態・資格・通知の全rollbackと正常再実行時の通知1件を確認。全体suite 371件中361成功・失敗0・opt-in 10件skip。型チェック成功、本番操作・pushなし。
+
+以下すべてUTF-8/BOMなし/CRLF。既存形式保持、新規も同形式。strict再読・日本語/U+FFFD/BOM/改行・差分を検証した。
+
+| パス | 形式・代表日本語 |
+| --- | --- |
+| src/lib/titles/facts.ts | 保持・既存日本語コメント正常 |
+| src/lib/mock-exams/submit.ts | 保持・「唯一の採点処理」正常 |
+| src/lib/mock-exams/title-facts.ts | 新規・「提出済みの最終非空回答」正常 |
+| tests/helpers/title-memory.mjs | 保持・英文のみ |
+| tests/title-facts.test.mjs | 保持・英文のみ |
+| tests/mock-title-learning.test.mjs | 新規・英文のみ |
+| tests/mock-submit.integration.test.mjs | 保持・既存日本語fallback正常 |
+| docs/operations/monthly-mock-exam-verification.md | 保持・本文正常 |
+
+Task 9以降の学生画面・ランキング等は未完了。
