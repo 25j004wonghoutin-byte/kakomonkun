@@ -9,6 +9,12 @@ test("best attempts use correct counts, first attempt for ties, and competition 
   assert.deepEqual(ranked.map(r=>[r.userId,r.rankNo,r.attemptNo]),[["a",1,1],["b",1,1],["c",3,1],["d",3,1],["e",5,2]]);
   assert.equal(ranked[0].score,83.33);assert.equal(ranked.filter(r=>r.rankNo<=3).length,4);
 });
+test("a zero-score single participant is still first, and zero ties are not excluded",async()=>{
+  const {rankBestAttempts}=await load("ranking");
+  const one={userId:"one",attemptId:"a",attemptNo:1,correctCount:0,totalQuestions:60};
+  assert.deepEqual(rankBestAttempts([one]).map(r=>[r.rankNo,r.score]),[[1,0]]);
+  assert.deepEqual(rankBestAttempts([one,{...one,userId:"two",attemptId:"b"}]).map(r=>[r.rankNo,r.score]),[[1,0],[1,0]]);
+});
 test("polling refreshes visible pages every 15 seconds, on show, never concurrently, and unsubscribes",async t=>{
   const {startRankingPolling}=await load("ranking-poll");
   t.mock.timers.enable({apis:["setInterval"]});
