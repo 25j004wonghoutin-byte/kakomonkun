@@ -407,3 +407,41 @@ Task 11以降の順位確定/報酬・ランキング称号・通知・ジョブ
 | docs/operations/monthly-mock-exam-verification.md | 保持・本文日本語正常 |
 
 Task 12以降のランキング称号・通知・ジョブ・教師画面・運用と最終受入れは未完了。本番変更・pushなし。保存済み計画の補助スクリプトがプラグイン更新で利用できなくなったため、同じ最終テストを直接実行し、結果と進捗を手動記録した。テスト省略や代替成功扱いはしていない。
+
+## Task 12 — 2026-10-17
+
+実装コミット: `0f984b1`。新形式の確定順位だけから試験別に1/2/3位の完全一致回数とtop3の過去最大連続暦月数を集約する。暫定順位・試験の確定印なし・他学生・対象外試験・旧形式の行は対象外。12月→1月は連続、欠月と4位以下は中断。IT/FEの実績は合算しない。7種類だけを有効化し、既存の名称・条件値・価格と「過去問くん」の固定58対象は変更していない。
+
+報酬処理は既存の共通同期処理へ接続済み。ショップ再訪でも確定実績を再評価し、初回遡及済みの学生に新しい資格を反映する。最初の遡及日時は変更せず、資格は永久保存、通知は各称号1回、所有/装備は自動変更しない。模試機能停止中は新テーブルを読まずゼロ実績とし、保存済み資格による無料購入は可能。条件説明に「同じ試験」を明示した。
+
+| 確認 | 結果 |
+| --- | --- |
+| RED→GREEN | 無効な7定義と未実装collectorで失敗後、単体49件成功。既に遡及済みの実DB学生が新資格0件になる再現後、再訪同期で7件反映 |
+| 最終単体＋専用DB | 61件成功・失敗0・skip 0。Task 11の通知失敗rollbackを順位称号でも再検証 |
+| 実DB履歴 | FEの1/2/3位各3回、連続9か月、IT別実績、暫定行/確定印なし除外、他学生実績ゼロを確認 |
+| 永久資格・購入 | 初回判定済み学生の資格7件/通知各1件、再訪で再通知なし。機能停止後の0pt手動購入、二重購入拒否、残高/台帳/装備/元の遡及日時不変 |
+| 全体suite | 400件中387成功・失敗0・opt-in 13件skip |
+| 型/lint | exit 0。既存outputの警告1件のみ |
+
+下記すべてUTF-8/BOMなし/CRLF。既存は保持、新規も同形式。strict再読、U+FFFD/BOM/改行と代表日本語・差分を確認した。
+
+| パス | 確認 |
+| --- | --- |
+| src/lib/mock-exams/ranking-title-facts.ts | 新規・「過去最大の暦月連続」正常 |
+| src/lib/titles/contract.ts | 保持・英文のみ |
+| src/lib/titles/facts.ts | 保持・既存日本語正常 |
+| src/lib/titles/rules.ts | 保持・既存日本語正常 |
+| src/lib/titles/catalog.ts | 保持・称号名正常 |
+| src/lib/titles/unlocks.ts | 保持・「ショップ再訪時」正常 |
+| src/lib/titles/shop.ts | 保持・「同じ試験」正常 |
+| tests/mock-ranking-titles.test.mjs | 新規・停止中の資格コメント正常 |
+| tests/fixtures/title-facts.mjs | 保持・英文のみ |
+| tests/helpers/title-memory.mjs | 保持・英文のみ |
+| tests/title-catalog.test.mjs | 保持・初期称号名正常 |
+| tests/title-rules.test.mjs | 保持・英文のみ |
+| tests/title-purchase.test.mjs | 保持・称号名正常 |
+| tests/title-shop-contract.test.mjs | 保持・「同じ試験」assert正常 |
+| tests/mock-settlement.integration.test.mjs | 保持・名前変更fixture正常 |
+| docs/operations/monthly-mock-exam-verification.md | 保持・本文日本語正常 |
+
+使い捨て履歴fixtureは専用DBの自作学生/試験/受験/順位と関連行のみ削除済み。既存学生/問題や本番には触れていない。元の保護対象の未ステージ差分も保持。Task 13以降の通知・教師画面・ジョブ/運用・最終受入れは未完了。pushなし。
