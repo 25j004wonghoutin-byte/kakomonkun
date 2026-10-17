@@ -97,7 +97,7 @@ export function createProductionMockHandlers(){
       saveMockAnswer:async(actor,input)=>(await import("./answers")).saveMockAnswer(await database(),actor,input),
       submitMockAttempt:async(actor,input)=>(await import("./submit")).submitMockAttempt(await database(),actor,input),
       getMockResult:async(actor,id)=>(await import("./read")).getMockResult(await database(),actor,id),
-      getRanking:async()=>{throw new MockError("ranking_preparing",503,"ランキングを準備しています。");},
+      getRanking:async(actor,code,month)=>(await import("./ranking")).getMockRanking(await database(),actor,code,month),
     },
   });
 }

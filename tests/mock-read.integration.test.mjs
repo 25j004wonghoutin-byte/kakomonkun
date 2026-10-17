@@ -55,3 +55,47 @@ test("student mock read services use safe private DTOs",{skip:process.env.KAKOMO
     });
   });
 });
+
+test("rank reads isolate exam/month, bound expiry grading and preserve stored final positions",{skip:process.env.KAKOMON_RUN_MOCK_DB_QA!=="1",timeout:300000},async t=>{
+  const p=new URL("../src/lib/mock-exams/ranking.ts",import.meta.url);
+  const {existsSync}=await import("node:fs");assert.ok(existsSync(p),"ranking read service must exist");
+  const {getMockRanking}=await import(p.href);
+  await withMockDb({examCode:"fe",month:"2040-04",userCount:27},async f=>{
+    const submitted=[];
+    for(const [i,count] of [50,50,40,40,20].entries()){
+      submitted.push(await f.db.mockAttempt.create({data:{mockExamId:f.mockExamId,userId:f.actors[i].id,startRequestId:randomUUID(),attemptNo:1,status:"submitted",startedAt:new Date(+f.now()-60000),expiresAt:new Date(+f.now()+5400000),submittedAt:f.now(),gradedAt:f.now(),totalQuestions:60,answeredCount:count,correctCount:count,score:count/60*100}}));
+    }
+    await f.db.mockAttempt.create({data:{mockExamId:f.mockExamId,userId:f.actors[0].id,startRequestId:randomUUID(),attemptNo:2,status:"submitted",startedAt:new Date(+f.now()-60000),expiresAt:new Date(+f.now()+5400000),submittedAt:f.now(),gradedAt:f.now(),totalQuestions:60,answeredCount:50,correctCount:50,score:83.33}});
+    await t.test("live ties include four top students and my lower place, without final records or title rewards",async()=>{
+      const next=await f.db.mockExam.create({data:{examId:f.examId,title:`Next QA ${f.runId}`,targetMonth:new Date("2040-05-01"),timeLimitMinutes:90,questionCount:60,status:"ready",availableFrom:new Date("2040-05-01T00:00:00+09:00"),availableUntil:new Date("2040-05-25T00:00:00+09:00"),createdBy:f.actor.id}});f.trackExam(next.id);
+      const view=await getMockRanking(f.db,f.actors[4],"fe","2040-04",f.clock);
+      assert.deepEqual(view.top.map(r=>r.rankNo),[1,1,3,3]);assert.equal(view.mine.rankNo,5);assert.equal(view.state,"provisional");
+      assert.equal(view.availableMonths.includes("2040-05"),false,"next month's prepared exam is not a published history option");
+      assert.equal(await f.db.monthlyRanking.count({where:{mockExamId:f.mockExamId}}),0);
+      assert.equal(await f.db.userTitleUnlock.count({where:{userId:{in:f.actors.map(a=>a.id)}}}),0);
+      assert.equal((await getMockRanking(f.db,f.actor,"it_passport","2040-04",f.clock)).top.length,0);
+      assert.equal((await getMockRanking(f.db,f.actor,"fe","2040-05",f.clock)).top.length,0);
+    });
+    await t.test("stopped students keep their rank but have no link or unsafe avatar URL",async()=>{
+      await f.db.user.update({where:{id:f.actors[1].id},data:{status:"inactive"}});
+      await f.db.studentProfile.update({where:{userId:f.actors[2].id},data:{avatarUrl:"https://untrusted.example/avatar.png"}});
+      const view=await getMockRanking(f.db,f.actor,"fe","2040-04",f.clock);
+      assert.equal(view.top.find(r=>r.userId===f.actors[1].id).profileHref,null);
+      assert.equal(view.top.find(r=>r.userId===f.actors[2].id).avatarUrl,null);assert.deepEqual(view.top.map(r=>r.rankNo),[1,1,3,3]);
+    });
+    await t.test("only twenty-five due attempts are graded in one read, with settling until leftovers clear",async()=>{
+      const startedAt=new Date(+f.now()-7200000),expiresAt=new Date(+f.now()-1800000);
+      await f.db.mockAttempt.createMany({data:f.actors.slice(1).map((a,i)=>({mockExamId:f.mockExamId,userId:a.id,startRequestId:randomUUID(),attemptNo:i<4?2:1,startedAt,expiresAt,totalQuestions:60}))});
+      const view=await getMockRanking(f.db,f.actor,"fe","2040-04",f.clock);
+      assert.equal(view.state,"settling");assert.equal(await f.db.mockAttempt.count({where:{mockExamId:f.mockExamId,status:"in_progress"}}),1);
+      assert.equal((await getMockRanking(f.db,f.actor,"fe","2040-04",f.clock)).state,"provisional");
+    });
+    await t.test("after finalization saved positions and scores are used without re-ranking inactive students",async()=>{
+      f.setNow(new Date("2040-04-25T00:00:00+09:00"));
+      await f.db.monthlyRanking.create({data:{mockExamId:f.mockExamId,targetMonth:new Date("2040-04-01"),userId:f.actor.id,bestAttemptId:submitted[0].id,rankNo:7,mockScore:83.33,correctCount:50,totalQuestions:60,isFinal:true}});
+      await f.db.mockExam.update({where:{id:f.mockExamId},data:{rankingFinalizedAt:f.now()}});
+      const view=await getMockRanking(f.db,f.actor,"fe","2040-04",f.clock);
+      assert.equal(view.state,"final");assert.equal(view.mine.rankNo,7);assert.equal(view.top.length,0);assert.equal(view.rewardsComplete,false);
+    });
+  });
+});
