@@ -228,3 +228,19 @@ Prisma生成は同一tsconfig/packageを持つ検証用コピーだけで行い�
 | docs/operations/monthly-mock-exam-verification.md | UTF-8保持 / なし / CRLF保持 | 本文日本語正常 |
 
 Task 6以降の自動保存・API/UI・ランキング・確定/配布/称号/通知/ジョブと最終受入れは未完了。DB検証成功を画面や本番運用の完了とは扱わない。
+
+## Task 6 — 2026-10-17
+
+実装コミット: `7cf62e3`。問題単位の期待revisionで上書きを防ぎ、直近要求ID・内容・元revisionが一致する再送だけを同じ保存結果として返す。実変更時だけ問題/受験全体のrevisionを進め、選択の解除も保存する。累計回答数・正解数は提出時まで増やさない。変更された非nullの選択だけ既存の回答日記録へ連携し、解除・同値・再送・自動採点で回答日やlastSeenAtを作らない。
+
+専用DBテストは初回/最終とも12件成功・失敗0・skip 0。選択→変更→解除、古い再送と同一ID別payloadの拒否、別問題の選択肢/他人の受験拒否、独立2接続の同問CAS競合、保存と提出の競合、実ロック待ちでの期限超過、初期空欄のno-opを確認した。利用日記録の実書込み後に例外を注入して、回答・両revision・追跡開始日・通知がすべてrollbackされることも確認した。
+
+全体suiteは360件中351成功・失敗0・opt-in 9件skip。typecheck/lintはexit 0（既存output警告1件）。対象/staged whitespace検査は正常。新しいDB変更・生成物編集はない。本番変更・pushは未実施。
+
+| パス | エンコーディング / BOM / 改行 | 検証方法・結果 |
+| --- | --- | --- |
+| src/lib/mock-exams/answers.ts | UTF-8新規 / なし / CRLF | strict再読・U+FFFDなし・「回答の指定が正しくありません」正常 |
+| tests/mock-answer.integration.test.mjs | UTF-8新規 / なし / CRLF | strict再読・英文のみ・差分正常 |
+| docs/operations/monthly-mock-exam-verification.md | UTF-8保持 / なし / CRLF保持 | strict再読・本文日本語正常 |
+
+Task 7以降のAPI/UI・ランキング・確定/配布/称号/通知/ジョブと最終受入れは未完了。UI実装時は、保存応答の受験全体revisionに予期しない飛びがあれば安全な全体再取得を行い、未確認の別問題変更をそのまま提出承認しない。
