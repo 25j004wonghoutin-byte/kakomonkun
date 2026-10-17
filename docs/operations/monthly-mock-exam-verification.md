@@ -244,3 +244,34 @@ Task 6以降の自動保存・API/UI・ランキング・確定/配布/称号/�
 | docs/operations/monthly-mock-exam-verification.md | UTF-8保持 / なし / CRLF保持 | strict再読・本文日本語正常 |
 
 Task 7以降のAPI/UI・ランキング・確定/配布/称号/通知/ジョブと最終受入れは未完了。UI実装時は、保存応答の受験全体revisionに予期しない飛びがあれば安全な全体再取得を行い、未確認の別問題変更をそのまま提出承認しない。
+
+## Task 7 — 2026-10-17
+
+学生向け一覧・開始・受験再開・保存・提出・結果APIを追加。要求ごとに有効な学生か確認し、更新系は同一Originと厳密なJSON/UUID/revisionを検証する。全成功/エラー応答をprivate/no-store、Vary: Cookieとし、内部例外は固定500メッセージに置き換える。既知の他人の受験は403、存在しないIDは404。元Prisma行を返さず、許可したDTOだけを組み立てる。
+
+GETによる補完は本人の期限切れ採点だけ。試験・新規受験・ジョブは作らない。複数試験のロック順序逆転を避けるため、期限補完は試験ごとの独立トランザクションとし、一覧はRepeatableReadで読み取る。履歴月は本人の受験が存在する月のみ。ランキングのサービス束縛はTask 10まで準備中503で、ランキングルートはまだない。
+
+HTTP単体7件成功。専用DBの新規読取＋Task 4/6回帰は27件成功・失敗0・skip 0。別学生の連続取得で回答が共有されないこと、停止済み学生の古いactorも拒否すること、一覧が他人の期限切れを採点しないこと、締切1ms前はreview=nullかつ正解/正誤/解説キーなし、締切時刻ちょうどから60問の固定解説が返ることを確認。全体suiteは368件中358成功・失敗0・opt-in 10件skip。型チェック成功。sandbox外ネットワークが必要なDB検証だけ承認済み専用DBへ接続し、本番操作・pushは行っていない。
+
+### Task 7 テキスト形式
+
+以下すべてUTF-8、BOMなし、CRLF（既存は保持、新規は同形式）。strict再読・U+FFFD/BOM/孤立LF検査・代表日本語の目視と差分確認を実施した。
+
+| パス | 新規/保持・日本語確認 |
+| --- | --- |
+| src/lib/mock-exams/read.ts | 保持・「受験が見つかりません」等正常 |
+| src/lib/mock-exams/locks.ts | 保持・「この受験は閲覧・変更できません」正常 |
+| src/lib/mock-exams/handlers.ts | 新規・エラー文正常 |
+| src/app/api/mock-exams/route.ts | 新規・英文のみ |
+| src/app/api/mock-exams/[mockExamId]/start/route.ts | 新規・英文のみ |
+| src/app/api/mock-exams/attempts/[attemptId]/route.ts | 新規・英文のみ |
+| src/app/api/mock-exams/attempts/[attemptId]/answer/route.ts | 新規・英文のみ |
+| src/app/api/mock-exams/attempts/[attemptId]/submit/route.ts | 新規・英文のみ |
+| src/app/api/mock-exams/attempts/[attemptId]/result/route.ts | 新規・英文のみ |
+| tests/mock-api.test.mjs | 新規・「操作できません」正常 |
+| tests/mock-read.integration.test.mjs | 新規・英文のみ |
+| tests/mock-submit.integration.test.mjs | 保持・「解説は未登録です」正常 |
+| tests/mock-answer.integration.test.mjs | 保持・英文のみ |
+| docs/operations/monthly-mock-exam-verification.md | 保持・本文正常 |
+
+Task 8以降は未完了。学生画面・ランキング・最終順位/報酬・称号・通知・Cron運用と本番リリースの完了を意味しない。
