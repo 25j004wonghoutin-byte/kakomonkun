@@ -155,3 +155,23 @@ Prisma内部のrelation読込みがpgへ並行queryを送る非推奨警告を�
 | docs/operations/monthly-mock-exam-verification.md | UTF-8保持 / なし / CRLF保持 | 本文日本語正常 |
 
 Task 4以降の採点・受験・API/UI・順位確定/報酬/称号/通知/Cronと最終受入れは未完了。本番変更・pushは未実施。
+
+## Task 4 — 2026-10-17
+
+実装コミット: `0db4f1f`。試験→利用者→プロフィール→受験の順にロックし、その後のDB時計で締切判定する共通採点を実装した。最終選択のみを固定正解で採点し、回答数・正解数・参加ポイント・台帳・提出状態を同じトランザクションで保存する。過去問練習回数やbackground activityは増やさない。結果DTOは25日0時まで問題別正解・正誤・解説を含めない。
+
+専用テストDBで10件成功、最終task-doneも10件成功・skip 0。独立2接続での同時提出、初回20pt/2回目0pt/両試験40pt、空欄0点、期限超過のmanual/auto競合、元選択肢変更後の固定正解採点、権限/所有者/revision拒否、台帳書込み後の例外による全rollbackを確認した。別接続が実際にブロックされていることをpg_blocking_pidsで観測し、待機中に期限を越えた場合も submittedAt=expiresAt、gradedAt=実処理時刻になる。締切直前/ちょうどの解説公開、未登録解説の代替表示も確認した。
+
+最初の接続待ち失敗はテスト側の既定maxWait=2秒だったため、サービスと同じ10秒に揃えた。ロック観測は統計snapshotを更新する方式に修正し、失敗時もpending処理を待ってからfixtureを削除する。依存内部のpg非推奨警告はTask 3の記録と同じ。
+
+全体suiteは357件中351成功・失敗0・opt-in 6件skip。typecheck/lintはexit 0（既存output警告1件）。対象/staged whitespace検査は正常。以下をstrict UTF-8で再読し、BOMなし・CRLF、U+FFFDなしと代表日本語を確認した。
+
+| パス | エンコーディング / BOM / 改行 | 再読結果 |
+| --- | --- | --- |
+| src/lib/mock-exams/locks.ts | UTF-8新規 / なし / CRLF | 「有効な学生アカウント」正常 |
+| src/lib/mock-exams/read.ts | UTF-8新規 / なし / CRLF | 「解説は未登録です」正常 |
+| src/lib/mock-exams/submit.ts | UTF-8新規 / なし / CRLF | 「模擬試験の初回提出報酬」正常 |
+| tests/mock-submit.integration.test.mjs | UTF-8新規 / なし / CRLF | 日本語期待値正常 |
+| docs/operations/monthly-mock-exam-verification.md | UTF-8保持 / なし / CRLF保持 | 本文日本語正常 |
+
+受験開始/保存・API/UI・ランキング・確定/配布/称号/通知/ジョブ・最終受入れは後続Task。本番DB変更・pushは行っていない。
