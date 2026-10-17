@@ -62,3 +62,59 @@ lint警告の場所は `output/ipa-answer-audit-2026-10-14/db-correction.mjs:162
 ### 未実施
 
 追加スキーマの実DB制約・並行トランザクション・受験API・画面・ランキング・配布・称号・通知・Cronは今後のTaskで検証する。buildはPrismaの既存生成物を保護した検証コピーで後続工程に実施する。未実施項目を単体テスト成功で代替したとは扱わない。
+
+## Task 2 — 2026-10-17
+
+実装コミット: `b917690`。ユーザーの承認後、専用テストDB `grzylombpqmidltnbwhx` だけに `20261016000000_monthly_mock_exams.sql` を適用した。本番DB・Cron・pushは実行していない。
+
+固定問題・選択肢、最大2回の受験、回答リビジョン、同点順位、確定・報酬進捗、通知月とジョブ記録を追加。空の5テーブルをロック・再確認してから同じトランザクション内でDDLと適用履歴を保存した。再実行は履歴照合で `alreadyApplied:true` となり、再DDLを行わない。既存ユーザー・問題・称号・ポイント・通知は変更していない。実DBテストは自作UUIDのfixtureのみ作成・削除する。
+
+| 確認 | 結果 |
+| --- | --- |
+| RED | 未実装の移行ガード7件、隔離fixture未実装の実DBテストが失敗することを確認 |
+| 最終単体・実DBテスト | 15件成功・失敗0・skip 0 |
+| 全体suite | 348件中344成功・失敗0・opt-in 4件skip |
+| lint / typecheck / Prisma validate | すべてexit 0。lintのみ既存outputの警告1件 |
+| ステージ済み差分のwhitespace検査 | 問題なし |
+| 元からの変更保護 | 非重複12ファイルはSHA256一致。重複8ファイルは元の空白差分を未ステージで保持。生成物の残差は空白以外なし |
+
+実DBで回数3の拒否、進行中1件制約、空欄回答、別問題の選択肢拒否、元問題編集・元選択肢削除後のsnapshot保持、同率1位と83.33点保存、別人の採用受験拒否、順位を持つ利用者の物理削除拒否、通知の月内重複拒否、旧称号通知の継続、非空移行の変更前拒否、新規2テーブルのRLSとanon/authenticatedの直接書込み拒否を確認した。
+
+最終コマンド: `KAKOMON_RUN_MOCK_DB_QA=1 node --import ./tests/helpers/register-title-tests.mjs --test --test-concurrency=1 tests/mock-schema.test.mjs tests/mock-schema.integration.test.mjs`。
+
+### Task 2 テキスト形式
+
+各ファイルはstrict UTF-8で再読し、BOM・改行・U+FFFDと代表行を確認した。すべてBOMなし。日本語のあるファイルは「専用テストDB」「固定された検証用の解説」「元の問題を更新」などが正常で、生成物の日本語埋込みスキーマも正常。Git適用で既存LFの8件が一時的にCRLFへ変換されたため、次工程を止めて元のLFへ戻し再検証した。下表は復元後の実ファイル形式である。
+
+| パス | エンコーディング / 改行 | 再読結果 |
+| --- | --- | --- |
+| prisma/schema.prisma | UTF-8保持 / CRLF保持 | 正常 |
+| scripts/apply-test-mock-migration.mjs | UTF-8新規 / CRLF | 正常 |
+| scripts/lib/mock-migration.mjs | UTF-8新規 / CRLF | 日本語正常 |
+| supabase/migrations/20261016000000_monthly_mock_exams.sql | UTF-8新規 / CRLF | 日本語正常 |
+| tests/helpers/mock-db.mjs | UTF-8新規 / CRLF | 日本語正常 |
+| tests/mock-schema.integration.test.mjs | UTF-8新規 / CRLF | 日本語正常 |
+| tests/mock-schema.test.mjs | UTF-8新規 / CRLF | 正常 |
+| prisma/generated/browser.ts | UTF-8保持 / LF保持 | 正常 |
+| prisma/generated/client.ts | UTF-8保持 / LF保持 | 正常 |
+| prisma/generated/commonInputTypes.ts | UTF-8保持 / CRLF保持 | 正常 |
+| prisma/generated/internal/class.ts | UTF-8保持 / LF保持 | 埋込み日本語正常 |
+| prisma/generated/internal/prismaNamespace.ts | UTF-8保持 / LF保持 | 正常 |
+| prisma/generated/internal/prismaNamespaceBrowser.ts | UTF-8保持 / LF保持 | 正常 |
+| prisma/generated/models.ts | UTF-8保持 / LF保持 | 正常 |
+| prisma/generated/models/MockAnswer.ts | UTF-8保持 / CRLF保持 | 正常 |
+| prisma/generated/models/MockAttempt.ts | UTF-8保持 / CRLF保持 | 正常 |
+| prisma/generated/models/MockExam.ts | UTF-8保持 / CRLF保持 | 正常 |
+| prisma/generated/models/MockExamChoice.ts | UTF-8新規 / CRLF | 正常 |
+| prisma/generated/models/MockExamJobRun.ts | UTF-8新規 / CRLF | 正常 |
+| prisma/generated/models/MockExamQuestion.ts | UTF-8保持 / CRLF保持 | 正常 |
+| prisma/generated/models/MonthlyRanking.ts | UTF-8保持 / CRLF保持 | 正常 |
+| prisma/generated/models/Notification.ts | UTF-8保持 / LF保持 | 正常 |
+| prisma/generated/models/Question.ts | UTF-8保持 / CRLF保持 | 正常 |
+| prisma/generated/models/QuestionChoice.ts | UTF-8保持 / CRLF保持 | 正常 |
+| prisma/generated/models/RandomQuizAttempt.ts | UTF-8保持 / LF保持 | 正常 |
+| docs/operations/monthly-mock-exam-verification.md | UTF-8保持 / CRLF保持 | 日本語正常 |
+
+### Task 2時点の残作業
+
+問題セット準備、採点・受験API、画面、ランキング確定・報酬、称号連携、通知配信、署名ジョブ、Cronと最終受入れはまだ未完了。今回の成功はDBの足場の確認であり、模擬試験機能全体の完成を意味しない。
