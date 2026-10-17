@@ -176,8 +176,55 @@ Task 4以降の採点・受験・API/UI・順位確定/報酬/称号/通知/Cron
 
 受験開始/保存・API/UI・ランキング・確定/配布/称号/通知/ジョブ・最終受入れは後続Task。本番DB変更・pushは行っていない。
 
-## Task 5開始前の設計確認
+## Task 5開始前の設計確認（承認前の記録）
 
 開始IDを受験ごとに1つだけ保存する構造では、別IDで進行中受験を再開した要求を、終了後の再送時に識別できない。例: Aで1回目を作成→Bで同じ受験を再開→提出→Bを再送。このBを新しい操作と誤認すると2回目を消費する。
 
-承認済みの「同じ開始要求は元の受験へ戻す」を守るため、全受理済み開始IDと受験の対応表 `mock_attempt_start_requests` を追加する案を確認する。既存の開始ID・受験データは保持し、追加マイグレーション・複合FK・重複防止・RLS・再送テストを補う。これはまだ承認・適用していない。Task 5の実装には進まず、専用テストDBへの追加承認を待つ。本番変更は引き続き行わない。
+承認済みの「同じ開始要求は元の受験へ戻す」を守るため、全受理済み開始IDと受験の対応表 `mock_attempt_start_requests` を追加する案を確認した。この確認時点では承認・適用せず停止し、後述の追加承認を得てから実装した。
+
+## Task 5 — 2026-10-17
+
+追加テーブルの専用テストDB適用をユーザーが承認。実装コミットは `73ea4fd`（対応表/移行）と `a4d7732`（開始/再開）。`20261017000000_mock_attempt_start_requests.sql` の追加だけをテストDBへ適用し、再実行は履歴一致で `alreadyApplied:true`。元の受験・開始ID・回答は更新/削除せず、SQLは既存canonical開始IDを対応表へ引き継ぐ。本番DB・pushは未実施。
+
+同一/別開始IDの並行実行でも受験1件を返し、受理済みの全IDを同じトランザクションで記録する。終了後の再送は元の結果へ戻り、期限切れの再開でも勝手に2回目を開始しない。新規操作だけ2回目を作成し、3回目は拒否する。新規開始の停止中も、既知IDの回復は可能。試験→user→profile→attemptのロック後に期限を判定する。
+
+| 確認 | 結果 |
+| --- | --- |
+| 追加対応表 RED→GREEN | 不存在を実DBで確認後、主キー重複・別利用者/試験へのFK拒否・RLSを確認 |
+| 開始/再開 RED→GREEN | 未実装assertの失敗後、別ID再送・2回上限・締切境界・役割/利用停止・新規開始停止・別試験ID再利用・途中失敗rollbackを確認 |
+| 実際のロック待ち | pg_blocking_pidsで別接続の待機を観測して25日0時へ時計を進め、受験/対応表が増えないことを確認 |
+| 最終task-done | 対応表+開始/再開12件成功・失敗0・skip 0 |
+| Task 4回帰と合わせた実DB | 21件成功・失敗0・skip 0 |
+| 全体suite | 359件中351成功・失敗0・opt-in 8件skip |
+| 型・lint・Prisma validate | exit 0。既存outputのlint警告1件と依存内部pg非推奨警告は残る |
+| 保護対象 | 非重複14ファイルはSHA256一致。重複6生成物は元の空白とLFを保持、未ステージの残差は空白のみ |
+
+Prisma生成は同一tsconfig/packageを持つ検証用コピーだけで行い、各hunkの元内容と生成後の意味的一致を確認して最小適用した。新しい複合FK名もSQLと明示的に一致させた。バックアップと比較用スクリプトは可視化ディレクトリーの `mock-task5-1792198310269/` に保管。旧移行SQLの書換え、DBリセット、既存利用者データの削除はしていない。
+
+### Task 5 テキスト形式
+
+以下をstrict UTF-8で再読し、BOMなし、U+FFFDなし、代表日本語と改行を確認した。日本語のない生成物は文字列・hunk比較でも検証した。元LF/CRLFは保持し、新規ソースはCRLFに統一した。
+
+| パス | エンコーディング / BOM / 改行 | 再読結果 |
+| --- | --- | --- |
+| docs/superpowers/plans/2026-10-16-monthly-mock-exam-ranking-implementation.md | UTF-8保持 / なし / CRLF保持 | 承認補足の日本語正常 |
+| prisma/schema.prisma | UTF-8保持 / なし / CRLF保持 | 正常 |
+| prisma/generated/browser.ts | UTF-8保持 / なし / LF保持 | 英文正常 |
+| prisma/generated/client.ts | UTF-8保持 / なし / LF保持 | 英文正常 |
+| prisma/generated/internal/class.ts | UTF-8保持 / なし / LF保持 | 生成メタデータ正常 |
+| prisma/generated/internal/prismaNamespace.ts | UTF-8保持 / なし / LF保持 | 英文正常 |
+| prisma/generated/internal/prismaNamespaceBrowser.ts | UTF-8保持 / なし / LF保持 | 英文正常 |
+| prisma/generated/models.ts | UTF-8保持 / なし / LF保持 | 英文正常 |
+| prisma/generated/models/MockAttempt.ts | UTF-8保持 / なし / CRLF保持 | 英文正常 |
+| prisma/generated/models/MockAttemptStartRequest.ts | UTF-8新規 / なし / CRLF | 英文正常 |
+| scripts/apply-test-mock-start-requests.mjs | UTF-8新規 / なし / CRLF | 英文正常 |
+| scripts/lib/mock-migration.mjs | UTF-8保持 / なし / CRLF保持 | 日本語コメント正常 |
+| supabase/migrations/20261017000000_mock_attempt_start_requests.sql | UTF-8新規 / なし / CRLF | 「既存の開始ID」正常 |
+| tests/helpers/mock-db.mjs | UTF-8保持 / なし / CRLF保持 | fixture日本語正常 |
+| tests/mock-start-schema.integration.test.mjs | UTF-8新規 / なし / CRLF | 英文正常 |
+| src/lib/mock-exams/locks.ts | UTF-8保持 / なし / CRLF保持 | 「学生プロフィール」正常 |
+| src/lib/mock-exams/start.ts | UTF-8新規 / なし / CRLF | 「新しい受験の開始」正常 |
+| tests/mock-start.integration.test.mjs | UTF-8新規 / なし / CRLF | 英文正常 |
+| docs/operations/monthly-mock-exam-verification.md | UTF-8保持 / なし / CRLF保持 | 本文日本語正常 |
+
+Task 6以降の自動保存・API/UI・ランキング・確定/配布/称号/通知/ジョブと最終受入れは未完了。DB検証成功を画面や本番運用の完了とは扱わない。
