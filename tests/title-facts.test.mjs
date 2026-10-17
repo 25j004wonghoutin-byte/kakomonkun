@@ -11,6 +11,24 @@ const getFacts = async () => {
 const now = new Date("2026-10-02T02:00:00Z");
 const answered = (code, isCorrect = true, answeredAt = now) => ({ isCorrect, answeredAt, question: { category: { code } } });
 
+test("submitted mock facts add cumulative counts without practice or daily/random achievements", async () => {
+  const { collectTitleFacts } = await getFacts();
+  const memory=makeTitleMemory({mockAnswers:[
+    {mockQuestionId:"q1",selectedChoiceId:"a",isCorrect:true,mockQuestion:{categoryCode:"technology"},attempt:{userId:"student",status:"submitted"}},
+    {mockQuestionId:"q1",selectedChoiceId:"a",isCorrect:true,mockQuestion:{categoryCode:"technology"},attempt:{userId:"student",status:"submitted"}},
+  ]});
+  const facts=await collectTitleFacts(memory.tx,"student",now,{mockExamsEnabled:true});
+  assert.equal(facts.answerCount,2);assert.equal(facts.categoryCorrect.technology,2);
+  assert.equal(facts.hasCompletedPractice,false);assert.equal(facts.hasPerfect60,false);assert.equal(facts.hasZero60,false);
+  assert.equal(facts.randomCorrectMaxRun,0);assert.equal(facts.dailyAnswerMaxRun,0);assert.equal(facts.activityMaxRun,0);
+});
+
+test("disabled mock facts do not query new tables and legacy three-argument callers remain valid",async()=>{
+  const {collectTitleFacts}=await getFacts();const memory=makeTitleMemory();
+  Object.defineProperty(memory.tx,"mockAnswer",{get(){throw new Error("disabled mock table read");}});
+  assert.equal((await collectTitleFacts(memory.tx,"student",now,{mockExamsEnabled:false})).answerCount,0);
+});
+
 test("facts_use_saved_answers_not_profile_totals: three modes include repeats, in-progress and early-ended practice", async () => {
   const { collectTitleFacts } = await getFacts();
   const memory = makeTitleMemory({

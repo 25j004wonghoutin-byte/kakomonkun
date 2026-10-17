@@ -2,6 +2,8 @@ import type { Prisma } from "../../../prisma/generated/client";
 import { getTokyoDate } from "../tokyo-date";
 import type { TitleCategory, TitleFacts } from "./contract";
 import { maxDateRun, maxPerfectPracticeRun, maxRandomCorrectRun } from "./rules";
+import { readMockEnvironment } from "../mock-exams/environment";
+import { collectMockLearningFacts } from "../mock-exams/title-facts";
 
 const dateOnly = (date: Date) => date.toISOString().slice(0, 10);
 const dayNumber = (day: string) => Date.parse(`${day}T00:00:00Z`) / 86_400_000;
@@ -10,7 +12,10 @@ export async function collectTitleFacts(
   tx: Prisma.TransactionClient,
   userId: string,
   now: Date,
+  options?: { mockExamsEnabled: boolean },
 ): Promise<TitleFacts> {
+  const mockEnabled=options?.mockExamsEnabled??readMockEnvironment(process.env).enabled;
+  const mock=mockEnabled?await collectMockLearningFacts(tx,userId):{answerCount:0,categoryCorrect:{technology:0,management:0,strategy:0}};
   const answerSelect = { isCorrect: true, answeredAt: true, question: { select: { category: { select: { code: true } } } } } as const;
   const [profile, daily, random, practiceAnswers, sessions, activities, navigation, owned, boardPostCount, boardCommentCount] = await Promise.all([
     tx.studentProfile.findUnique({ where: { userId }, select: { titleTrackingStartedAt: true } }),
@@ -25,7 +30,7 @@ export async function collectTitleFacts(
     tx.boardComment.count({ where: { authorId: userId } }),
   ]);
 
-  const categoryCorrect: Record<TitleCategory, number> = { technology: 0, management: 0, strategy: 0 };
+  const categoryCorrect: Record<TitleCategory, number> = { ...mock.categoryCorrect };
   const answers = [...daily, ...random, ...practiceAnswers];
   for (const answer of answers) {
     const code = answer.question.category.code;
@@ -64,7 +69,7 @@ export async function collectTitleFacts(
   const complete = sessions.filter((session) => session.questionCount > 0 && session.answeredCount === session.questionCount);
   const ownedKeys = owned.flatMap((item) => item.title.catalogKey ? [item.title.catalogKey] : []);
   return {
-    answerCount: answers.length,
+    answerCount: answers.length+mock.answerCount,
     categoryCorrect,
     dailyAnswerMaxRun: maxDateRun(daily.map((answer) => dateOnly(answer.answerDate))),
     dailyIncorrectMaxRun: maxDateRun(daily.filter((answer) => !answer.isCorrect).map((answer) => dateOnly(answer.answerDate))),

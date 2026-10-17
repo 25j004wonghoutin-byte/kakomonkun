@@ -50,6 +50,11 @@ test("submission atomically grades final answers, awards participation once and 
       assert.deepEqual([result.score,result.earnedPoints,result.bestAttemptId,result.bestScore],[3.33,0,a.id,83.33]);
       const profile=await f.db.studentProfile.findUniqueOrThrow({where:{userId:f.actor.id}});
       assert.deepEqual([profile.totalPoints,profile.totalAnswerCount,profile.totalCorrectCount,profile.totalPracticeCount],[20,53,52,0]);
+      const {collectMockLearningFacts}=await import("../src/lib/mock-exams/title-facts.ts");
+      const facts=await f.db.$transaction(tx=>collectMockLearningFacts(tx,f.actor.id),txOptions);
+      assert.deepEqual(facts,{answerCount:53,categoryCorrect:{technology:52,management:0,strategy:0}});
+      await submit(f.db,f.actor,{attemptId:b.id,expectedRevision:999},f.clock);
+      assert.deepEqual(await f.db.$transaction(tx=>collectMockLearningFacts(tx,f.actor.id),txOptions),facts);
     });
     await t.test("the other exam has a separate first-participation reward, for a total of forty points",async()=>{
       const prepared=await prepareMockExam(f.db,{examCode:"it_passport",month:"2038-06"},f.clock);f.trackExam(prepared.mockExamId);
@@ -94,7 +99,19 @@ test("submission atomically grades final answers, awards participation once and 
       assert.equal(await f.db.pointTransaction.count({where:{userId:user.id}}),0);
       const p=await f.db.studentProfile.findUniqueOrThrow({where:{userId:user.id}});
       assert.deepEqual([p.totalPoints,p.totalAnswerCount,p.totalCorrectCount],[0,0,0]);
+      await f.db.studentActivityDay.createMany({data:Array.from({length:365},(_,i)=>({userId:user.id,activityDate:new Date(Date.UTC(2037,0,1+i)),hasAnswered:true,firstSeenAt:new Date(Date.UTC(2037,0,1+i)),lastSeenAt:new Date(Date.UTC(2037,0,1+i))}))});
+      const title=await f.db.title.findUniqueOrThrow({where:{catalogKey:"v1-066"}});
+      const notificationFailure=f.db.$extends({query:{notification:{async createMany({args,query}){await query(args);throw new Error("Simulated failure after mock title notification");}}}});
+      await assert.rejects(submit(notificationFailure,user,{attemptId:b.id,expectedRevision:0},f.clock),/Simulated failure after mock title notification/);
+      assert.equal((await f.db.mockAttempt.findUniqueOrThrow({where:{id:b.id}})).status,"in_progress");
+      assert.equal(await f.db.pointTransaction.count({where:{userId:user.id}}),0);
+      assert.equal(await f.db.userTitleUnlock.count({where:{userId:user.id,titleId:title.id}}),0);
+      assert.equal(await f.db.notification.count({where:{recipientId:user.id}}),0);
+      const rolledBack=await f.db.studentProfile.findUniqueOrThrow({where:{userId:user.id}});
+      assert.deepEqual([rolledBack.totalPoints,rolledBack.totalAnswerCount,rolledBack.totalCorrectCount],[0,0,0]);
       assert.equal((await submit(f.db,user,{attemptId:b.id,expectedRevision:0},f.clock)).earnedPoints,20);
+      assert.equal(await f.db.userTitleUnlock.count({where:{userId:user.id,titleId:title.id}}),1);
+      assert.equal(await f.db.notification.count({where:{recipientId:user.id,titleId:title.id}}),1);
     });
     await t.test("clock is sampled after every row lock and a wait crossing expiry cannot submit early",async()=>{
       const user=f.actors[2],b=await createAttempt(f,{userId:user.id,attemptNo:2});

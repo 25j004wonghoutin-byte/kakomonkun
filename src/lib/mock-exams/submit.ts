@@ -4,6 +4,7 @@ import { scorePercent } from "./grading";
 import { dbNow, lockMockAttempt } from "./locks";
 import { toMockResultView } from "./read";
 import { getTokyoDate } from "../tokyo-date";
+import { syncTitleUnlocks } from "../titles/unlocks";
 
 /** 呼出元が試験/所有者/profile/受験のロックを持つ、唯一の採点処理。 */
 export async function gradeLockedAttempt(tx:Prisma.TransactionClient,attemptId:string,now:Date):Promise<void>{
@@ -30,6 +31,7 @@ export async function gradeLockedAttempt(tx:Prisma.TransactionClient,attemptId:s
   }});
   await tx.mockAttempt.update({where:{id:attemptId},data:{status:"submitted",submittedAt,gradedAt:now,
     answeredCount,correctCount:correctIds.length,score:scorePercent(correctIds.length,exam.questionCount),earnedPoints,revision:{increment:1}}});
+  await syncTitleUnlocks(tx,a.userId,{now,source:"event"});
 }
 
 export async function submitMockAttempt(db:PrismaClient,actor:MockActor,input:SubmitInput,clock:MockClock=dbNow):Promise<ResultView>{

@@ -5,7 +5,7 @@ export function makeTitleMemory(overrides = {}) {
   const state = {
     user: { id: "student", role: { name: "student" }, status: "active", deletedAt: null },
     profile: { titleTrackingStartedAt: null, titleBackfilledAt: null, totalAnswerCount: 99999 },
-    daily: [], random: [], practiceAnswers: [], sessions: [], activities: [],
+    daily: [], random: [], practiceAnswers: [], mockAnswers: [], sessions: [], activities: [],
     navigation: [], posts: [], comments: [], owned: [], unlocks: [], notifications: [], locks: [],
     failNotifications: false,
     ...overrides,
@@ -28,6 +28,15 @@ export function makeTitleMemory(overrides = {}) {
     randomQuizAttempt: { findMany: async (args) => categoryFilter(draft.random, args) },
     practiceAnswer: { findMany: async (args) => categoryFilter(draft.practiceAnswers, args) },
     practiceSession: { findMany: async (args) => categoryFilter(draft.sessions, args) },
+    mockAnswer: {
+      count: async ({where}) => draft.mockAnswers.filter(row=>row.attempt.userId===where.attempt.userId&&row.attempt.status===where.attempt.status&&row.selectedChoiceId!==null).length,
+      groupBy: async ({where}) => {
+        const counts=new Map();
+        for(const row of draft.mockAnswers)if(row.attempt.userId===where.attempt.userId&&row.attempt.status===where.attempt.status&&row.selectedChoiceId!==null&&row.isCorrect===where.isCorrect)counts.set(row.mockQuestionId,(counts.get(row.mockQuestionId)??0)+1);
+        return [...counts].map(([mockQuestionId,count])=>({mockQuestionId,_count:{_all:count}}));
+      },
+    },
+    mockExamQuestion: {findMany:async({where})=>[...new Map(draft.mockAnswers.filter(row=>where.id.in.includes(row.mockQuestionId)).map(row=>[row.mockQuestionId,{id:row.mockQuestionId,categoryCode:row.mockQuestion.categoryCode}])).values()]},
     studentActivityDay: { findMany: async () => draft.activities },
     studentNavigationProgress: { findMany: async () => draft.navigation },
     boardPost: { count: async (args) => draft.posts.filter((row) => args.where?.deletedAt === null ? row.deletedAt === null : true).length },
