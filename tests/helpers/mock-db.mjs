@@ -67,6 +67,7 @@ export async function withMockDb({examCode,month,userCount=2,prepared=true}, run
         await tx.studentActivityDay.deleteMany({where:{userId:{in:userIds}}});
         await tx.studentNavigationProgress.deleteMany({where:{userId:{in:userIds}}});
         await tx.monthlyRanking.deleteMany({where:{OR:[{userId:{in:userIds}},{mockExamId:{in:ids}}]}});
+        await tx.mockAttemptStartRequest.deleteMany({where:{OR:[{userId:{in:userIds}},{mockExamId:{in:ids}}]}});
         await tx.mockAnswer.deleteMany({where:{OR:[{attempt:{userId:{in:userIds}}},{mockExamId:{in:ids}}]}});
         await tx.mockAttempt.deleteMany({where:{OR:[{userId:{in:userIds}},{mockExamId:{in:ids}}]}});
         await tx.mockExamChoice.deleteMany({where:{mockExamId:{in:ids}}});

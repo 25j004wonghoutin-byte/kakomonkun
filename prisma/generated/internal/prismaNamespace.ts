@@ -401,6 +401,7 @@ export const ModelName = {
   MockExamQuestion: 'MockExamQuestion',
   MockExamChoice: 'MockExamChoice',
   MockAttempt: 'MockAttempt',
+  MockAttemptStartRequest: 'MockAttemptStartRequest',
   MockAnswer: 'MockAnswer',
   Title: 'Title',
   UserTitle: 'UserTitle',
@@ -432,7 +433,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "role" | "user" | "studentProfile" | "teacherProfile" | "exam" | "questionCategory" | "question" | "questionChoice" | "dailyQaAnswer" | "practiceSession" | "practiceSessionQuestion" | "practiceAnswer" | "pointTransaction" | "mockExam" | "mockExamQuestion" | "mockExamChoice" | "mockAttempt" | "mockAnswer" | "title" | "userTitle" | "userTitleUnlock" | "randomQuizAttempt" | "studentActivityDay" | "studentNavigationProgress" | "monthlyRanking" | "mockExamJobRun" | "aiExplanation" | "aiUsageLog" | "boardPost" | "boardComment" | "boardPostLike" | "boardDeleteLog" | "notification"
+    modelProps: "role" | "user" | "studentProfile" | "teacherProfile" | "exam" | "questionCategory" | "question" | "questionChoice" | "dailyQaAnswer" | "practiceSession" | "practiceSessionQuestion" | "practiceAnswer" | "pointTransaction" | "mockExam" | "mockExamQuestion" | "mockExamChoice" | "mockAttempt" | "mockAttemptStartRequest" | "mockAnswer" | "title" | "userTitle" | "userTitleUnlock" | "randomQuizAttempt" | "studentActivityDay" | "studentNavigationProgress" | "monthlyRanking" | "mockExamJobRun" | "aiExplanation" | "aiUsageLog" | "boardPost" | "boardComment" | "boardPostLike" | "boardDeleteLog" | "notification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1691,6 +1692,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.MockAttemptCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.MockAttemptCountAggregateOutputType> | number
+        }
+      }
+    }
+    MockAttemptStartRequest: {
+      payload: Prisma.$MockAttemptStartRequestPayload<ExtArgs>
+      fields: Prisma.MockAttemptStartRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MockAttemptStartRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockAttemptStartRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MockAttemptStartRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockAttemptStartRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.MockAttemptStartRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockAttemptStartRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MockAttemptStartRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockAttemptStartRequestPayload>
+        }
+        findMany: {
+          args: Prisma.MockAttemptStartRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockAttemptStartRequestPayload>[]
+        }
+        create: {
+          args: Prisma.MockAttemptStartRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockAttemptStartRequestPayload>
+        }
+        createMany: {
+          args: Prisma.MockAttemptStartRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MockAttemptStartRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockAttemptStartRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.MockAttemptStartRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockAttemptStartRequestPayload>
+        }
+        update: {
+          args: Prisma.MockAttemptStartRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockAttemptStartRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.MockAttemptStartRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MockAttemptStartRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MockAttemptStartRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockAttemptStartRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.MockAttemptStartRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockAttemptStartRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.MockAttemptStartRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMockAttemptStartRequest>
+        }
+        groupBy: {
+          args: Prisma.MockAttemptStartRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MockAttemptStartRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MockAttemptStartRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MockAttemptStartRequestCountAggregateOutputType> | number
         }
       }
     }
@@ -3192,6 +3267,17 @@ export const MockAttemptScalarFieldEnum = {
 export type MockAttemptScalarFieldEnum = (typeof MockAttemptScalarFieldEnum)[keyof typeof MockAttemptScalarFieldEnum]
 
 
+export const MockAttemptStartRequestScalarFieldEnum = {
+  userId: 'userId',
+  requestId: 'requestId',
+  mockExamId: 'mockExamId',
+  attemptId: 'attemptId',
+  createdAt: 'createdAt'
+} as const
+
+export type MockAttemptStartRequestScalarFieldEnum = (typeof MockAttemptStartRequestScalarFieldEnum)[keyof typeof MockAttemptStartRequestScalarFieldEnum]
+
+
 export const MockAnswerScalarFieldEnum = {
   id: 'id',
   attemptId: 'attemptId',
@@ -3646,6 +3732,7 @@ export type GlobalOmitConfig = {
   mockExamQuestion?: Prisma.MockExamQuestionOmit
   mockExamChoice?: Prisma.MockExamChoiceOmit
   mockAttempt?: Prisma.MockAttemptOmit
+  mockAttemptStartRequest?: Prisma.MockAttemptStartRequestOmit
   mockAnswer?: Prisma.MockAnswerOmit
   title?: Prisma.TitleOmit
   userTitle?: Prisma.UserTitleOmit

@@ -32,3 +32,21 @@ export async function applyMockMigration(db, sql) {
     return {alreadyApplied:false,counts};
   },{maxWait:10000,timeout:45000});
 }
+
+/** 承認された開始要求対応表だけを追加する。既存データはSQL内で保持・引継ぎする。 */
+export async function applyMockStartRequestsMigration(db,sql) {
+  const version="20261017000000";
+  return db.$transaction(async tx=>{
+    await tx.$executeRawUnsafe("SET LOCAL lock_timeout = '5s'");
+    await tx.$executeRawUnsafe("SET LOCAL statement_timeout = '30s'");
+    await tx.$executeRawUnsafe("SELECT pg_advisory_xact_lock(hashtext('kakomonkun-mock-migration'))");
+    const existing=await tx.$queryRaw`SELECT statements FROM supabase_migrations.schema_migrations WHERE version=${version}`;
+    if(existing.length){
+      if(existing[0].statements?.[0]?.replace(/\r\n/g,"\n")!==sql.replace(/\r\n/g,"\n"))throw new Error("Recorded start identity migration differs; refusing to overwrite history");
+      return {alreadyApplied:true};
+    }
+    await tx.$executeRawUnsafe(sql);
+    await tx.$executeRaw`INSERT INTO supabase_migrations.schema_migrations(version,name,statements) VALUES (${version},'mock_attempt_start_requests',ARRAY[${sql}]::text[])`;
+    return {alreadyApplied:false};
+  },{maxWait:10000,timeout:45000});
+}

@@ -348,6 +348,7 @@ export type MockAttemptWhereInput = {
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   answers?: Prisma.MockAnswerListRelationFilter
   rankings?: Prisma.MonthlyRankingListRelationFilter
+  startRequests?: Prisma.MockAttemptStartRequestListRelationFilter
 }
 
 export type MockAttemptOrderByWithRelationInput = {
@@ -373,6 +374,7 @@ export type MockAttemptOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   answers?: Prisma.MockAnswerOrderByRelationAggregateInput
   rankings?: Prisma.MonthlyRankingOrderByRelationAggregateInput
+  startRequests?: Prisma.MockAttemptStartRequestOrderByRelationAggregateInput
 }
 
 export type MockAttemptWhereUniqueInput = Prisma.AtLeast<{
@@ -405,6 +407,7 @@ export type MockAttemptWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   answers?: Prisma.MockAnswerListRelationFilter
   rankings?: Prisma.MonthlyRankingListRelationFilter
+  startRequests?: Prisma.MockAttemptStartRequestListRelationFilter
 }, "id" | "mockExamId_userId_attemptNo" | "userId_startRequestId" | "id_mockExamId" | "id_mockExamId_userId">
 
 export type MockAttemptOrderByWithAggregationInput = {
@@ -478,6 +481,7 @@ export type MockAttemptCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutMockAttemptsInput
   answers?: Prisma.MockAnswerCreateNestedManyWithoutAttemptInput
   rankings?: Prisma.MonthlyRankingCreateNestedManyWithoutBestAttemptInput
+  startRequests?: Prisma.MockAttemptStartRequestCreateNestedManyWithoutAttemptInput
 }
 
 export type MockAttemptUncheckedCreateInput = {
@@ -501,6 +505,7 @@ export type MockAttemptUncheckedCreateInput = {
   updatedAt?: Date | string
   answers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutAttemptInput
   rankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutBestAttemptInput
+  startRequests?: Prisma.MockAttemptStartRequestUncheckedCreateNestedManyWithoutAttemptInput
 }
 
 export type MockAttemptUpdateInput = {
@@ -524,6 +529,7 @@ export type MockAttemptUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMockAttemptsNestedInput
   answers?: Prisma.MockAnswerUpdateManyWithoutAttemptNestedInput
   rankings?: Prisma.MonthlyRankingUpdateManyWithoutBestAttemptNestedInput
+  startRequests?: Prisma.MockAttemptStartRequestUpdateManyWithoutAttemptNestedInput
 }
 
 export type MockAttemptUncheckedUpdateInput = {
@@ -547,6 +553,7 @@ export type MockAttemptUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   answers?: Prisma.MockAnswerUncheckedUpdateManyWithoutAttemptNestedInput
   rankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutBestAttemptNestedInput
+  startRequests?: Prisma.MockAttemptStartRequestUncheckedUpdateManyWithoutAttemptNestedInput
 }
 
 export type MockAttemptCreateManyInput = {
@@ -822,6 +829,20 @@ export type DecimalFieldUpdateOperationsInput = {
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
+export type MockAttemptCreateNestedOneWithoutStartRequestsInput = {
+  create?: Prisma.XOR<Prisma.MockAttemptCreateWithoutStartRequestsInput, Prisma.MockAttemptUncheckedCreateWithoutStartRequestsInput>
+  connectOrCreate?: Prisma.MockAttemptCreateOrConnectWithoutStartRequestsInput
+  connect?: Prisma.MockAttemptWhereUniqueInput
+}
+
+export type MockAttemptUpdateOneRequiredWithoutStartRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.MockAttemptCreateWithoutStartRequestsInput, Prisma.MockAttemptUncheckedCreateWithoutStartRequestsInput>
+  connectOrCreate?: Prisma.MockAttemptCreateOrConnectWithoutStartRequestsInput
+  upsert?: Prisma.MockAttemptUpsertWithoutStartRequestsInput
+  connect?: Prisma.MockAttemptWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MockAttemptUpdateToOneWithWhereWithoutStartRequestsInput, Prisma.MockAttemptUpdateWithoutStartRequestsInput>, Prisma.MockAttemptUncheckedUpdateWithoutStartRequestsInput>
+}
+
 export type MockAttemptCreateNestedOneWithoutAnswersInput = {
   create?: Prisma.XOR<Prisma.MockAttemptCreateWithoutAnswersInput, Prisma.MockAttemptUncheckedCreateWithoutAnswersInput>
   connectOrCreate?: Prisma.MockAttemptCreateOrConnectWithoutAnswersInput
@@ -870,6 +891,7 @@ export type MockAttemptCreateWithoutUserInput = {
   mockExam: Prisma.MockExamCreateNestedOneWithoutAttemptsInput
   answers?: Prisma.MockAnswerCreateNestedManyWithoutAttemptInput
   rankings?: Prisma.MonthlyRankingCreateNestedManyWithoutBestAttemptInput
+  startRequests?: Prisma.MockAttemptStartRequestCreateNestedManyWithoutAttemptInput
 }
 
 export type MockAttemptUncheckedCreateWithoutUserInput = {
@@ -892,6 +914,7 @@ export type MockAttemptUncheckedCreateWithoutUserInput = {
   updatedAt?: Date | string
   answers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutAttemptInput
   rankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutBestAttemptInput
+  startRequests?: Prisma.MockAttemptStartRequestUncheckedCreateNestedManyWithoutAttemptInput
 }
 
 export type MockAttemptCreateOrConnectWithoutUserInput = {
@@ -964,6 +987,7 @@ export type MockAttemptCreateWithoutMockExamInput = {
   user: Prisma.UserCreateNestedOneWithoutMockAttemptsInput
   answers?: Prisma.MockAnswerCreateNestedManyWithoutAttemptInput
   rankings?: Prisma.MonthlyRankingCreateNestedManyWithoutBestAttemptInput
+  startRequests?: Prisma.MockAttemptStartRequestCreateNestedManyWithoutAttemptInput
 }
 
 export type MockAttemptUncheckedCreateWithoutMockExamInput = {
@@ -986,6 +1010,7 @@ export type MockAttemptUncheckedCreateWithoutMockExamInput = {
   updatedAt?: Date | string
   answers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutAttemptInput
   rankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutBestAttemptInput
+  startRequests?: Prisma.MockAttemptStartRequestUncheckedCreateNestedManyWithoutAttemptInput
 }
 
 export type MockAttemptCreateOrConnectWithoutMockExamInput = {
@@ -1014,6 +1039,114 @@ export type MockAttemptUpdateManyWithWhereWithoutMockExamInput = {
   data: Prisma.XOR<Prisma.MockAttemptUpdateManyMutationInput, Prisma.MockAttemptUncheckedUpdateManyWithoutMockExamInput>
 }
 
+export type MockAttemptCreateWithoutStartRequestsInput = {
+  id?: string
+  startRequestId: string
+  attemptNo: number
+  status?: string
+  startedAt?: Date | string
+  expiresAt: Date | string
+  submittedAt?: Date | string | null
+  gradedAt?: Date | string | null
+  totalQuestions?: number
+  correctCount?: number
+  answeredCount?: number
+  score?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  revision?: number
+  earnedPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mockExam: Prisma.MockExamCreateNestedOneWithoutAttemptsInput
+  user: Prisma.UserCreateNestedOneWithoutMockAttemptsInput
+  answers?: Prisma.MockAnswerCreateNestedManyWithoutAttemptInput
+  rankings?: Prisma.MonthlyRankingCreateNestedManyWithoutBestAttemptInput
+}
+
+export type MockAttemptUncheckedCreateWithoutStartRequestsInput = {
+  id?: string
+  mockExamId: string
+  userId: string
+  startRequestId: string
+  attemptNo: number
+  status?: string
+  startedAt?: Date | string
+  expiresAt: Date | string
+  submittedAt?: Date | string | null
+  gradedAt?: Date | string | null
+  totalQuestions?: number
+  correctCount?: number
+  answeredCount?: number
+  score?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  revision?: number
+  earnedPoints?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  answers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutAttemptInput
+  rankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutBestAttemptInput
+}
+
+export type MockAttemptCreateOrConnectWithoutStartRequestsInput = {
+  where: Prisma.MockAttemptWhereUniqueInput
+  create: Prisma.XOR<Prisma.MockAttemptCreateWithoutStartRequestsInput, Prisma.MockAttemptUncheckedCreateWithoutStartRequestsInput>
+}
+
+export type MockAttemptUpsertWithoutStartRequestsInput = {
+  update: Prisma.XOR<Prisma.MockAttemptUpdateWithoutStartRequestsInput, Prisma.MockAttemptUncheckedUpdateWithoutStartRequestsInput>
+  create: Prisma.XOR<Prisma.MockAttemptCreateWithoutStartRequestsInput, Prisma.MockAttemptUncheckedCreateWithoutStartRequestsInput>
+  where?: Prisma.MockAttemptWhereInput
+}
+
+export type MockAttemptUpdateToOneWithWhereWithoutStartRequestsInput = {
+  where?: Prisma.MockAttemptWhereInput
+  data: Prisma.XOR<Prisma.MockAttemptUpdateWithoutStartRequestsInput, Prisma.MockAttemptUncheckedUpdateWithoutStartRequestsInput>
+}
+
+export type MockAttemptUpdateWithoutStartRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  startRequestId?: Prisma.StringFieldUpdateOperationsInput | string
+  attemptNo?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gradedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  answeredCount?: Prisma.IntFieldUpdateOperationsInput | number
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  earnedPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mockExam?: Prisma.MockExamUpdateOneRequiredWithoutAttemptsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutMockAttemptsNestedInput
+  answers?: Prisma.MockAnswerUpdateManyWithoutAttemptNestedInput
+  rankings?: Prisma.MonthlyRankingUpdateManyWithoutBestAttemptNestedInput
+}
+
+export type MockAttemptUncheckedUpdateWithoutStartRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  mockExamId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  startRequestId?: Prisma.StringFieldUpdateOperationsInput | string
+  attemptNo?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gradedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  answeredCount?: Prisma.IntFieldUpdateOperationsInput | number
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  earnedPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  answers?: Prisma.MockAnswerUncheckedUpdateManyWithoutAttemptNestedInput
+  rankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutBestAttemptNestedInput
+}
+
 export type MockAttemptCreateWithoutAnswersInput = {
   id?: string
   startRequestId: string
@@ -1034,6 +1167,7 @@ export type MockAttemptCreateWithoutAnswersInput = {
   mockExam: Prisma.MockExamCreateNestedOneWithoutAttemptsInput
   user: Prisma.UserCreateNestedOneWithoutMockAttemptsInput
   rankings?: Prisma.MonthlyRankingCreateNestedManyWithoutBestAttemptInput
+  startRequests?: Prisma.MockAttemptStartRequestCreateNestedManyWithoutAttemptInput
 }
 
 export type MockAttemptUncheckedCreateWithoutAnswersInput = {
@@ -1056,6 +1190,7 @@ export type MockAttemptUncheckedCreateWithoutAnswersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   rankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutBestAttemptInput
+  startRequests?: Prisma.MockAttemptStartRequestUncheckedCreateNestedManyWithoutAttemptInput
 }
 
 export type MockAttemptCreateOrConnectWithoutAnswersInput = {
@@ -1094,6 +1229,7 @@ export type MockAttemptUpdateWithoutAnswersInput = {
   mockExam?: Prisma.MockExamUpdateOneRequiredWithoutAttemptsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMockAttemptsNestedInput
   rankings?: Prisma.MonthlyRankingUpdateManyWithoutBestAttemptNestedInput
+  startRequests?: Prisma.MockAttemptStartRequestUpdateManyWithoutAttemptNestedInput
 }
 
 export type MockAttemptUncheckedUpdateWithoutAnswersInput = {
@@ -1116,6 +1252,7 @@ export type MockAttemptUncheckedUpdateWithoutAnswersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutBestAttemptNestedInput
+  startRequests?: Prisma.MockAttemptStartRequestUncheckedUpdateManyWithoutAttemptNestedInput
 }
 
 export type MockAttemptCreateWithoutRankingsInput = {
@@ -1138,6 +1275,7 @@ export type MockAttemptCreateWithoutRankingsInput = {
   mockExam: Prisma.MockExamCreateNestedOneWithoutAttemptsInput
   user: Prisma.UserCreateNestedOneWithoutMockAttemptsInput
   answers?: Prisma.MockAnswerCreateNestedManyWithoutAttemptInput
+  startRequests?: Prisma.MockAttemptStartRequestCreateNestedManyWithoutAttemptInput
 }
 
 export type MockAttemptUncheckedCreateWithoutRankingsInput = {
@@ -1160,6 +1298,7 @@ export type MockAttemptUncheckedCreateWithoutRankingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   answers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutAttemptInput
+  startRequests?: Prisma.MockAttemptStartRequestUncheckedCreateNestedManyWithoutAttemptInput
 }
 
 export type MockAttemptCreateOrConnectWithoutRankingsInput = {
@@ -1198,6 +1337,7 @@ export type MockAttemptUpdateWithoutRankingsInput = {
   mockExam?: Prisma.MockExamUpdateOneRequiredWithoutAttemptsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMockAttemptsNestedInput
   answers?: Prisma.MockAnswerUpdateManyWithoutAttemptNestedInput
+  startRequests?: Prisma.MockAttemptStartRequestUpdateManyWithoutAttemptNestedInput
 }
 
 export type MockAttemptUncheckedUpdateWithoutRankingsInput = {
@@ -1220,6 +1360,7 @@ export type MockAttemptUncheckedUpdateWithoutRankingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   answers?: Prisma.MockAnswerUncheckedUpdateManyWithoutAttemptNestedInput
+  startRequests?: Prisma.MockAttemptStartRequestUncheckedUpdateManyWithoutAttemptNestedInput
 }
 
 export type MockAttemptCreateManyUserInput = {
@@ -1262,6 +1403,7 @@ export type MockAttemptUpdateWithoutUserInput = {
   mockExam?: Prisma.MockExamUpdateOneRequiredWithoutAttemptsNestedInput
   answers?: Prisma.MockAnswerUpdateManyWithoutAttemptNestedInput
   rankings?: Prisma.MonthlyRankingUpdateManyWithoutBestAttemptNestedInput
+  startRequests?: Prisma.MockAttemptStartRequestUpdateManyWithoutAttemptNestedInput
 }
 
 export type MockAttemptUncheckedUpdateWithoutUserInput = {
@@ -1284,6 +1426,7 @@ export type MockAttemptUncheckedUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   answers?: Prisma.MockAnswerUncheckedUpdateManyWithoutAttemptNestedInput
   rankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutBestAttemptNestedInput
+  startRequests?: Prisma.MockAttemptStartRequestUncheckedUpdateManyWithoutAttemptNestedInput
 }
 
 export type MockAttemptUncheckedUpdateManyWithoutUserInput = {
@@ -1346,6 +1489,7 @@ export type MockAttemptUpdateWithoutMockExamInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMockAttemptsNestedInput
   answers?: Prisma.MockAnswerUpdateManyWithoutAttemptNestedInput
   rankings?: Prisma.MonthlyRankingUpdateManyWithoutBestAttemptNestedInput
+  startRequests?: Prisma.MockAttemptStartRequestUpdateManyWithoutAttemptNestedInput
 }
 
 export type MockAttemptUncheckedUpdateWithoutMockExamInput = {
@@ -1368,6 +1512,7 @@ export type MockAttemptUncheckedUpdateWithoutMockExamInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   answers?: Prisma.MockAnswerUncheckedUpdateManyWithoutAttemptNestedInput
   rankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutBestAttemptNestedInput
+  startRequests?: Prisma.MockAttemptStartRequestUncheckedUpdateManyWithoutAttemptNestedInput
 }
 
 export type MockAttemptUncheckedUpdateManyWithoutMockExamInput = {
@@ -1398,11 +1543,13 @@ export type MockAttemptUncheckedUpdateManyWithoutMockExamInput = {
 export type MockAttemptCountOutputType = {
   answers: number
   rankings: number
+  startRequests: number
 }
 
 export type MockAttemptCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   answers?: boolean | MockAttemptCountOutputTypeCountAnswersArgs
   rankings?: boolean | MockAttemptCountOutputTypeCountRankingsArgs
+  startRequests?: boolean | MockAttemptCountOutputTypeCountStartRequestsArgs
 }
 
 /**
@@ -1429,6 +1576,13 @@ export type MockAttemptCountOutputTypeCountRankingsArgs<ExtArgs extends runtime.
   where?: Prisma.MonthlyRankingWhereInput
 }
 
+/**
+ * MockAttemptCountOutputType without action
+ */
+export type MockAttemptCountOutputTypeCountStartRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MockAttemptStartRequestWhereInput
+}
+
 
 export type MockAttemptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1453,6 +1607,7 @@ export type MockAttemptSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   answers?: boolean | Prisma.MockAttempt$answersArgs<ExtArgs>
   rankings?: boolean | Prisma.MockAttempt$rankingsArgs<ExtArgs>
+  startRequests?: boolean | Prisma.MockAttempt$startRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.MockAttemptCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mockAttempt"]>
 
@@ -1529,6 +1684,7 @@ export type MockAttemptInclude<ExtArgs extends runtime.Types.Extensions.Internal
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   answers?: boolean | Prisma.MockAttempt$answersArgs<ExtArgs>
   rankings?: boolean | Prisma.MockAttempt$rankingsArgs<ExtArgs>
+  startRequests?: boolean | Prisma.MockAttempt$startRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.MockAttemptCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MockAttemptIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1547,6 +1703,7 @@ export type $MockAttemptPayload<ExtArgs extends runtime.Types.Extensions.Interna
     user: Prisma.$UserPayload<ExtArgs>
     answers: Prisma.$MockAnswerPayload<ExtArgs>[]
     rankings: Prisma.$MonthlyRankingPayload<ExtArgs>[]
+    startRequests: Prisma.$MockAttemptStartRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1965,6 +2122,7 @@ export interface Prisma__MockAttemptClient<T, Null = never, ExtArgs extends runt
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   answers<T extends Prisma.MockAttempt$answersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockAttempt$answersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MockAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   rankings<T extends Prisma.MockAttempt$rankingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockAttempt$rankingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MonthlyRankingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  startRequests<T extends Prisma.MockAttempt$startRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockAttempt$startRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MockAttemptStartRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2458,6 +2616,30 @@ export type MockAttempt$rankingsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.MonthlyRankingScalarFieldEnum | Prisma.MonthlyRankingScalarFieldEnum[]
+}
+
+/**
+ * MockAttempt.startRequests
+ */
+export type MockAttempt$startRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MockAttemptStartRequest
+   */
+  select?: Prisma.MockAttemptStartRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MockAttemptStartRequest
+   */
+  omit?: Prisma.MockAttemptStartRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MockAttemptStartRequestInclude<ExtArgs> | null
+  where?: Prisma.MockAttemptStartRequestWhereInput
+  orderBy?: Prisma.MockAttemptStartRequestOrderByWithRelationInput | Prisma.MockAttemptStartRequestOrderByWithRelationInput[]
+  cursor?: Prisma.MockAttemptStartRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MockAttemptStartRequestScalarFieldEnum | Prisma.MockAttemptStartRequestScalarFieldEnum[]
 }
 
 /**

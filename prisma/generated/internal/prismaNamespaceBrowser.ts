@@ -68,6 +68,7 @@ export const ModelName = {
   MockExamQuestion: 'MockExamQuestion',
   MockExamChoice: 'MockExamChoice',
   MockAttempt: 'MockAttempt',
+  MockAttemptStartRequest: 'MockAttemptStartRequest',
   MockAnswer: 'MockAnswer',
   Title: 'Title',
   UserTitle: 'UserTitle',
@@ -375,6 +376,17 @@ export const MockAttemptScalarFieldEnum = {
 } as const
 
 export type MockAttemptScalarFieldEnum = (typeof MockAttemptScalarFieldEnum)[keyof typeof MockAttemptScalarFieldEnum]
+
+
+export const MockAttemptStartRequestScalarFieldEnum = {
+  userId: 'userId',
+  requestId: 'requestId',
+  mockExamId: 'mockExamId',
+  attemptId: 'attemptId',
+  createdAt: 'createdAt'
+} as const
+
+export type MockAttemptStartRequestScalarFieldEnum = (typeof MockAttemptStartRequestScalarFieldEnum)[keyof typeof MockAttemptStartRequestScalarFieldEnum]
 
 
 export const MockAnswerScalarFieldEnum = {

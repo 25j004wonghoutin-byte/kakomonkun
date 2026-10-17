@@ -103,6 +103,11 @@ export type MockExamChoice = Prisma.MockExamChoiceModel
  */
 export type MockAttempt = Prisma.MockAttemptModel
 /**
+ * Model MockAttemptStartRequest
+ *
+ */
+export type MockAttemptStartRequest = Prisma.MockAttemptStartRequestModel
+/**
  * Model MockAnswer
  *
  */

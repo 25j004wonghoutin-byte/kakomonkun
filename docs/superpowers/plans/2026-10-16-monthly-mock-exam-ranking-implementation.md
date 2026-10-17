@@ -160,6 +160,11 @@ Task 1で次の型を定義し、後続Taskは勝手に別名・別プロパテ�
 **Files:** Create `src/lib/mock-exams/start.ts`, `tests/mock-start.integration.test.mjs`。
 **Interfaces:** `startMockAttempt(db:PrismaClient,actor:MockActor,input:StartInput,clock?:MockClock):Promise<StartResult>`。Task 4のロックと採点を利用する。
 
+**2026-10-17承認済み補足:** 開始/再開を受理した全requestIdを永続化するため、`MockAttemptStartRequest` / `mock_attempt_start_requests` を追加する。列はuserId/requestId/mockExamId/attemptId/createdAt、主キー(userId,requestId)、受験の(id,mockExamId,userId)への複合FKと索引、RLS有効・公開ポリシーなし。既存canonical startRequestIdは残して対応表へバックフィルする。旧移行SQLは変更せず `supabase/migrations/20261017000000_mock_attempt_start_requests.sql` を専用テストDBだけへ適用する。変更対象に `prisma/schema.prisma`、必要な生成ハンク、`scripts/apply-test-mock-start-requests.mjs`、`scripts/lib/mock-migration.mjs`、`tests/helpers/mock-db.mjs`、`src/lib/mock-exams/locks.ts`、`tests/mock-start-schema.integration.test.mjs` を加える。共通ロック順は `lockMockExamOwner(tx,actor,mockExamId):Promise<void>` として抽出し、既存受験ロックも使用する。
+
+- [ ] 追加テーブル不存在の実DB REDを確認。主キー重複、別利用者/別試験の受験への対応付け拒否、RLS、移行履歴再実行を検証する。既存ファイルのバイト/形式を保護し、追加SQLとPrisma生成差分のみ適用する。fixtureは自作対応表を受験より先に削除する。
+- [ ] `Aで開始→Bで再開→提出→B再送`、期限切れ再開のID再送でも元の結果へ戻ることを追加でassertする。対応表と受験/回答作成は同一transaction、異なる試験への同一ID再利用は409とする。
+
 - [ ] 同一requestIdの再送、別IDの同時開始、2回目、3回目拒否、期限ちょうど、期限切れ再開をテストする。
   ```js
   test('a replay of completed first start never starts attempt two', async () => withMockDb({examCode:'fe',month:'2036-10'}, async f => {
@@ -174,7 +179,7 @@ Task 1で次の型を定義し、後続Taskは勝手に別名・別プロパテ�
 - [ ] `DB tests/mock-start.integration.test.mjs` →赤。
 - [ ] 同じ開始IDは終了後も元の受験へ、別IDでも進行中があればその受験へ戻す。進行中が期限切れなら採点結果を返し、2回目を自動作成しない。新規操作だけ次の番号を採番し、期限を保存する。教師・停止学生・公開前・25日以降・準備失敗を拒否する。
 - [ ] 同DBテストを緑にする。ロック待ち中に25日0時を越えるテストで受験件数不変をassertする（Review Focus 1）。
-- [ ] 上記2ファイルをステージし、`feat: start and resume bounded mock exam attempts` でコミットする。
+- [ ] 補足の追加スキーマとテストを `feat: persist mock start request identities`、開始/再開処理を `feat: start and resume bounded mock exam attempts` で分けてコミットする。`DB tests/mock-start-schema.integration.test.mjs tests/mock-start.integration.test.mjs` をTask完了コマンドとする。
 
 ## Task 6: 回答の自動保存と競合検出
 

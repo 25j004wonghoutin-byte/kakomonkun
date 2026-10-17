@@ -376,6 +376,7 @@ model MockAttempt {
   user           User         @relation(fields: [userId], references: [id], onDelete: Restrict)
   answers        MockAnswer[]
   rankings       MonthlyRanking[]
+  startRequests  MockAttemptStartRequest[]
 
   @@unique([mockExamId, userId, attemptNo], map: "mock_attempts_exam_user_number_key")
   @@unique([userId, startRequestId], map: "mock_attempts_user_start_request_key")
@@ -387,6 +388,19 @@ model MockAttempt {
   @@index([status, expiresAt, id], map: "idx_mock_attempts_due")
   @@index([mockExamId, status, userId], map: "idx_mock_attempts_exam_status_user")
   @@map("mock_attempts")
+}
+
+model MockAttemptStartRequest {
+  userId String @map("user_id") @db.Uuid
+  requestId String @map("request_id") @db.Uuid
+  mockExamId String @map("mock_exam_id") @db.Uuid
+  attemptId String @map("attempt_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  attempt MockAttempt @relation(fields: [attemptId, mockExamId, userId], references: [id, mockExamId, userId], onDelete: Restrict)
+
+  @@id([userId, requestId], map: "mock_attempt_start_requests_pkey")
+  @@index([attemptId, mockExamId, userId], map: "idx_mock_attempt_start_requests_attempt")
+  @@map("mock_attempt_start_requests")
 }
 
 model MockAnswer {
