@@ -68,7 +68,7 @@ test("autosave prevents stale overwrites and counts only actual saved selection 
       for(const extra of [{selectedChoiceId:q1.correctChoiceId,expectedRevision:3},{mockQuestionId:randomUUID()},{selectedChoiceId:randomUUID()},{requestId:"bad"}]){
         await assert.rejects(save(f.db,f.actor,{...original,...extra,requestId:extra.requestId??randomUUID()},f.clock),e=>e.status===400);
       }
-      await assert.rejects(save(f.db,f.actors[1],original,f.clock),e=>e.status===404);
+      await assert.rejects(save(f.db,f.actors[1],original,f.clock),e=>e.status===403);
     });
     await t.test("two independent tabs changing one question from the same revision have exactly one winner",async()=>{
       const question=f.questions[2],left={...original,mockQuestionId:question.id,selectedChoiceId:question.correctChoiceId,requestId:randomUUID()},right={...original,mockQuestionId:question.id,selectedChoiceId:question.choices[1].id,requestId:randomUUID()};

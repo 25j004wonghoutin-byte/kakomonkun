@@ -1,5 +1,9 @@
-import type { Prisma } from "../../../prisma/generated/client";
-import { MockError, type AttemptView, type MockQuestionView, type ResultView } from "./contract";
+import type { Prisma, PrismaClient } from "../../../prisma/generated/client";
+import { MockError, type AttemptView, type ExamCode, type MockActor, type MockClock, type MockListView, type MockQuestionView, type ResultView, type StartResult } from "./contract";
+import { readMockEnvironment } from "./environment";
+import { assertMockStudent, dbNow, lockMockAttempt } from "./locks";
+import { getMockPolicy, getMockSchedule } from "./schedule";
+import { gradeLockedAttempt } from "./submit";
 
 const frozenSelect={
   id:true,orderNo:true,questionText:true,imagePath:true,sourceLabel:true,explanation:true,
@@ -52,4 +56,70 @@ export async function toMockResultView(tx:Prisma.TransactionClient,attemptId:str
     answeredCount:a.answeredCount,correctCount:a.correctCount,totalQuestions:a.totalQuestions,score:Number(a.score),
     earnedPoints:a.earnedPoints,bestAttemptId:best.id,bestScore:Number(best.score),
     submittedAt:a.submittedAt.toISOString(),reviewAvailableAt:exam.availableUntil.toISOString(),review};
+}
+
+function requireMockRead(actor:MockActor):void{
+  assertMockStudent(actor);
+  if(!readMockEnvironment(process.env).enabled)throw new MockError("mock_disabled",503,"模擬試験は現在準備中です。");
+}
+
+async function requireCurrentStudent(tx:Prisma.TransactionClient,actor:MockActor):Promise<void>{
+  const user=await tx.user.findUnique({where:{id:actor.id},select:{status:true,deletedAt:true,role:{select:{name:true}}}});
+  if(!user)throw new MockError("student_required",403,"有効な学生アカウントで利用してください。");
+  assertMockStudent({id:actor.id,status:user.status,deletedAt:user.deletedAt,roleName:user.role.name});
+}
+
+/** GETでも期限整合だけは行う。新しい受験・試験・ジョブは作成しない。 */
+export async function getMockAttempt(db:PrismaClient,actor:MockActor,attemptId:string,clock:MockClock=dbNow):Promise<StartResult>{
+  requireMockRead(actor);
+  return db.$transaction(async tx=>{
+    const a=await lockMockAttempt(tx,actor,attemptId);
+    const now=await clock(tx);
+    if(!Number.isFinite(+now))throw new MockError("invalid_clock",503,"サーバー時刻を確認できません。");
+    if(a.status==="submitted"||+now>=+a.expiresAt){
+      await gradeLockedAttempt(tx,a.id,now);
+      return {kind:"result",result:await toMockResultView(tx,a.id,now)};
+    }
+    return {kind:"attempt",attempt:await toMockAttemptView(tx,a.id,now)};
+  },{maxWait:10000,timeout:30000});
+}
+
+export async function getMockResult(db:PrismaClient,actor:MockActor,attemptId:string,clock:MockClock=dbNow):Promise<ResultView>{
+  const view=await getMockAttempt(db,actor,attemptId,clock);
+  if(view.kind!=="result")throw new MockError("not_submitted",409,"まだ提出されていません。");
+  return view.result;
+}
+
+export async function getMockList(db:PrismaClient,actor:MockActor,month:string,clock:MockClock=dbNow):Promise<MockListView>{
+  requireMockRead(actor);
+  const schedule=getMockSchedule(month);
+  const targetMonth=new Date(`${month}-01T00:00:00Z`);
+  // 複数試験を同じ変更TXに載せず、試験→userの順序を試験ごとに守る。
+  const pending=await db.$transaction(async tx=>{
+    await requireCurrentStudent(tx,actor);
+    const now=await clock(tx);
+    return tx.mockAttempt.findMany({where:{userId:actor.id,status:"in_progress",expiresAt:{lte:now},mockExam:{targetMonth}},select:{id:true}});
+  },{maxWait:10000,timeout:30000});
+  for(const a of pending)await getMockAttempt(db,actor,a.id,clock);
+  return db.$transaction(async tx=>{
+    await requireCurrentStudent(tx,actor);
+    const now=await clock(tx);
+    if(!Number.isFinite(+now))throw new MockError("invalid_clock",503,"サーバー時刻を確認できません。");
+    const exams=await tx.mockExam.findMany({where:{targetMonth},select:{id:true,status:true,exam:{select:{code:true}}}});
+    const own=await tx.mockAttempt.findMany({where:{userId:actor.id,mockExam:{targetMonth}},orderBy:{attemptNo:"asc"},select:{id:true,mockExamId:true,status:true}});
+    const history=await tx.mockAttempt.findMany({where:{userId:actor.id},select:{mockExam:{select:{targetMonth:true}}}});
+    const cards:MockListView["exams"]=[];
+    for(const code of ["it_passport","fe"] as ExamCode[]){
+      const policy=getMockPolicy(code),exam=exams.find(e=>e.exam.code===code);
+      const attempts=own.filter(a=>a.mockExamId===exam?.id);
+      const results:ResultView[]=[];
+      for(const a of attempts)if(a.status==="submitted")results.push(await toMockResultView(tx,a.id,now));
+      cards.push({id:exam?.id??null,examCode:code,title:code==="fe"?"基本情報技術者（科目A）":"ITパスポート",
+        questionCount:policy.questionCount,timeLimitMinutes:policy.timeLimitMinutes,
+        opensAt:schedule.opensAt.toISOString(),closesAt:schedule.closesAt.toISOString(),
+        state:+now>=+schedule.closesAt?"closed":+now<+schedule.opensAt?"upcoming":exam?.status==="ready"?"open":"preparing",
+        remainingAttempts:Math.max(0,policy.maxAttempts-attempts.length),activeAttemptId:attempts.find(a=>a.status==="in_progress")?.id??null,results});
+    }
+    return {month,historyMonths:[...new Set(history.map(a=>a.mockExam.targetMonth.toISOString().slice(0,7)))].sort().reverse(),exams:cards};
+  },{isolationLevel:"RepeatableRead",maxWait:10000,timeout:30000});
 }

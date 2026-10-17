@@ -29,7 +29,8 @@ export async function lockMockAttempt(tx: Prisma.TransactionClient, actor: MockA
   assertMockStudent(actor);
   if(!/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(attemptId))throw new MockError("invalid_attempt",400,"受験IDが正しくありません。");
   const before=await tx.mockAttempt.findUnique({where:{id:attemptId},select:{mockExamId:true,userId:true}});
-  if(!before||before.userId!==actor.id)throw new MockError("attempt_not_found",404,"受験結果が見つかりません。");
+  if(!before)throw new MockError("attempt_not_found",404,"受験結果が見つかりません。");
+  if(before.userId!==actor.id)throw new MockError("attempt_forbidden",403,"この受験は閲覧・変更できません。");
   await lockMockExamOwner(tx,actor,before.mockExamId);
   await tx.$queryRaw`SELECT id FROM public.mock_attempts WHERE id=${attemptId}::uuid FOR UPDATE`;
   const attempt=await tx.mockAttempt.findUnique({where:{id:attemptId}});

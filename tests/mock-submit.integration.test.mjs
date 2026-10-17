@@ -76,7 +76,7 @@ test("submission atomically grades final answers, awards participation once and 
       const user=f.actors[2],b=await createAttempt(f,{userId:user.id});
       await assert.rejects(submit(f.db,user,{attemptId:b.id,expectedRevision:1},f.clock),e=>e.code==="stale_attempt");
       await assert.rejects(submit(f.db,{...user,roleName:"teacher"},{attemptId:b.id,expectedRevision:0},f.clock),e=>e.status===403);
-      await assert.rejects(submit(f.db,f.actor,{attemptId:b.id,expectedRevision:0},f.clock),e=>e.status===404);
+      await assert.rejects(submit(f.db,f.actor,{attemptId:b.id,expectedRevision:0},f.clock),e=>e.status===403);
       await f.db.user.update({where:{id:user.id},data:{status:"inactive"}});
       await assert.rejects(submit(f.db,user,{attemptId:b.id,expectedRevision:0},f.clock),e=>e.status===403);
       await f.db.user.update({where:{id:user.id},data:{status:"active"}});
