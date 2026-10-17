@@ -296,3 +296,50 @@ Task 8以降は未完了。学生画面・ランキング・最終順位/報酬�
 | docs/operations/monthly-mock-exam-verification.md | 保持・本文正常 |
 
 Task 9以降の学生画面・ランキング等は未完了。
+
+## Task 9 — 2026-10-17
+
+学生向け一覧・受験・結果画面を既存StudentShellで追加。ページは要求ごとの認証と本人確認後に安全なDTOだけを受け取り、RSCへ元Prisma行を渡さない。開始要求IDは応答不明時に維持する。受験は前後/番号移動、変更/解除、自動保存、サーバー期限に基づく残り時間、未回答数、提出確認を実装。保存キューは順に処理し、直近保存の版だけを根拠に後続操作を進める。409・応答不明時は全体を再取得して提出を止め、同じ要求の再試行または明示的な最新状態確認で回復する。
+
+### 検証
+
+| 項目 | 実証結果 |
+| --- | --- |
+| 単体/render | 保存キュー6件・画面3件成功。HTMLで2試験、残り回数、履歴、未回答、解説未登録fallback、締切前review非混入を確認 |
+| 全体suite | 381件中371成功・失敗0・opt-in 10件skip |
+| 型/lint | exit 0。既存output警告1件のみ |
+| ブラウザー | CUAの文書化済みPlaywright操作を使用。127.0.0.1:3001、デスクトップ1280x720と375x812。Next.jsエラーoverlayなし、回復後タブのerror/warnログなし |
+| 開始→保存→競合 | 1回目開始、同一受験の2タブ目から古い版の保存を拒否。最新確認前は提出無効、明示的な読取後に回復 |
+| 連続選択 | 初回は画面側busyにより最後のクリックが無視される不具合を再現。修正後、最後の選択のaria-pressed=trueを確認 |
+| 解除 | 未回答60問へ戻り、再読込後も空欄維持を確認 |
+| offline/復旧 | 今回のNextテストサーバーだけを一時停止。保存失敗・未保存表示・提出無効を確認し、再起動後に同じ受験へ復旧。開発HMRが接続エラー文書へ遷移したため、新しい通常ローカルタブで回復し、警告回避操作はしていない |
+| 保存直後の応答喪失 | 一時loopback QA proxyで成功した保存応答だけを失わせ、実キュー＋HTTP＋DBで検証。flush拒否、GETで1回分の変更を確認後、同一ID/payload再送で版が増えず期限不変。proxyのブラウザーhydrationは不安定だったため、この経路はHTTP検証として区別する |
+| キーボード/375px | dialog初期focusはキャンセル、Escで閉じると提出確認ボタンへ戻る。375px時scrollWidth=360で横はみ出しなし。ダイアログの両ボタンが枠内 |
+| 提出・結果・履歴 | 1回目20pt、2回目空欄0点/0pt、最高点維持、残り1回と履歴への反映。締切前は解説非公開 |
+| HTML/RSC | 実認証付きHTTP要求を双方で実行し、締切前にcorrectChoiceId/isCorrect/explanationキーがないことを確認 |
+
+ブラウザーで判明したOrigin判定の内部URL/Host不一致は、既存avatar APIと同様の厳密なHost構文検証を追加して修正した。回帰テストを赤→緑で確認し、異なるOrigin・不正Hostは拒否する。Nodeテスト用loaderも、実Nextのlink/image/navigationの.jsエントリーを解決するよう最小変更した。コンポーネントの偽物には置換していない。
+
+検証専用学生1件・自作模試1件・自作問題60件と関連する回答/通知/ポイント/称号資格だけを、専用DB・UUID・email prefix・createdBy・source prefix照合後に削除した。既存テスト学生や既存問題は触れていない。削除分は実データのバックアップではなく使い捨てfixtureなので、必要時は再生成する。一時proxyも停止済み。スクリーンショットと再現スクリプトはリポジトリー外の可視化ディレクトリーに保持。
+
+### Task 9 テキスト形式
+
+下記はすべてUTF-8/BOMなし/CRLF。既存の形式を保持し、新規も同形式。strict再読・U+FFFD/BOM/改行検査、代表日本語と差分を確認した。
+
+| パス | 新規/保持・日本語 |
+| --- | --- |
+| src/app/mock-exam/page.tsx | 新規・エラー文正常 |
+| src/app/mock-exam/mock-exam-list.tsx | 新規・試験名/説明正常 |
+| src/app/mock-exam/attempts/[attemptId]/page.tsx | 新規・エラー文正常 |
+| src/app/mock-exam/attempts/[attemptId]/mock-attempt.tsx | 新規・保存/確認文正常 |
+| src/app/mock-exam/attempts/[attemptId]/result/page.tsx | 新規・エラー文正常 |
+| src/app/mock-exam/attempts/[attemptId]/result/mock-result.tsx | 新規・点数/公開案内正常 |
+| src/lib/mock-exams/client-state.ts | 新規・接続エラー案内正常 |
+| tests/mock-client-state.test.mjs | 新規・日本語assert正常 |
+| tests/mock-student-render.test.mjs | 新規・日本語fixture正常 |
+| src/lib/mock-exams/handlers.ts | 保持・Originエラー文正常 |
+| tests/mock-api.test.mjs | 保持・日本語エラーfixture正常 |
+| tests/helpers/register-title-tests.mjs | 保持・英文のみ |
+| docs/operations/monthly-mock-exam-verification.md | 保持・本文正常 |
+
+Task 10以降のランキング・順位確定/配布・ランキング称号・通知・ジョブ・運用と最終受入れは未完了。本番DB変更・pushは未実施。
