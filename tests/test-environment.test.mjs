@@ -129,9 +129,9 @@ function readNextConfig(testMode) {
   const exports = {};
   const source = ts.transpileModule(readFileSync(url, "utf8"), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText;
   vm.runInNewContext(source, { exports, require: createRequire(url), __dirname: fileURLToPath(new URL("../", import.meta.url)), process: { env: { KAKOMON_TEST_ENV: testMode } } });
-  return exports.default;
+  return typeof exports.default === "function" ? exports.default("phase-development-server") : exports.default;
 }
-test("test and regular dev builds use separate output directories", () => {
-  assert.equal(readNextConfig("1").distDir, "coverage/next-test");
-  assert.equal(readNextConfig(undefined).distDir ?? ".next", ".next");
+test("test and regular dev builds use separate output directories", async () => {
+  assert.equal((await readNextConfig("1")).distDir, "coverage/next-test");
+  assert.equal((await readNextConfig(undefined)).distDir ?? ".next", ".next");
 });
