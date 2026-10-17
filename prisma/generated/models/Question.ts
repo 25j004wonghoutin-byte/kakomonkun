@@ -326,7 +326,6 @@ export type QuestionWhereInput = {
   choices?: Prisma.QuestionChoiceListRelationFilter
   dailyQaAnswers?: Prisma.DailyQaAnswerListRelationFilter
   mockExamQuestions?: Prisma.MockExamQuestionListRelationFilter
-  mockAnswers?: Prisma.MockAnswerListRelationFilter
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionListRelationFilter
   practiceAnswers?: Prisma.PracticeAnswerListRelationFilter
   randomAttempts?: Prisma.RandomQuizAttemptListRelationFilter
@@ -358,7 +357,6 @@ export type QuestionOrderByWithRelationInput = {
   choices?: Prisma.QuestionChoiceOrderByRelationAggregateInput
   dailyQaAnswers?: Prisma.DailyQaAnswerOrderByRelationAggregateInput
   mockExamQuestions?: Prisma.MockExamQuestionOrderByRelationAggregateInput
-  mockAnswers?: Prisma.MockAnswerOrderByRelationAggregateInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionOrderByRelationAggregateInput
   practiceAnswers?: Prisma.PracticeAnswerOrderByRelationAggregateInput
   randomAttempts?: Prisma.RandomQuizAttemptOrderByRelationAggregateInput
@@ -393,7 +391,6 @@ export type QuestionWhereUniqueInput = Prisma.AtLeast<{
   choices?: Prisma.QuestionChoiceListRelationFilter
   dailyQaAnswers?: Prisma.DailyQaAnswerListRelationFilter
   mockExamQuestions?: Prisma.MockExamQuestionListRelationFilter
-  mockAnswers?: Prisma.MockAnswerListRelationFilter
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionListRelationFilter
   practiceAnswers?: Prisma.PracticeAnswerListRelationFilter
   randomAttempts?: Prisma.RandomQuizAttemptListRelationFilter
@@ -470,7 +467,6 @@ export type QuestionCreateInput = {
   choices?: Prisma.QuestionChoiceCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptCreateNestedManyWithoutQuestionInput
@@ -499,7 +495,6 @@ export type QuestionUncheckedCreateInput = {
   choices?: Prisma.QuestionChoiceUncheckedCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedCreateNestedManyWithoutQuestionInput
@@ -528,7 +523,6 @@ export type QuestionUpdateInput = {
   choices?: Prisma.QuestionChoiceUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUpdateManyWithoutQuestionNestedInput
@@ -557,7 +551,6 @@ export type QuestionUncheckedUpdateInput = {
   choices?: Prisma.QuestionChoiceUncheckedUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedUpdateManyWithoutQuestionNestedInput
@@ -913,20 +906,6 @@ export type QuestionUpdateOneRequiredWithoutMockExamQuestionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.QuestionUpdateToOneWithWhereWithoutMockExamQuestionsInput, Prisma.QuestionUpdateWithoutMockExamQuestionsInput>, Prisma.QuestionUncheckedUpdateWithoutMockExamQuestionsInput>
 }
 
-export type QuestionCreateNestedOneWithoutMockAnswersInput = {
-  create?: Prisma.XOR<Prisma.QuestionCreateWithoutMockAnswersInput, Prisma.QuestionUncheckedCreateWithoutMockAnswersInput>
-  connectOrCreate?: Prisma.QuestionCreateOrConnectWithoutMockAnswersInput
-  connect?: Prisma.QuestionWhereUniqueInput
-}
-
-export type QuestionUpdateOneRequiredWithoutMockAnswersNestedInput = {
-  create?: Prisma.XOR<Prisma.QuestionCreateWithoutMockAnswersInput, Prisma.QuestionUncheckedCreateWithoutMockAnswersInput>
-  connectOrCreate?: Prisma.QuestionCreateOrConnectWithoutMockAnswersInput
-  upsert?: Prisma.QuestionUpsertWithoutMockAnswersInput
-  connect?: Prisma.QuestionWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.QuestionUpdateToOneWithWhereWithoutMockAnswersInput, Prisma.QuestionUpdateWithoutMockAnswersInput>, Prisma.QuestionUncheckedUpdateWithoutMockAnswersInput>
-}
-
 export type QuestionCreateNestedOneWithoutRandomAttemptsInput = {
   create?: Prisma.XOR<Prisma.QuestionCreateWithoutRandomAttemptsInput, Prisma.QuestionUncheckedCreateWithoutRandomAttemptsInput>
   connectOrCreate?: Prisma.QuestionCreateOrConnectWithoutRandomAttemptsInput
@@ -989,7 +968,6 @@ export type QuestionCreateWithoutCreatorInput = {
   choices?: Prisma.QuestionChoiceCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptCreateNestedManyWithoutQuestionInput
@@ -1017,7 +995,6 @@ export type QuestionUncheckedCreateWithoutCreatorInput = {
   choices?: Prisma.QuestionChoiceUncheckedCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedCreateNestedManyWithoutQuestionInput
@@ -1094,7 +1071,6 @@ export type QuestionCreateWithoutExamInput = {
   choices?: Prisma.QuestionChoiceCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptCreateNestedManyWithoutQuestionInput
@@ -1122,7 +1098,6 @@ export type QuestionUncheckedCreateWithoutExamInput = {
   choices?: Prisma.QuestionChoiceUncheckedCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedCreateNestedManyWithoutQuestionInput
@@ -1176,7 +1151,6 @@ export type QuestionCreateWithoutCategoryInput = {
   choices?: Prisma.QuestionChoiceCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptCreateNestedManyWithoutQuestionInput
@@ -1204,7 +1178,6 @@ export type QuestionUncheckedCreateWithoutCategoryInput = {
   choices?: Prisma.QuestionChoiceUncheckedCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedCreateNestedManyWithoutQuestionInput
@@ -1258,7 +1231,6 @@ export type QuestionCreateWithoutChoicesInput = {
   creator?: Prisma.UserCreateNestedOneWithoutCreatedQuestionsInput
   dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptCreateNestedManyWithoutQuestionInput
@@ -1286,7 +1258,6 @@ export type QuestionUncheckedCreateWithoutChoicesInput = {
   deletedAt?: Date | string | null
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedCreateNestedManyWithoutQuestionInput
@@ -1330,7 +1301,6 @@ export type QuestionUpdateWithoutChoicesInput = {
   creator?: Prisma.UserUpdateOneWithoutCreatedQuestionsNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUpdateManyWithoutQuestionNestedInput
@@ -1358,7 +1328,6 @@ export type QuestionUncheckedUpdateWithoutChoicesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedUpdateManyWithoutQuestionNestedInput
@@ -1386,7 +1355,6 @@ export type QuestionCreateWithoutDailyQaAnswersInput = {
   creator?: Prisma.UserCreateNestedOneWithoutCreatedQuestionsInput
   choices?: Prisma.QuestionChoiceCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptCreateNestedManyWithoutQuestionInput
@@ -1414,7 +1382,6 @@ export type QuestionUncheckedCreateWithoutDailyQaAnswersInput = {
   deletedAt?: Date | string | null
   choices?: Prisma.QuestionChoiceUncheckedCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedCreateNestedManyWithoutQuestionInput
@@ -1458,7 +1425,6 @@ export type QuestionUpdateWithoutDailyQaAnswersInput = {
   creator?: Prisma.UserUpdateOneWithoutCreatedQuestionsNestedInput
   choices?: Prisma.QuestionChoiceUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUpdateManyWithoutQuestionNestedInput
@@ -1486,7 +1452,6 @@ export type QuestionUncheckedUpdateWithoutDailyQaAnswersInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   choices?: Prisma.QuestionChoiceUncheckedUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedUpdateManyWithoutQuestionNestedInput
@@ -1515,7 +1480,6 @@ export type QuestionCreateWithoutPracticeSessionQuestionsInput = {
   choices?: Prisma.QuestionChoiceCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptCreateNestedManyWithoutQuestionInput
   aiExplanations?: Prisma.AiExplanationCreateNestedManyWithoutQuestionInput
@@ -1543,7 +1507,6 @@ export type QuestionUncheckedCreateWithoutPracticeSessionQuestionsInput = {
   choices?: Prisma.QuestionChoiceUncheckedCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedCreateNestedManyWithoutQuestionInput
   aiExplanations?: Prisma.AiExplanationUncheckedCreateNestedManyWithoutQuestionInput
@@ -1587,7 +1550,6 @@ export type QuestionUpdateWithoutPracticeSessionQuestionsInput = {
   choices?: Prisma.QuestionChoiceUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUpdateManyWithoutQuestionNestedInput
   aiExplanations?: Prisma.AiExplanationUpdateManyWithoutQuestionNestedInput
@@ -1615,7 +1577,6 @@ export type QuestionUncheckedUpdateWithoutPracticeSessionQuestionsInput = {
   choices?: Prisma.QuestionChoiceUncheckedUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedUpdateManyWithoutQuestionNestedInput
   aiExplanations?: Prisma.AiExplanationUncheckedUpdateManyWithoutQuestionNestedInput
@@ -1643,7 +1604,6 @@ export type QuestionCreateWithoutPracticeAnswersInput = {
   choices?: Prisma.QuestionChoiceCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptCreateNestedManyWithoutQuestionInput
   aiExplanations?: Prisma.AiExplanationCreateNestedManyWithoutQuestionInput
@@ -1671,7 +1631,6 @@ export type QuestionUncheckedCreateWithoutPracticeAnswersInput = {
   choices?: Prisma.QuestionChoiceUncheckedCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedCreateNestedManyWithoutQuestionInput
   aiExplanations?: Prisma.AiExplanationUncheckedCreateNestedManyWithoutQuestionInput
@@ -1715,7 +1674,6 @@ export type QuestionUpdateWithoutPracticeAnswersInput = {
   choices?: Prisma.QuestionChoiceUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUpdateManyWithoutQuestionNestedInput
   aiExplanations?: Prisma.AiExplanationUpdateManyWithoutQuestionNestedInput
@@ -1743,7 +1701,6 @@ export type QuestionUncheckedUpdateWithoutPracticeAnswersInput = {
   choices?: Prisma.QuestionChoiceUncheckedUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedUpdateManyWithoutQuestionNestedInput
   aiExplanations?: Prisma.AiExplanationUncheckedUpdateManyWithoutQuestionNestedInput
@@ -1770,7 +1727,6 @@ export type QuestionCreateWithoutMockExamQuestionsInput = {
   creator?: Prisma.UserCreateNestedOneWithoutCreatedQuestionsInput
   choices?: Prisma.QuestionChoiceCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptCreateNestedManyWithoutQuestionInput
@@ -1798,7 +1754,6 @@ export type QuestionUncheckedCreateWithoutMockExamQuestionsInput = {
   deletedAt?: Date | string | null
   choices?: Prisma.QuestionChoiceUncheckedCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedCreateNestedManyWithoutQuestionInput
@@ -1842,7 +1797,6 @@ export type QuestionUpdateWithoutMockExamQuestionsInput = {
   creator?: Prisma.UserUpdateOneWithoutCreatedQuestionsNestedInput
   choices?: Prisma.QuestionChoiceUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUpdateManyWithoutQuestionNestedInput
@@ -1870,135 +1824,6 @@ export type QuestionUncheckedUpdateWithoutMockExamQuestionsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   choices?: Prisma.QuestionChoiceUncheckedUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
-  practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedUpdateManyWithoutQuestionNestedInput
-  practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutQuestionNestedInput
-  randomAttempts?: Prisma.RandomQuizAttemptUncheckedUpdateManyWithoutQuestionNestedInput
-  aiExplanations?: Prisma.AiExplanationUncheckedUpdateManyWithoutQuestionNestedInput
-  aiUsageLogs?: Prisma.AiUsageLogUncheckedUpdateManyWithoutQuestionNestedInput
-}
-
-export type QuestionCreateWithoutMockAnswersInput = {
-  id?: string
-  sourceKey: string
-  sourceYear?: number | null
-  sourceSeason?: string | null
-  questionNo?: number | null
-  questionText: string
-  imagePath?: string | null
-  explanation?: string | null
-  questionType?: string
-  difficulty?: number | null
-  status?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  deletedAt?: Date | string | null
-  exam: Prisma.ExamCreateNestedOneWithoutQuestionsInput
-  category: Prisma.QuestionCategoryCreateNestedOneWithoutQuestionsInput
-  creator?: Prisma.UserCreateNestedOneWithoutCreatedQuestionsInput
-  choices?: Prisma.QuestionChoiceCreateNestedManyWithoutQuestionInput
-  dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutQuestionInput
-  mockExamQuestions?: Prisma.MockExamQuestionCreateNestedManyWithoutQuestionInput
-  practiceSessionQuestions?: Prisma.PracticeSessionQuestionCreateNestedManyWithoutQuestionInput
-  practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutQuestionInput
-  randomAttempts?: Prisma.RandomQuizAttemptCreateNestedManyWithoutQuestionInput
-  aiExplanations?: Prisma.AiExplanationCreateNestedManyWithoutQuestionInput
-  aiUsageLogs?: Prisma.AiUsageLogCreateNestedManyWithoutQuestionInput
-}
-
-export type QuestionUncheckedCreateWithoutMockAnswersInput = {
-  id?: string
-  sourceKey: string
-  examId: string
-  categoryId: string
-  sourceYear?: number | null
-  sourceSeason?: string | null
-  questionNo?: number | null
-  questionText: string
-  imagePath?: string | null
-  explanation?: string | null
-  questionType?: string
-  difficulty?: number | null
-  status?: string
-  createdBy?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  deletedAt?: Date | string | null
-  choices?: Prisma.QuestionChoiceUncheckedCreateNestedManyWithoutQuestionInput
-  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutQuestionInput
-  mockExamQuestions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutQuestionInput
-  practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedCreateNestedManyWithoutQuestionInput
-  practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutQuestionInput
-  randomAttempts?: Prisma.RandomQuizAttemptUncheckedCreateNestedManyWithoutQuestionInput
-  aiExplanations?: Prisma.AiExplanationUncheckedCreateNestedManyWithoutQuestionInput
-  aiUsageLogs?: Prisma.AiUsageLogUncheckedCreateNestedManyWithoutQuestionInput
-}
-
-export type QuestionCreateOrConnectWithoutMockAnswersInput = {
-  where: Prisma.QuestionWhereUniqueInput
-  create: Prisma.XOR<Prisma.QuestionCreateWithoutMockAnswersInput, Prisma.QuestionUncheckedCreateWithoutMockAnswersInput>
-}
-
-export type QuestionUpsertWithoutMockAnswersInput = {
-  update: Prisma.XOR<Prisma.QuestionUpdateWithoutMockAnswersInput, Prisma.QuestionUncheckedUpdateWithoutMockAnswersInput>
-  create: Prisma.XOR<Prisma.QuestionCreateWithoutMockAnswersInput, Prisma.QuestionUncheckedCreateWithoutMockAnswersInput>
-  where?: Prisma.QuestionWhereInput
-}
-
-export type QuestionUpdateToOneWithWhereWithoutMockAnswersInput = {
-  where?: Prisma.QuestionWhereInput
-  data: Prisma.XOR<Prisma.QuestionUpdateWithoutMockAnswersInput, Prisma.QuestionUncheckedUpdateWithoutMockAnswersInput>
-}
-
-export type QuestionUpdateWithoutMockAnswersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  questionText?: Prisma.StringFieldUpdateOperationsInput | string
-  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  questionType?: Prisma.StringFieldUpdateOperationsInput | string
-  difficulty?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  exam?: Prisma.ExamUpdateOneRequiredWithoutQuestionsNestedInput
-  category?: Prisma.QuestionCategoryUpdateOneRequiredWithoutQuestionsNestedInput
-  creator?: Prisma.UserUpdateOneWithoutCreatedQuestionsNestedInput
-  choices?: Prisma.QuestionChoiceUpdateManyWithoutQuestionNestedInput
-  dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutQuestionNestedInput
-  mockExamQuestions?: Prisma.MockExamQuestionUpdateManyWithoutQuestionNestedInput
-  practiceSessionQuestions?: Prisma.PracticeSessionQuestionUpdateManyWithoutQuestionNestedInput
-  practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutQuestionNestedInput
-  randomAttempts?: Prisma.RandomQuizAttemptUpdateManyWithoutQuestionNestedInput
-  aiExplanations?: Prisma.AiExplanationUpdateManyWithoutQuestionNestedInput
-  aiUsageLogs?: Prisma.AiUsageLogUpdateManyWithoutQuestionNestedInput
-}
-
-export type QuestionUncheckedUpdateWithoutMockAnswersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
-  examId?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  questionText?: Prisma.StringFieldUpdateOperationsInput | string
-  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  questionType?: Prisma.StringFieldUpdateOperationsInput | string
-  difficulty?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  choices?: Prisma.QuestionChoiceUncheckedUpdateManyWithoutQuestionNestedInput
-  dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutQuestionNestedInput
-  mockExamQuestions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedUpdateManyWithoutQuestionNestedInput
@@ -2027,7 +1852,6 @@ export type QuestionCreateWithoutRandomAttemptsInput = {
   choices?: Prisma.QuestionChoiceCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutQuestionInput
   aiExplanations?: Prisma.AiExplanationCreateNestedManyWithoutQuestionInput
@@ -2055,7 +1879,6 @@ export type QuestionUncheckedCreateWithoutRandomAttemptsInput = {
   choices?: Prisma.QuestionChoiceUncheckedCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutQuestionInput
   aiExplanations?: Prisma.AiExplanationUncheckedCreateNestedManyWithoutQuestionInput
@@ -2099,7 +1922,6 @@ export type QuestionUpdateWithoutRandomAttemptsInput = {
   choices?: Prisma.QuestionChoiceUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutQuestionNestedInput
   aiExplanations?: Prisma.AiExplanationUpdateManyWithoutQuestionNestedInput
@@ -2127,7 +1949,6 @@ export type QuestionUncheckedUpdateWithoutRandomAttemptsInput = {
   choices?: Prisma.QuestionChoiceUncheckedUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   aiExplanations?: Prisma.AiExplanationUncheckedUpdateManyWithoutQuestionNestedInput
@@ -2155,7 +1976,6 @@ export type QuestionCreateWithoutAiExplanationsInput = {
   choices?: Prisma.QuestionChoiceCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptCreateNestedManyWithoutQuestionInput
@@ -2183,7 +2003,6 @@ export type QuestionUncheckedCreateWithoutAiExplanationsInput = {
   choices?: Prisma.QuestionChoiceUncheckedCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedCreateNestedManyWithoutQuestionInput
@@ -2227,7 +2046,6 @@ export type QuestionUpdateWithoutAiExplanationsInput = {
   choices?: Prisma.QuestionChoiceUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUpdateManyWithoutQuestionNestedInput
@@ -2255,7 +2073,6 @@ export type QuestionUncheckedUpdateWithoutAiExplanationsInput = {
   choices?: Prisma.QuestionChoiceUncheckedUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedUpdateManyWithoutQuestionNestedInput
@@ -2283,7 +2100,6 @@ export type QuestionCreateWithoutAiUsageLogsInput = {
   choices?: Prisma.QuestionChoiceCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptCreateNestedManyWithoutQuestionInput
@@ -2311,7 +2127,6 @@ export type QuestionUncheckedCreateWithoutAiUsageLogsInput = {
   choices?: Prisma.QuestionChoiceUncheckedCreateNestedManyWithoutQuestionInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedCreateNestedManyWithoutQuestionInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutQuestionInput
-  mockAnswers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedCreateNestedManyWithoutQuestionInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedCreateNestedManyWithoutQuestionInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedCreateNestedManyWithoutQuestionInput
@@ -2355,7 +2170,6 @@ export type QuestionUpdateWithoutAiUsageLogsInput = {
   choices?: Prisma.QuestionChoiceUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUpdateManyWithoutQuestionNestedInput
@@ -2383,7 +2197,6 @@ export type QuestionUncheckedUpdateWithoutAiUsageLogsInput = {
   choices?: Prisma.QuestionChoiceUncheckedUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedUpdateManyWithoutQuestionNestedInput
@@ -2429,7 +2242,6 @@ export type QuestionUpdateWithoutCreatorInput = {
   choices?: Prisma.QuestionChoiceUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUpdateManyWithoutQuestionNestedInput
@@ -2457,7 +2269,6 @@ export type QuestionUncheckedUpdateWithoutCreatorInput = {
   choices?: Prisma.QuestionChoiceUncheckedUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedUpdateManyWithoutQuestionNestedInput
@@ -2523,7 +2334,6 @@ export type QuestionUpdateWithoutExamInput = {
   choices?: Prisma.QuestionChoiceUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUpdateManyWithoutQuestionNestedInput
@@ -2551,7 +2361,6 @@ export type QuestionUncheckedUpdateWithoutExamInput = {
   choices?: Prisma.QuestionChoiceUncheckedUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedUpdateManyWithoutQuestionNestedInput
@@ -2617,7 +2426,6 @@ export type QuestionUpdateWithoutCategoryInput = {
   choices?: Prisma.QuestionChoiceUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUpdateManyWithoutQuestionNestedInput
@@ -2645,7 +2453,6 @@ export type QuestionUncheckedUpdateWithoutCategoryInput = {
   choices?: Prisma.QuestionChoiceUncheckedUpdateManyWithoutQuestionNestedInput
   dailyQaAnswers?: Prisma.DailyQaAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   mockExamQuestions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutQuestionNestedInput
-  mockAnswers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   practiceSessionQuestions?: Prisma.PracticeSessionQuestionUncheckedUpdateManyWithoutQuestionNestedInput
   practiceAnswers?: Prisma.PracticeAnswerUncheckedUpdateManyWithoutQuestionNestedInput
   randomAttempts?: Prisma.RandomQuizAttemptUncheckedUpdateManyWithoutQuestionNestedInput
@@ -2681,7 +2488,6 @@ export type QuestionCountOutputType = {
   choices: number
   dailyQaAnswers: number
   mockExamQuestions: number
-  mockAnswers: number
   practiceSessionQuestions: number
   practiceAnswers: number
   randomAttempts: number
@@ -2693,7 +2499,6 @@ export type QuestionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   choices?: boolean | QuestionCountOutputTypeCountChoicesArgs
   dailyQaAnswers?: boolean | QuestionCountOutputTypeCountDailyQaAnswersArgs
   mockExamQuestions?: boolean | QuestionCountOutputTypeCountMockExamQuestionsArgs
-  mockAnswers?: boolean | QuestionCountOutputTypeCountMockAnswersArgs
   practiceSessionQuestions?: boolean | QuestionCountOutputTypeCountPracticeSessionQuestionsArgs
   practiceAnswers?: boolean | QuestionCountOutputTypeCountPracticeAnswersArgs
   randomAttempts?: boolean | QuestionCountOutputTypeCountRandomAttemptsArgs
@@ -2730,13 +2535,6 @@ export type QuestionCountOutputTypeCountDailyQaAnswersArgs<ExtArgs extends runti
  */
 export type QuestionCountOutputTypeCountMockExamQuestionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.MockExamQuestionWhereInput
-}
-
-/**
- * QuestionCountOutputType without action
- */
-export type QuestionCountOutputTypeCountMockAnswersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.MockAnswerWhereInput
 }
 
 /**
@@ -2799,7 +2597,6 @@ export type QuestionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   choices?: boolean | Prisma.Question$choicesArgs<ExtArgs>
   dailyQaAnswers?: boolean | Prisma.Question$dailyQaAnswersArgs<ExtArgs>
   mockExamQuestions?: boolean | Prisma.Question$mockExamQuestionsArgs<ExtArgs>
-  mockAnswers?: boolean | Prisma.Question$mockAnswersArgs<ExtArgs>
   practiceSessionQuestions?: boolean | Prisma.Question$practiceSessionQuestionsArgs<ExtArgs>
   practiceAnswers?: boolean | Prisma.Question$practiceAnswersArgs<ExtArgs>
   randomAttempts?: boolean | Prisma.Question$randomAttemptsArgs<ExtArgs>
@@ -2882,7 +2679,6 @@ export type QuestionInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   choices?: boolean | Prisma.Question$choicesArgs<ExtArgs>
   dailyQaAnswers?: boolean | Prisma.Question$dailyQaAnswersArgs<ExtArgs>
   mockExamQuestions?: boolean | Prisma.Question$mockExamQuestionsArgs<ExtArgs>
-  mockAnswers?: boolean | Prisma.Question$mockAnswersArgs<ExtArgs>
   practiceSessionQuestions?: boolean | Prisma.Question$practiceSessionQuestionsArgs<ExtArgs>
   practiceAnswers?: boolean | Prisma.Question$practiceAnswersArgs<ExtArgs>
   randomAttempts?: boolean | Prisma.Question$randomAttemptsArgs<ExtArgs>
@@ -2910,7 +2706,6 @@ export type $QuestionPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     choices: Prisma.$QuestionChoicePayload<ExtArgs>[]
     dailyQaAnswers: Prisma.$DailyQaAnswerPayload<ExtArgs>[]
     mockExamQuestions: Prisma.$MockExamQuestionPayload<ExtArgs>[]
-    mockAnswers: Prisma.$MockAnswerPayload<ExtArgs>[]
     practiceSessionQuestions: Prisma.$PracticeSessionQuestionPayload<ExtArgs>[]
     practiceAnswers: Prisma.$PracticeAnswerPayload<ExtArgs>[]
     randomAttempts: Prisma.$RandomQuizAttemptPayload<ExtArgs>[]
@@ -3335,7 +3130,6 @@ export interface Prisma__QuestionClient<T, Null = never, ExtArgs extends runtime
   choices<T extends Prisma.Question$choicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Question$choicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestionChoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   dailyQaAnswers<T extends Prisma.Question$dailyQaAnswersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Question$dailyQaAnswersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyQaAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   mockExamQuestions<T extends Prisma.Question$mockExamQuestionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Question$mockExamQuestionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MockExamQuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  mockAnswers<T extends Prisma.Question$mockAnswersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Question$mockAnswersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MockAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   practiceSessionQuestions<T extends Prisma.Question$practiceSessionQuestionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Question$practiceSessionQuestionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PracticeSessionQuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   practiceAnswers<T extends Prisma.Question$practiceAnswersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Question$practiceAnswersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PracticeAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   randomAttempts<T extends Prisma.Question$randomAttemptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Question$randomAttemptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RandomQuizAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3876,30 +3670,6 @@ export type Question$mockExamQuestionsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.MockExamQuestionScalarFieldEnum | Prisma.MockExamQuestionScalarFieldEnum[]
-}
-
-/**
- * Question.mockAnswers
- */
-export type Question$mockAnswersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the MockAnswer
-   */
-  select?: Prisma.MockAnswerSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the MockAnswer
-   */
-  omit?: Prisma.MockAnswerOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.MockAnswerInclude<ExtArgs> | null
-  where?: Prisma.MockAnswerWhereInput
-  orderBy?: Prisma.MockAnswerOrderByWithRelationInput | Prisma.MockAnswerOrderByWithRelationInput[]
-  cursor?: Prisma.MockAnswerWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.MockAnswerScalarFieldEnum | Prisma.MockAnswerScalarFieldEnum[]
 }
 
 /**

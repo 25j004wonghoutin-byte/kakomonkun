@@ -140,7 +140,6 @@ model Question {
   choices                  QuestionChoice[]
   dailyQaAnswers           DailyQaAnswer[]
   mockExamQuestions        MockExamQuestion[]
-  mockAnswers              MockAnswer[]
   practiceSessionQuestions PracticeSessionQuestion[]
   practiceAnswers          PracticeAnswer[]
   randomAttempts           RandomQuizAttempt[]
@@ -166,7 +165,6 @@ model QuestionChoice {
   updatedAt       DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
   question        Question         @relation(fields: [questionId], references: [id], onDelete: Cascade)
   dailyQaAnswers  DailyQaAnswer[]
-  mockAnswers     MockAnswer[]
   practiceAnswers PracticeAnswer[]
   randomAttempts  RandomQuizAttempt[]
 
@@ -282,11 +280,13 @@ model MockExam {
   title            String             @db.VarChar(200)
   targetMonth      DateTime           @map("target_month") @db.Date
   description      String?
-  timeLimitMinutes Int?               @map("time_limit_minutes")
+  timeLimitMinutes Int                @map("time_limit_minutes")
   questionCount    Int                @default(0) @map("question_count")
   status           String             @default("draft") @db.VarChar(30)
-  availableFrom    DateTime?          @map("available_from") @db.Timestamptz(3)
-  availableUntil   DateTime?          @map("available_until") @db.Timestamptz(3)
+  availableFrom    DateTime           @map("available_from") @db.Timestamptz(3)
+  availableUntil   DateTime           @map("available_until") @db.Timestamptz(3)
+  rankingFinalizedAt DateTime?        @map("ranking_finalized_at") @db.Timestamptz(3)
+  rewardsCompletedAt DateTime?        @map("rewards_completed_at") @db.Timestamptz(3)
   createdBy        String?            @map("created_by") @db.Uuid
   createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt        DateTime           @updatedAt @map("updated_at") @db.Timestamptz(3)
@@ -294,8 +294,10 @@ model MockExam {
   creator          User?              @relation("MockExamCreator", fields: [createdBy], references: [id], onDelete: SetNull)
   questions        MockExamQuestion[]
   attempts         MockAttempt[]
+  rankings         MonthlyRanking[]
 
   @@unique([examId, targetMonth], map: "mock_exams_exam_id_target_month_key")
+  @@unique([id, targetMonth], map: "mock_exams_id_month_key")
   @@index([createdBy], map: "idx_mock_exams_created_by")
   @@index([status], map: "idx_mock_exams_status")
   @@index([availableFrom], map: "idx_mock_exams_available_from")
@@ -308,56 +310,104 @@ model MockExamQuestion {
   questionId String   @map("question_id") @db.Uuid
   orderNo    Int      @map("order_no")
   score      Int      @default(1)
+  questionText String @map("question_text")
+  imagePath String? @map("image_path")
+  explanation String?
+  categoryCode String @map("category_code") @db.VarChar(50)
+  sourceKey String @map("source_key") @db.VarChar(120)
+  sourceYear Int @map("source_year")
+  sourceSeason String? @map("source_season") @db.VarChar(30)
+  questionNo Int? @map("question_no")
+  sourceLabel String @map("source_label") @db.VarChar(200)
   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   mockExam   MockExam @relation(fields: [mockExamId], references: [id], onDelete: Cascade)
   question   Question @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  choices MockExamChoice[]
+  answers MockAnswer[]
 
+  @@unique([id, mockExamId], map: "mock_exam_questions_id_exam_key")
   @@unique([mockExamId, questionId], map: "mock_exam_questions_mock_exam_id_question_id_key")
   @@unique([mockExamId, orderNo], map: "mock_exam_questions_mock_exam_id_order_no_key")
   @@index([questionId], map: "idx_mock_exam_questions_question_id")
   @@map("mock_exam_questions")
 }
 
+model MockExamChoice {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  mockExamId String @map("mock_exam_id") @db.Uuid
+  mockQuestionId String @map("mock_question_id") @db.Uuid
+  originalChoiceId String? @map("original_choice_id") @db.Uuid
+  choiceLabel String @map("choice_label") @db.VarChar(10)
+  choiceText String @map("choice_text")
+  isCorrect Boolean @map("is_correct")
+  sortOrder Int @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  question MockExamQuestion @relation(fields: [mockQuestionId, mockExamId], references: [id, mockExamId], onDelete: Restrict)
+  answers MockAnswer[]
+
+  @@unique([id, mockQuestionId, mockExamId], map: "mock_exam_choices_id_question_exam_key")
+  @@unique([mockQuestionId, choiceLabel], map: "mock_exam_choices_question_label_key")
+  @@unique([mockQuestionId, sortOrder], map: "mock_exam_choices_question_order_key")
+  @@index([mockQuestionId, mockExamId], map: "idx_mock_exam_choices_question_exam")
+  @@index([mockExamId], map: "idx_mock_exam_choices_exam")
+  @@map("mock_exam_choices")
+}
+
 model MockAttempt {
   id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   mockExamId     String       @map("mock_exam_id") @db.Uuid
   userId         String       @map("user_id") @db.Uuid
+  startRequestId String       @map("start_request_id") @db.Uuid
+  attemptNo      Int          @map("attempt_no")
   status         String       @default("in_progress") @db.VarChar(30)
   startedAt      DateTime     @default(now()) @map("started_at") @db.Timestamptz(3)
+  expiresAt      DateTime     @map("expires_at") @db.Timestamptz(3)
   submittedAt    DateTime?    @map("submitted_at") @db.Timestamptz(3)
+  gradedAt       DateTime?    @map("graded_at") @db.Timestamptz(3)
   totalQuestions Int          @default(0) @map("total_questions")
   correctCount   Int          @default(0) @map("correct_count")
-  score          Int          @default(0)
+  answeredCount  Int          @default(0) @map("answered_count")
+  score          Decimal      @default(0) @db.Decimal(5, 2)
+  revision       Int          @default(0)
   earnedPoints   Int          @default(0) @map("earned_points")
   createdAt      DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt      DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
-  mockExam       MockExam     @relation(fields: [mockExamId], references: [id], onDelete: Cascade)
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mockExam       MockExam     @relation(fields: [mockExamId], references: [id], onDelete: Restrict)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Restrict)
   answers        MockAnswer[]
+  rankings       MonthlyRanking[]
 
-  @@unique([mockExamId, userId], map: "mock_attempts_mock_exam_id_user_id_key")
+  @@unique([mockExamId, userId, attemptNo], map: "mock_attempts_exam_user_number_key")
+  @@unique([userId, startRequestId], map: "mock_attempts_user_start_request_key")
+  @@unique([id, mockExamId], map: "mock_attempts_id_exam_key")
+  @@unique([id, mockExamId, userId], map: "mock_attempts_id_exam_user_key")
   @@index([userId], map: "idx_mock_attempts_user_id")
   @@index([status], map: "idx_mock_attempts_status")
   @@index([startedAt], map: "idx_mock_attempts_started_at")
+  @@index([status, expiresAt, id], map: "idx_mock_attempts_due")
+  @@index([mockExamId, status, userId], map: "idx_mock_attempts_exam_status_user")
   @@map("mock_attempts")
 }
 
 model MockAnswer {
   id               String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   attemptId        String         @map("attempt_id") @db.Uuid
-  questionId       String         @map("question_id") @db.Uuid
-  selectedChoiceId String         @map("selected_choice_id") @db.Uuid
-  isCorrect        Boolean        @map("is_correct")
+  mockExamId       String         @map("mock_exam_id") @db.Uuid
+  mockQuestionId   String         @map("mock_question_id") @db.Uuid
+  selectedChoiceId String?        @map("selected_choice_id") @db.Uuid
+  isCorrect        Boolean?       @map("is_correct")
+  revision         Int            @default(0)
+  lastRequestId    String?        @map("last_request_id") @db.Uuid
   scoreAwarded     Int            @default(0) @map("score_awarded")
   answeredAt       DateTime?      @map("answered_at") @db.Timestamptz(3)
   createdAt        DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
-  attempt          MockAttempt    @relation(fields: [attemptId], references: [id], onDelete: Cascade)
-  question         Question       @relation(fields: [questionId], references: [id], onDelete: Restrict)
-  selectedChoice   QuestionChoice @relation(fields: [selectedChoiceId], references: [id], onDelete: Restrict)
+  attempt          MockAttempt    @relation(fields: [attemptId, mockExamId], references: [id, mockExamId], onDelete: Cascade)
+  question         MockExamQuestion @relation(fields: [mockQuestionId, mockExamId], references: [id, mockExamId], onDelete: Restrict)
+  selectedChoice   MockExamChoice? @relation(fields: [selectedChoiceId, mockQuestionId, mockExamId], references: [id, mockQuestionId, mockExamId], onDelete: Restrict)
 
-  @@unique([attemptId, questionId], map: "mock_answers_attempt_id_question_id_key")
-  @@index([questionId], map: "idx_mock_answers_question_id")
-  @@index([selectedChoiceId], map: "idx_mock_answers_selected_choice_id")
+  @@unique([attemptId, mockQuestionId], map: "mock_answers_attempt_question_key")
+  @@index([mockQuestionId, mockExamId], map: "idx_mock_answers_question_exam")
+  @@index([selectedChoiceId, mockQuestionId, mockExamId], map: "idx_mock_answers_choice_question_exam")
   @@map("mock_answers")
 }
 
@@ -459,18 +509,51 @@ model MonthlyRanking {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   targetMonth   DateTime @map("target_month") @db.Date
   userId        String   @map("user_id") @db.Uuid
+  mockExamId    String   @map("mock_exam_id") @db.Uuid
+  bestAttemptId String   @map("best_attempt_id") @db.Uuid
   rankNo        Int      @map("rank_no")
   monthlyPoints Int      @default(0) @map("monthly_points")
-  mockScore     Int?     @map("mock_score")
+  mockScore     Decimal  @map("mock_score") @db.Decimal(5, 2)
+  correctCount  Int      @map("correct_count")
+  totalQuestions Int    @map("total_questions")
+  isFinal       Boolean @default(false) @map("is_final")
+  rewardProcessedAt DateTime? @map("reward_processed_at") @db.Timestamptz(3)
   rewardPoints  Int      @default(0) @map("reward_points")
   calculatedAt  DateTime @default(now()) @map("calculated_at") @db.Timestamptz(3)
   createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  mockExam      MockExam @relation(fields: [mockExamId, targetMonth], references: [id, targetMonth], onDelete: Restrict)
+  bestAttempt   MockAttempt @relation(fields: [bestAttemptId, mockExamId, userId], references: [id, mockExamId, userId], onDelete: Restrict)
 
-  @@unique([targetMonth, userId], map: "monthly_rankings_target_month_user_id_key")
-  @@unique([targetMonth, rankNo], map: "monthly_rankings_target_month_rank_no_key")
+  @@unique([mockExamId, userId], map: "monthly_rankings_exam_user_key")
+  @@index([mockExamId, rankNo], map: "idx_monthly_rankings_exam_rank")
+  @@index([bestAttemptId, mockExamId, userId], map: "idx_monthly_rankings_best_attempt")
+  @@index([userId, targetMonth], map: "idx_monthly_rankings_user_month")
   @@index([userId], map: "idx_monthly_rankings_user_id")
   @@map("monthly_rankings")
+}
+
+model MockExamJobRun {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  jobKey String @unique(map: "mock_exam_job_runs_job_key_key") @map("job_key") @db.VarChar(200)
+  kind String @db.VarChar(30)
+  targetMonth DateTime @map("target_month") @db.Date
+  examCode String? @map("exam_code") @db.VarChar(50)
+  status String @default("pending") @db.VarChar(30)
+  attempts Int @default(0)
+  leaseToken String? @map("lease_token") @db.Uuid
+  leaseUntil DateTime? @map("lease_until") @db.Timestamptz(3)
+  nextRunAt DateTime @default(now()) @map("next_run_at") @db.Timestamptz(3)
+  cursor String?
+  lastErrorCode String? @map("last_error_code") @db.VarChar(80)
+  lastErrorAt DateTime? @map("last_error_at") @db.Timestamptz(3)
+  completedAt DateTime? @map("completed_at") @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([status, nextRunAt], map: "idx_mock_exam_job_runs_due")
+  @@index([leaseUntil], map: "idx_mock_exam_job_runs_lease")
+  @@map("mock_exam_job_runs")
 }
 
 model AiExplanation {
@@ -568,6 +651,7 @@ model Notification {
   boardPostId    String?       @map("board_post_id") @db.Uuid
   boardCommentId String?       @map("board_comment_id") @db.Uuid
   titleId        String?       @map("title_id") @db.Uuid
+  targetMonth    DateTime?     @map("target_month") @db.Date
   readAt         DateTime?     @map("read_at") @db.Timestamptz(3)
   createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
   recipient      User          @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Restrict)
@@ -579,6 +663,7 @@ model Notification {
   @@unique([recipientId, type, boardCommentId], map: "notifications_recipient_type_comment_key")
   @@unique([recipientId, type, boardPostId], map: "notifications_recipient_type_post_key")
   @@unique([recipientId, type, titleId], map: "notifications_recipient_type_title_key")
+  @@unique([recipientId, type, targetMonth], map: "notifications_recipient_type_month_key")
   @@index([recipientId], map: "idx_notifications_recipient_id")
   @@index([actorId], map: "idx_notifications_actor_id")
   @@index([boardPostId], map: "idx_notifications_board_post_id")

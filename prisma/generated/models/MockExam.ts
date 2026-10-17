@@ -47,6 +47,8 @@ export type MockExamMinAggregateOutputType = {
   status: string | null
   availableFrom: Date | null
   availableUntil: Date | null
+  rankingFinalizedAt: Date | null
+  rewardsCompletedAt: Date | null
   createdBy: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -63,6 +65,8 @@ export type MockExamMaxAggregateOutputType = {
   status: string | null
   availableFrom: Date | null
   availableUntil: Date | null
+  rankingFinalizedAt: Date | null
+  rewardsCompletedAt: Date | null
   createdBy: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -79,6 +83,8 @@ export type MockExamCountAggregateOutputType = {
   status: number
   availableFrom: number
   availableUntil: number
+  rankingFinalizedAt: number
+  rewardsCompletedAt: number
   createdBy: number
   createdAt: number
   updatedAt: number
@@ -107,6 +113,8 @@ export type MockExamMinAggregateInputType = {
   status?: true
   availableFrom?: true
   availableUntil?: true
+  rankingFinalizedAt?: true
+  rewardsCompletedAt?: true
   createdBy?: true
   createdAt?: true
   updatedAt?: true
@@ -123,6 +131,8 @@ export type MockExamMaxAggregateInputType = {
   status?: true
   availableFrom?: true
   availableUntil?: true
+  rankingFinalizedAt?: true
+  rewardsCompletedAt?: true
   createdBy?: true
   createdAt?: true
   updatedAt?: true
@@ -139,6 +149,8 @@ export type MockExamCountAggregateInputType = {
   status?: true
   availableFrom?: true
   availableUntil?: true
+  rankingFinalizedAt?: true
+  rewardsCompletedAt?: true
   createdBy?: true
   createdAt?: true
   updatedAt?: true
@@ -237,11 +249,13 @@ export type MockExamGroupByOutputType = {
   title: string
   targetMonth: Date
   description: string | null
-  timeLimitMinutes: number | null
+  timeLimitMinutes: number
   questionCount: number
   status: string
-  availableFrom: Date | null
-  availableUntil: Date | null
+  availableFrom: Date
+  availableUntil: Date
+  rankingFinalizedAt: Date | null
+  rewardsCompletedAt: Date | null
   createdBy: string | null
   createdAt: Date
   updatedAt: Date
@@ -276,11 +290,13 @@ export type MockExamWhereInput = {
   title?: Prisma.StringFilter<"MockExam"> | string
   targetMonth?: Prisma.DateTimeFilter<"MockExam"> | Date | string
   description?: Prisma.StringNullableFilter<"MockExam"> | string | null
-  timeLimitMinutes?: Prisma.IntNullableFilter<"MockExam"> | number | null
+  timeLimitMinutes?: Prisma.IntFilter<"MockExam"> | number
   questionCount?: Prisma.IntFilter<"MockExam"> | number
   status?: Prisma.StringFilter<"MockExam"> | string
-  availableFrom?: Prisma.DateTimeNullableFilter<"MockExam"> | Date | string | null
-  availableUntil?: Prisma.DateTimeNullableFilter<"MockExam"> | Date | string | null
+  availableFrom?: Prisma.DateTimeFilter<"MockExam"> | Date | string
+  availableUntil?: Prisma.DateTimeFilter<"MockExam"> | Date | string
+  rankingFinalizedAt?: Prisma.DateTimeNullableFilter<"MockExam"> | Date | string | null
+  rewardsCompletedAt?: Prisma.DateTimeNullableFilter<"MockExam"> | Date | string | null
   createdBy?: Prisma.UuidNullableFilter<"MockExam"> | string | null
   createdAt?: Prisma.DateTimeFilter<"MockExam"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MockExam"> | Date | string
@@ -288,6 +304,7 @@ export type MockExamWhereInput = {
   creator?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   questions?: Prisma.MockExamQuestionListRelationFilter
   attempts?: Prisma.MockAttemptListRelationFilter
+  rankings?: Prisma.MonthlyRankingListRelationFilter
 }
 
 export type MockExamOrderByWithRelationInput = {
@@ -296,11 +313,13 @@ export type MockExamOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   targetMonth?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  timeLimitMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
+  timeLimitMinutes?: Prisma.SortOrder
   questionCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  availableFrom?: Prisma.SortOrderInput | Prisma.SortOrder
-  availableUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  availableFrom?: Prisma.SortOrder
+  availableUntil?: Prisma.SortOrder
+  rankingFinalizedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  rewardsCompletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -308,11 +327,13 @@ export type MockExamOrderByWithRelationInput = {
   creator?: Prisma.UserOrderByWithRelationInput
   questions?: Prisma.MockExamQuestionOrderByRelationAggregateInput
   attempts?: Prisma.MockAttemptOrderByRelationAggregateInput
+  rankings?: Prisma.MonthlyRankingOrderByRelationAggregateInput
 }
 
 export type MockExamWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   examId_targetMonth?: Prisma.MockExamExamIdTargetMonthCompoundUniqueInput
+  id_targetMonth?: Prisma.MockExamIdTargetMonthCompoundUniqueInput
   AND?: Prisma.MockExamWhereInput | Prisma.MockExamWhereInput[]
   OR?: Prisma.MockExamWhereInput[]
   NOT?: Prisma.MockExamWhereInput | Prisma.MockExamWhereInput[]
@@ -320,11 +341,13 @@ export type MockExamWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"MockExam"> | string
   targetMonth?: Prisma.DateTimeFilter<"MockExam"> | Date | string
   description?: Prisma.StringNullableFilter<"MockExam"> | string | null
-  timeLimitMinutes?: Prisma.IntNullableFilter<"MockExam"> | number | null
+  timeLimitMinutes?: Prisma.IntFilter<"MockExam"> | number
   questionCount?: Prisma.IntFilter<"MockExam"> | number
   status?: Prisma.StringFilter<"MockExam"> | string
-  availableFrom?: Prisma.DateTimeNullableFilter<"MockExam"> | Date | string | null
-  availableUntil?: Prisma.DateTimeNullableFilter<"MockExam"> | Date | string | null
+  availableFrom?: Prisma.DateTimeFilter<"MockExam"> | Date | string
+  availableUntil?: Prisma.DateTimeFilter<"MockExam"> | Date | string
+  rankingFinalizedAt?: Prisma.DateTimeNullableFilter<"MockExam"> | Date | string | null
+  rewardsCompletedAt?: Prisma.DateTimeNullableFilter<"MockExam"> | Date | string | null
   createdBy?: Prisma.UuidNullableFilter<"MockExam"> | string | null
   createdAt?: Prisma.DateTimeFilter<"MockExam"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MockExam"> | Date | string
@@ -332,7 +355,8 @@ export type MockExamWhereUniqueInput = Prisma.AtLeast<{
   creator?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   questions?: Prisma.MockExamQuestionListRelationFilter
   attempts?: Prisma.MockAttemptListRelationFilter
-}, "id" | "examId_targetMonth">
+  rankings?: Prisma.MonthlyRankingListRelationFilter
+}, "id" | "examId_targetMonth" | "id_targetMonth">
 
 export type MockExamOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -340,11 +364,13 @@ export type MockExamOrderByWithAggregationInput = {
   title?: Prisma.SortOrder
   targetMonth?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  timeLimitMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
+  timeLimitMinutes?: Prisma.SortOrder
   questionCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  availableFrom?: Prisma.SortOrderInput | Prisma.SortOrder
-  availableUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  availableFrom?: Prisma.SortOrder
+  availableUntil?: Prisma.SortOrder
+  rankingFinalizedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  rewardsCompletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -364,11 +390,13 @@ export type MockExamScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"MockExam"> | string
   targetMonth?: Prisma.DateTimeWithAggregatesFilter<"MockExam"> | Date | string
   description?: Prisma.StringNullableWithAggregatesFilter<"MockExam"> | string | null
-  timeLimitMinutes?: Prisma.IntNullableWithAggregatesFilter<"MockExam"> | number | null
+  timeLimitMinutes?: Prisma.IntWithAggregatesFilter<"MockExam"> | number
   questionCount?: Prisma.IntWithAggregatesFilter<"MockExam"> | number
   status?: Prisma.StringWithAggregatesFilter<"MockExam"> | string
-  availableFrom?: Prisma.DateTimeNullableWithAggregatesFilter<"MockExam"> | Date | string | null
-  availableUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"MockExam"> | Date | string | null
+  availableFrom?: Prisma.DateTimeWithAggregatesFilter<"MockExam"> | Date | string
+  availableUntil?: Prisma.DateTimeWithAggregatesFilter<"MockExam"> | Date | string
+  rankingFinalizedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"MockExam"> | Date | string | null
+  rewardsCompletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"MockExam"> | Date | string | null
   createdBy?: Prisma.UuidNullableWithAggregatesFilter<"MockExam"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MockExam"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"MockExam"> | Date | string
@@ -379,17 +407,20 @@ export type MockExamCreateInput = {
   title: string
   targetMonth: Date | string
   description?: string | null
-  timeLimitMinutes?: number | null
+  timeLimitMinutes: number
   questionCount?: number
   status?: string
-  availableFrom?: Date | string | null
-  availableUntil?: Date | string | null
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   exam: Prisma.ExamCreateNestedOneWithoutMockExamsInput
   creator?: Prisma.UserCreateNestedOneWithoutCreatedMockExamsInput
   questions?: Prisma.MockExamQuestionCreateNestedManyWithoutMockExamInput
   attempts?: Prisma.MockAttemptCreateNestedManyWithoutMockExamInput
+  rankings?: Prisma.MonthlyRankingCreateNestedManyWithoutMockExamInput
 }
 
 export type MockExamUncheckedCreateInput = {
@@ -398,16 +429,19 @@ export type MockExamUncheckedCreateInput = {
   title: string
   targetMonth: Date | string
   description?: string | null
-  timeLimitMinutes?: number | null
+  timeLimitMinutes: number
   questionCount?: number
   status?: string
-  availableFrom?: Date | string | null
-  availableUntil?: Date | string | null
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
   createdBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   questions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutMockExamInput
   attempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutMockExamInput
+  rankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutMockExamInput
 }
 
 export type MockExamUpdateInput = {
@@ -415,17 +449,20 @@ export type MockExamUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  timeLimitMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   questionCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  availableFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  availableUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   exam?: Prisma.ExamUpdateOneRequiredWithoutMockExamsNestedInput
   creator?: Prisma.UserUpdateOneWithoutCreatedMockExamsNestedInput
   questions?: Prisma.MockExamQuestionUpdateManyWithoutMockExamNestedInput
   attempts?: Prisma.MockAttemptUpdateManyWithoutMockExamNestedInput
+  rankings?: Prisma.MonthlyRankingUpdateManyWithoutMockExamNestedInput
 }
 
 export type MockExamUncheckedUpdateInput = {
@@ -434,16 +471,19 @@ export type MockExamUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  timeLimitMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   questionCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  availableFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  availableUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutMockExamNestedInput
   attempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutMockExamNestedInput
+  rankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutMockExamNestedInput
 }
 
 export type MockExamCreateManyInput = {
@@ -452,11 +492,13 @@ export type MockExamCreateManyInput = {
   title: string
   targetMonth: Date | string
   description?: string | null
-  timeLimitMinutes?: number | null
+  timeLimitMinutes: number
   questionCount?: number
   status?: string
-  availableFrom?: Date | string | null
-  availableUntil?: Date | string | null
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
   createdBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -467,11 +509,13 @@ export type MockExamUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  timeLimitMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   questionCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  availableFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  availableUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -482,11 +526,13 @@ export type MockExamUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  timeLimitMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   questionCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  availableFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  availableUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -507,6 +553,11 @@ export type MockExamExamIdTargetMonthCompoundUniqueInput = {
   targetMonth: Date | string
 }
 
+export type MockExamIdTargetMonthCompoundUniqueInput = {
+  id: string
+  targetMonth: Date | string
+}
+
 export type MockExamCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   examId?: Prisma.SortOrder
@@ -518,6 +569,8 @@ export type MockExamCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   availableFrom?: Prisma.SortOrder
   availableUntil?: Prisma.SortOrder
+  rankingFinalizedAt?: Prisma.SortOrder
+  rewardsCompletedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -539,6 +592,8 @@ export type MockExamMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   availableFrom?: Prisma.SortOrder
   availableUntil?: Prisma.SortOrder
+  rankingFinalizedAt?: Prisma.SortOrder
+  rewardsCompletedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -555,6 +610,8 @@ export type MockExamMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   availableFrom?: Prisma.SortOrder
   availableUntil?: Prisma.SortOrder
+  rankingFinalizedAt?: Prisma.SortOrder
+  rewardsCompletedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -682,21 +739,38 @@ export type MockExamUpdateOneRequiredWithoutAttemptsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MockExamUpdateToOneWithWhereWithoutAttemptsInput, Prisma.MockExamUpdateWithoutAttemptsInput>, Prisma.MockExamUncheckedUpdateWithoutAttemptsInput>
 }
 
+export type MockExamCreateNestedOneWithoutRankingsInput = {
+  create?: Prisma.XOR<Prisma.MockExamCreateWithoutRankingsInput, Prisma.MockExamUncheckedCreateWithoutRankingsInput>
+  connectOrCreate?: Prisma.MockExamCreateOrConnectWithoutRankingsInput
+  connect?: Prisma.MockExamWhereUniqueInput
+}
+
+export type MockExamUpdateOneRequiredWithoutRankingsNestedInput = {
+  create?: Prisma.XOR<Prisma.MockExamCreateWithoutRankingsInput, Prisma.MockExamUncheckedCreateWithoutRankingsInput>
+  connectOrCreate?: Prisma.MockExamCreateOrConnectWithoutRankingsInput
+  upsert?: Prisma.MockExamUpsertWithoutRankingsInput
+  connect?: Prisma.MockExamWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MockExamUpdateToOneWithWhereWithoutRankingsInput, Prisma.MockExamUpdateWithoutRankingsInput>, Prisma.MockExamUncheckedUpdateWithoutRankingsInput>
+}
+
 export type MockExamCreateWithoutCreatorInput = {
   id?: string
   title: string
   targetMonth: Date | string
   description?: string | null
-  timeLimitMinutes?: number | null
+  timeLimitMinutes: number
   questionCount?: number
   status?: string
-  availableFrom?: Date | string | null
-  availableUntil?: Date | string | null
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   exam: Prisma.ExamCreateNestedOneWithoutMockExamsInput
   questions?: Prisma.MockExamQuestionCreateNestedManyWithoutMockExamInput
   attempts?: Prisma.MockAttemptCreateNestedManyWithoutMockExamInput
+  rankings?: Prisma.MonthlyRankingCreateNestedManyWithoutMockExamInput
 }
 
 export type MockExamUncheckedCreateWithoutCreatorInput = {
@@ -705,15 +779,18 @@ export type MockExamUncheckedCreateWithoutCreatorInput = {
   title: string
   targetMonth: Date | string
   description?: string | null
-  timeLimitMinutes?: number | null
+  timeLimitMinutes: number
   questionCount?: number
   status?: string
-  availableFrom?: Date | string | null
-  availableUntil?: Date | string | null
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   questions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutMockExamInput
   attempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutMockExamInput
+  rankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutMockExamInput
 }
 
 export type MockExamCreateOrConnectWithoutCreatorInput = {
@@ -751,11 +828,13 @@ export type MockExamScalarWhereInput = {
   title?: Prisma.StringFilter<"MockExam"> | string
   targetMonth?: Prisma.DateTimeFilter<"MockExam"> | Date | string
   description?: Prisma.StringNullableFilter<"MockExam"> | string | null
-  timeLimitMinutes?: Prisma.IntNullableFilter<"MockExam"> | number | null
+  timeLimitMinutes?: Prisma.IntFilter<"MockExam"> | number
   questionCount?: Prisma.IntFilter<"MockExam"> | number
   status?: Prisma.StringFilter<"MockExam"> | string
-  availableFrom?: Prisma.DateTimeNullableFilter<"MockExam"> | Date | string | null
-  availableUntil?: Prisma.DateTimeNullableFilter<"MockExam"> | Date | string | null
+  availableFrom?: Prisma.DateTimeFilter<"MockExam"> | Date | string
+  availableUntil?: Prisma.DateTimeFilter<"MockExam"> | Date | string
+  rankingFinalizedAt?: Prisma.DateTimeNullableFilter<"MockExam"> | Date | string | null
+  rewardsCompletedAt?: Prisma.DateTimeNullableFilter<"MockExam"> | Date | string | null
   createdBy?: Prisma.UuidNullableFilter<"MockExam"> | string | null
   createdAt?: Prisma.DateTimeFilter<"MockExam"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MockExam"> | Date | string
@@ -766,16 +845,19 @@ export type MockExamCreateWithoutExamInput = {
   title: string
   targetMonth: Date | string
   description?: string | null
-  timeLimitMinutes?: number | null
+  timeLimitMinutes: number
   questionCount?: number
   status?: string
-  availableFrom?: Date | string | null
-  availableUntil?: Date | string | null
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   creator?: Prisma.UserCreateNestedOneWithoutCreatedMockExamsInput
   questions?: Prisma.MockExamQuestionCreateNestedManyWithoutMockExamInput
   attempts?: Prisma.MockAttemptCreateNestedManyWithoutMockExamInput
+  rankings?: Prisma.MonthlyRankingCreateNestedManyWithoutMockExamInput
 }
 
 export type MockExamUncheckedCreateWithoutExamInput = {
@@ -783,16 +865,19 @@ export type MockExamUncheckedCreateWithoutExamInput = {
   title: string
   targetMonth: Date | string
   description?: string | null
-  timeLimitMinutes?: number | null
+  timeLimitMinutes: number
   questionCount?: number
   status?: string
-  availableFrom?: Date | string | null
-  availableUntil?: Date | string | null
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
   createdBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   questions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutMockExamInput
   attempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutMockExamInput
+  rankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutMockExamInput
 }
 
 export type MockExamCreateOrConnectWithoutExamInput = {
@@ -826,16 +911,19 @@ export type MockExamCreateWithoutQuestionsInput = {
   title: string
   targetMonth: Date | string
   description?: string | null
-  timeLimitMinutes?: number | null
+  timeLimitMinutes: number
   questionCount?: number
   status?: string
-  availableFrom?: Date | string | null
-  availableUntil?: Date | string | null
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   exam: Prisma.ExamCreateNestedOneWithoutMockExamsInput
   creator?: Prisma.UserCreateNestedOneWithoutCreatedMockExamsInput
   attempts?: Prisma.MockAttemptCreateNestedManyWithoutMockExamInput
+  rankings?: Prisma.MonthlyRankingCreateNestedManyWithoutMockExamInput
 }
 
 export type MockExamUncheckedCreateWithoutQuestionsInput = {
@@ -844,15 +932,18 @@ export type MockExamUncheckedCreateWithoutQuestionsInput = {
   title: string
   targetMonth: Date | string
   description?: string | null
-  timeLimitMinutes?: number | null
+  timeLimitMinutes: number
   questionCount?: number
   status?: string
-  availableFrom?: Date | string | null
-  availableUntil?: Date | string | null
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
   createdBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   attempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutMockExamInput
+  rankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutMockExamInput
 }
 
 export type MockExamCreateOrConnectWithoutQuestionsInput = {
@@ -876,16 +967,19 @@ export type MockExamUpdateWithoutQuestionsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  timeLimitMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   questionCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  availableFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  availableUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   exam?: Prisma.ExamUpdateOneRequiredWithoutMockExamsNestedInput
   creator?: Prisma.UserUpdateOneWithoutCreatedMockExamsNestedInput
   attempts?: Prisma.MockAttemptUpdateManyWithoutMockExamNestedInput
+  rankings?: Prisma.MonthlyRankingUpdateManyWithoutMockExamNestedInput
 }
 
 export type MockExamUncheckedUpdateWithoutQuestionsInput = {
@@ -894,15 +988,18 @@ export type MockExamUncheckedUpdateWithoutQuestionsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  timeLimitMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   questionCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  availableFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  availableUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutMockExamNestedInput
+  rankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutMockExamNestedInput
 }
 
 export type MockExamCreateWithoutAttemptsInput = {
@@ -910,16 +1007,19 @@ export type MockExamCreateWithoutAttemptsInput = {
   title: string
   targetMonth: Date | string
   description?: string | null
-  timeLimitMinutes?: number | null
+  timeLimitMinutes: number
   questionCount?: number
   status?: string
-  availableFrom?: Date | string | null
-  availableUntil?: Date | string | null
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   exam: Prisma.ExamCreateNestedOneWithoutMockExamsInput
   creator?: Prisma.UserCreateNestedOneWithoutCreatedMockExamsInput
   questions?: Prisma.MockExamQuestionCreateNestedManyWithoutMockExamInput
+  rankings?: Prisma.MonthlyRankingCreateNestedManyWithoutMockExamInput
 }
 
 export type MockExamUncheckedCreateWithoutAttemptsInput = {
@@ -928,15 +1028,18 @@ export type MockExamUncheckedCreateWithoutAttemptsInput = {
   title: string
   targetMonth: Date | string
   description?: string | null
-  timeLimitMinutes?: number | null
+  timeLimitMinutes: number
   questionCount?: number
   status?: string
-  availableFrom?: Date | string | null
-  availableUntil?: Date | string | null
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
   createdBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   questions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutMockExamInput
+  rankings?: Prisma.MonthlyRankingUncheckedCreateNestedManyWithoutMockExamInput
 }
 
 export type MockExamCreateOrConnectWithoutAttemptsInput = {
@@ -960,16 +1063,19 @@ export type MockExamUpdateWithoutAttemptsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  timeLimitMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   questionCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  availableFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  availableUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   exam?: Prisma.ExamUpdateOneRequiredWithoutMockExamsNestedInput
   creator?: Prisma.UserUpdateOneWithoutCreatedMockExamsNestedInput
   questions?: Prisma.MockExamQuestionUpdateManyWithoutMockExamNestedInput
+  rankings?: Prisma.MonthlyRankingUpdateManyWithoutMockExamNestedInput
 }
 
 export type MockExamUncheckedUpdateWithoutAttemptsInput = {
@@ -978,15 +1084,114 @@ export type MockExamUncheckedUpdateWithoutAttemptsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  timeLimitMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   questionCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  availableFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  availableUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutMockExamNestedInput
+  rankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutMockExamNestedInput
+}
+
+export type MockExamCreateWithoutRankingsInput = {
+  id?: string
+  title: string
+  targetMonth: Date | string
+  description?: string | null
+  timeLimitMinutes: number
+  questionCount?: number
+  status?: string
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  exam: Prisma.ExamCreateNestedOneWithoutMockExamsInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreatedMockExamsInput
+  questions?: Prisma.MockExamQuestionCreateNestedManyWithoutMockExamInput
+  attempts?: Prisma.MockAttemptCreateNestedManyWithoutMockExamInput
+}
+
+export type MockExamUncheckedCreateWithoutRankingsInput = {
+  id?: string
+  examId: string
+  title: string
+  targetMonth: Date | string
+  description?: string | null
+  timeLimitMinutes: number
+  questionCount?: number
+  status?: string
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
+  createdBy?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  questions?: Prisma.MockExamQuestionUncheckedCreateNestedManyWithoutMockExamInput
+  attempts?: Prisma.MockAttemptUncheckedCreateNestedManyWithoutMockExamInput
+}
+
+export type MockExamCreateOrConnectWithoutRankingsInput = {
+  where: Prisma.MockExamWhereUniqueInput
+  create: Prisma.XOR<Prisma.MockExamCreateWithoutRankingsInput, Prisma.MockExamUncheckedCreateWithoutRankingsInput>
+}
+
+export type MockExamUpsertWithoutRankingsInput = {
+  update: Prisma.XOR<Prisma.MockExamUpdateWithoutRankingsInput, Prisma.MockExamUncheckedUpdateWithoutRankingsInput>
+  create: Prisma.XOR<Prisma.MockExamCreateWithoutRankingsInput, Prisma.MockExamUncheckedCreateWithoutRankingsInput>
+  where?: Prisma.MockExamWhereInput
+}
+
+export type MockExamUpdateToOneWithWhereWithoutRankingsInput = {
+  where?: Prisma.MockExamWhereInput
+  data: Prisma.XOR<Prisma.MockExamUpdateWithoutRankingsInput, Prisma.MockExamUncheckedUpdateWithoutRankingsInput>
+}
+
+export type MockExamUpdateWithoutRankingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  questionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  exam?: Prisma.ExamUpdateOneRequiredWithoutMockExamsNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreatedMockExamsNestedInput
+  questions?: Prisma.MockExamQuestionUpdateManyWithoutMockExamNestedInput
+  attempts?: Prisma.MockAttemptUpdateManyWithoutMockExamNestedInput
+}
+
+export type MockExamUncheckedUpdateWithoutRankingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  examId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  questionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  questions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutMockExamNestedInput
+  attempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutMockExamNestedInput
 }
 
 export type MockExamCreateManyCreatorInput = {
@@ -995,11 +1200,13 @@ export type MockExamCreateManyCreatorInput = {
   title: string
   targetMonth: Date | string
   description?: string | null
-  timeLimitMinutes?: number | null
+  timeLimitMinutes: number
   questionCount?: number
   status?: string
-  availableFrom?: Date | string | null
-  availableUntil?: Date | string | null
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1009,16 +1216,19 @@ export type MockExamUpdateWithoutCreatorInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  timeLimitMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   questionCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  availableFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  availableUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   exam?: Prisma.ExamUpdateOneRequiredWithoutMockExamsNestedInput
   questions?: Prisma.MockExamQuestionUpdateManyWithoutMockExamNestedInput
   attempts?: Prisma.MockAttemptUpdateManyWithoutMockExamNestedInput
+  rankings?: Prisma.MonthlyRankingUpdateManyWithoutMockExamNestedInput
 }
 
 export type MockExamUncheckedUpdateWithoutCreatorInput = {
@@ -1027,15 +1237,18 @@ export type MockExamUncheckedUpdateWithoutCreatorInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  timeLimitMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   questionCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  availableFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  availableUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutMockExamNestedInput
   attempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutMockExamNestedInput
+  rankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutMockExamNestedInput
 }
 
 export type MockExamUncheckedUpdateManyWithoutCreatorInput = {
@@ -1044,11 +1257,13 @@ export type MockExamUncheckedUpdateManyWithoutCreatorInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  timeLimitMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   questionCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  availableFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  availableUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1058,11 +1273,13 @@ export type MockExamCreateManyExamInput = {
   title: string
   targetMonth: Date | string
   description?: string | null
-  timeLimitMinutes?: number | null
+  timeLimitMinutes: number
   questionCount?: number
   status?: string
-  availableFrom?: Date | string | null
-  availableUntil?: Date | string | null
+  availableFrom: Date | string
+  availableUntil: Date | string
+  rankingFinalizedAt?: Date | string | null
+  rewardsCompletedAt?: Date | string | null
   createdBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1073,16 +1290,19 @@ export type MockExamUpdateWithoutExamInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  timeLimitMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   questionCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  availableFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  availableUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneWithoutCreatedMockExamsNestedInput
   questions?: Prisma.MockExamQuestionUpdateManyWithoutMockExamNestedInput
   attempts?: Prisma.MockAttemptUpdateManyWithoutMockExamNestedInput
+  rankings?: Prisma.MonthlyRankingUpdateManyWithoutMockExamNestedInput
 }
 
 export type MockExamUncheckedUpdateWithoutExamInput = {
@@ -1090,16 +1310,19 @@ export type MockExamUncheckedUpdateWithoutExamInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  timeLimitMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   questionCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  availableFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  availableUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.MockExamQuestionUncheckedUpdateManyWithoutMockExamNestedInput
   attempts?: Prisma.MockAttemptUncheckedUpdateManyWithoutMockExamNestedInput
+  rankings?: Prisma.MonthlyRankingUncheckedUpdateManyWithoutMockExamNestedInput
 }
 
 export type MockExamUncheckedUpdateManyWithoutExamInput = {
@@ -1107,11 +1330,13 @@ export type MockExamUncheckedUpdateManyWithoutExamInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  timeLimitMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   questionCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  availableFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  availableUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  availableFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availableUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankingFinalizedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardsCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1125,11 +1350,13 @@ export type MockExamUncheckedUpdateManyWithoutExamInput = {
 export type MockExamCountOutputType = {
   questions: number
   attempts: number
+  rankings: number
 }
 
 export type MockExamCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   questions?: boolean | MockExamCountOutputTypeCountQuestionsArgs
   attempts?: boolean | MockExamCountOutputTypeCountAttemptsArgs
+  rankings?: boolean | MockExamCountOutputTypeCountRankingsArgs
 }
 
 /**
@@ -1156,6 +1383,13 @@ export type MockExamCountOutputTypeCountAttemptsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.MockAttemptWhereInput
 }
 
+/**
+ * MockExamCountOutputType without action
+ */
+export type MockExamCountOutputTypeCountRankingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MonthlyRankingWhereInput
+}
+
 
 export type MockExamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1168,6 +1402,8 @@ export type MockExamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   status?: boolean
   availableFrom?: boolean
   availableUntil?: boolean
+  rankingFinalizedAt?: boolean
+  rewardsCompletedAt?: boolean
   createdBy?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1175,6 +1411,7 @@ export type MockExamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   creator?: boolean | Prisma.MockExam$creatorArgs<ExtArgs>
   questions?: boolean | Prisma.MockExam$questionsArgs<ExtArgs>
   attempts?: boolean | Prisma.MockExam$attemptsArgs<ExtArgs>
+  rankings?: boolean | Prisma.MockExam$rankingsArgs<ExtArgs>
   _count?: boolean | Prisma.MockExamCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mockExam"]>
 
@@ -1189,6 +1426,8 @@ export type MockExamSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   status?: boolean
   availableFrom?: boolean
   availableUntil?: boolean
+  rankingFinalizedAt?: boolean
+  rewardsCompletedAt?: boolean
   createdBy?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1207,6 +1446,8 @@ export type MockExamSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   status?: boolean
   availableFrom?: boolean
   availableUntil?: boolean
+  rankingFinalizedAt?: boolean
+  rewardsCompletedAt?: boolean
   createdBy?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1225,17 +1466,20 @@ export type MockExamSelectScalar = {
   status?: boolean
   availableFrom?: boolean
   availableUntil?: boolean
+  rankingFinalizedAt?: boolean
+  rewardsCompletedAt?: boolean
   createdBy?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type MockExamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "examId" | "title" | "targetMonth" | "description" | "timeLimitMinutes" | "questionCount" | "status" | "availableFrom" | "availableUntil" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["mockExam"]>
+export type MockExamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "examId" | "title" | "targetMonth" | "description" | "timeLimitMinutes" | "questionCount" | "status" | "availableFrom" | "availableUntil" | "rankingFinalizedAt" | "rewardsCompletedAt" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["mockExam"]>
 export type MockExamInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.MockExam$creatorArgs<ExtArgs>
   questions?: boolean | Prisma.MockExam$questionsArgs<ExtArgs>
   attempts?: boolean | Prisma.MockExam$attemptsArgs<ExtArgs>
+  rankings?: boolean | Prisma.MockExam$rankingsArgs<ExtArgs>
   _count?: boolean | Prisma.MockExamCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MockExamIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1254,6 +1498,7 @@ export type $MockExamPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     creator: Prisma.$UserPayload<ExtArgs> | null
     questions: Prisma.$MockExamQuestionPayload<ExtArgs>[]
     attempts: Prisma.$MockAttemptPayload<ExtArgs>[]
+    rankings: Prisma.$MonthlyRankingPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1261,11 +1506,13 @@ export type $MockExamPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     title: string
     targetMonth: Date
     description: string | null
-    timeLimitMinutes: number | null
+    timeLimitMinutes: number
     questionCount: number
     status: string
-    availableFrom: Date | null
-    availableUntil: Date | null
+    availableFrom: Date
+    availableUntil: Date
+    rankingFinalizedAt: Date | null
+    rewardsCompletedAt: Date | null
     createdBy: string | null
     createdAt: Date
     updatedAt: Date
@@ -1667,6 +1914,7 @@ export interface Prisma__MockExamClient<T, Null = never, ExtArgs extends runtime
   creator<T extends Prisma.MockExam$creatorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockExam$creatorArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   questions<T extends Prisma.MockExam$questionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockExam$questionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MockExamQuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   attempts<T extends Prisma.MockExam$attemptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockExam$attemptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MockAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  rankings<T extends Prisma.MockExam$rankingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockExam$rankingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MonthlyRankingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1706,6 +1954,8 @@ export interface MockExamFieldRefs {
   readonly status: Prisma.FieldRef<"MockExam", 'String'>
   readonly availableFrom: Prisma.FieldRef<"MockExam", 'DateTime'>
   readonly availableUntil: Prisma.FieldRef<"MockExam", 'DateTime'>
+  readonly rankingFinalizedAt: Prisma.FieldRef<"MockExam", 'DateTime'>
+  readonly rewardsCompletedAt: Prisma.FieldRef<"MockExam", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"MockExam", 'String'>
   readonly createdAt: Prisma.FieldRef<"MockExam", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"MockExam", 'DateTime'>
@@ -2174,6 +2424,30 @@ export type MockExam$attemptsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.MockAttemptScalarFieldEnum | Prisma.MockAttemptScalarFieldEnum[]
+}
+
+/**
+ * MockExam.rankings
+ */
+export type MockExam$rankingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MonthlyRanking
+   */
+  select?: Prisma.MonthlyRankingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MonthlyRanking
+   */
+  omit?: Prisma.MonthlyRankingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MonthlyRankingInclude<ExtArgs> | null
+  where?: Prisma.MonthlyRankingWhereInput
+  orderBy?: Prisma.MonthlyRankingOrderByWithRelationInput | Prisma.MonthlyRankingOrderByWithRelationInput[]
+  cursor?: Prisma.MonthlyRankingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MonthlyRankingScalarFieldEnum | Prisma.MonthlyRankingScalarFieldEnum[]
 }
 
 /**

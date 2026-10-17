@@ -29,14 +29,18 @@ export type AggregateMonthlyRanking = {
 export type MonthlyRankingAvgAggregateOutputType = {
   rankNo: number | null
   monthlyPoints: number | null
-  mockScore: number | null
+  mockScore: runtime.Decimal | null
+  correctCount: number | null
+  totalQuestions: number | null
   rewardPoints: number | null
 }
 
 export type MonthlyRankingSumAggregateOutputType = {
   rankNo: number | null
   monthlyPoints: number | null
-  mockScore: number | null
+  mockScore: runtime.Decimal | null
+  correctCount: number | null
+  totalQuestions: number | null
   rewardPoints: number | null
 }
 
@@ -44,9 +48,15 @@ export type MonthlyRankingMinAggregateOutputType = {
   id: string | null
   targetMonth: Date | null
   userId: string | null
+  mockExamId: string | null
+  bestAttemptId: string | null
   rankNo: number | null
   monthlyPoints: number | null
-  mockScore: number | null
+  mockScore: runtime.Decimal | null
+  correctCount: number | null
+  totalQuestions: number | null
+  isFinal: boolean | null
+  rewardProcessedAt: Date | null
   rewardPoints: number | null
   calculatedAt: Date | null
   createdAt: Date | null
@@ -56,9 +66,15 @@ export type MonthlyRankingMaxAggregateOutputType = {
   id: string | null
   targetMonth: Date | null
   userId: string | null
+  mockExamId: string | null
+  bestAttemptId: string | null
   rankNo: number | null
   monthlyPoints: number | null
-  mockScore: number | null
+  mockScore: runtime.Decimal | null
+  correctCount: number | null
+  totalQuestions: number | null
+  isFinal: boolean | null
+  rewardProcessedAt: Date | null
   rewardPoints: number | null
   calculatedAt: Date | null
   createdAt: Date | null
@@ -68,9 +84,15 @@ export type MonthlyRankingCountAggregateOutputType = {
   id: number
   targetMonth: number
   userId: number
+  mockExamId: number
+  bestAttemptId: number
   rankNo: number
   monthlyPoints: number
   mockScore: number
+  correctCount: number
+  totalQuestions: number
+  isFinal: number
+  rewardProcessedAt: number
   rewardPoints: number
   calculatedAt: number
   createdAt: number
@@ -82,6 +104,8 @@ export type MonthlyRankingAvgAggregateInputType = {
   rankNo?: true
   monthlyPoints?: true
   mockScore?: true
+  correctCount?: true
+  totalQuestions?: true
   rewardPoints?: true
 }
 
@@ -89,6 +113,8 @@ export type MonthlyRankingSumAggregateInputType = {
   rankNo?: true
   monthlyPoints?: true
   mockScore?: true
+  correctCount?: true
+  totalQuestions?: true
   rewardPoints?: true
 }
 
@@ -96,9 +122,15 @@ export type MonthlyRankingMinAggregateInputType = {
   id?: true
   targetMonth?: true
   userId?: true
+  mockExamId?: true
+  bestAttemptId?: true
   rankNo?: true
   monthlyPoints?: true
   mockScore?: true
+  correctCount?: true
+  totalQuestions?: true
+  isFinal?: true
+  rewardProcessedAt?: true
   rewardPoints?: true
   calculatedAt?: true
   createdAt?: true
@@ -108,9 +140,15 @@ export type MonthlyRankingMaxAggregateInputType = {
   id?: true
   targetMonth?: true
   userId?: true
+  mockExamId?: true
+  bestAttemptId?: true
   rankNo?: true
   monthlyPoints?: true
   mockScore?: true
+  correctCount?: true
+  totalQuestions?: true
+  isFinal?: true
+  rewardProcessedAt?: true
   rewardPoints?: true
   calculatedAt?: true
   createdAt?: true
@@ -120,9 +158,15 @@ export type MonthlyRankingCountAggregateInputType = {
   id?: true
   targetMonth?: true
   userId?: true
+  mockExamId?: true
+  bestAttemptId?: true
   rankNo?: true
   monthlyPoints?: true
   mockScore?: true
+  correctCount?: true
+  totalQuestions?: true
+  isFinal?: true
+  rewardProcessedAt?: true
   rewardPoints?: true
   calculatedAt?: true
   createdAt?: true
@@ -219,9 +263,15 @@ export type MonthlyRankingGroupByOutputType = {
   id: string
   targetMonth: Date
   userId: string
+  mockExamId: string
+  bestAttemptId: string
   rankNo: number
   monthlyPoints: number
-  mockScore: number | null
+  mockScore: runtime.Decimal
+  correctCount: number
+  totalQuestions: number
+  isFinal: boolean
+  rewardProcessedAt: Date | null
   rewardPoints: number
   calculatedAt: Date
   createdAt: Date
@@ -254,53 +304,82 @@ export type MonthlyRankingWhereInput = {
   id?: Prisma.UuidFilter<"MonthlyRanking"> | string
   targetMonth?: Prisma.DateTimeFilter<"MonthlyRanking"> | Date | string
   userId?: Prisma.UuidFilter<"MonthlyRanking"> | string
+  mockExamId?: Prisma.UuidFilter<"MonthlyRanking"> | string
+  bestAttemptId?: Prisma.UuidFilter<"MonthlyRanking"> | string
   rankNo?: Prisma.IntFilter<"MonthlyRanking"> | number
   monthlyPoints?: Prisma.IntFilter<"MonthlyRanking"> | number
-  mockScore?: Prisma.IntNullableFilter<"MonthlyRanking"> | number | null
+  mockScore?: Prisma.DecimalFilter<"MonthlyRanking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFilter<"MonthlyRanking"> | number
+  totalQuestions?: Prisma.IntFilter<"MonthlyRanking"> | number
+  isFinal?: Prisma.BoolFilter<"MonthlyRanking"> | boolean
+  rewardProcessedAt?: Prisma.DateTimeNullableFilter<"MonthlyRanking"> | Date | string | null
   rewardPoints?: Prisma.IntFilter<"MonthlyRanking"> | number
   calculatedAt?: Prisma.DateTimeFilter<"MonthlyRanking"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"MonthlyRanking"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  mockExam?: Prisma.XOR<Prisma.MockExamScalarRelationFilter, Prisma.MockExamWhereInput>
+  bestAttempt?: Prisma.XOR<Prisma.MockAttemptScalarRelationFilter, Prisma.MockAttemptWhereInput>
 }
 
 export type MonthlyRankingOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   targetMonth?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  mockExamId?: Prisma.SortOrder
+  bestAttemptId?: Prisma.SortOrder
   rankNo?: Prisma.SortOrder
   monthlyPoints?: Prisma.SortOrder
-  mockScore?: Prisma.SortOrderInput | Prisma.SortOrder
+  mockScore?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  totalQuestions?: Prisma.SortOrder
+  isFinal?: Prisma.SortOrder
+  rewardProcessedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   rewardPoints?: Prisma.SortOrder
   calculatedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  mockExam?: Prisma.MockExamOrderByWithRelationInput
+  bestAttempt?: Prisma.MockAttemptOrderByWithRelationInput
 }
 
 export type MonthlyRankingWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  targetMonth_userId?: Prisma.MonthlyRankingTargetMonthUserIdCompoundUniqueInput
-  targetMonth_rankNo?: Prisma.MonthlyRankingTargetMonthRankNoCompoundUniqueInput
+  mockExamId_userId?: Prisma.MonthlyRankingMockExamIdUserIdCompoundUniqueInput
   AND?: Prisma.MonthlyRankingWhereInput | Prisma.MonthlyRankingWhereInput[]
   OR?: Prisma.MonthlyRankingWhereInput[]
   NOT?: Prisma.MonthlyRankingWhereInput | Prisma.MonthlyRankingWhereInput[]
   targetMonth?: Prisma.DateTimeFilter<"MonthlyRanking"> | Date | string
   userId?: Prisma.UuidFilter<"MonthlyRanking"> | string
+  mockExamId?: Prisma.UuidFilter<"MonthlyRanking"> | string
+  bestAttemptId?: Prisma.UuidFilter<"MonthlyRanking"> | string
   rankNo?: Prisma.IntFilter<"MonthlyRanking"> | number
   monthlyPoints?: Prisma.IntFilter<"MonthlyRanking"> | number
-  mockScore?: Prisma.IntNullableFilter<"MonthlyRanking"> | number | null
+  mockScore?: Prisma.DecimalFilter<"MonthlyRanking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFilter<"MonthlyRanking"> | number
+  totalQuestions?: Prisma.IntFilter<"MonthlyRanking"> | number
+  isFinal?: Prisma.BoolFilter<"MonthlyRanking"> | boolean
+  rewardProcessedAt?: Prisma.DateTimeNullableFilter<"MonthlyRanking"> | Date | string | null
   rewardPoints?: Prisma.IntFilter<"MonthlyRanking"> | number
   calculatedAt?: Prisma.DateTimeFilter<"MonthlyRanking"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"MonthlyRanking"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "targetMonth_userId" | "targetMonth_rankNo">
+  mockExam?: Prisma.XOR<Prisma.MockExamScalarRelationFilter, Prisma.MockExamWhereInput>
+  bestAttempt?: Prisma.XOR<Prisma.MockAttemptScalarRelationFilter, Prisma.MockAttemptWhereInput>
+}, "id" | "mockExamId_userId">
 
 export type MonthlyRankingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   targetMonth?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  mockExamId?: Prisma.SortOrder
+  bestAttemptId?: Prisma.SortOrder
   rankNo?: Prisma.SortOrder
   monthlyPoints?: Prisma.SortOrder
-  mockScore?: Prisma.SortOrderInput | Prisma.SortOrder
+  mockScore?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  totalQuestions?: Prisma.SortOrder
+  isFinal?: Prisma.SortOrder
+  rewardProcessedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   rewardPoints?: Prisma.SortOrder
   calculatedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -318,9 +397,15 @@ export type MonthlyRankingScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"MonthlyRanking"> | string
   targetMonth?: Prisma.DateTimeWithAggregatesFilter<"MonthlyRanking"> | Date | string
   userId?: Prisma.UuidWithAggregatesFilter<"MonthlyRanking"> | string
+  mockExamId?: Prisma.UuidWithAggregatesFilter<"MonthlyRanking"> | string
+  bestAttemptId?: Prisma.UuidWithAggregatesFilter<"MonthlyRanking"> | string
   rankNo?: Prisma.IntWithAggregatesFilter<"MonthlyRanking"> | number
   monthlyPoints?: Prisma.IntWithAggregatesFilter<"MonthlyRanking"> | number
-  mockScore?: Prisma.IntNullableWithAggregatesFilter<"MonthlyRanking"> | number | null
+  mockScore?: Prisma.DecimalWithAggregatesFilter<"MonthlyRanking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntWithAggregatesFilter<"MonthlyRanking"> | number
+  totalQuestions?: Prisma.IntWithAggregatesFilter<"MonthlyRanking"> | number
+  isFinal?: Prisma.BoolWithAggregatesFilter<"MonthlyRanking"> | boolean
+  rewardProcessedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"MonthlyRanking"> | Date | string | null
   rewardPoints?: Prisma.IntWithAggregatesFilter<"MonthlyRanking"> | number
   calculatedAt?: Prisma.DateTimeWithAggregatesFilter<"MonthlyRanking"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MonthlyRanking"> | Date | string
@@ -328,23 +413,34 @@ export type MonthlyRankingScalarWhereWithAggregatesInput = {
 
 export type MonthlyRankingCreateInput = {
   id?: string
-  targetMonth: Date | string
   rankNo: number
   monthlyPoints?: number
-  mockScore?: number | null
+  mockScore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount: number
+  totalQuestions: number
+  isFinal?: boolean
+  rewardProcessedAt?: Date | string | null
   rewardPoints?: number
   calculatedAt?: Date | string
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMonthlyRankingsInput
+  mockExam: Prisma.MockExamCreateNestedOneWithoutRankingsInput
+  bestAttempt: Prisma.MockAttemptCreateNestedOneWithoutRankingsInput
 }
 
 export type MonthlyRankingUncheckedCreateInput = {
   id?: string
   targetMonth: Date | string
   userId: string
+  mockExamId: string
+  bestAttemptId: string
   rankNo: number
   monthlyPoints?: number
-  mockScore?: number | null
+  mockScore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount: number
+  totalQuestions: number
+  isFinal?: boolean
+  rewardProcessedAt?: Date | string | null
   rewardPoints?: number
   calculatedAt?: Date | string
   createdAt?: Date | string
@@ -352,23 +448,34 @@ export type MonthlyRankingUncheckedCreateInput = {
 
 export type MonthlyRankingUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rankNo?: Prisma.IntFieldUpdateOperationsInput | number
   monthlyPoints?: Prisma.IntFieldUpdateOperationsInput | number
-  mockScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  mockScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardProcessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMonthlyRankingsNestedInput
+  mockExam?: Prisma.MockExamUpdateOneRequiredWithoutRankingsNestedInput
+  bestAttempt?: Prisma.MockAttemptUpdateOneRequiredWithoutRankingsNestedInput
 }
 
 export type MonthlyRankingUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  mockExamId?: Prisma.StringFieldUpdateOperationsInput | string
+  bestAttemptId?: Prisma.StringFieldUpdateOperationsInput | string
   rankNo?: Prisma.IntFieldUpdateOperationsInput | number
   monthlyPoints?: Prisma.IntFieldUpdateOperationsInput | number
-  mockScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  mockScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardProcessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -378,9 +485,15 @@ export type MonthlyRankingCreateManyInput = {
   id?: string
   targetMonth: Date | string
   userId: string
+  mockExamId: string
+  bestAttemptId: string
   rankNo: number
   monthlyPoints?: number
-  mockScore?: number | null
+  mockScore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount: number
+  totalQuestions: number
+  isFinal?: boolean
+  rewardProcessedAt?: Date | string | null
   rewardPoints?: number
   calculatedAt?: Date | string
   createdAt?: Date | string
@@ -388,10 +501,13 @@ export type MonthlyRankingCreateManyInput = {
 
 export type MonthlyRankingUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rankNo?: Prisma.IntFieldUpdateOperationsInput | number
   monthlyPoints?: Prisma.IntFieldUpdateOperationsInput | number
-  mockScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  mockScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardProcessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -401,9 +517,15 @@ export type MonthlyRankingUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  mockExamId?: Prisma.StringFieldUpdateOperationsInput | string
+  bestAttemptId?: Prisma.StringFieldUpdateOperationsInput | string
   rankNo?: Prisma.IntFieldUpdateOperationsInput | number
   monthlyPoints?: Prisma.IntFieldUpdateOperationsInput | number
-  mockScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  mockScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardProcessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -419,23 +541,24 @@ export type MonthlyRankingOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type MonthlyRankingTargetMonthUserIdCompoundUniqueInput = {
-  targetMonth: Date | string
+export type MonthlyRankingMockExamIdUserIdCompoundUniqueInput = {
+  mockExamId: string
   userId: string
-}
-
-export type MonthlyRankingTargetMonthRankNoCompoundUniqueInput = {
-  targetMonth: Date | string
-  rankNo: number
 }
 
 export type MonthlyRankingCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   targetMonth?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  mockExamId?: Prisma.SortOrder
+  bestAttemptId?: Prisma.SortOrder
   rankNo?: Prisma.SortOrder
   monthlyPoints?: Prisma.SortOrder
   mockScore?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  totalQuestions?: Prisma.SortOrder
+  isFinal?: Prisma.SortOrder
+  rewardProcessedAt?: Prisma.SortOrder
   rewardPoints?: Prisma.SortOrder
   calculatedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -445,6 +568,8 @@ export type MonthlyRankingAvgOrderByAggregateInput = {
   rankNo?: Prisma.SortOrder
   monthlyPoints?: Prisma.SortOrder
   mockScore?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  totalQuestions?: Prisma.SortOrder
   rewardPoints?: Prisma.SortOrder
 }
 
@@ -452,9 +577,15 @@ export type MonthlyRankingMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   targetMonth?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  mockExamId?: Prisma.SortOrder
+  bestAttemptId?: Prisma.SortOrder
   rankNo?: Prisma.SortOrder
   monthlyPoints?: Prisma.SortOrder
   mockScore?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  totalQuestions?: Prisma.SortOrder
+  isFinal?: Prisma.SortOrder
+  rewardProcessedAt?: Prisma.SortOrder
   rewardPoints?: Prisma.SortOrder
   calculatedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -464,9 +595,15 @@ export type MonthlyRankingMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   targetMonth?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  mockExamId?: Prisma.SortOrder
+  bestAttemptId?: Prisma.SortOrder
   rankNo?: Prisma.SortOrder
   monthlyPoints?: Prisma.SortOrder
   mockScore?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  totalQuestions?: Prisma.SortOrder
+  isFinal?: Prisma.SortOrder
+  rewardProcessedAt?: Prisma.SortOrder
   rewardPoints?: Prisma.SortOrder
   calculatedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -476,6 +613,8 @@ export type MonthlyRankingSumOrderByAggregateInput = {
   rankNo?: Prisma.SortOrder
   monthlyPoints?: Prisma.SortOrder
   mockScore?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  totalQuestions?: Prisma.SortOrder
   rewardPoints?: Prisma.SortOrder
 }
 
@@ -521,23 +660,118 @@ export type MonthlyRankingUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.MonthlyRankingScalarWhereInput | Prisma.MonthlyRankingScalarWhereInput[]
 }
 
+export type MonthlyRankingCreateNestedManyWithoutMockExamInput = {
+  create?: Prisma.XOR<Prisma.MonthlyRankingCreateWithoutMockExamInput, Prisma.MonthlyRankingUncheckedCreateWithoutMockExamInput> | Prisma.MonthlyRankingCreateWithoutMockExamInput[] | Prisma.MonthlyRankingUncheckedCreateWithoutMockExamInput[]
+  connectOrCreate?: Prisma.MonthlyRankingCreateOrConnectWithoutMockExamInput | Prisma.MonthlyRankingCreateOrConnectWithoutMockExamInput[]
+  createMany?: Prisma.MonthlyRankingCreateManyMockExamInputEnvelope
+  connect?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+}
+
+export type MonthlyRankingUncheckedCreateNestedManyWithoutMockExamInput = {
+  create?: Prisma.XOR<Prisma.MonthlyRankingCreateWithoutMockExamInput, Prisma.MonthlyRankingUncheckedCreateWithoutMockExamInput> | Prisma.MonthlyRankingCreateWithoutMockExamInput[] | Prisma.MonthlyRankingUncheckedCreateWithoutMockExamInput[]
+  connectOrCreate?: Prisma.MonthlyRankingCreateOrConnectWithoutMockExamInput | Prisma.MonthlyRankingCreateOrConnectWithoutMockExamInput[]
+  createMany?: Prisma.MonthlyRankingCreateManyMockExamInputEnvelope
+  connect?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+}
+
+export type MonthlyRankingUpdateManyWithoutMockExamNestedInput = {
+  create?: Prisma.XOR<Prisma.MonthlyRankingCreateWithoutMockExamInput, Prisma.MonthlyRankingUncheckedCreateWithoutMockExamInput> | Prisma.MonthlyRankingCreateWithoutMockExamInput[] | Prisma.MonthlyRankingUncheckedCreateWithoutMockExamInput[]
+  connectOrCreate?: Prisma.MonthlyRankingCreateOrConnectWithoutMockExamInput | Prisma.MonthlyRankingCreateOrConnectWithoutMockExamInput[]
+  upsert?: Prisma.MonthlyRankingUpsertWithWhereUniqueWithoutMockExamInput | Prisma.MonthlyRankingUpsertWithWhereUniqueWithoutMockExamInput[]
+  createMany?: Prisma.MonthlyRankingCreateManyMockExamInputEnvelope
+  set?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  disconnect?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  delete?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  connect?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  update?: Prisma.MonthlyRankingUpdateWithWhereUniqueWithoutMockExamInput | Prisma.MonthlyRankingUpdateWithWhereUniqueWithoutMockExamInput[]
+  updateMany?: Prisma.MonthlyRankingUpdateManyWithWhereWithoutMockExamInput | Prisma.MonthlyRankingUpdateManyWithWhereWithoutMockExamInput[]
+  deleteMany?: Prisma.MonthlyRankingScalarWhereInput | Prisma.MonthlyRankingScalarWhereInput[]
+}
+
+export type MonthlyRankingUncheckedUpdateManyWithoutMockExamNestedInput = {
+  create?: Prisma.XOR<Prisma.MonthlyRankingCreateWithoutMockExamInput, Prisma.MonthlyRankingUncheckedCreateWithoutMockExamInput> | Prisma.MonthlyRankingCreateWithoutMockExamInput[] | Prisma.MonthlyRankingUncheckedCreateWithoutMockExamInput[]
+  connectOrCreate?: Prisma.MonthlyRankingCreateOrConnectWithoutMockExamInput | Prisma.MonthlyRankingCreateOrConnectWithoutMockExamInput[]
+  upsert?: Prisma.MonthlyRankingUpsertWithWhereUniqueWithoutMockExamInput | Prisma.MonthlyRankingUpsertWithWhereUniqueWithoutMockExamInput[]
+  createMany?: Prisma.MonthlyRankingCreateManyMockExamInputEnvelope
+  set?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  disconnect?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  delete?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  connect?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  update?: Prisma.MonthlyRankingUpdateWithWhereUniqueWithoutMockExamInput | Prisma.MonthlyRankingUpdateWithWhereUniqueWithoutMockExamInput[]
+  updateMany?: Prisma.MonthlyRankingUpdateManyWithWhereWithoutMockExamInput | Prisma.MonthlyRankingUpdateManyWithWhereWithoutMockExamInput[]
+  deleteMany?: Prisma.MonthlyRankingScalarWhereInput | Prisma.MonthlyRankingScalarWhereInput[]
+}
+
+export type MonthlyRankingCreateNestedManyWithoutBestAttemptInput = {
+  create?: Prisma.XOR<Prisma.MonthlyRankingCreateWithoutBestAttemptInput, Prisma.MonthlyRankingUncheckedCreateWithoutBestAttemptInput> | Prisma.MonthlyRankingCreateWithoutBestAttemptInput[] | Prisma.MonthlyRankingUncheckedCreateWithoutBestAttemptInput[]
+  connectOrCreate?: Prisma.MonthlyRankingCreateOrConnectWithoutBestAttemptInput | Prisma.MonthlyRankingCreateOrConnectWithoutBestAttemptInput[]
+  createMany?: Prisma.MonthlyRankingCreateManyBestAttemptInputEnvelope
+  connect?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+}
+
+export type MonthlyRankingUncheckedCreateNestedManyWithoutBestAttemptInput = {
+  create?: Prisma.XOR<Prisma.MonthlyRankingCreateWithoutBestAttemptInput, Prisma.MonthlyRankingUncheckedCreateWithoutBestAttemptInput> | Prisma.MonthlyRankingCreateWithoutBestAttemptInput[] | Prisma.MonthlyRankingUncheckedCreateWithoutBestAttemptInput[]
+  connectOrCreate?: Prisma.MonthlyRankingCreateOrConnectWithoutBestAttemptInput | Prisma.MonthlyRankingCreateOrConnectWithoutBestAttemptInput[]
+  createMany?: Prisma.MonthlyRankingCreateManyBestAttemptInputEnvelope
+  connect?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+}
+
+export type MonthlyRankingUpdateManyWithoutBestAttemptNestedInput = {
+  create?: Prisma.XOR<Prisma.MonthlyRankingCreateWithoutBestAttemptInput, Prisma.MonthlyRankingUncheckedCreateWithoutBestAttemptInput> | Prisma.MonthlyRankingCreateWithoutBestAttemptInput[] | Prisma.MonthlyRankingUncheckedCreateWithoutBestAttemptInput[]
+  connectOrCreate?: Prisma.MonthlyRankingCreateOrConnectWithoutBestAttemptInput | Prisma.MonthlyRankingCreateOrConnectWithoutBestAttemptInput[]
+  upsert?: Prisma.MonthlyRankingUpsertWithWhereUniqueWithoutBestAttemptInput | Prisma.MonthlyRankingUpsertWithWhereUniqueWithoutBestAttemptInput[]
+  createMany?: Prisma.MonthlyRankingCreateManyBestAttemptInputEnvelope
+  set?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  disconnect?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  delete?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  connect?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  update?: Prisma.MonthlyRankingUpdateWithWhereUniqueWithoutBestAttemptInput | Prisma.MonthlyRankingUpdateWithWhereUniqueWithoutBestAttemptInput[]
+  updateMany?: Prisma.MonthlyRankingUpdateManyWithWhereWithoutBestAttemptInput | Prisma.MonthlyRankingUpdateManyWithWhereWithoutBestAttemptInput[]
+  deleteMany?: Prisma.MonthlyRankingScalarWhereInput | Prisma.MonthlyRankingScalarWhereInput[]
+}
+
+export type MonthlyRankingUncheckedUpdateManyWithoutBestAttemptNestedInput = {
+  create?: Prisma.XOR<Prisma.MonthlyRankingCreateWithoutBestAttemptInput, Prisma.MonthlyRankingUncheckedCreateWithoutBestAttemptInput> | Prisma.MonthlyRankingCreateWithoutBestAttemptInput[] | Prisma.MonthlyRankingUncheckedCreateWithoutBestAttemptInput[]
+  connectOrCreate?: Prisma.MonthlyRankingCreateOrConnectWithoutBestAttemptInput | Prisma.MonthlyRankingCreateOrConnectWithoutBestAttemptInput[]
+  upsert?: Prisma.MonthlyRankingUpsertWithWhereUniqueWithoutBestAttemptInput | Prisma.MonthlyRankingUpsertWithWhereUniqueWithoutBestAttemptInput[]
+  createMany?: Prisma.MonthlyRankingCreateManyBestAttemptInputEnvelope
+  set?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  disconnect?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  delete?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  connect?: Prisma.MonthlyRankingWhereUniqueInput | Prisma.MonthlyRankingWhereUniqueInput[]
+  update?: Prisma.MonthlyRankingUpdateWithWhereUniqueWithoutBestAttemptInput | Prisma.MonthlyRankingUpdateWithWhereUniqueWithoutBestAttemptInput[]
+  updateMany?: Prisma.MonthlyRankingUpdateManyWithWhereWithoutBestAttemptInput | Prisma.MonthlyRankingUpdateManyWithWhereWithoutBestAttemptInput[]
+  deleteMany?: Prisma.MonthlyRankingScalarWhereInput | Prisma.MonthlyRankingScalarWhereInput[]
+}
+
 export type MonthlyRankingCreateWithoutUserInput = {
   id?: string
-  targetMonth: Date | string
   rankNo: number
   monthlyPoints?: number
-  mockScore?: number | null
+  mockScore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount: number
+  totalQuestions: number
+  isFinal?: boolean
+  rewardProcessedAt?: Date | string | null
   rewardPoints?: number
   calculatedAt?: Date | string
   createdAt?: Date | string
+  mockExam: Prisma.MockExamCreateNestedOneWithoutRankingsInput
+  bestAttempt: Prisma.MockAttemptCreateNestedOneWithoutRankingsInput
 }
 
 export type MonthlyRankingUncheckedCreateWithoutUserInput = {
   id?: string
   targetMonth: Date | string
+  mockExamId: string
+  bestAttemptId: string
   rankNo: number
   monthlyPoints?: number
-  mockScore?: number | null
+  mockScore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount: number
+  totalQuestions: number
+  isFinal?: boolean
+  rewardProcessedAt?: Date | string | null
   rewardPoints?: number
   calculatedAt?: Date | string
   createdAt?: Date | string
@@ -576,20 +810,147 @@ export type MonthlyRankingScalarWhereInput = {
   id?: Prisma.UuidFilter<"MonthlyRanking"> | string
   targetMonth?: Prisma.DateTimeFilter<"MonthlyRanking"> | Date | string
   userId?: Prisma.UuidFilter<"MonthlyRanking"> | string
+  mockExamId?: Prisma.UuidFilter<"MonthlyRanking"> | string
+  bestAttemptId?: Prisma.UuidFilter<"MonthlyRanking"> | string
   rankNo?: Prisma.IntFilter<"MonthlyRanking"> | number
   monthlyPoints?: Prisma.IntFilter<"MonthlyRanking"> | number
-  mockScore?: Prisma.IntNullableFilter<"MonthlyRanking"> | number | null
+  mockScore?: Prisma.DecimalFilter<"MonthlyRanking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFilter<"MonthlyRanking"> | number
+  totalQuestions?: Prisma.IntFilter<"MonthlyRanking"> | number
+  isFinal?: Prisma.BoolFilter<"MonthlyRanking"> | boolean
+  rewardProcessedAt?: Prisma.DateTimeNullableFilter<"MonthlyRanking"> | Date | string | null
   rewardPoints?: Prisma.IntFilter<"MonthlyRanking"> | number
   calculatedAt?: Prisma.DateTimeFilter<"MonthlyRanking"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"MonthlyRanking"> | Date | string
 }
 
-export type MonthlyRankingCreateManyUserInput = {
+export type MonthlyRankingCreateWithoutMockExamInput = {
+  id?: string
+  rankNo: number
+  monthlyPoints?: number
+  mockScore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount: number
+  totalQuestions: number
+  isFinal?: boolean
+  rewardProcessedAt?: Date | string | null
+  rewardPoints?: number
+  calculatedAt?: Date | string
+  createdAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutMonthlyRankingsInput
+  bestAttempt: Prisma.MockAttemptCreateNestedOneWithoutRankingsInput
+}
+
+export type MonthlyRankingUncheckedCreateWithoutMockExamInput = {
+  id?: string
+  userId: string
+  bestAttemptId: string
+  rankNo: number
+  monthlyPoints?: number
+  mockScore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount: number
+  totalQuestions: number
+  isFinal?: boolean
+  rewardProcessedAt?: Date | string | null
+  rewardPoints?: number
+  calculatedAt?: Date | string
+  createdAt?: Date | string
+}
+
+export type MonthlyRankingCreateOrConnectWithoutMockExamInput = {
+  where: Prisma.MonthlyRankingWhereUniqueInput
+  create: Prisma.XOR<Prisma.MonthlyRankingCreateWithoutMockExamInput, Prisma.MonthlyRankingUncheckedCreateWithoutMockExamInput>
+}
+
+export type MonthlyRankingCreateManyMockExamInputEnvelope = {
+  data: Prisma.MonthlyRankingCreateManyMockExamInput | Prisma.MonthlyRankingCreateManyMockExamInput[]
+  skipDuplicates?: boolean
+}
+
+export type MonthlyRankingUpsertWithWhereUniqueWithoutMockExamInput = {
+  where: Prisma.MonthlyRankingWhereUniqueInput
+  update: Prisma.XOR<Prisma.MonthlyRankingUpdateWithoutMockExamInput, Prisma.MonthlyRankingUncheckedUpdateWithoutMockExamInput>
+  create: Prisma.XOR<Prisma.MonthlyRankingCreateWithoutMockExamInput, Prisma.MonthlyRankingUncheckedCreateWithoutMockExamInput>
+}
+
+export type MonthlyRankingUpdateWithWhereUniqueWithoutMockExamInput = {
+  where: Prisma.MonthlyRankingWhereUniqueInput
+  data: Prisma.XOR<Prisma.MonthlyRankingUpdateWithoutMockExamInput, Prisma.MonthlyRankingUncheckedUpdateWithoutMockExamInput>
+}
+
+export type MonthlyRankingUpdateManyWithWhereWithoutMockExamInput = {
+  where: Prisma.MonthlyRankingScalarWhereInput
+  data: Prisma.XOR<Prisma.MonthlyRankingUpdateManyMutationInput, Prisma.MonthlyRankingUncheckedUpdateManyWithoutMockExamInput>
+}
+
+export type MonthlyRankingCreateWithoutBestAttemptInput = {
+  id?: string
+  rankNo: number
+  monthlyPoints?: number
+  mockScore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount: number
+  totalQuestions: number
+  isFinal?: boolean
+  rewardProcessedAt?: Date | string | null
+  rewardPoints?: number
+  calculatedAt?: Date | string
+  createdAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutMonthlyRankingsInput
+  mockExam: Prisma.MockExamCreateNestedOneWithoutRankingsInput
+}
+
+export type MonthlyRankingUncheckedCreateWithoutBestAttemptInput = {
   id?: string
   targetMonth: Date | string
   rankNo: number
   monthlyPoints?: number
-  mockScore?: number | null
+  mockScore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount: number
+  totalQuestions: number
+  isFinal?: boolean
+  rewardProcessedAt?: Date | string | null
+  rewardPoints?: number
+  calculatedAt?: Date | string
+  createdAt?: Date | string
+}
+
+export type MonthlyRankingCreateOrConnectWithoutBestAttemptInput = {
+  where: Prisma.MonthlyRankingWhereUniqueInput
+  create: Prisma.XOR<Prisma.MonthlyRankingCreateWithoutBestAttemptInput, Prisma.MonthlyRankingUncheckedCreateWithoutBestAttemptInput>
+}
+
+export type MonthlyRankingCreateManyBestAttemptInputEnvelope = {
+  data: Prisma.MonthlyRankingCreateManyBestAttemptInput | Prisma.MonthlyRankingCreateManyBestAttemptInput[]
+  skipDuplicates?: boolean
+}
+
+export type MonthlyRankingUpsertWithWhereUniqueWithoutBestAttemptInput = {
+  where: Prisma.MonthlyRankingWhereUniqueInput
+  update: Prisma.XOR<Prisma.MonthlyRankingUpdateWithoutBestAttemptInput, Prisma.MonthlyRankingUncheckedUpdateWithoutBestAttemptInput>
+  create: Prisma.XOR<Prisma.MonthlyRankingCreateWithoutBestAttemptInput, Prisma.MonthlyRankingUncheckedCreateWithoutBestAttemptInput>
+}
+
+export type MonthlyRankingUpdateWithWhereUniqueWithoutBestAttemptInput = {
+  where: Prisma.MonthlyRankingWhereUniqueInput
+  data: Prisma.XOR<Prisma.MonthlyRankingUpdateWithoutBestAttemptInput, Prisma.MonthlyRankingUncheckedUpdateWithoutBestAttemptInput>
+}
+
+export type MonthlyRankingUpdateManyWithWhereWithoutBestAttemptInput = {
+  where: Prisma.MonthlyRankingScalarWhereInput
+  data: Prisma.XOR<Prisma.MonthlyRankingUpdateManyMutationInput, Prisma.MonthlyRankingUncheckedUpdateManyWithoutBestAttemptInput>
+}
+
+export type MonthlyRankingCreateManyUserInput = {
+  id?: string
+  targetMonth: Date | string
+  mockExamId: string
+  bestAttemptId: string
+  rankNo: number
+  monthlyPoints?: number
+  mockScore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount: number
+  totalQuestions: number
+  isFinal?: boolean
+  rewardProcessedAt?: Date | string | null
   rewardPoints?: number
   calculatedAt?: Date | string
   createdAt?: Date | string
@@ -597,21 +958,32 @@ export type MonthlyRankingCreateManyUserInput = {
 
 export type MonthlyRankingUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rankNo?: Prisma.IntFieldUpdateOperationsInput | number
   monthlyPoints?: Prisma.IntFieldUpdateOperationsInput | number
-  mockScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  mockScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardProcessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mockExam?: Prisma.MockExamUpdateOneRequiredWithoutRankingsNestedInput
+  bestAttempt?: Prisma.MockAttemptUpdateOneRequiredWithoutRankingsNestedInput
 }
 
 export type MonthlyRankingUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mockExamId?: Prisma.StringFieldUpdateOperationsInput | string
+  bestAttemptId?: Prisma.StringFieldUpdateOperationsInput | string
   rankNo?: Prisma.IntFieldUpdateOperationsInput | number
   monthlyPoints?: Prisma.IntFieldUpdateOperationsInput | number
-  mockScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  mockScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardProcessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -620,9 +992,140 @@ export type MonthlyRankingUncheckedUpdateWithoutUserInput = {
 export type MonthlyRankingUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mockExamId?: Prisma.StringFieldUpdateOperationsInput | string
+  bestAttemptId?: Prisma.StringFieldUpdateOperationsInput | string
   rankNo?: Prisma.IntFieldUpdateOperationsInput | number
   monthlyPoints?: Prisma.IntFieldUpdateOperationsInput | number
-  mockScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  mockScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardProcessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type MonthlyRankingCreateManyMockExamInput = {
+  id?: string
+  userId: string
+  bestAttemptId: string
+  rankNo: number
+  monthlyPoints?: number
+  mockScore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount: number
+  totalQuestions: number
+  isFinal?: boolean
+  rewardProcessedAt?: Date | string | null
+  rewardPoints?: number
+  calculatedAt?: Date | string
+  createdAt?: Date | string
+}
+
+export type MonthlyRankingUpdateWithoutMockExamInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  rankNo?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  mockScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardProcessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutMonthlyRankingsNestedInput
+  bestAttempt?: Prisma.MockAttemptUpdateOneRequiredWithoutRankingsNestedInput
+}
+
+export type MonthlyRankingUncheckedUpdateWithoutMockExamInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  bestAttemptId?: Prisma.StringFieldUpdateOperationsInput | string
+  rankNo?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  mockScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardProcessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type MonthlyRankingUncheckedUpdateManyWithoutMockExamInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  bestAttemptId?: Prisma.StringFieldUpdateOperationsInput | string
+  rankNo?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  mockScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardProcessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type MonthlyRankingCreateManyBestAttemptInput = {
+  id?: string
+  targetMonth: Date | string
+  rankNo: number
+  monthlyPoints?: number
+  mockScore: runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount: number
+  totalQuestions: number
+  isFinal?: boolean
+  rewardProcessedAt?: Date | string | null
+  rewardPoints?: number
+  calculatedAt?: Date | string
+  createdAt?: Date | string
+}
+
+export type MonthlyRankingUpdateWithoutBestAttemptInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  rankNo?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  mockScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardProcessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutMonthlyRankingsNestedInput
+  mockExam?: Prisma.MockExamUpdateOneRequiredWithoutRankingsNestedInput
+}
+
+export type MonthlyRankingUncheckedUpdateWithoutBestAttemptInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankNo?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  mockScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardProcessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type MonthlyRankingUncheckedUpdateManyWithoutBestAttemptInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  targetMonth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rankNo?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyPoints?: Prisma.IntFieldUpdateOperationsInput | number
+  mockScore?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalQuestions?: Prisma.IntFieldUpdateOperationsInput | number
+  isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardProcessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rewardPoints?: Prisma.IntFieldUpdateOperationsInput | number
   calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -634,76 +1137,120 @@ export type MonthlyRankingSelect<ExtArgs extends runtime.Types.Extensions.Intern
   id?: boolean
   targetMonth?: boolean
   userId?: boolean
+  mockExamId?: boolean
+  bestAttemptId?: boolean
   rankNo?: boolean
   monthlyPoints?: boolean
   mockScore?: boolean
+  correctCount?: boolean
+  totalQuestions?: boolean
+  isFinal?: boolean
+  rewardProcessedAt?: boolean
   rewardPoints?: boolean
   calculatedAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  mockExam?: boolean | Prisma.MockExamDefaultArgs<ExtArgs>
+  bestAttempt?: boolean | Prisma.MockAttemptDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["monthlyRanking"]>
 
 export type MonthlyRankingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   targetMonth?: boolean
   userId?: boolean
+  mockExamId?: boolean
+  bestAttemptId?: boolean
   rankNo?: boolean
   monthlyPoints?: boolean
   mockScore?: boolean
+  correctCount?: boolean
+  totalQuestions?: boolean
+  isFinal?: boolean
+  rewardProcessedAt?: boolean
   rewardPoints?: boolean
   calculatedAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  mockExam?: boolean | Prisma.MockExamDefaultArgs<ExtArgs>
+  bestAttempt?: boolean | Prisma.MockAttemptDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["monthlyRanking"]>
 
 export type MonthlyRankingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   targetMonth?: boolean
   userId?: boolean
+  mockExamId?: boolean
+  bestAttemptId?: boolean
   rankNo?: boolean
   monthlyPoints?: boolean
   mockScore?: boolean
+  correctCount?: boolean
+  totalQuestions?: boolean
+  isFinal?: boolean
+  rewardProcessedAt?: boolean
   rewardPoints?: boolean
   calculatedAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  mockExam?: boolean | Prisma.MockExamDefaultArgs<ExtArgs>
+  bestAttempt?: boolean | Prisma.MockAttemptDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["monthlyRanking"]>
 
 export type MonthlyRankingSelectScalar = {
   id?: boolean
   targetMonth?: boolean
   userId?: boolean
+  mockExamId?: boolean
+  bestAttemptId?: boolean
   rankNo?: boolean
   monthlyPoints?: boolean
   mockScore?: boolean
+  correctCount?: boolean
+  totalQuestions?: boolean
+  isFinal?: boolean
+  rewardProcessedAt?: boolean
   rewardPoints?: boolean
   calculatedAt?: boolean
   createdAt?: boolean
 }
 
-export type MonthlyRankingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "targetMonth" | "userId" | "rankNo" | "monthlyPoints" | "mockScore" | "rewardPoints" | "calculatedAt" | "createdAt", ExtArgs["result"]["monthlyRanking"]>
+export type MonthlyRankingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "targetMonth" | "userId" | "mockExamId" | "bestAttemptId" | "rankNo" | "monthlyPoints" | "mockScore" | "correctCount" | "totalQuestions" | "isFinal" | "rewardProcessedAt" | "rewardPoints" | "calculatedAt" | "createdAt", ExtArgs["result"]["monthlyRanking"]>
 export type MonthlyRankingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  mockExam?: boolean | Prisma.MockExamDefaultArgs<ExtArgs>
+  bestAttempt?: boolean | Prisma.MockAttemptDefaultArgs<ExtArgs>
 }
 export type MonthlyRankingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  mockExam?: boolean | Prisma.MockExamDefaultArgs<ExtArgs>
+  bestAttempt?: boolean | Prisma.MockAttemptDefaultArgs<ExtArgs>
 }
 export type MonthlyRankingIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  mockExam?: boolean | Prisma.MockExamDefaultArgs<ExtArgs>
+  bestAttempt?: boolean | Prisma.MockAttemptDefaultArgs<ExtArgs>
 }
 
 export type $MonthlyRankingPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "MonthlyRanking"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    mockExam: Prisma.$MockExamPayload<ExtArgs>
+    bestAttempt: Prisma.$MockAttemptPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     targetMonth: Date
     userId: string
+    mockExamId: string
+    bestAttemptId: string
     rankNo: number
     monthlyPoints: number
-    mockScore: number | null
+    mockScore: runtime.Decimal
+    correctCount: number
+    totalQuestions: number
+    isFinal: boolean
+    rewardProcessedAt: Date | null
     rewardPoints: number
     calculatedAt: Date
     createdAt: Date
@@ -1102,6 +1649,8 @@ readonly fields: MonthlyRankingFieldRefs;
 export interface Prisma__MonthlyRankingClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  mockExam<T extends Prisma.MockExamDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockExamDefaultArgs<ExtArgs>>): Prisma.Prisma__MockExamClient<runtime.Types.Result.GetResult<Prisma.$MockExamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  bestAttempt<T extends Prisma.MockAttemptDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockAttemptDefaultArgs<ExtArgs>>): Prisma.Prisma__MockAttemptClient<runtime.Types.Result.GetResult<Prisma.$MockAttemptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1134,9 +1683,15 @@ export interface MonthlyRankingFieldRefs {
   readonly id: Prisma.FieldRef<"MonthlyRanking", 'String'>
   readonly targetMonth: Prisma.FieldRef<"MonthlyRanking", 'DateTime'>
   readonly userId: Prisma.FieldRef<"MonthlyRanking", 'String'>
+  readonly mockExamId: Prisma.FieldRef<"MonthlyRanking", 'String'>
+  readonly bestAttemptId: Prisma.FieldRef<"MonthlyRanking", 'String'>
   readonly rankNo: Prisma.FieldRef<"MonthlyRanking", 'Int'>
   readonly monthlyPoints: Prisma.FieldRef<"MonthlyRanking", 'Int'>
-  readonly mockScore: Prisma.FieldRef<"MonthlyRanking", 'Int'>
+  readonly mockScore: Prisma.FieldRef<"MonthlyRanking", 'Decimal'>
+  readonly correctCount: Prisma.FieldRef<"MonthlyRanking", 'Int'>
+  readonly totalQuestions: Prisma.FieldRef<"MonthlyRanking", 'Int'>
+  readonly isFinal: Prisma.FieldRef<"MonthlyRanking", 'Boolean'>
+  readonly rewardProcessedAt: Prisma.FieldRef<"MonthlyRanking", 'DateTime'>
   readonly rewardPoints: Prisma.FieldRef<"MonthlyRanking", 'Int'>
   readonly calculatedAt: Prisma.FieldRef<"MonthlyRanking", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"MonthlyRanking", 'DateTime'>

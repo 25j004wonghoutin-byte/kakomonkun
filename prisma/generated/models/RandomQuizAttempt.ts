@@ -585,10 +585,6 @@ export type RandomQuizAttemptUncheckedUpdateManyWithoutSelectedChoiceNestedInput
   deleteMany?: Prisma.RandomQuizAttemptScalarWhereInput | Prisma.RandomQuizAttemptScalarWhereInput[]
 }
 
-export type NullableBoolFieldUpdateOperationsInput = {
-  set?: boolean | null
-}
-
 export type RandomQuizAttemptCreateWithoutUserInput = {
   id?: string
   issuedAt?: Date | string

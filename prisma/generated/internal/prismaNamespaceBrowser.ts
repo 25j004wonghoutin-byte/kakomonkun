@@ -66,6 +66,7 @@ export const ModelName = {
   PointTransaction: 'PointTransaction',
   MockExam: 'MockExam',
   MockExamQuestion: 'MockExamQuestion',
+  MockExamChoice: 'MockExamChoice',
   MockAttempt: 'MockAttempt',
   MockAnswer: 'MockAnswer',
   Title: 'Title',
@@ -75,6 +76,7 @@ export const ModelName = {
   StudentActivityDay: 'StudentActivityDay',
   StudentNavigationProgress: 'StudentNavigationProgress',
   MonthlyRanking: 'MonthlyRanking',
+  MockExamJobRun: 'MockExamJobRun',
   AiExplanation: 'AiExplanation',
   AiUsageLog: 'AiUsageLog',
   BoardPost: 'BoardPost',
@@ -305,6 +307,8 @@ export const MockExamScalarFieldEnum = {
   status: 'status',
   availableFrom: 'availableFrom',
   availableUntil: 'availableUntil',
+  rankingFinalizedAt: 'rankingFinalizedAt',
+  rewardsCompletedAt: 'rewardsCompletedAt',
   createdBy: 'createdBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -319,22 +323,52 @@ export const MockExamQuestionScalarFieldEnum = {
   questionId: 'questionId',
   orderNo: 'orderNo',
   score: 'score',
+  questionText: 'questionText',
+  imagePath: 'imagePath',
+  explanation: 'explanation',
+  categoryCode: 'categoryCode',
+  sourceKey: 'sourceKey',
+  sourceYear: 'sourceYear',
+  sourceSeason: 'sourceSeason',
+  questionNo: 'questionNo',
+  sourceLabel: 'sourceLabel',
   createdAt: 'createdAt'
 } as const
 
 export type MockExamQuestionScalarFieldEnum = (typeof MockExamQuestionScalarFieldEnum)[keyof typeof MockExamQuestionScalarFieldEnum]
 
 
+export const MockExamChoiceScalarFieldEnum = {
+  id: 'id',
+  mockExamId: 'mockExamId',
+  mockQuestionId: 'mockQuestionId',
+  originalChoiceId: 'originalChoiceId',
+  choiceLabel: 'choiceLabel',
+  choiceText: 'choiceText',
+  isCorrect: 'isCorrect',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+} as const
+
+export type MockExamChoiceScalarFieldEnum = (typeof MockExamChoiceScalarFieldEnum)[keyof typeof MockExamChoiceScalarFieldEnum]
+
+
 export const MockAttemptScalarFieldEnum = {
   id: 'id',
   mockExamId: 'mockExamId',
   userId: 'userId',
+  startRequestId: 'startRequestId',
+  attemptNo: 'attemptNo',
   status: 'status',
   startedAt: 'startedAt',
+  expiresAt: 'expiresAt',
   submittedAt: 'submittedAt',
+  gradedAt: 'gradedAt',
   totalQuestions: 'totalQuestions',
   correctCount: 'correctCount',
+  answeredCount: 'answeredCount',
   score: 'score',
+  revision: 'revision',
   earnedPoints: 'earnedPoints',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -346,9 +380,12 @@ export type MockAttemptScalarFieldEnum = (typeof MockAttemptScalarFieldEnum)[key
 export const MockAnswerScalarFieldEnum = {
   id: 'id',
   attemptId: 'attemptId',
-  questionId: 'questionId',
+  mockExamId: 'mockExamId',
+  mockQuestionId: 'mockQuestionId',
   selectedChoiceId: 'selectedChoiceId',
   isCorrect: 'isCorrect',
+  revision: 'revision',
+  lastRequestId: 'lastRequestId',
   scoreAwarded: 'scoreAwarded',
   answeredAt: 'answeredAt',
   createdAt: 'createdAt'
@@ -437,15 +474,43 @@ export const MonthlyRankingScalarFieldEnum = {
   id: 'id',
   targetMonth: 'targetMonth',
   userId: 'userId',
+  mockExamId: 'mockExamId',
+  bestAttemptId: 'bestAttemptId',
   rankNo: 'rankNo',
   monthlyPoints: 'monthlyPoints',
   mockScore: 'mockScore',
+  correctCount: 'correctCount',
+  totalQuestions: 'totalQuestions',
+  isFinal: 'isFinal',
+  rewardProcessedAt: 'rewardProcessedAt',
   rewardPoints: 'rewardPoints',
   calculatedAt: 'calculatedAt',
   createdAt: 'createdAt'
 } as const
 
 export type MonthlyRankingScalarFieldEnum = (typeof MonthlyRankingScalarFieldEnum)[keyof typeof MonthlyRankingScalarFieldEnum]
+
+
+export const MockExamJobRunScalarFieldEnum = {
+  id: 'id',
+  jobKey: 'jobKey',
+  kind: 'kind',
+  targetMonth: 'targetMonth',
+  examCode: 'examCode',
+  status: 'status',
+  attempts: 'attempts',
+  leaseToken: 'leaseToken',
+  leaseUntil: 'leaseUntil',
+  nextRunAt: 'nextRunAt',
+  cursor: 'cursor',
+  lastErrorCode: 'lastErrorCode',
+  lastErrorAt: 'lastErrorAt',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MockExamJobRunScalarFieldEnum = (typeof MockExamJobRunScalarFieldEnum)[keyof typeof MockExamJobRunScalarFieldEnum]
 
 
 export const AiExplanationScalarFieldEnum = {
@@ -525,6 +590,7 @@ export const NotificationScalarFieldEnum = {
   boardPostId: 'boardPostId',
   boardCommentId: 'boardCommentId',
   titleId: 'titleId',
+  targetMonth: 'targetMonth',
   readAt: 'readAt',
   createdAt: 'createdAt'
 } as const

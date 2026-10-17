@@ -32,6 +32,7 @@ export type NotificationMinAggregateOutputType = {
   boardPostId: string | null
   boardCommentId: string | null
   titleId: string | null
+  targetMonth: Date | null
   readAt: Date | null
   createdAt: Date | null
 }
@@ -44,6 +45,7 @@ export type NotificationMaxAggregateOutputType = {
   boardPostId: string | null
   boardCommentId: string | null
   titleId: string | null
+  targetMonth: Date | null
   readAt: Date | null
   createdAt: Date | null
 }
@@ -56,6 +58,7 @@ export type NotificationCountAggregateOutputType = {
   boardPostId: number
   boardCommentId: number
   titleId: number
+  targetMonth: number
   readAt: number
   createdAt: number
   _all: number
@@ -70,6 +73,7 @@ export type NotificationMinAggregateInputType = {
   boardPostId?: true
   boardCommentId?: true
   titleId?: true
+  targetMonth?: true
   readAt?: true
   createdAt?: true
 }
@@ -82,6 +86,7 @@ export type NotificationMaxAggregateInputType = {
   boardPostId?: true
   boardCommentId?: true
   titleId?: true
+  targetMonth?: true
   readAt?: true
   createdAt?: true
 }
@@ -94,6 +99,7 @@ export type NotificationCountAggregateInputType = {
   boardPostId?: true
   boardCommentId?: true
   titleId?: true
+  targetMonth?: true
   readAt?: true
   createdAt?: true
   _all?: true
@@ -179,6 +185,7 @@ export type NotificationGroupByOutputType = {
   boardPostId: string | null
   boardCommentId: string | null
   titleId: string | null
+  targetMonth: Date | null
   readAt: Date | null
   createdAt: Date
   _count: NotificationCountAggregateOutputType | null
@@ -212,6 +219,7 @@ export type NotificationWhereInput = {
   boardPostId?: Prisma.UuidNullableFilter<"Notification"> | string | null
   boardCommentId?: Prisma.UuidNullableFilter<"Notification"> | string | null
   titleId?: Prisma.UuidNullableFilter<"Notification"> | string | null
+  targetMonth?: Prisma.DateTimeNullableFilter<"Notification"> | Date | string | null
   readAt?: Prisma.DateTimeNullableFilter<"Notification"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Notification"> | Date | string
   recipient?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -229,6 +237,7 @@ export type NotificationOrderByWithRelationInput = {
   boardPostId?: Prisma.SortOrderInput | Prisma.SortOrder
   boardCommentId?: Prisma.SortOrderInput | Prisma.SortOrder
   titleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  targetMonth?: Prisma.SortOrderInput | Prisma.SortOrder
   readAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   recipient?: Prisma.UserOrderByWithRelationInput
@@ -243,6 +252,7 @@ export type NotificationWhereUniqueInput = Prisma.AtLeast<{
   recipientId_type_boardCommentId?: Prisma.NotificationRecipientIdTypeBoardCommentIdCompoundUniqueInput
   recipientId_type_boardPostId?: Prisma.NotificationRecipientIdTypeBoardPostIdCompoundUniqueInput
   recipientId_type_titleId?: Prisma.NotificationRecipientIdTypeTitleIdCompoundUniqueInput
+  recipientId_type_targetMonth?: Prisma.NotificationRecipientIdTypeTargetMonthCompoundUniqueInput
   AND?: Prisma.NotificationWhereInput | Prisma.NotificationWhereInput[]
   OR?: Prisma.NotificationWhereInput[]
   NOT?: Prisma.NotificationWhereInput | Prisma.NotificationWhereInput[]
@@ -252,6 +262,7 @@ export type NotificationWhereUniqueInput = Prisma.AtLeast<{
   boardPostId?: Prisma.UuidNullableFilter<"Notification"> | string | null
   boardCommentId?: Prisma.UuidNullableFilter<"Notification"> | string | null
   titleId?: Prisma.UuidNullableFilter<"Notification"> | string | null
+  targetMonth?: Prisma.DateTimeNullableFilter<"Notification"> | Date | string | null
   readAt?: Prisma.DateTimeNullableFilter<"Notification"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Notification"> | Date | string
   recipient?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -259,7 +270,7 @@ export type NotificationWhereUniqueInput = Prisma.AtLeast<{
   boardPost?: Prisma.XOR<Prisma.BoardPostNullableScalarRelationFilter, Prisma.BoardPostWhereInput> | null
   boardComment?: Prisma.XOR<Prisma.BoardCommentNullableScalarRelationFilter, Prisma.BoardCommentWhereInput> | null
   title?: Prisma.XOR<Prisma.TitleNullableScalarRelationFilter, Prisma.TitleWhereInput> | null
-}, "id" | "recipientId_type_boardCommentId" | "recipientId_type_boardPostId" | "recipientId_type_titleId">
+}, "id" | "recipientId_type_boardCommentId" | "recipientId_type_boardPostId" | "recipientId_type_titleId" | "recipientId_type_targetMonth">
 
 export type NotificationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -269,6 +280,7 @@ export type NotificationOrderByWithAggregationInput = {
   boardPostId?: Prisma.SortOrderInput | Prisma.SortOrder
   boardCommentId?: Prisma.SortOrderInput | Prisma.SortOrder
   titleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  targetMonth?: Prisma.SortOrderInput | Prisma.SortOrder
   readAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.NotificationCountOrderByAggregateInput
@@ -287,6 +299,7 @@ export type NotificationScalarWhereWithAggregatesInput = {
   boardPostId?: Prisma.UuidNullableWithAggregatesFilter<"Notification"> | string | null
   boardCommentId?: Prisma.UuidNullableWithAggregatesFilter<"Notification"> | string | null
   titleId?: Prisma.UuidNullableWithAggregatesFilter<"Notification"> | string | null
+  targetMonth?: Prisma.DateTimeNullableWithAggregatesFilter<"Notification"> | Date | string | null
   readAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Notification"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Notification"> | Date | string
 }
@@ -294,6 +307,7 @@ export type NotificationScalarWhereWithAggregatesInput = {
 export type NotificationCreateInput = {
   id?: string
   type: string
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
   recipient: Prisma.UserCreateNestedOneWithoutReceivedNotificationsInput
@@ -311,6 +325,7 @@ export type NotificationUncheckedCreateInput = {
   boardPostId?: string | null
   boardCommentId?: string | null
   titleId?: string | null
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -318,6 +333,7 @@ export type NotificationUncheckedCreateInput = {
 export type NotificationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipient?: Prisma.UserUpdateOneRequiredWithoutReceivedNotificationsNestedInput
@@ -335,6 +351,7 @@ export type NotificationUncheckedUpdateInput = {
   boardPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   boardCommentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   titleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -347,6 +364,7 @@ export type NotificationCreateManyInput = {
   boardPostId?: string | null
   boardCommentId?: string | null
   titleId?: string | null
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -354,6 +372,7 @@ export type NotificationCreateManyInput = {
 export type NotificationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -366,6 +385,7 @@ export type NotificationUncheckedUpdateManyInput = {
   boardPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   boardCommentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   titleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -398,6 +418,12 @@ export type NotificationRecipientIdTypeTitleIdCompoundUniqueInput = {
   titleId: string
 }
 
+export type NotificationRecipientIdTypeTargetMonthCompoundUniqueInput = {
+  recipientId: string
+  type: string
+  targetMonth: Date | string
+}
+
 export type NotificationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   recipientId?: Prisma.SortOrder
@@ -406,6 +432,7 @@ export type NotificationCountOrderByAggregateInput = {
   boardPostId?: Prisma.SortOrder
   boardCommentId?: Prisma.SortOrder
   titleId?: Prisma.SortOrder
+  targetMonth?: Prisma.SortOrder
   readAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -418,6 +445,7 @@ export type NotificationMaxOrderByAggregateInput = {
   boardPostId?: Prisma.SortOrder
   boardCommentId?: Prisma.SortOrder
   titleId?: Prisma.SortOrder
+  targetMonth?: Prisma.SortOrder
   readAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -430,6 +458,7 @@ export type NotificationMinOrderByAggregateInput = {
   boardPostId?: Prisma.SortOrder
   boardCommentId?: Prisma.SortOrder
   titleId?: Prisma.SortOrder
+  targetMonth?: Prisma.SortOrder
   readAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -647,6 +676,7 @@ export type NotificationUncheckedUpdateManyWithoutBoardCommentNestedInput = {
 export type NotificationCreateWithoutRecipientInput = {
   id?: string
   type: string
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
   actor?: Prisma.UserCreateNestedOneWithoutActedNotificationsInput
@@ -662,6 +692,7 @@ export type NotificationUncheckedCreateWithoutRecipientInput = {
   boardPostId?: string | null
   boardCommentId?: string | null
   titleId?: string | null
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -679,6 +710,7 @@ export type NotificationCreateManyRecipientInputEnvelope = {
 export type NotificationCreateWithoutActorInput = {
   id?: string
   type: string
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
   recipient: Prisma.UserCreateNestedOneWithoutReceivedNotificationsInput
@@ -694,6 +726,7 @@ export type NotificationUncheckedCreateWithoutActorInput = {
   boardPostId?: string | null
   boardCommentId?: string | null
   titleId?: string | null
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -735,6 +768,7 @@ export type NotificationScalarWhereInput = {
   boardPostId?: Prisma.UuidNullableFilter<"Notification"> | string | null
   boardCommentId?: Prisma.UuidNullableFilter<"Notification"> | string | null
   titleId?: Prisma.UuidNullableFilter<"Notification"> | string | null
+  targetMonth?: Prisma.DateTimeNullableFilter<"Notification"> | Date | string | null
   readAt?: Prisma.DateTimeNullableFilter<"Notification"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Notification"> | Date | string
 }
@@ -758,6 +792,7 @@ export type NotificationUpdateManyWithWhereWithoutActorInput = {
 export type NotificationCreateWithoutTitleInput = {
   id?: string
   type: string
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
   recipient: Prisma.UserCreateNestedOneWithoutReceivedNotificationsInput
@@ -773,6 +808,7 @@ export type NotificationUncheckedCreateWithoutTitleInput = {
   type: string
   boardPostId?: string | null
   boardCommentId?: string | null
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -806,6 +842,7 @@ export type NotificationUpdateManyWithWhereWithoutTitleInput = {
 export type NotificationCreateWithoutBoardPostInput = {
   id?: string
   type: string
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
   recipient: Prisma.UserCreateNestedOneWithoutReceivedNotificationsInput
@@ -821,6 +858,7 @@ export type NotificationUncheckedCreateWithoutBoardPostInput = {
   type: string
   boardCommentId?: string | null
   titleId?: string | null
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -854,6 +892,7 @@ export type NotificationUpdateManyWithWhereWithoutBoardPostInput = {
 export type NotificationCreateWithoutBoardCommentInput = {
   id?: string
   type: string
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
   recipient: Prisma.UserCreateNestedOneWithoutReceivedNotificationsInput
@@ -869,6 +908,7 @@ export type NotificationUncheckedCreateWithoutBoardCommentInput = {
   type: string
   boardPostId?: string | null
   titleId?: string | null
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -906,6 +946,7 @@ export type NotificationCreateManyRecipientInput = {
   boardPostId?: string | null
   boardCommentId?: string | null
   titleId?: string | null
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -917,6 +958,7 @@ export type NotificationCreateManyActorInput = {
   boardPostId?: string | null
   boardCommentId?: string | null
   titleId?: string | null
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -924,6 +966,7 @@ export type NotificationCreateManyActorInput = {
 export type NotificationUpdateWithoutRecipientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actor?: Prisma.UserUpdateOneWithoutActedNotificationsNestedInput
@@ -939,6 +982,7 @@ export type NotificationUncheckedUpdateWithoutRecipientInput = {
   boardPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   boardCommentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   titleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -950,6 +994,7 @@ export type NotificationUncheckedUpdateManyWithoutRecipientInput = {
   boardPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   boardCommentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   titleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -957,6 +1002,7 @@ export type NotificationUncheckedUpdateManyWithoutRecipientInput = {
 export type NotificationUpdateWithoutActorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipient?: Prisma.UserUpdateOneRequiredWithoutReceivedNotificationsNestedInput
@@ -972,6 +1018,7 @@ export type NotificationUncheckedUpdateWithoutActorInput = {
   boardPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   boardCommentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   titleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -983,6 +1030,7 @@ export type NotificationUncheckedUpdateManyWithoutActorInput = {
   boardPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   boardCommentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   titleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -994,6 +1042,7 @@ export type NotificationCreateManyTitleInput = {
   type: string
   boardPostId?: string | null
   boardCommentId?: string | null
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -1001,6 +1050,7 @@ export type NotificationCreateManyTitleInput = {
 export type NotificationUpdateWithoutTitleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipient?: Prisma.UserUpdateOneRequiredWithoutReceivedNotificationsNestedInput
@@ -1016,6 +1066,7 @@ export type NotificationUncheckedUpdateWithoutTitleInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   boardPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   boardCommentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1027,6 +1078,7 @@ export type NotificationUncheckedUpdateManyWithoutTitleInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   boardPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   boardCommentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1038,6 +1090,7 @@ export type NotificationCreateManyBoardPostInput = {
   type: string
   boardCommentId?: string | null
   titleId?: string | null
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -1045,6 +1098,7 @@ export type NotificationCreateManyBoardPostInput = {
 export type NotificationUpdateWithoutBoardPostInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipient?: Prisma.UserUpdateOneRequiredWithoutReceivedNotificationsNestedInput
@@ -1060,6 +1114,7 @@ export type NotificationUncheckedUpdateWithoutBoardPostInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   boardCommentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   titleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1071,6 +1126,7 @@ export type NotificationUncheckedUpdateManyWithoutBoardPostInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   boardCommentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   titleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1082,6 +1138,7 @@ export type NotificationCreateManyBoardCommentInput = {
   type: string
   boardPostId?: string | null
   titleId?: string | null
+  targetMonth?: Date | string | null
   readAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -1089,6 +1146,7 @@ export type NotificationCreateManyBoardCommentInput = {
 export type NotificationUpdateWithoutBoardCommentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipient?: Prisma.UserUpdateOneRequiredWithoutReceivedNotificationsNestedInput
@@ -1104,6 +1162,7 @@ export type NotificationUncheckedUpdateWithoutBoardCommentInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   boardPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   titleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1115,6 +1174,7 @@ export type NotificationUncheckedUpdateManyWithoutBoardCommentInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   boardPostId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   titleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetMonth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1129,6 +1189,7 @@ export type NotificationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   boardPostId?: boolean
   boardCommentId?: boolean
   titleId?: boolean
+  targetMonth?: boolean
   readAt?: boolean
   createdAt?: boolean
   recipient?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1146,6 +1207,7 @@ export type NotificationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   boardPostId?: boolean
   boardCommentId?: boolean
   titleId?: boolean
+  targetMonth?: boolean
   readAt?: boolean
   createdAt?: boolean
   recipient?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1163,6 +1225,7 @@ export type NotificationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   boardPostId?: boolean
   boardCommentId?: boolean
   titleId?: boolean
+  targetMonth?: boolean
   readAt?: boolean
   createdAt?: boolean
   recipient?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1180,11 +1243,12 @@ export type NotificationSelectScalar = {
   boardPostId?: boolean
   boardCommentId?: boolean
   titleId?: boolean
+  targetMonth?: boolean
   readAt?: boolean
   createdAt?: boolean
 }
 
-export type NotificationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "recipientId" | "actorId" | "type" | "boardPostId" | "boardCommentId" | "titleId" | "readAt" | "createdAt", ExtArgs["result"]["notification"]>
+export type NotificationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "recipientId" | "actorId" | "type" | "boardPostId" | "boardCommentId" | "titleId" | "targetMonth" | "readAt" | "createdAt", ExtArgs["result"]["notification"]>
 export type NotificationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   recipient?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   actor?: boolean | Prisma.Notification$actorArgs<ExtArgs>
@@ -1224,6 +1288,7 @@ export type $NotificationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     boardPostId: string | null
     boardCommentId: string | null
     titleId: string | null
+    targetMonth: Date | null
     readAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["notification"]>
@@ -1661,6 +1726,7 @@ export interface NotificationFieldRefs {
   readonly boardPostId: Prisma.FieldRef<"Notification", 'String'>
   readonly boardCommentId: Prisma.FieldRef<"Notification", 'String'>
   readonly titleId: Prisma.FieldRef<"Notification", 'String'>
+  readonly targetMonth: Prisma.FieldRef<"Notification", 'DateTime'>
   readonly readAt: Prisma.FieldRef<"Notification", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Notification", 'DateTime'>
 }

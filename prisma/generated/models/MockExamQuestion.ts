@@ -29,11 +29,15 @@ export type AggregateMockExamQuestion = {
 export type MockExamQuestionAvgAggregateOutputType = {
   orderNo: number | null
   score: number | null
+  sourceYear: number | null
+  questionNo: number | null
 }
 
 export type MockExamQuestionSumAggregateOutputType = {
   orderNo: number | null
   score: number | null
+  sourceYear: number | null
+  questionNo: number | null
 }
 
 export type MockExamQuestionMinAggregateOutputType = {
@@ -42,6 +46,15 @@ export type MockExamQuestionMinAggregateOutputType = {
   questionId: string | null
   orderNo: number | null
   score: number | null
+  questionText: string | null
+  imagePath: string | null
+  explanation: string | null
+  categoryCode: string | null
+  sourceKey: string | null
+  sourceYear: number | null
+  sourceSeason: string | null
+  questionNo: number | null
+  sourceLabel: string | null
   createdAt: Date | null
 }
 
@@ -51,6 +64,15 @@ export type MockExamQuestionMaxAggregateOutputType = {
   questionId: string | null
   orderNo: number | null
   score: number | null
+  questionText: string | null
+  imagePath: string | null
+  explanation: string | null
+  categoryCode: string | null
+  sourceKey: string | null
+  sourceYear: number | null
+  sourceSeason: string | null
+  questionNo: number | null
+  sourceLabel: string | null
   createdAt: Date | null
 }
 
@@ -60,6 +82,15 @@ export type MockExamQuestionCountAggregateOutputType = {
   questionId: number
   orderNo: number
   score: number
+  questionText: number
+  imagePath: number
+  explanation: number
+  categoryCode: number
+  sourceKey: number
+  sourceYear: number
+  sourceSeason: number
+  questionNo: number
+  sourceLabel: number
   createdAt: number
   _all: number
 }
@@ -68,11 +99,15 @@ export type MockExamQuestionCountAggregateOutputType = {
 export type MockExamQuestionAvgAggregateInputType = {
   orderNo?: true
   score?: true
+  sourceYear?: true
+  questionNo?: true
 }
 
 export type MockExamQuestionSumAggregateInputType = {
   orderNo?: true
   score?: true
+  sourceYear?: true
+  questionNo?: true
 }
 
 export type MockExamQuestionMinAggregateInputType = {
@@ -81,6 +116,15 @@ export type MockExamQuestionMinAggregateInputType = {
   questionId?: true
   orderNo?: true
   score?: true
+  questionText?: true
+  imagePath?: true
+  explanation?: true
+  categoryCode?: true
+  sourceKey?: true
+  sourceYear?: true
+  sourceSeason?: true
+  questionNo?: true
+  sourceLabel?: true
   createdAt?: true
 }
 
@@ -90,6 +134,15 @@ export type MockExamQuestionMaxAggregateInputType = {
   questionId?: true
   orderNo?: true
   score?: true
+  questionText?: true
+  imagePath?: true
+  explanation?: true
+  categoryCode?: true
+  sourceKey?: true
+  sourceYear?: true
+  sourceSeason?: true
+  questionNo?: true
+  sourceLabel?: true
   createdAt?: true
 }
 
@@ -99,6 +152,15 @@ export type MockExamQuestionCountAggregateInputType = {
   questionId?: true
   orderNo?: true
   score?: true
+  questionText?: true
+  imagePath?: true
+  explanation?: true
+  categoryCode?: true
+  sourceKey?: true
+  sourceYear?: true
+  sourceSeason?: true
+  questionNo?: true
+  sourceLabel?: true
   createdAt?: true
   _all?: true
 }
@@ -195,6 +257,15 @@ export type MockExamQuestionGroupByOutputType = {
   questionId: string
   orderNo: number
   score: number
+  questionText: string
+  imagePath: string | null
+  explanation: string | null
+  categoryCode: string
+  sourceKey: string
+  sourceYear: number
+  sourceSeason: string | null
+  questionNo: number | null
+  sourceLabel: string
   createdAt: Date
   _count: MockExamQuestionCountAggregateOutputType | null
   _avg: MockExamQuestionAvgAggregateOutputType | null
@@ -227,9 +298,20 @@ export type MockExamQuestionWhereInput = {
   questionId?: Prisma.UuidFilter<"MockExamQuestion"> | string
   orderNo?: Prisma.IntFilter<"MockExamQuestion"> | number
   score?: Prisma.IntFilter<"MockExamQuestion"> | number
+  questionText?: Prisma.StringFilter<"MockExamQuestion"> | string
+  imagePath?: Prisma.StringNullableFilter<"MockExamQuestion"> | string | null
+  explanation?: Prisma.StringNullableFilter<"MockExamQuestion"> | string | null
+  categoryCode?: Prisma.StringFilter<"MockExamQuestion"> | string
+  sourceKey?: Prisma.StringFilter<"MockExamQuestion"> | string
+  sourceYear?: Prisma.IntFilter<"MockExamQuestion"> | number
+  sourceSeason?: Prisma.StringNullableFilter<"MockExamQuestion"> | string | null
+  questionNo?: Prisma.IntNullableFilter<"MockExamQuestion"> | number | null
+  sourceLabel?: Prisma.StringFilter<"MockExamQuestion"> | string
   createdAt?: Prisma.DateTimeFilter<"MockExamQuestion"> | Date | string
   mockExam?: Prisma.XOR<Prisma.MockExamScalarRelationFilter, Prisma.MockExamWhereInput>
   question?: Prisma.XOR<Prisma.QuestionScalarRelationFilter, Prisma.QuestionWhereInput>
+  choices?: Prisma.MockExamChoiceListRelationFilter
+  answers?: Prisma.MockAnswerListRelationFilter
 }
 
 export type MockExamQuestionOrderByWithRelationInput = {
@@ -238,13 +320,25 @@ export type MockExamQuestionOrderByWithRelationInput = {
   questionId?: Prisma.SortOrder
   orderNo?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  questionText?: Prisma.SortOrder
+  imagePath?: Prisma.SortOrderInput | Prisma.SortOrder
+  explanation?: Prisma.SortOrderInput | Prisma.SortOrder
+  categoryCode?: Prisma.SortOrder
+  sourceKey?: Prisma.SortOrder
+  sourceYear?: Prisma.SortOrder
+  sourceSeason?: Prisma.SortOrderInput | Prisma.SortOrder
+  questionNo?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceLabel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   mockExam?: Prisma.MockExamOrderByWithRelationInput
   question?: Prisma.QuestionOrderByWithRelationInput
+  choices?: Prisma.MockExamChoiceOrderByRelationAggregateInput
+  answers?: Prisma.MockAnswerOrderByRelationAggregateInput
 }
 
 export type MockExamQuestionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  id_mockExamId?: Prisma.MockExamQuestionIdMockExamIdCompoundUniqueInput
   mockExamId_questionId?: Prisma.MockExamQuestionMockExamIdQuestionIdCompoundUniqueInput
   mockExamId_orderNo?: Prisma.MockExamQuestionMockExamIdOrderNoCompoundUniqueInput
   AND?: Prisma.MockExamQuestionWhereInput | Prisma.MockExamQuestionWhereInput[]
@@ -254,10 +348,21 @@ export type MockExamQuestionWhereUniqueInput = Prisma.AtLeast<{
   questionId?: Prisma.UuidFilter<"MockExamQuestion"> | string
   orderNo?: Prisma.IntFilter<"MockExamQuestion"> | number
   score?: Prisma.IntFilter<"MockExamQuestion"> | number
+  questionText?: Prisma.StringFilter<"MockExamQuestion"> | string
+  imagePath?: Prisma.StringNullableFilter<"MockExamQuestion"> | string | null
+  explanation?: Prisma.StringNullableFilter<"MockExamQuestion"> | string | null
+  categoryCode?: Prisma.StringFilter<"MockExamQuestion"> | string
+  sourceKey?: Prisma.StringFilter<"MockExamQuestion"> | string
+  sourceYear?: Prisma.IntFilter<"MockExamQuestion"> | number
+  sourceSeason?: Prisma.StringNullableFilter<"MockExamQuestion"> | string | null
+  questionNo?: Prisma.IntNullableFilter<"MockExamQuestion"> | number | null
+  sourceLabel?: Prisma.StringFilter<"MockExamQuestion"> | string
   createdAt?: Prisma.DateTimeFilter<"MockExamQuestion"> | Date | string
   mockExam?: Prisma.XOR<Prisma.MockExamScalarRelationFilter, Prisma.MockExamWhereInput>
   question?: Prisma.XOR<Prisma.QuestionScalarRelationFilter, Prisma.QuestionWhereInput>
-}, "id" | "mockExamId_questionId" | "mockExamId_orderNo">
+  choices?: Prisma.MockExamChoiceListRelationFilter
+  answers?: Prisma.MockAnswerListRelationFilter
+}, "id" | "id_mockExamId" | "mockExamId_questionId" | "mockExamId_orderNo">
 
 export type MockExamQuestionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -265,6 +370,15 @@ export type MockExamQuestionOrderByWithAggregationInput = {
   questionId?: Prisma.SortOrder
   orderNo?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  questionText?: Prisma.SortOrder
+  imagePath?: Prisma.SortOrderInput | Prisma.SortOrder
+  explanation?: Prisma.SortOrderInput | Prisma.SortOrder
+  categoryCode?: Prisma.SortOrder
+  sourceKey?: Prisma.SortOrder
+  sourceYear?: Prisma.SortOrder
+  sourceSeason?: Prisma.SortOrderInput | Prisma.SortOrder
+  questionNo?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceLabel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.MockExamQuestionCountOrderByAggregateInput
   _avg?: Prisma.MockExamQuestionAvgOrderByAggregateInput
@@ -282,6 +396,15 @@ export type MockExamQuestionScalarWhereWithAggregatesInput = {
   questionId?: Prisma.UuidWithAggregatesFilter<"MockExamQuestion"> | string
   orderNo?: Prisma.IntWithAggregatesFilter<"MockExamQuestion"> | number
   score?: Prisma.IntWithAggregatesFilter<"MockExamQuestion"> | number
+  questionText?: Prisma.StringWithAggregatesFilter<"MockExamQuestion"> | string
+  imagePath?: Prisma.StringNullableWithAggregatesFilter<"MockExamQuestion"> | string | null
+  explanation?: Prisma.StringNullableWithAggregatesFilter<"MockExamQuestion"> | string | null
+  categoryCode?: Prisma.StringWithAggregatesFilter<"MockExamQuestion"> | string
+  sourceKey?: Prisma.StringWithAggregatesFilter<"MockExamQuestion"> | string
+  sourceYear?: Prisma.IntWithAggregatesFilter<"MockExamQuestion"> | number
+  sourceSeason?: Prisma.StringNullableWithAggregatesFilter<"MockExamQuestion"> | string | null
+  questionNo?: Prisma.IntNullableWithAggregatesFilter<"MockExamQuestion"> | number | null
+  sourceLabel?: Prisma.StringWithAggregatesFilter<"MockExamQuestion"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MockExamQuestion"> | Date | string
 }
 
@@ -289,9 +412,20 @@ export type MockExamQuestionCreateInput = {
   id?: string
   orderNo: number
   score?: number
+  questionText: string
+  imagePath?: string | null
+  explanation?: string | null
+  categoryCode: string
+  sourceKey: string
+  sourceYear: number
+  sourceSeason?: string | null
+  questionNo?: number | null
+  sourceLabel: string
   createdAt?: Date | string
   mockExam: Prisma.MockExamCreateNestedOneWithoutQuestionsInput
   question: Prisma.QuestionCreateNestedOneWithoutMockExamQuestionsInput
+  choices?: Prisma.MockExamChoiceCreateNestedManyWithoutQuestionInput
+  answers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
 }
 
 export type MockExamQuestionUncheckedCreateInput = {
@@ -300,16 +434,38 @@ export type MockExamQuestionUncheckedCreateInput = {
   questionId: string
   orderNo: number
   score?: number
+  questionText: string
+  imagePath?: string | null
+  explanation?: string | null
+  categoryCode: string
+  sourceKey: string
+  sourceYear: number
+  sourceSeason?: string | null
+  questionNo?: number | null
+  sourceLabel: string
   createdAt?: Date | string
+  choices?: Prisma.MockExamChoiceUncheckedCreateNestedManyWithoutQuestionInput
+  answers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
 }
 
 export type MockExamQuestionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNo?: Prisma.IntFieldUpdateOperationsInput | number
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  questionText?: Prisma.StringFieldUpdateOperationsInput | string
+  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceYear?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLabel?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mockExam?: Prisma.MockExamUpdateOneRequiredWithoutQuestionsNestedInput
   question?: Prisma.QuestionUpdateOneRequiredWithoutMockExamQuestionsNestedInput
+  choices?: Prisma.MockExamChoiceUpdateManyWithoutQuestionNestedInput
+  answers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
 }
 
 export type MockExamQuestionUncheckedUpdateInput = {
@@ -318,7 +474,18 @@ export type MockExamQuestionUncheckedUpdateInput = {
   questionId?: Prisma.StringFieldUpdateOperationsInput | string
   orderNo?: Prisma.IntFieldUpdateOperationsInput | number
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  questionText?: Prisma.StringFieldUpdateOperationsInput | string
+  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceYear?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLabel?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  choices?: Prisma.MockExamChoiceUncheckedUpdateManyWithoutQuestionNestedInput
+  answers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
 }
 
 export type MockExamQuestionCreateManyInput = {
@@ -327,6 +494,15 @@ export type MockExamQuestionCreateManyInput = {
   questionId: string
   orderNo: number
   score?: number
+  questionText: string
+  imagePath?: string | null
+  explanation?: string | null
+  categoryCode: string
+  sourceKey: string
+  sourceYear: number
+  sourceSeason?: string | null
+  questionNo?: number | null
+  sourceLabel: string
   createdAt?: Date | string
 }
 
@@ -334,6 +510,15 @@ export type MockExamQuestionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNo?: Prisma.IntFieldUpdateOperationsInput | number
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  questionText?: Prisma.StringFieldUpdateOperationsInput | string
+  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceYear?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLabel?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -343,6 +528,15 @@ export type MockExamQuestionUncheckedUpdateManyInput = {
   questionId?: Prisma.StringFieldUpdateOperationsInput | string
   orderNo?: Prisma.IntFieldUpdateOperationsInput | number
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  questionText?: Prisma.StringFieldUpdateOperationsInput | string
+  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceYear?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLabel?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -354,6 +548,11 @@ export type MockExamQuestionListRelationFilter = {
 
 export type MockExamQuestionOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type MockExamQuestionIdMockExamIdCompoundUniqueInput = {
+  id: string
+  mockExamId: string
 }
 
 export type MockExamQuestionMockExamIdQuestionIdCompoundUniqueInput = {
@@ -372,12 +571,23 @@ export type MockExamQuestionCountOrderByAggregateInput = {
   questionId?: Prisma.SortOrder
   orderNo?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  questionText?: Prisma.SortOrder
+  imagePath?: Prisma.SortOrder
+  explanation?: Prisma.SortOrder
+  categoryCode?: Prisma.SortOrder
+  sourceKey?: Prisma.SortOrder
+  sourceYear?: Prisma.SortOrder
+  sourceSeason?: Prisma.SortOrder
+  questionNo?: Prisma.SortOrder
+  sourceLabel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type MockExamQuestionAvgOrderByAggregateInput = {
   orderNo?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  sourceYear?: Prisma.SortOrder
+  questionNo?: Prisma.SortOrder
 }
 
 export type MockExamQuestionMaxOrderByAggregateInput = {
@@ -386,6 +596,15 @@ export type MockExamQuestionMaxOrderByAggregateInput = {
   questionId?: Prisma.SortOrder
   orderNo?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  questionText?: Prisma.SortOrder
+  imagePath?: Prisma.SortOrder
+  explanation?: Prisma.SortOrder
+  categoryCode?: Prisma.SortOrder
+  sourceKey?: Prisma.SortOrder
+  sourceYear?: Prisma.SortOrder
+  sourceSeason?: Prisma.SortOrder
+  questionNo?: Prisma.SortOrder
+  sourceLabel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -395,12 +614,28 @@ export type MockExamQuestionMinOrderByAggregateInput = {
   questionId?: Prisma.SortOrder
   orderNo?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  questionText?: Prisma.SortOrder
+  imagePath?: Prisma.SortOrder
+  explanation?: Prisma.SortOrder
+  categoryCode?: Prisma.SortOrder
+  sourceKey?: Prisma.SortOrder
+  sourceYear?: Prisma.SortOrder
+  sourceSeason?: Prisma.SortOrder
+  questionNo?: Prisma.SortOrder
+  sourceLabel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type MockExamQuestionSumOrderByAggregateInput = {
   orderNo?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  sourceYear?: Prisma.SortOrder
+  questionNo?: Prisma.SortOrder
+}
+
+export type MockExamQuestionScalarRelationFilter = {
+  is?: Prisma.MockExamQuestionWhereInput
+  isNot?: Prisma.MockExamQuestionWhereInput
 }
 
 export type MockExamQuestionCreateNestedManyWithoutQuestionInput = {
@@ -487,12 +722,51 @@ export type MockExamQuestionUncheckedUpdateManyWithoutMockExamNestedInput = {
   deleteMany?: Prisma.MockExamQuestionScalarWhereInput | Prisma.MockExamQuestionScalarWhereInput[]
 }
 
+export type MockExamQuestionCreateNestedOneWithoutChoicesInput = {
+  create?: Prisma.XOR<Prisma.MockExamQuestionCreateWithoutChoicesInput, Prisma.MockExamQuestionUncheckedCreateWithoutChoicesInput>
+  connectOrCreate?: Prisma.MockExamQuestionCreateOrConnectWithoutChoicesInput
+  connect?: Prisma.MockExamQuestionWhereUniqueInput
+}
+
+export type MockExamQuestionUpdateOneRequiredWithoutChoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.MockExamQuestionCreateWithoutChoicesInput, Prisma.MockExamQuestionUncheckedCreateWithoutChoicesInput>
+  connectOrCreate?: Prisma.MockExamQuestionCreateOrConnectWithoutChoicesInput
+  upsert?: Prisma.MockExamQuestionUpsertWithoutChoicesInput
+  connect?: Prisma.MockExamQuestionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MockExamQuestionUpdateToOneWithWhereWithoutChoicesInput, Prisma.MockExamQuestionUpdateWithoutChoicesInput>, Prisma.MockExamQuestionUncheckedUpdateWithoutChoicesInput>
+}
+
+export type MockExamQuestionCreateNestedOneWithoutAnswersInput = {
+  create?: Prisma.XOR<Prisma.MockExamQuestionCreateWithoutAnswersInput, Prisma.MockExamQuestionUncheckedCreateWithoutAnswersInput>
+  connectOrCreate?: Prisma.MockExamQuestionCreateOrConnectWithoutAnswersInput
+  connect?: Prisma.MockExamQuestionWhereUniqueInput
+}
+
+export type MockExamQuestionUpdateOneRequiredWithoutAnswersNestedInput = {
+  create?: Prisma.XOR<Prisma.MockExamQuestionCreateWithoutAnswersInput, Prisma.MockExamQuestionUncheckedCreateWithoutAnswersInput>
+  connectOrCreate?: Prisma.MockExamQuestionCreateOrConnectWithoutAnswersInput
+  upsert?: Prisma.MockExamQuestionUpsertWithoutAnswersInput
+  connect?: Prisma.MockExamQuestionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MockExamQuestionUpdateToOneWithWhereWithoutAnswersInput, Prisma.MockExamQuestionUpdateWithoutAnswersInput>, Prisma.MockExamQuestionUncheckedUpdateWithoutAnswersInput>
+}
+
 export type MockExamQuestionCreateWithoutQuestionInput = {
   id?: string
   orderNo: number
   score?: number
+  questionText: string
+  imagePath?: string | null
+  explanation?: string | null
+  categoryCode: string
+  sourceKey: string
+  sourceYear: number
+  sourceSeason?: string | null
+  questionNo?: number | null
+  sourceLabel: string
   createdAt?: Date | string
   mockExam: Prisma.MockExamCreateNestedOneWithoutQuestionsInput
+  choices?: Prisma.MockExamChoiceCreateNestedManyWithoutQuestionInput
+  answers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
 }
 
 export type MockExamQuestionUncheckedCreateWithoutQuestionInput = {
@@ -500,7 +774,18 @@ export type MockExamQuestionUncheckedCreateWithoutQuestionInput = {
   mockExamId: string
   orderNo: number
   score?: number
+  questionText: string
+  imagePath?: string | null
+  explanation?: string | null
+  categoryCode: string
+  sourceKey: string
+  sourceYear: number
+  sourceSeason?: string | null
+  questionNo?: number | null
+  sourceLabel: string
   createdAt?: Date | string
+  choices?: Prisma.MockExamChoiceUncheckedCreateNestedManyWithoutQuestionInput
+  answers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
 }
 
 export type MockExamQuestionCreateOrConnectWithoutQuestionInput = {
@@ -538,6 +823,15 @@ export type MockExamQuestionScalarWhereInput = {
   questionId?: Prisma.UuidFilter<"MockExamQuestion"> | string
   orderNo?: Prisma.IntFilter<"MockExamQuestion"> | number
   score?: Prisma.IntFilter<"MockExamQuestion"> | number
+  questionText?: Prisma.StringFilter<"MockExamQuestion"> | string
+  imagePath?: Prisma.StringNullableFilter<"MockExamQuestion"> | string | null
+  explanation?: Prisma.StringNullableFilter<"MockExamQuestion"> | string | null
+  categoryCode?: Prisma.StringFilter<"MockExamQuestion"> | string
+  sourceKey?: Prisma.StringFilter<"MockExamQuestion"> | string
+  sourceYear?: Prisma.IntFilter<"MockExamQuestion"> | number
+  sourceSeason?: Prisma.StringNullableFilter<"MockExamQuestion"> | string | null
+  questionNo?: Prisma.IntNullableFilter<"MockExamQuestion"> | number | null
+  sourceLabel?: Prisma.StringFilter<"MockExamQuestion"> | string
   createdAt?: Prisma.DateTimeFilter<"MockExamQuestion"> | Date | string
 }
 
@@ -545,8 +839,19 @@ export type MockExamQuestionCreateWithoutMockExamInput = {
   id?: string
   orderNo: number
   score?: number
+  questionText: string
+  imagePath?: string | null
+  explanation?: string | null
+  categoryCode: string
+  sourceKey: string
+  sourceYear: number
+  sourceSeason?: string | null
+  questionNo?: number | null
+  sourceLabel: string
   createdAt?: Date | string
   question: Prisma.QuestionCreateNestedOneWithoutMockExamQuestionsInput
+  choices?: Prisma.MockExamChoiceCreateNestedManyWithoutQuestionInput
+  answers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
 }
 
 export type MockExamQuestionUncheckedCreateWithoutMockExamInput = {
@@ -554,7 +859,18 @@ export type MockExamQuestionUncheckedCreateWithoutMockExamInput = {
   questionId: string
   orderNo: number
   score?: number
+  questionText: string
+  imagePath?: string | null
+  explanation?: string | null
+  categoryCode: string
+  sourceKey: string
+  sourceYear: number
+  sourceSeason?: string | null
+  questionNo?: number | null
+  sourceLabel: string
   createdAt?: Date | string
+  choices?: Prisma.MockExamChoiceUncheckedCreateNestedManyWithoutQuestionInput
+  answers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
 }
 
 export type MockExamQuestionCreateOrConnectWithoutMockExamInput = {
@@ -583,11 +899,204 @@ export type MockExamQuestionUpdateManyWithWhereWithoutMockExamInput = {
   data: Prisma.XOR<Prisma.MockExamQuestionUpdateManyMutationInput, Prisma.MockExamQuestionUncheckedUpdateManyWithoutMockExamInput>
 }
 
+export type MockExamQuestionCreateWithoutChoicesInput = {
+  id?: string
+  orderNo: number
+  score?: number
+  questionText: string
+  imagePath?: string | null
+  explanation?: string | null
+  categoryCode: string
+  sourceKey: string
+  sourceYear: number
+  sourceSeason?: string | null
+  questionNo?: number | null
+  sourceLabel: string
+  createdAt?: Date | string
+  mockExam: Prisma.MockExamCreateNestedOneWithoutQuestionsInput
+  question: Prisma.QuestionCreateNestedOneWithoutMockExamQuestionsInput
+  answers?: Prisma.MockAnswerCreateNestedManyWithoutQuestionInput
+}
+
+export type MockExamQuestionUncheckedCreateWithoutChoicesInput = {
+  id?: string
+  mockExamId: string
+  questionId: string
+  orderNo: number
+  score?: number
+  questionText: string
+  imagePath?: string | null
+  explanation?: string | null
+  categoryCode: string
+  sourceKey: string
+  sourceYear: number
+  sourceSeason?: string | null
+  questionNo?: number | null
+  sourceLabel: string
+  createdAt?: Date | string
+  answers?: Prisma.MockAnswerUncheckedCreateNestedManyWithoutQuestionInput
+}
+
+export type MockExamQuestionCreateOrConnectWithoutChoicesInput = {
+  where: Prisma.MockExamQuestionWhereUniqueInput
+  create: Prisma.XOR<Prisma.MockExamQuestionCreateWithoutChoicesInput, Prisma.MockExamQuestionUncheckedCreateWithoutChoicesInput>
+}
+
+export type MockExamQuestionUpsertWithoutChoicesInput = {
+  update: Prisma.XOR<Prisma.MockExamQuestionUpdateWithoutChoicesInput, Prisma.MockExamQuestionUncheckedUpdateWithoutChoicesInput>
+  create: Prisma.XOR<Prisma.MockExamQuestionCreateWithoutChoicesInput, Prisma.MockExamQuestionUncheckedCreateWithoutChoicesInput>
+  where?: Prisma.MockExamQuestionWhereInput
+}
+
+export type MockExamQuestionUpdateToOneWithWhereWithoutChoicesInput = {
+  where?: Prisma.MockExamQuestionWhereInput
+  data: Prisma.XOR<Prisma.MockExamQuestionUpdateWithoutChoicesInput, Prisma.MockExamQuestionUncheckedUpdateWithoutChoicesInput>
+}
+
+export type MockExamQuestionUpdateWithoutChoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderNo?: Prisma.IntFieldUpdateOperationsInput | number
+  score?: Prisma.IntFieldUpdateOperationsInput | number
+  questionText?: Prisma.StringFieldUpdateOperationsInput | string
+  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceYear?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLabel?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mockExam?: Prisma.MockExamUpdateOneRequiredWithoutQuestionsNestedInput
+  question?: Prisma.QuestionUpdateOneRequiredWithoutMockExamQuestionsNestedInput
+  answers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
+}
+
+export type MockExamQuestionUncheckedUpdateWithoutChoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  mockExamId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderNo?: Prisma.IntFieldUpdateOperationsInput | number
+  score?: Prisma.IntFieldUpdateOperationsInput | number
+  questionText?: Prisma.StringFieldUpdateOperationsInput | string
+  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceYear?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLabel?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  answers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
+}
+
+export type MockExamQuestionCreateWithoutAnswersInput = {
+  id?: string
+  orderNo: number
+  score?: number
+  questionText: string
+  imagePath?: string | null
+  explanation?: string | null
+  categoryCode: string
+  sourceKey: string
+  sourceYear: number
+  sourceSeason?: string | null
+  questionNo?: number | null
+  sourceLabel: string
+  createdAt?: Date | string
+  mockExam: Prisma.MockExamCreateNestedOneWithoutQuestionsInput
+  question: Prisma.QuestionCreateNestedOneWithoutMockExamQuestionsInput
+  choices?: Prisma.MockExamChoiceCreateNestedManyWithoutQuestionInput
+}
+
+export type MockExamQuestionUncheckedCreateWithoutAnswersInput = {
+  id?: string
+  mockExamId: string
+  questionId: string
+  orderNo: number
+  score?: number
+  questionText: string
+  imagePath?: string | null
+  explanation?: string | null
+  categoryCode: string
+  sourceKey: string
+  sourceYear: number
+  sourceSeason?: string | null
+  questionNo?: number | null
+  sourceLabel: string
+  createdAt?: Date | string
+  choices?: Prisma.MockExamChoiceUncheckedCreateNestedManyWithoutQuestionInput
+}
+
+export type MockExamQuestionCreateOrConnectWithoutAnswersInput = {
+  where: Prisma.MockExamQuestionWhereUniqueInput
+  create: Prisma.XOR<Prisma.MockExamQuestionCreateWithoutAnswersInput, Prisma.MockExamQuestionUncheckedCreateWithoutAnswersInput>
+}
+
+export type MockExamQuestionUpsertWithoutAnswersInput = {
+  update: Prisma.XOR<Prisma.MockExamQuestionUpdateWithoutAnswersInput, Prisma.MockExamQuestionUncheckedUpdateWithoutAnswersInput>
+  create: Prisma.XOR<Prisma.MockExamQuestionCreateWithoutAnswersInput, Prisma.MockExamQuestionUncheckedCreateWithoutAnswersInput>
+  where?: Prisma.MockExamQuestionWhereInput
+}
+
+export type MockExamQuestionUpdateToOneWithWhereWithoutAnswersInput = {
+  where?: Prisma.MockExamQuestionWhereInput
+  data: Prisma.XOR<Prisma.MockExamQuestionUpdateWithoutAnswersInput, Prisma.MockExamQuestionUncheckedUpdateWithoutAnswersInput>
+}
+
+export type MockExamQuestionUpdateWithoutAnswersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderNo?: Prisma.IntFieldUpdateOperationsInput | number
+  score?: Prisma.IntFieldUpdateOperationsInput | number
+  questionText?: Prisma.StringFieldUpdateOperationsInput | string
+  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceYear?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLabel?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mockExam?: Prisma.MockExamUpdateOneRequiredWithoutQuestionsNestedInput
+  question?: Prisma.QuestionUpdateOneRequiredWithoutMockExamQuestionsNestedInput
+  choices?: Prisma.MockExamChoiceUpdateManyWithoutQuestionNestedInput
+}
+
+export type MockExamQuestionUncheckedUpdateWithoutAnswersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  mockExamId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderNo?: Prisma.IntFieldUpdateOperationsInput | number
+  score?: Prisma.IntFieldUpdateOperationsInput | number
+  questionText?: Prisma.StringFieldUpdateOperationsInput | string
+  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceYear?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLabel?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  choices?: Prisma.MockExamChoiceUncheckedUpdateManyWithoutQuestionNestedInput
+}
+
 export type MockExamQuestionCreateManyQuestionInput = {
   id?: string
   mockExamId: string
   orderNo: number
   score?: number
+  questionText: string
+  imagePath?: string | null
+  explanation?: string | null
+  categoryCode: string
+  sourceKey: string
+  sourceYear: number
+  sourceSeason?: string | null
+  questionNo?: number | null
+  sourceLabel: string
   createdAt?: Date | string
 }
 
@@ -595,8 +1104,19 @@ export type MockExamQuestionUpdateWithoutQuestionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNo?: Prisma.IntFieldUpdateOperationsInput | number
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  questionText?: Prisma.StringFieldUpdateOperationsInput | string
+  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceYear?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLabel?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mockExam?: Prisma.MockExamUpdateOneRequiredWithoutQuestionsNestedInput
+  choices?: Prisma.MockExamChoiceUpdateManyWithoutQuestionNestedInput
+  answers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
 }
 
 export type MockExamQuestionUncheckedUpdateWithoutQuestionInput = {
@@ -604,7 +1124,18 @@ export type MockExamQuestionUncheckedUpdateWithoutQuestionInput = {
   mockExamId?: Prisma.StringFieldUpdateOperationsInput | string
   orderNo?: Prisma.IntFieldUpdateOperationsInput | number
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  questionText?: Prisma.StringFieldUpdateOperationsInput | string
+  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceYear?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLabel?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  choices?: Prisma.MockExamChoiceUncheckedUpdateManyWithoutQuestionNestedInput
+  answers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
 }
 
 export type MockExamQuestionUncheckedUpdateManyWithoutQuestionInput = {
@@ -612,6 +1143,15 @@ export type MockExamQuestionUncheckedUpdateManyWithoutQuestionInput = {
   mockExamId?: Prisma.StringFieldUpdateOperationsInput | string
   orderNo?: Prisma.IntFieldUpdateOperationsInput | number
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  questionText?: Prisma.StringFieldUpdateOperationsInput | string
+  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceYear?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLabel?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -620,6 +1160,15 @@ export type MockExamQuestionCreateManyMockExamInput = {
   questionId: string
   orderNo: number
   score?: number
+  questionText: string
+  imagePath?: string | null
+  explanation?: string | null
+  categoryCode: string
+  sourceKey: string
+  sourceYear: number
+  sourceSeason?: string | null
+  questionNo?: number | null
+  sourceLabel: string
   createdAt?: Date | string
 }
 
@@ -627,8 +1176,19 @@ export type MockExamQuestionUpdateWithoutMockExamInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNo?: Prisma.IntFieldUpdateOperationsInput | number
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  questionText?: Prisma.StringFieldUpdateOperationsInput | string
+  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceYear?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLabel?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   question?: Prisma.QuestionUpdateOneRequiredWithoutMockExamQuestionsNestedInput
+  choices?: Prisma.MockExamChoiceUpdateManyWithoutQuestionNestedInput
+  answers?: Prisma.MockAnswerUpdateManyWithoutQuestionNestedInput
 }
 
 export type MockExamQuestionUncheckedUpdateWithoutMockExamInput = {
@@ -636,7 +1196,18 @@ export type MockExamQuestionUncheckedUpdateWithoutMockExamInput = {
   questionId?: Prisma.StringFieldUpdateOperationsInput | string
   orderNo?: Prisma.IntFieldUpdateOperationsInput | number
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  questionText?: Prisma.StringFieldUpdateOperationsInput | string
+  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceYear?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLabel?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  choices?: Prisma.MockExamChoiceUncheckedUpdateManyWithoutQuestionNestedInput
+  answers?: Prisma.MockAnswerUncheckedUpdateManyWithoutQuestionNestedInput
 }
 
 export type MockExamQuestionUncheckedUpdateManyWithoutMockExamInput = {
@@ -644,9 +1215,56 @@ export type MockExamQuestionUncheckedUpdateManyWithoutMockExamInput = {
   questionId?: Prisma.StringFieldUpdateOperationsInput | string
   orderNo?: Prisma.IntFieldUpdateOperationsInput | number
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  questionText?: Prisma.StringFieldUpdateOperationsInput | string
+  imagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceYear?: Prisma.IntFieldUpdateOperationsInput | number
+  sourceSeason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionNo?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLabel?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type MockExamQuestionCountOutputType
+ */
+
+export type MockExamQuestionCountOutputType = {
+  choices: number
+  answers: number
+}
+
+export type MockExamQuestionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  choices?: boolean | MockExamQuestionCountOutputTypeCountChoicesArgs
+  answers?: boolean | MockExamQuestionCountOutputTypeCountAnswersArgs
+}
+
+/**
+ * MockExamQuestionCountOutputType without action
+ */
+export type MockExamQuestionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MockExamQuestionCountOutputType
+   */
+  select?: Prisma.MockExamQuestionCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * MockExamQuestionCountOutputType without action
+ */
+export type MockExamQuestionCountOutputTypeCountChoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MockExamChoiceWhereInput
+}
+
+/**
+ * MockExamQuestionCountOutputType without action
+ */
+export type MockExamQuestionCountOutputTypeCountAnswersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MockAnswerWhereInput
+}
 
 
 export type MockExamQuestionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -655,9 +1273,21 @@ export type MockExamQuestionSelect<ExtArgs extends runtime.Types.Extensions.Inte
   questionId?: boolean
   orderNo?: boolean
   score?: boolean
+  questionText?: boolean
+  imagePath?: boolean
+  explanation?: boolean
+  categoryCode?: boolean
+  sourceKey?: boolean
+  sourceYear?: boolean
+  sourceSeason?: boolean
+  questionNo?: boolean
+  sourceLabel?: boolean
   createdAt?: boolean
   mockExam?: boolean | Prisma.MockExamDefaultArgs<ExtArgs>
   question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
+  choices?: boolean | Prisma.MockExamQuestion$choicesArgs<ExtArgs>
+  answers?: boolean | Prisma.MockExamQuestion$answersArgs<ExtArgs>
+  _count?: boolean | Prisma.MockExamQuestionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mockExamQuestion"]>
 
 export type MockExamQuestionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -666,6 +1296,15 @@ export type MockExamQuestionSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   questionId?: boolean
   orderNo?: boolean
   score?: boolean
+  questionText?: boolean
+  imagePath?: boolean
+  explanation?: boolean
+  categoryCode?: boolean
+  sourceKey?: boolean
+  sourceYear?: boolean
+  sourceSeason?: boolean
+  questionNo?: boolean
+  sourceLabel?: boolean
   createdAt?: boolean
   mockExam?: boolean | Prisma.MockExamDefaultArgs<ExtArgs>
   question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
@@ -677,6 +1316,15 @@ export type MockExamQuestionSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   questionId?: boolean
   orderNo?: boolean
   score?: boolean
+  questionText?: boolean
+  imagePath?: boolean
+  explanation?: boolean
+  categoryCode?: boolean
+  sourceKey?: boolean
+  sourceYear?: boolean
+  sourceSeason?: boolean
+  questionNo?: boolean
+  sourceLabel?: boolean
   createdAt?: boolean
   mockExam?: boolean | Prisma.MockExamDefaultArgs<ExtArgs>
   question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
@@ -688,13 +1336,25 @@ export type MockExamQuestionSelectScalar = {
   questionId?: boolean
   orderNo?: boolean
   score?: boolean
+  questionText?: boolean
+  imagePath?: boolean
+  explanation?: boolean
+  categoryCode?: boolean
+  sourceKey?: boolean
+  sourceYear?: boolean
+  sourceSeason?: boolean
+  questionNo?: boolean
+  sourceLabel?: boolean
   createdAt?: boolean
 }
 
-export type MockExamQuestionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "mockExamId" | "questionId" | "orderNo" | "score" | "createdAt", ExtArgs["result"]["mockExamQuestion"]>
+export type MockExamQuestionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "mockExamId" | "questionId" | "orderNo" | "score" | "questionText" | "imagePath" | "explanation" | "categoryCode" | "sourceKey" | "sourceYear" | "sourceSeason" | "questionNo" | "sourceLabel" | "createdAt", ExtArgs["result"]["mockExamQuestion"]>
 export type MockExamQuestionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   mockExam?: boolean | Prisma.MockExamDefaultArgs<ExtArgs>
   question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
+  choices?: boolean | Prisma.MockExamQuestion$choicesArgs<ExtArgs>
+  answers?: boolean | Prisma.MockExamQuestion$answersArgs<ExtArgs>
+  _count?: boolean | Prisma.MockExamQuestionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MockExamQuestionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   mockExam?: boolean | Prisma.MockExamDefaultArgs<ExtArgs>
@@ -710,6 +1370,8 @@ export type $MockExamQuestionPayload<ExtArgs extends runtime.Types.Extensions.In
   objects: {
     mockExam: Prisma.$MockExamPayload<ExtArgs>
     question: Prisma.$QuestionPayload<ExtArgs>
+    choices: Prisma.$MockExamChoicePayload<ExtArgs>[]
+    answers: Prisma.$MockAnswerPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -717,6 +1379,15 @@ export type $MockExamQuestionPayload<ExtArgs extends runtime.Types.Extensions.In
     questionId: string
     orderNo: number
     score: number
+    questionText: string
+    imagePath: string | null
+    explanation: string | null
+    categoryCode: string
+    sourceKey: string
+    sourceYear: number
+    sourceSeason: string | null
+    questionNo: number | null
+    sourceLabel: string
     createdAt: Date
   }, ExtArgs["result"]["mockExamQuestion"]>
   composites: {}
@@ -1114,6 +1785,8 @@ export interface Prisma__MockExamQuestionClient<T, Null = never, ExtArgs extends
   readonly [Symbol.toStringTag]: "PrismaPromise"
   mockExam<T extends Prisma.MockExamDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockExamDefaultArgs<ExtArgs>>): Prisma.Prisma__MockExamClient<runtime.Types.Result.GetResult<Prisma.$MockExamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   question<T extends Prisma.QuestionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionDefaultArgs<ExtArgs>>): Prisma.Prisma__QuestionClient<runtime.Types.Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  choices<T extends Prisma.MockExamQuestion$choicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockExamQuestion$choicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MockExamChoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  answers<T extends Prisma.MockExamQuestion$answersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockExamQuestion$answersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MockAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1148,6 +1821,15 @@ export interface MockExamQuestionFieldRefs {
   readonly questionId: Prisma.FieldRef<"MockExamQuestion", 'String'>
   readonly orderNo: Prisma.FieldRef<"MockExamQuestion", 'Int'>
   readonly score: Prisma.FieldRef<"MockExamQuestion", 'Int'>
+  readonly questionText: Prisma.FieldRef<"MockExamQuestion", 'String'>
+  readonly imagePath: Prisma.FieldRef<"MockExamQuestion", 'String'>
+  readonly explanation: Prisma.FieldRef<"MockExamQuestion", 'String'>
+  readonly categoryCode: Prisma.FieldRef<"MockExamQuestion", 'String'>
+  readonly sourceKey: Prisma.FieldRef<"MockExamQuestion", 'String'>
+  readonly sourceYear: Prisma.FieldRef<"MockExamQuestion", 'Int'>
+  readonly sourceSeason: Prisma.FieldRef<"MockExamQuestion", 'String'>
+  readonly questionNo: Prisma.FieldRef<"MockExamQuestion", 'Int'>
+  readonly sourceLabel: Prisma.FieldRef<"MockExamQuestion", 'String'>
   readonly createdAt: Prisma.FieldRef<"MockExamQuestion", 'DateTime'>
 }
     
@@ -1547,6 +2229,54 @@ export type MockExamQuestionDeleteManyArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many MockExamQuestions to delete.
    */
   limit?: number
+}
+
+/**
+ * MockExamQuestion.choices
+ */
+export type MockExamQuestion$choicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MockExamChoice
+   */
+  select?: Prisma.MockExamChoiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MockExamChoice
+   */
+  omit?: Prisma.MockExamChoiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MockExamChoiceInclude<ExtArgs> | null
+  where?: Prisma.MockExamChoiceWhereInput
+  orderBy?: Prisma.MockExamChoiceOrderByWithRelationInput | Prisma.MockExamChoiceOrderByWithRelationInput[]
+  cursor?: Prisma.MockExamChoiceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MockExamChoiceScalarFieldEnum | Prisma.MockExamChoiceScalarFieldEnum[]
+}
+
+/**
+ * MockExamQuestion.answers
+ */
+export type MockExamQuestion$answersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MockAnswer
+   */
+  select?: Prisma.MockAnswerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MockAnswer
+   */
+  omit?: Prisma.MockAnswerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MockAnswerInclude<ExtArgs> | null
+  where?: Prisma.MockAnswerWhereInput
+  orderBy?: Prisma.MockAnswerOrderByWithRelationInput | Prisma.MockAnswerOrderByWithRelationInput[]
+  cursor?: Prisma.MockAnswerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MockAnswerScalarFieldEnum | Prisma.MockAnswerScalarFieldEnum[]
 }
 
 /**

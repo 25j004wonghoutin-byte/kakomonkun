@@ -27,19 +27,24 @@ export type AggregateMockAnswer = {
 }
 
 export type MockAnswerAvgAggregateOutputType = {
+  revision: number | null
   scoreAwarded: number | null
 }
 
 export type MockAnswerSumAggregateOutputType = {
+  revision: number | null
   scoreAwarded: number | null
 }
 
 export type MockAnswerMinAggregateOutputType = {
   id: string | null
   attemptId: string | null
-  questionId: string | null
+  mockExamId: string | null
+  mockQuestionId: string | null
   selectedChoiceId: string | null
   isCorrect: boolean | null
+  revision: number | null
+  lastRequestId: string | null
   scoreAwarded: number | null
   answeredAt: Date | null
   createdAt: Date | null
@@ -48,9 +53,12 @@ export type MockAnswerMinAggregateOutputType = {
 export type MockAnswerMaxAggregateOutputType = {
   id: string | null
   attemptId: string | null
-  questionId: string | null
+  mockExamId: string | null
+  mockQuestionId: string | null
   selectedChoiceId: string | null
   isCorrect: boolean | null
+  revision: number | null
+  lastRequestId: string | null
   scoreAwarded: number | null
   answeredAt: Date | null
   createdAt: Date | null
@@ -59,9 +67,12 @@ export type MockAnswerMaxAggregateOutputType = {
 export type MockAnswerCountAggregateOutputType = {
   id: number
   attemptId: number
-  questionId: number
+  mockExamId: number
+  mockQuestionId: number
   selectedChoiceId: number
   isCorrect: number
+  revision: number
+  lastRequestId: number
   scoreAwarded: number
   answeredAt: number
   createdAt: number
@@ -70,19 +81,24 @@ export type MockAnswerCountAggregateOutputType = {
 
 
 export type MockAnswerAvgAggregateInputType = {
+  revision?: true
   scoreAwarded?: true
 }
 
 export type MockAnswerSumAggregateInputType = {
+  revision?: true
   scoreAwarded?: true
 }
 
 export type MockAnswerMinAggregateInputType = {
   id?: true
   attemptId?: true
-  questionId?: true
+  mockExamId?: true
+  mockQuestionId?: true
   selectedChoiceId?: true
   isCorrect?: true
+  revision?: true
+  lastRequestId?: true
   scoreAwarded?: true
   answeredAt?: true
   createdAt?: true
@@ -91,9 +107,12 @@ export type MockAnswerMinAggregateInputType = {
 export type MockAnswerMaxAggregateInputType = {
   id?: true
   attemptId?: true
-  questionId?: true
+  mockExamId?: true
+  mockQuestionId?: true
   selectedChoiceId?: true
   isCorrect?: true
+  revision?: true
+  lastRequestId?: true
   scoreAwarded?: true
   answeredAt?: true
   createdAt?: true
@@ -102,9 +121,12 @@ export type MockAnswerMaxAggregateInputType = {
 export type MockAnswerCountAggregateInputType = {
   id?: true
   attemptId?: true
-  questionId?: true
+  mockExamId?: true
+  mockQuestionId?: true
   selectedChoiceId?: true
   isCorrect?: true
+  revision?: true
+  lastRequestId?: true
   scoreAwarded?: true
   answeredAt?: true
   createdAt?: true
@@ -200,9 +222,12 @@ export type MockAnswerGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type MockAnswerGroupByOutputType = {
   id: string
   attemptId: string
-  questionId: string
-  selectedChoiceId: string
-  isCorrect: boolean
+  mockExamId: string
+  mockQuestionId: string
+  selectedChoiceId: string | null
+  isCorrect: boolean | null
+  revision: number
+  lastRequestId: string | null
   scoreAwarded: number
   answeredAt: Date | null
   createdAt: Date
@@ -234,55 +259,67 @@ export type MockAnswerWhereInput = {
   NOT?: Prisma.MockAnswerWhereInput | Prisma.MockAnswerWhereInput[]
   id?: Prisma.UuidFilter<"MockAnswer"> | string
   attemptId?: Prisma.UuidFilter<"MockAnswer"> | string
-  questionId?: Prisma.UuidFilter<"MockAnswer"> | string
-  selectedChoiceId?: Prisma.UuidFilter<"MockAnswer"> | string
-  isCorrect?: Prisma.BoolFilter<"MockAnswer"> | boolean
+  mockExamId?: Prisma.UuidFilter<"MockAnswer"> | string
+  mockQuestionId?: Prisma.UuidFilter<"MockAnswer"> | string
+  selectedChoiceId?: Prisma.UuidNullableFilter<"MockAnswer"> | string | null
+  isCorrect?: Prisma.BoolNullableFilter<"MockAnswer"> | boolean | null
+  revision?: Prisma.IntFilter<"MockAnswer"> | number
+  lastRequestId?: Prisma.UuidNullableFilter<"MockAnswer"> | string | null
   scoreAwarded?: Prisma.IntFilter<"MockAnswer"> | number
   answeredAt?: Prisma.DateTimeNullableFilter<"MockAnswer"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"MockAnswer"> | Date | string
   attempt?: Prisma.XOR<Prisma.MockAttemptScalarRelationFilter, Prisma.MockAttemptWhereInput>
-  question?: Prisma.XOR<Prisma.QuestionScalarRelationFilter, Prisma.QuestionWhereInput>
-  selectedChoice?: Prisma.XOR<Prisma.QuestionChoiceScalarRelationFilter, Prisma.QuestionChoiceWhereInput>
+  question?: Prisma.XOR<Prisma.MockExamQuestionScalarRelationFilter, Prisma.MockExamQuestionWhereInput>
+  selectedChoice?: Prisma.XOR<Prisma.MockExamChoiceNullableScalarRelationFilter, Prisma.MockExamChoiceWhereInput> | null
 }
 
 export type MockAnswerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   attemptId?: Prisma.SortOrder
-  questionId?: Prisma.SortOrder
-  selectedChoiceId?: Prisma.SortOrder
-  isCorrect?: Prisma.SortOrder
+  mockExamId?: Prisma.SortOrder
+  mockQuestionId?: Prisma.SortOrder
+  selectedChoiceId?: Prisma.SortOrderInput | Prisma.SortOrder
+  isCorrect?: Prisma.SortOrderInput | Prisma.SortOrder
+  revision?: Prisma.SortOrder
+  lastRequestId?: Prisma.SortOrderInput | Prisma.SortOrder
   scoreAwarded?: Prisma.SortOrder
   answeredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   attempt?: Prisma.MockAttemptOrderByWithRelationInput
-  question?: Prisma.QuestionOrderByWithRelationInput
-  selectedChoice?: Prisma.QuestionChoiceOrderByWithRelationInput
+  question?: Prisma.MockExamQuestionOrderByWithRelationInput
+  selectedChoice?: Prisma.MockExamChoiceOrderByWithRelationInput
 }
 
 export type MockAnswerWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  attemptId_questionId?: Prisma.MockAnswerAttemptIdQuestionIdCompoundUniqueInput
+  attemptId_mockQuestionId?: Prisma.MockAnswerAttemptIdMockQuestionIdCompoundUniqueInput
   AND?: Prisma.MockAnswerWhereInput | Prisma.MockAnswerWhereInput[]
   OR?: Prisma.MockAnswerWhereInput[]
   NOT?: Prisma.MockAnswerWhereInput | Prisma.MockAnswerWhereInput[]
   attemptId?: Prisma.UuidFilter<"MockAnswer"> | string
-  questionId?: Prisma.UuidFilter<"MockAnswer"> | string
-  selectedChoiceId?: Prisma.UuidFilter<"MockAnswer"> | string
-  isCorrect?: Prisma.BoolFilter<"MockAnswer"> | boolean
+  mockExamId?: Prisma.UuidFilter<"MockAnswer"> | string
+  mockQuestionId?: Prisma.UuidFilter<"MockAnswer"> | string
+  selectedChoiceId?: Prisma.UuidNullableFilter<"MockAnswer"> | string | null
+  isCorrect?: Prisma.BoolNullableFilter<"MockAnswer"> | boolean | null
+  revision?: Prisma.IntFilter<"MockAnswer"> | number
+  lastRequestId?: Prisma.UuidNullableFilter<"MockAnswer"> | string | null
   scoreAwarded?: Prisma.IntFilter<"MockAnswer"> | number
   answeredAt?: Prisma.DateTimeNullableFilter<"MockAnswer"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"MockAnswer"> | Date | string
   attempt?: Prisma.XOR<Prisma.MockAttemptScalarRelationFilter, Prisma.MockAttemptWhereInput>
-  question?: Prisma.XOR<Prisma.QuestionScalarRelationFilter, Prisma.QuestionWhereInput>
-  selectedChoice?: Prisma.XOR<Prisma.QuestionChoiceScalarRelationFilter, Prisma.QuestionChoiceWhereInput>
-}, "id" | "attemptId_questionId">
+  question?: Prisma.XOR<Prisma.MockExamQuestionScalarRelationFilter, Prisma.MockExamQuestionWhereInput>
+  selectedChoice?: Prisma.XOR<Prisma.MockExamChoiceNullableScalarRelationFilter, Prisma.MockExamChoiceWhereInput> | null
+}, "id" | "attemptId_mockQuestionId">
 
 export type MockAnswerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   attemptId?: Prisma.SortOrder
-  questionId?: Prisma.SortOrder
-  selectedChoiceId?: Prisma.SortOrder
-  isCorrect?: Prisma.SortOrder
+  mockExamId?: Prisma.SortOrder
+  mockQuestionId?: Prisma.SortOrder
+  selectedChoiceId?: Prisma.SortOrderInput | Prisma.SortOrder
+  isCorrect?: Prisma.SortOrderInput | Prisma.SortOrder
+  revision?: Prisma.SortOrder
+  lastRequestId?: Prisma.SortOrderInput | Prisma.SortOrder
   scoreAwarded?: Prisma.SortOrder
   answeredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -299,9 +336,12 @@ export type MockAnswerScalarWhereWithAggregatesInput = {
   NOT?: Prisma.MockAnswerScalarWhereWithAggregatesInput | Prisma.MockAnswerScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"MockAnswer"> | string
   attemptId?: Prisma.UuidWithAggregatesFilter<"MockAnswer"> | string
-  questionId?: Prisma.UuidWithAggregatesFilter<"MockAnswer"> | string
-  selectedChoiceId?: Prisma.UuidWithAggregatesFilter<"MockAnswer"> | string
-  isCorrect?: Prisma.BoolWithAggregatesFilter<"MockAnswer"> | boolean
+  mockExamId?: Prisma.UuidWithAggregatesFilter<"MockAnswer"> | string
+  mockQuestionId?: Prisma.UuidWithAggregatesFilter<"MockAnswer"> | string
+  selectedChoiceId?: Prisma.UuidNullableWithAggregatesFilter<"MockAnswer"> | string | null
+  isCorrect?: Prisma.BoolNullableWithAggregatesFilter<"MockAnswer"> | boolean | null
+  revision?: Prisma.IntWithAggregatesFilter<"MockAnswer"> | number
+  lastRequestId?: Prisma.UuidNullableWithAggregatesFilter<"MockAnswer"> | string | null
   scoreAwarded?: Prisma.IntWithAggregatesFilter<"MockAnswer"> | number
   answeredAt?: Prisma.DateTimeNullableWithAggregatesFilter<"MockAnswer"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MockAnswer"> | Date | string
@@ -309,21 +349,26 @@ export type MockAnswerScalarWhereWithAggregatesInput = {
 
 export type MockAnswerCreateInput = {
   id?: string
-  isCorrect: boolean
+  isCorrect?: boolean | null
+  revision?: number
+  lastRequestId?: string | null
   scoreAwarded?: number
   answeredAt?: Date | string | null
   createdAt?: Date | string
   attempt: Prisma.MockAttemptCreateNestedOneWithoutAnswersInput
-  question: Prisma.QuestionCreateNestedOneWithoutMockAnswersInput
-  selectedChoice: Prisma.QuestionChoiceCreateNestedOneWithoutMockAnswersInput
+  question: Prisma.MockExamQuestionCreateNestedOneWithoutAnswersInput
+  selectedChoice?: Prisma.MockExamChoiceCreateNestedOneWithoutAnswersInput
 }
 
 export type MockAnswerUncheckedCreateInput = {
   id?: string
   attemptId: string
-  questionId: string
-  selectedChoiceId: string
-  isCorrect: boolean
+  mockExamId: string
+  mockQuestionId: string
+  selectedChoiceId?: string | null
+  isCorrect?: boolean | null
+  revision?: number
+  lastRequestId?: string | null
   scoreAwarded?: number
   answeredAt?: Date | string | null
   createdAt?: Date | string
@@ -331,21 +376,26 @@ export type MockAnswerUncheckedCreateInput = {
 
 export type MockAnswerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scoreAwarded?: Prisma.IntFieldUpdateOperationsInput | number
   answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attempt?: Prisma.MockAttemptUpdateOneRequiredWithoutAnswersNestedInput
-  question?: Prisma.QuestionUpdateOneRequiredWithoutMockAnswersNestedInput
-  selectedChoice?: Prisma.QuestionChoiceUpdateOneRequiredWithoutMockAnswersNestedInput
+  question?: Prisma.MockExamQuestionUpdateOneRequiredWithoutAnswersNestedInput
+  selectedChoice?: Prisma.MockExamChoiceUpdateOneWithoutAnswersNestedInput
 }
 
 export type MockAnswerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   attemptId?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
-  selectedChoiceId?: Prisma.StringFieldUpdateOperationsInput | string
-  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mockExamId?: Prisma.StringFieldUpdateOperationsInput | string
+  mockQuestionId?: Prisma.StringFieldUpdateOperationsInput | string
+  selectedChoiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scoreAwarded?: Prisma.IntFieldUpdateOperationsInput | number
   answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -354,9 +404,12 @@ export type MockAnswerUncheckedUpdateInput = {
 export type MockAnswerCreateManyInput = {
   id?: string
   attemptId: string
-  questionId: string
-  selectedChoiceId: string
-  isCorrect: boolean
+  mockExamId: string
+  mockQuestionId: string
+  selectedChoiceId?: string | null
+  isCorrect?: boolean | null
+  revision?: number
+  lastRequestId?: string | null
   scoreAwarded?: number
   answeredAt?: Date | string | null
   createdAt?: Date | string
@@ -364,7 +417,9 @@ export type MockAnswerCreateManyInput = {
 
 export type MockAnswerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scoreAwarded?: Prisma.IntFieldUpdateOperationsInput | number
   answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -373,9 +428,12 @@ export type MockAnswerUpdateManyMutationInput = {
 export type MockAnswerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   attemptId?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
-  selectedChoiceId?: Prisma.StringFieldUpdateOperationsInput | string
-  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mockExamId?: Prisma.StringFieldUpdateOperationsInput | string
+  mockQuestionId?: Prisma.StringFieldUpdateOperationsInput | string
+  selectedChoiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scoreAwarded?: Prisma.IntFieldUpdateOperationsInput | number
   answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -391,32 +449,39 @@ export type MockAnswerOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type MockAnswerAttemptIdQuestionIdCompoundUniqueInput = {
+export type MockAnswerAttemptIdMockQuestionIdCompoundUniqueInput = {
   attemptId: string
-  questionId: string
+  mockQuestionId: string
 }
 
 export type MockAnswerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   attemptId?: Prisma.SortOrder
-  questionId?: Prisma.SortOrder
+  mockExamId?: Prisma.SortOrder
+  mockQuestionId?: Prisma.SortOrder
   selectedChoiceId?: Prisma.SortOrder
   isCorrect?: Prisma.SortOrder
+  revision?: Prisma.SortOrder
+  lastRequestId?: Prisma.SortOrder
   scoreAwarded?: Prisma.SortOrder
   answeredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type MockAnswerAvgOrderByAggregateInput = {
+  revision?: Prisma.SortOrder
   scoreAwarded?: Prisma.SortOrder
 }
 
 export type MockAnswerMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   attemptId?: Prisma.SortOrder
-  questionId?: Prisma.SortOrder
+  mockExamId?: Prisma.SortOrder
+  mockQuestionId?: Prisma.SortOrder
   selectedChoiceId?: Prisma.SortOrder
   isCorrect?: Prisma.SortOrder
+  revision?: Prisma.SortOrder
+  lastRequestId?: Prisma.SortOrder
   scoreAwarded?: Prisma.SortOrder
   answeredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -425,15 +490,19 @@ export type MockAnswerMaxOrderByAggregateInput = {
 export type MockAnswerMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   attemptId?: Prisma.SortOrder
-  questionId?: Prisma.SortOrder
+  mockExamId?: Prisma.SortOrder
+  mockQuestionId?: Prisma.SortOrder
   selectedChoiceId?: Prisma.SortOrder
   isCorrect?: Prisma.SortOrder
+  revision?: Prisma.SortOrder
+  lastRequestId?: Prisma.SortOrder
   scoreAwarded?: Prisma.SortOrder
   answeredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type MockAnswerSumOrderByAggregateInput = {
+  revision?: Prisma.SortOrder
   scoreAwarded?: Prisma.SortOrder
 }
 
@@ -563,21 +632,29 @@ export type MockAnswerUncheckedUpdateManyWithoutAttemptNestedInput = {
   deleteMany?: Prisma.MockAnswerScalarWhereInput | Prisma.MockAnswerScalarWhereInput[]
 }
 
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: boolean | null
+}
+
 export type MockAnswerCreateWithoutQuestionInput = {
   id?: string
-  isCorrect: boolean
+  isCorrect?: boolean | null
+  revision?: number
+  lastRequestId?: string | null
   scoreAwarded?: number
   answeredAt?: Date | string | null
   createdAt?: Date | string
   attempt: Prisma.MockAttemptCreateNestedOneWithoutAnswersInput
-  selectedChoice: Prisma.QuestionChoiceCreateNestedOneWithoutMockAnswersInput
+  selectedChoice?: Prisma.MockExamChoiceCreateNestedOneWithoutAnswersInput
 }
 
 export type MockAnswerUncheckedCreateWithoutQuestionInput = {
   id?: string
   attemptId: string
-  selectedChoiceId: string
-  isCorrect: boolean
+  selectedChoiceId?: string | null
+  isCorrect?: boolean | null
+  revision?: number
+  lastRequestId?: string | null
   scoreAwarded?: number
   answeredAt?: Date | string | null
   createdAt?: Date | string
@@ -615,9 +692,12 @@ export type MockAnswerScalarWhereInput = {
   NOT?: Prisma.MockAnswerScalarWhereInput | Prisma.MockAnswerScalarWhereInput[]
   id?: Prisma.UuidFilter<"MockAnswer"> | string
   attemptId?: Prisma.UuidFilter<"MockAnswer"> | string
-  questionId?: Prisma.UuidFilter<"MockAnswer"> | string
-  selectedChoiceId?: Prisma.UuidFilter<"MockAnswer"> | string
-  isCorrect?: Prisma.BoolFilter<"MockAnswer"> | boolean
+  mockExamId?: Prisma.UuidFilter<"MockAnswer"> | string
+  mockQuestionId?: Prisma.UuidFilter<"MockAnswer"> | string
+  selectedChoiceId?: Prisma.UuidNullableFilter<"MockAnswer"> | string | null
+  isCorrect?: Prisma.BoolNullableFilter<"MockAnswer"> | boolean | null
+  revision?: Prisma.IntFilter<"MockAnswer"> | number
+  lastRequestId?: Prisma.UuidNullableFilter<"MockAnswer"> | string | null
   scoreAwarded?: Prisma.IntFilter<"MockAnswer"> | number
   answeredAt?: Prisma.DateTimeNullableFilter<"MockAnswer"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"MockAnswer"> | Date | string
@@ -625,19 +705,22 @@ export type MockAnswerScalarWhereInput = {
 
 export type MockAnswerCreateWithoutSelectedChoiceInput = {
   id?: string
-  isCorrect: boolean
+  isCorrect?: boolean | null
+  revision?: number
+  lastRequestId?: string | null
   scoreAwarded?: number
   answeredAt?: Date | string | null
   createdAt?: Date | string
   attempt: Prisma.MockAttemptCreateNestedOneWithoutAnswersInput
-  question: Prisma.QuestionCreateNestedOneWithoutMockAnswersInput
+  question: Prisma.MockExamQuestionCreateNestedOneWithoutAnswersInput
 }
 
 export type MockAnswerUncheckedCreateWithoutSelectedChoiceInput = {
   id?: string
   attemptId: string
-  questionId: string
-  isCorrect: boolean
+  isCorrect?: boolean | null
+  revision?: number
+  lastRequestId?: string | null
   scoreAwarded?: number
   answeredAt?: Date | string | null
   createdAt?: Date | string
@@ -671,19 +754,23 @@ export type MockAnswerUpdateManyWithWhereWithoutSelectedChoiceInput = {
 
 export type MockAnswerCreateWithoutAttemptInput = {
   id?: string
-  isCorrect: boolean
+  isCorrect?: boolean | null
+  revision?: number
+  lastRequestId?: string | null
   scoreAwarded?: number
   answeredAt?: Date | string | null
   createdAt?: Date | string
-  question: Prisma.QuestionCreateNestedOneWithoutMockAnswersInput
-  selectedChoice: Prisma.QuestionChoiceCreateNestedOneWithoutMockAnswersInput
+  question: Prisma.MockExamQuestionCreateNestedOneWithoutAnswersInput
+  selectedChoice?: Prisma.MockExamChoiceCreateNestedOneWithoutAnswersInput
 }
 
 export type MockAnswerUncheckedCreateWithoutAttemptInput = {
   id?: string
-  questionId: string
-  selectedChoiceId: string
-  isCorrect: boolean
+  mockQuestionId: string
+  selectedChoiceId?: string | null
+  isCorrect?: boolean | null
+  revision?: number
+  lastRequestId?: string | null
   scoreAwarded?: number
   answeredAt?: Date | string | null
   createdAt?: Date | string
@@ -718,8 +805,10 @@ export type MockAnswerUpdateManyWithWhereWithoutAttemptInput = {
 export type MockAnswerCreateManyQuestionInput = {
   id?: string
   attemptId: string
-  selectedChoiceId: string
-  isCorrect: boolean
+  selectedChoiceId?: string | null
+  isCorrect?: boolean | null
+  revision?: number
+  lastRequestId?: string | null
   scoreAwarded?: number
   answeredAt?: Date | string | null
   createdAt?: Date | string
@@ -727,19 +816,23 @@ export type MockAnswerCreateManyQuestionInput = {
 
 export type MockAnswerUpdateWithoutQuestionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scoreAwarded?: Prisma.IntFieldUpdateOperationsInput | number
   answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attempt?: Prisma.MockAttemptUpdateOneRequiredWithoutAnswersNestedInput
-  selectedChoice?: Prisma.QuestionChoiceUpdateOneRequiredWithoutMockAnswersNestedInput
+  selectedChoice?: Prisma.MockExamChoiceUpdateOneWithoutAnswersNestedInput
 }
 
 export type MockAnswerUncheckedUpdateWithoutQuestionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   attemptId?: Prisma.StringFieldUpdateOperationsInput | string
-  selectedChoiceId?: Prisma.StringFieldUpdateOperationsInput | string
-  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  selectedChoiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scoreAwarded?: Prisma.IntFieldUpdateOperationsInput | number
   answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -748,8 +841,10 @@ export type MockAnswerUncheckedUpdateWithoutQuestionInput = {
 export type MockAnswerUncheckedUpdateManyWithoutQuestionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   attemptId?: Prisma.StringFieldUpdateOperationsInput | string
-  selectedChoiceId?: Prisma.StringFieldUpdateOperationsInput | string
-  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  selectedChoiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scoreAwarded?: Prisma.IntFieldUpdateOperationsInput | number
   answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -758,8 +853,9 @@ export type MockAnswerUncheckedUpdateManyWithoutQuestionInput = {
 export type MockAnswerCreateManySelectedChoiceInput = {
   id?: string
   attemptId: string
-  questionId: string
-  isCorrect: boolean
+  isCorrect?: boolean | null
+  revision?: number
+  lastRequestId?: string | null
   scoreAwarded?: number
   answeredAt?: Date | string | null
   createdAt?: Date | string
@@ -767,19 +863,22 @@ export type MockAnswerCreateManySelectedChoiceInput = {
 
 export type MockAnswerUpdateWithoutSelectedChoiceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scoreAwarded?: Prisma.IntFieldUpdateOperationsInput | number
   answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attempt?: Prisma.MockAttemptUpdateOneRequiredWithoutAnswersNestedInput
-  question?: Prisma.QuestionUpdateOneRequiredWithoutMockAnswersNestedInput
+  question?: Prisma.MockExamQuestionUpdateOneRequiredWithoutAnswersNestedInput
 }
 
 export type MockAnswerUncheckedUpdateWithoutSelectedChoiceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   attemptId?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
-  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scoreAwarded?: Prisma.IntFieldUpdateOperationsInput | number
   answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -788,8 +887,9 @@ export type MockAnswerUncheckedUpdateWithoutSelectedChoiceInput = {
 export type MockAnswerUncheckedUpdateManyWithoutSelectedChoiceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   attemptId?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
-  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scoreAwarded?: Prisma.IntFieldUpdateOperationsInput | number
   answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -797,9 +897,11 @@ export type MockAnswerUncheckedUpdateManyWithoutSelectedChoiceInput = {
 
 export type MockAnswerCreateManyAttemptInput = {
   id?: string
-  questionId: string
-  selectedChoiceId: string
-  isCorrect: boolean
+  mockQuestionId: string
+  selectedChoiceId?: string | null
+  isCorrect?: boolean | null
+  revision?: number
+  lastRequestId?: string | null
   scoreAwarded?: number
   answeredAt?: Date | string | null
   createdAt?: Date | string
@@ -807,19 +909,23 @@ export type MockAnswerCreateManyAttemptInput = {
 
 export type MockAnswerUpdateWithoutAttemptInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scoreAwarded?: Prisma.IntFieldUpdateOperationsInput | number
   answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  question?: Prisma.QuestionUpdateOneRequiredWithoutMockAnswersNestedInput
-  selectedChoice?: Prisma.QuestionChoiceUpdateOneRequiredWithoutMockAnswersNestedInput
+  question?: Prisma.MockExamQuestionUpdateOneRequiredWithoutAnswersNestedInput
+  selectedChoice?: Prisma.MockExamChoiceUpdateOneWithoutAnswersNestedInput
 }
 
 export type MockAnswerUncheckedUpdateWithoutAttemptInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
-  selectedChoiceId?: Prisma.StringFieldUpdateOperationsInput | string
-  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mockQuestionId?: Prisma.StringFieldUpdateOperationsInput | string
+  selectedChoiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scoreAwarded?: Prisma.IntFieldUpdateOperationsInput | number
   answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -827,9 +933,11 @@ export type MockAnswerUncheckedUpdateWithoutAttemptInput = {
 
 export type MockAnswerUncheckedUpdateManyWithoutAttemptInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  questionId?: Prisma.StringFieldUpdateOperationsInput | string
-  selectedChoiceId?: Prisma.StringFieldUpdateOperationsInput | string
-  isCorrect?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mockQuestionId?: Prisma.StringFieldUpdateOperationsInput | string
+  selectedChoiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scoreAwarded?: Prisma.IntFieldUpdateOperationsInput | number
   answeredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -840,86 +948,101 @@ export type MockAnswerUncheckedUpdateManyWithoutAttemptInput = {
 export type MockAnswerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   attemptId?: boolean
-  questionId?: boolean
+  mockExamId?: boolean
+  mockQuestionId?: boolean
   selectedChoiceId?: boolean
   isCorrect?: boolean
+  revision?: boolean
+  lastRequestId?: boolean
   scoreAwarded?: boolean
   answeredAt?: boolean
   createdAt?: boolean
   attempt?: boolean | Prisma.MockAttemptDefaultArgs<ExtArgs>
-  question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
-  selectedChoice?: boolean | Prisma.QuestionChoiceDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.MockExamQuestionDefaultArgs<ExtArgs>
+  selectedChoice?: boolean | Prisma.MockAnswer$selectedChoiceArgs<ExtArgs>
 }, ExtArgs["result"]["mockAnswer"]>
 
 export type MockAnswerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   attemptId?: boolean
-  questionId?: boolean
+  mockExamId?: boolean
+  mockQuestionId?: boolean
   selectedChoiceId?: boolean
   isCorrect?: boolean
+  revision?: boolean
+  lastRequestId?: boolean
   scoreAwarded?: boolean
   answeredAt?: boolean
   createdAt?: boolean
   attempt?: boolean | Prisma.MockAttemptDefaultArgs<ExtArgs>
-  question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
-  selectedChoice?: boolean | Prisma.QuestionChoiceDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.MockExamQuestionDefaultArgs<ExtArgs>
+  selectedChoice?: boolean | Prisma.MockAnswer$selectedChoiceArgs<ExtArgs>
 }, ExtArgs["result"]["mockAnswer"]>
 
 export type MockAnswerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   attemptId?: boolean
-  questionId?: boolean
+  mockExamId?: boolean
+  mockQuestionId?: boolean
   selectedChoiceId?: boolean
   isCorrect?: boolean
+  revision?: boolean
+  lastRequestId?: boolean
   scoreAwarded?: boolean
   answeredAt?: boolean
   createdAt?: boolean
   attempt?: boolean | Prisma.MockAttemptDefaultArgs<ExtArgs>
-  question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
-  selectedChoice?: boolean | Prisma.QuestionChoiceDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.MockExamQuestionDefaultArgs<ExtArgs>
+  selectedChoice?: boolean | Prisma.MockAnswer$selectedChoiceArgs<ExtArgs>
 }, ExtArgs["result"]["mockAnswer"]>
 
 export type MockAnswerSelectScalar = {
   id?: boolean
   attemptId?: boolean
-  questionId?: boolean
+  mockExamId?: boolean
+  mockQuestionId?: boolean
   selectedChoiceId?: boolean
   isCorrect?: boolean
+  revision?: boolean
+  lastRequestId?: boolean
   scoreAwarded?: boolean
   answeredAt?: boolean
   createdAt?: boolean
 }
 
-export type MockAnswerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "attemptId" | "questionId" | "selectedChoiceId" | "isCorrect" | "scoreAwarded" | "answeredAt" | "createdAt", ExtArgs["result"]["mockAnswer"]>
+export type MockAnswerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "attemptId" | "mockExamId" | "mockQuestionId" | "selectedChoiceId" | "isCorrect" | "revision" | "lastRequestId" | "scoreAwarded" | "answeredAt" | "createdAt", ExtArgs["result"]["mockAnswer"]>
 export type MockAnswerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   attempt?: boolean | Prisma.MockAttemptDefaultArgs<ExtArgs>
-  question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
-  selectedChoice?: boolean | Prisma.QuestionChoiceDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.MockExamQuestionDefaultArgs<ExtArgs>
+  selectedChoice?: boolean | Prisma.MockAnswer$selectedChoiceArgs<ExtArgs>
 }
 export type MockAnswerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   attempt?: boolean | Prisma.MockAttemptDefaultArgs<ExtArgs>
-  question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
-  selectedChoice?: boolean | Prisma.QuestionChoiceDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.MockExamQuestionDefaultArgs<ExtArgs>
+  selectedChoice?: boolean | Prisma.MockAnswer$selectedChoiceArgs<ExtArgs>
 }
 export type MockAnswerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   attempt?: boolean | Prisma.MockAttemptDefaultArgs<ExtArgs>
-  question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
-  selectedChoice?: boolean | Prisma.QuestionChoiceDefaultArgs<ExtArgs>
+  question?: boolean | Prisma.MockExamQuestionDefaultArgs<ExtArgs>
+  selectedChoice?: boolean | Prisma.MockAnswer$selectedChoiceArgs<ExtArgs>
 }
 
 export type $MockAnswerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "MockAnswer"
   objects: {
     attempt: Prisma.$MockAttemptPayload<ExtArgs>
-    question: Prisma.$QuestionPayload<ExtArgs>
-    selectedChoice: Prisma.$QuestionChoicePayload<ExtArgs>
+    question: Prisma.$MockExamQuestionPayload<ExtArgs>
+    selectedChoice: Prisma.$MockExamChoicePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     attemptId: string
-    questionId: string
-    selectedChoiceId: string
-    isCorrect: boolean
+    mockExamId: string
+    mockQuestionId: string
+    selectedChoiceId: string | null
+    isCorrect: boolean | null
+    revision: number
+    lastRequestId: string | null
     scoreAwarded: number
     answeredAt: Date | null
     createdAt: Date
@@ -1318,8 +1441,8 @@ readonly fields: MockAnswerFieldRefs;
 export interface Prisma__MockAnswerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   attempt<T extends Prisma.MockAttemptDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockAttemptDefaultArgs<ExtArgs>>): Prisma.Prisma__MockAttemptClient<runtime.Types.Result.GetResult<Prisma.$MockAttemptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  question<T extends Prisma.QuestionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionDefaultArgs<ExtArgs>>): Prisma.Prisma__QuestionClient<runtime.Types.Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  selectedChoice<T extends Prisma.QuestionChoiceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionChoiceDefaultArgs<ExtArgs>>): Prisma.Prisma__QuestionChoiceClient<runtime.Types.Result.GetResult<Prisma.$QuestionChoicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  question<T extends Prisma.MockExamQuestionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockExamQuestionDefaultArgs<ExtArgs>>): Prisma.Prisma__MockExamQuestionClient<runtime.Types.Result.GetResult<Prisma.$MockExamQuestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  selectedChoice<T extends Prisma.MockAnswer$selectedChoiceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MockAnswer$selectedChoiceArgs<ExtArgs>>): Prisma.Prisma__MockExamChoiceClient<runtime.Types.Result.GetResult<Prisma.$MockExamChoicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1351,9 +1474,12 @@ export interface Prisma__MockAnswerClient<T, Null = never, ExtArgs extends runti
 export interface MockAnswerFieldRefs {
   readonly id: Prisma.FieldRef<"MockAnswer", 'String'>
   readonly attemptId: Prisma.FieldRef<"MockAnswer", 'String'>
-  readonly questionId: Prisma.FieldRef<"MockAnswer", 'String'>
+  readonly mockExamId: Prisma.FieldRef<"MockAnswer", 'String'>
+  readonly mockQuestionId: Prisma.FieldRef<"MockAnswer", 'String'>
   readonly selectedChoiceId: Prisma.FieldRef<"MockAnswer", 'String'>
   readonly isCorrect: Prisma.FieldRef<"MockAnswer", 'Boolean'>
+  readonly revision: Prisma.FieldRef<"MockAnswer", 'Int'>
+  readonly lastRequestId: Prisma.FieldRef<"MockAnswer", 'String'>
   readonly scoreAwarded: Prisma.FieldRef<"MockAnswer", 'Int'>
   readonly answeredAt: Prisma.FieldRef<"MockAnswer", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"MockAnswer", 'DateTime'>
@@ -1755,6 +1881,25 @@ export type MockAnswerDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Limit how many MockAnswers to delete.
    */
   limit?: number
+}
+
+/**
+ * MockAnswer.selectedChoice
+ */
+export type MockAnswer$selectedChoiceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MockExamChoice
+   */
+  select?: Prisma.MockExamChoiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MockExamChoice
+   */
+  omit?: Prisma.MockExamChoiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MockExamChoiceInclude<ExtArgs> | null
+  where?: Prisma.MockExamChoiceWhereInput
 }
 
 /**

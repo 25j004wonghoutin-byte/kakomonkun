@@ -117,6 +117,11 @@ export type MockExam = Prisma.MockExamModel
  */
 export type MockExamQuestion = Prisma.MockExamQuestionModel
 /**
+ * Model MockExamChoice
+ *
+ */
+export type MockExamChoice = Prisma.MockExamChoiceModel
+/**
  * Model MockAttempt
  *
  */
@@ -161,6 +166,11 @@ export type StudentNavigationProgress = Prisma.StudentNavigationProgressModel
  *
  */
 export type MonthlyRanking = Prisma.MonthlyRankingModel
+/**
+ * Model MockExamJobRun
+ *
+ */
+export type MockExamJobRun = Prisma.MockExamJobRunModel
 /**
  * Model AiExplanation
  *

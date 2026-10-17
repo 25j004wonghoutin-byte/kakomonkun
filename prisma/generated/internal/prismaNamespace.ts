@@ -399,6 +399,7 @@ export const ModelName = {
   PointTransaction: 'PointTransaction',
   MockExam: 'MockExam',
   MockExamQuestion: 'MockExamQuestion',
+  MockExamChoice: 'MockExamChoice',
   MockAttempt: 'MockAttempt',
   MockAnswer: 'MockAnswer',
   Title: 'Title',
@@ -408,6 +409,7 @@ export const ModelName = {
   StudentActivityDay: 'StudentActivityDay',
   StudentNavigationProgress: 'StudentNavigationProgress',
   MonthlyRanking: 'MonthlyRanking',
+  MockExamJobRun: 'MockExamJobRun',
   AiExplanation: 'AiExplanation',
   AiUsageLog: 'AiUsageLog',
   BoardPost: 'BoardPost',
@@ -430,7 +432,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "role" | "user" | "studentProfile" | "teacherProfile" | "exam" | "questionCategory" | "question" | "questionChoice" | "dailyQaAnswer" | "practiceSession" | "practiceSessionQuestion" | "practiceAnswer" | "pointTransaction" | "mockExam" | "mockExamQuestion" | "mockAttempt" | "mockAnswer" | "title" | "userTitle" | "userTitleUnlock" | "randomQuizAttempt" | "studentActivityDay" | "studentNavigationProgress" | "monthlyRanking" | "aiExplanation" | "aiUsageLog" | "boardPost" | "boardComment" | "boardPostLike" | "boardDeleteLog" | "notification"
+    modelProps: "role" | "user" | "studentProfile" | "teacherProfile" | "exam" | "questionCategory" | "question" | "questionChoice" | "dailyQaAnswer" | "practiceSession" | "practiceSessionQuestion" | "practiceAnswer" | "pointTransaction" | "mockExam" | "mockExamQuestion" | "mockExamChoice" | "mockAttempt" | "mockAnswer" | "title" | "userTitle" | "userTitleUnlock" | "randomQuizAttempt" | "studentActivityDay" | "studentNavigationProgress" | "monthlyRanking" | "mockExamJobRun" | "aiExplanation" | "aiUsageLog" | "boardPost" | "boardComment" | "boardPostLike" | "boardDeleteLog" | "notification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1544,6 +1546,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    MockExamChoice: {
+      payload: Prisma.$MockExamChoicePayload<ExtArgs>
+      fields: Prisma.MockExamChoiceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MockExamChoiceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamChoicePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MockExamChoiceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamChoicePayload>
+        }
+        findFirst: {
+          args: Prisma.MockExamChoiceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamChoicePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MockExamChoiceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamChoicePayload>
+        }
+        findMany: {
+          args: Prisma.MockExamChoiceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamChoicePayload>[]
+        }
+        create: {
+          args: Prisma.MockExamChoiceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamChoicePayload>
+        }
+        createMany: {
+          args: Prisma.MockExamChoiceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MockExamChoiceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamChoicePayload>[]
+        }
+        delete: {
+          args: Prisma.MockExamChoiceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamChoicePayload>
+        }
+        update: {
+          args: Prisma.MockExamChoiceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamChoicePayload>
+        }
+        deleteMany: {
+          args: Prisma.MockExamChoiceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MockExamChoiceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MockExamChoiceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamChoicePayload>[]
+        }
+        upsert: {
+          args: Prisma.MockExamChoiceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamChoicePayload>
+        }
+        aggregate: {
+          args: Prisma.MockExamChoiceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMockExamChoice>
+        }
+        groupBy: {
+          args: Prisma.MockExamChoiceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MockExamChoiceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MockExamChoiceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MockExamChoiceCountAggregateOutputType> | number
+        }
+      }
+    }
     MockAttempt: {
       payload: Prisma.$MockAttemptPayload<ExtArgs>
       fields: Prisma.MockAttemptFieldRefs
@@ -2207,6 +2283,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.MonthlyRankingCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.MonthlyRankingCountAggregateOutputType> | number
+        }
+      }
+    }
+    MockExamJobRun: {
+      payload: Prisma.$MockExamJobRunPayload<ExtArgs>
+      fields: Prisma.MockExamJobRunFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MockExamJobRunFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamJobRunPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MockExamJobRunFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamJobRunPayload>
+        }
+        findFirst: {
+          args: Prisma.MockExamJobRunFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamJobRunPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MockExamJobRunFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamJobRunPayload>
+        }
+        findMany: {
+          args: Prisma.MockExamJobRunFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamJobRunPayload>[]
+        }
+        create: {
+          args: Prisma.MockExamJobRunCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamJobRunPayload>
+        }
+        createMany: {
+          args: Prisma.MockExamJobRunCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MockExamJobRunCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamJobRunPayload>[]
+        }
+        delete: {
+          args: Prisma.MockExamJobRunDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamJobRunPayload>
+        }
+        update: {
+          args: Prisma.MockExamJobRunUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamJobRunPayload>
+        }
+        deleteMany: {
+          args: Prisma.MockExamJobRunDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MockExamJobRunUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MockExamJobRunUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamJobRunPayload>[]
+        }
+        upsert: {
+          args: Prisma.MockExamJobRunUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MockExamJobRunPayload>
+        }
+        aggregate: {
+          args: Prisma.MockExamJobRunAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMockExamJobRun>
+        }
+        groupBy: {
+          args: Prisma.MockExamJobRunGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MockExamJobRunGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MockExamJobRunCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MockExamJobRunCountAggregateOutputType> | number
         }
       }
     }
@@ -2972,6 +3122,8 @@ export const MockExamScalarFieldEnum = {
   status: 'status',
   availableFrom: 'availableFrom',
   availableUntil: 'availableUntil',
+  rankingFinalizedAt: 'rankingFinalizedAt',
+  rewardsCompletedAt: 'rewardsCompletedAt',
   createdBy: 'createdBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -2986,22 +3138,52 @@ export const MockExamQuestionScalarFieldEnum = {
   questionId: 'questionId',
   orderNo: 'orderNo',
   score: 'score',
+  questionText: 'questionText',
+  imagePath: 'imagePath',
+  explanation: 'explanation',
+  categoryCode: 'categoryCode',
+  sourceKey: 'sourceKey',
+  sourceYear: 'sourceYear',
+  sourceSeason: 'sourceSeason',
+  questionNo: 'questionNo',
+  sourceLabel: 'sourceLabel',
   createdAt: 'createdAt'
 } as const
 
 export type MockExamQuestionScalarFieldEnum = (typeof MockExamQuestionScalarFieldEnum)[keyof typeof MockExamQuestionScalarFieldEnum]
 
 
+export const MockExamChoiceScalarFieldEnum = {
+  id: 'id',
+  mockExamId: 'mockExamId',
+  mockQuestionId: 'mockQuestionId',
+  originalChoiceId: 'originalChoiceId',
+  choiceLabel: 'choiceLabel',
+  choiceText: 'choiceText',
+  isCorrect: 'isCorrect',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+} as const
+
+export type MockExamChoiceScalarFieldEnum = (typeof MockExamChoiceScalarFieldEnum)[keyof typeof MockExamChoiceScalarFieldEnum]
+
+
 export const MockAttemptScalarFieldEnum = {
   id: 'id',
   mockExamId: 'mockExamId',
   userId: 'userId',
+  startRequestId: 'startRequestId',
+  attemptNo: 'attemptNo',
   status: 'status',
   startedAt: 'startedAt',
+  expiresAt: 'expiresAt',
   submittedAt: 'submittedAt',
+  gradedAt: 'gradedAt',
   totalQuestions: 'totalQuestions',
   correctCount: 'correctCount',
+  answeredCount: 'answeredCount',
   score: 'score',
+  revision: 'revision',
   earnedPoints: 'earnedPoints',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -3013,9 +3195,12 @@ export type MockAttemptScalarFieldEnum = (typeof MockAttemptScalarFieldEnum)[key
 export const MockAnswerScalarFieldEnum = {
   id: 'id',
   attemptId: 'attemptId',
-  questionId: 'questionId',
+  mockExamId: 'mockExamId',
+  mockQuestionId: 'mockQuestionId',
   selectedChoiceId: 'selectedChoiceId',
   isCorrect: 'isCorrect',
+  revision: 'revision',
+  lastRequestId: 'lastRequestId',
   scoreAwarded: 'scoreAwarded',
   answeredAt: 'answeredAt',
   createdAt: 'createdAt'
@@ -3104,15 +3289,43 @@ export const MonthlyRankingScalarFieldEnum = {
   id: 'id',
   targetMonth: 'targetMonth',
   userId: 'userId',
+  mockExamId: 'mockExamId',
+  bestAttemptId: 'bestAttemptId',
   rankNo: 'rankNo',
   monthlyPoints: 'monthlyPoints',
   mockScore: 'mockScore',
+  correctCount: 'correctCount',
+  totalQuestions: 'totalQuestions',
+  isFinal: 'isFinal',
+  rewardProcessedAt: 'rewardProcessedAt',
   rewardPoints: 'rewardPoints',
   calculatedAt: 'calculatedAt',
   createdAt: 'createdAt'
 } as const
 
 export type MonthlyRankingScalarFieldEnum = (typeof MonthlyRankingScalarFieldEnum)[keyof typeof MonthlyRankingScalarFieldEnum]
+
+
+export const MockExamJobRunScalarFieldEnum = {
+  id: 'id',
+  jobKey: 'jobKey',
+  kind: 'kind',
+  targetMonth: 'targetMonth',
+  examCode: 'examCode',
+  status: 'status',
+  attempts: 'attempts',
+  leaseToken: 'leaseToken',
+  leaseUntil: 'leaseUntil',
+  nextRunAt: 'nextRunAt',
+  cursor: 'cursor',
+  lastErrorCode: 'lastErrorCode',
+  lastErrorAt: 'lastErrorAt',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MockExamJobRunScalarFieldEnum = (typeof MockExamJobRunScalarFieldEnum)[keyof typeof MockExamJobRunScalarFieldEnum]
 
 
 export const AiExplanationScalarFieldEnum = {
@@ -3192,6 +3405,7 @@ export const NotificationScalarFieldEnum = {
   boardPostId: 'boardPostId',
   boardCommentId: 'boardCommentId',
   titleId: 'titleId',
+  targetMonth: 'targetMonth',
   readAt: 'readAt',
   createdAt: 'createdAt'
 } as const
@@ -3275,6 +3489,20 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+
+
+
+/**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
 
 
 
@@ -3416,6 +3644,7 @@ export type GlobalOmitConfig = {
   pointTransaction?: Prisma.PointTransactionOmit
   mockExam?: Prisma.MockExamOmit
   mockExamQuestion?: Prisma.MockExamQuestionOmit
+  mockExamChoice?: Prisma.MockExamChoiceOmit
   mockAttempt?: Prisma.MockAttemptOmit
   mockAnswer?: Prisma.MockAnswerOmit
   title?: Prisma.TitleOmit
@@ -3425,6 +3654,7 @@ export type GlobalOmitConfig = {
   studentActivityDay?: Prisma.StudentActivityDayOmit
   studentNavigationProgress?: Prisma.StudentNavigationProgressOmit
   monthlyRanking?: Prisma.MonthlyRankingOmit
+  mockExamJobRun?: Prisma.MockExamJobRunOmit
   aiExplanation?: Prisma.AiExplanationOmit
   aiUsageLog?: Prisma.AiUsageLogOmit
   boardPost?: Prisma.BoardPostOmit
