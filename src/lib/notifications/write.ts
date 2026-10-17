@@ -109,6 +109,18 @@ export function notificationReadWhere(
   return { id: notificationId, recipientId };
 }
 
+export async function createMockReminderNotification(
+  tx: Prisma.TransactionClient,
+  userId: string,
+  targetMonth: Date,
+): Promise<number> {
+  const created = await tx.notification.createMany({
+    data: [{ recipientId: userId, type: "mock_exam_reminder", targetMonth }],
+    skipDuplicates: true,
+  });
+  return created.count;
+}
+
 export function notificationReadResult(
   notificationExists: boolean,
 ): "changed" | "not_found" {

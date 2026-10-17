@@ -63,3 +63,20 @@ test("notification cursor rejects malformed data", () => {
     null,
   );
 });
+
+test("mock reminder targets its month, never the title shop or arbitrary URL", () => {
+  assert.equal(notificationMessage({ type: "mock_exam_reminder", actorName: null }), "今月の模擬試験は24日まで受験できます");
+  assert.equal(notificationTarget({ type: "mock_exam_reminder", postId: null, targetMonth: "2036-10" }), "/mock-exam?month=2036-10");
+  for (const targetMonth of [null, undefined, "2036-13", "0000-01", "https://example.invalid", "2036-10&other=1"])
+    assert.equal(notificationTarget({ type: "mock_exam_reminder", postId: null, targetMonth }), null);
+});
+
+test("reminder read DTO keeps target month and existing board/title targets unchanged", async () => {
+  const {toNotificationView}=await import("../src/lib/notifications/read.ts");
+  const row={id:"notice",type:"mock_exam_reminder",actor:null,boardPost:null,boardComment:null,readAt:null,createdAt:new Date("2036-10-20T00:00:00Z"),targetMonth:new Date("2036-10-01")};
+  const view=toNotificationView(row);assert.equal(view.targetMonth,"2036-10");assert.equal(view.targetAvailable,true);
+  assert.equal(notificationTarget(view),"/mock-exam?month=2036-10");
+  assert.equal(toNotificationView({...row,targetMonth:null}).targetAvailable,false);
+  assert.equal(notificationTarget(toNotificationView({...row,type:"title_unlocked",targetMonth:null})),"/titles");
+  assert.equal(notificationTarget(toNotificationView({...row,type:"board_pinned",targetMonth:null,boardPost:{id:"post",deletedAt:null}})),"/board/posts/post");
+});

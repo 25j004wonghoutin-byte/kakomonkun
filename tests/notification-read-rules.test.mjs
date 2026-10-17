@@ -95,6 +95,7 @@ test("notification view fixes teacher identity and hides a removed target", () =
     actorName: "管理者",
     message: "管理者さんが投稿に返信しました",
     postId: null,
+    targetMonth: null,
     readAt: null,
     createdAt: "2026-09-24T00:00:00.000Z",
     targetAvailable: false,
@@ -165,4 +166,17 @@ test("notification bell hides zero and caps the unread badge at 99+", () => {
   assert.equal(formatUnreadBadge(1), "1");
   assert.equal(formatUnreadBadge(99), "99");
   assert.equal(formatUnreadBadge(100), "99+");
+});
+
+test("the existing inbox renders a monthly reminder without extra icons or bulk read", () => {
+  const { NotificationListView } = require("../src/app/notifications/notification-list.tsx");
+  const html = renderToStaticMarkup(React.createElement(NotificationListView, {
+    notifications: [{ id: "monthly", type: "mock_exam_reminder", actorName: null,
+      message: "今月の模擬試験は24日まで受験できます", postId: null, targetMonth: "2036-10",
+      readAt: null, createdAt: "2036-10-20T00:00:00Z", targetAvailable: true }],
+    unreadCount: 1, activeNotificationId: null, unavailableNotificationId: null, onSelect: () => {},
+  }));
+  assert.match(html, /今月の模擬試験は24日まで受験できます/);
+  assert.match(html, /未読 1件/);
+  assert.doesNotMatch(html, /すべて既読にする|>返<|対象の投稿は削除/);
 });

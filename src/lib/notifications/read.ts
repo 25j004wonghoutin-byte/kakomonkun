@@ -1,6 +1,7 @@
 import type { Prisma } from "../../../prisma/generated/client";
 import {
   notificationMessage,
+  notificationTarget,
   type NotificationType,
   type NotificationView,
 } from "@/lib/notifications/contract";
@@ -16,6 +17,7 @@ const NOTIFICATION_PAGE_SIZE = 20;
 const notificationSelect = {
   id: true,
   type: true,
+  targetMonth: true,
   readAt: true,
   createdAt: true,
   actor: {
@@ -49,6 +51,7 @@ export function toNotificationView(row: NotificationRow): NotificationView {
     ? displayNameForRole(row.actor.role.name, row.actor.displayName)
     : null;
   const postId = notificationPostId(type, row);
+  const targetMonth = row.targetMonth?.toISOString().slice(0, 7) ?? null;
 
   return {
     id: row.id,
@@ -56,9 +59,10 @@ export function toNotificationView(row: NotificationRow): NotificationView {
     actorName,
     message: notificationMessage({ type, actorName }),
     postId,
+    targetMonth,
     readAt: row.readAt?.toISOString() ?? null,
     createdAt: row.createdAt.toISOString(),
-    targetAvailable: type === "title_unlocked" || postId !== null,
+    targetAvailable: notificationTarget({ type, postId, targetMonth }) !== null,
   };
 }
 
@@ -149,7 +153,8 @@ function toNotificationType(value: string): NotificationType {
   if (
     value === "board_reply" ||
     value === "board_pinned" ||
-    value === "title_unlocked"
+    value === "title_unlocked" ||
+    value === "mock_exam_reminder"
   ) {
     return value;
   }
