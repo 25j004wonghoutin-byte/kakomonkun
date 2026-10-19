@@ -10,6 +10,7 @@ test("teacher shell exposes only approved navigation", () => {
   for (const text of [
     "教師ホーム",
     "学習状況",
+    "模擬試験状況",
     "掲示板",
     "通知",
     "ログアウト",
@@ -19,6 +20,18 @@ test("teacher shell exposes only approved navigation", () => {
   }
 
   assert.doesNotMatch(source, /マイページ|称号ショップ|ランキング/);
+});
+
+test("teacher mock navigation renders a real route without student account features", async () => {
+  const { createElement } = await import("react");
+  const { renderToStaticMarkup } = await import("react-dom/server");
+  const { RoleShell } = await import("../src/components/role-shell.tsx");
+  const { PathnameContext } = await import("next/dist/shared/lib/hooks-client-context.shared-runtime.js");
+  const html = renderToStaticMarkup(createElement(PathnameContext.Provider, { value: "/teacher/mock-exams", children:
+    createElement(RoleShell, { roleName: "teacher", userName: "保存名", children: "内容" }) }));
+  assert.match(html, /href="\/teacher\/mock-exams"/);
+  assert.match(html, /管理者/);
+  assert.doesNotMatch(html, /href="\/(?:profile|titles|ranking)"/);
 });
 
 test("student home redirects teachers before rendering student APIs", () => {

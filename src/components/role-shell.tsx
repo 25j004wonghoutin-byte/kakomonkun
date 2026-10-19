@@ -9,12 +9,13 @@ import { StudentShell } from "@/components/student-shell";
 export type RoleNavigationItem = {
   label: string;
   href: string;
-  icon: "home" | "students" | "message" | "bell";
+  icon: "home" | "students" | "message" | "bell" | "exam";
 };
 
 const teacherNavigation: RoleNavigationItem[] = [
   { label: "教師ホーム", href: "/teacher", icon: "home" },
   { label: "学習状況", href: "/teacher/students", icon: "students" },
+  { label: "模擬試験状況", href: "/teacher/mock-exams", icon: "exam" },
   { label: "掲示板", href: "/board", icon: "message" },
   { label: "通知", href: "/notifications", icon: "bell" },
 ];
@@ -176,6 +177,9 @@ export function RoleNavigationShell({
 }
 
 function RoleIcon({ name }: { name: RoleNavigationItem["icon"] }) {
+  if (name === "exam") {
+    return <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5" fill="none"><path d="M6 3h12v18H6zM9 7h6M9 11h6M9 15h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>;
+  }
   if (name === "home") {
     return (
       <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5" fill="currentColor">

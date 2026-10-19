@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   notificationTarget,
   type NotificationView,
@@ -46,6 +46,27 @@ export function NotificationList({
   const [loadingMore, setLoadingMore] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  useEffect(() => {
+    const controller = new AbortController();
+    async function restoreInbox() {
+      try {
+        const response = await fetch("/api/notifications", { cache: "no-store", signal: controller.signal });
+        if (!response.ok) throw new Error("notification restore failed");
+        const data = (await response.json()) as NotificationPageResponse;
+        if (controller.signal.aborted) return;
+        setNotifications(data.notifications);
+        setNextCursor(data.nextCursor);
+        setUnreadCount(data.unreadCount);
+      } catch {
+        if (!controller.signal.aborted) setErrorMessage("最新の通知を確認できませんでした。再読み込みしてください。");
+      }
+    }
+    // 履歴からの再マウントとbfcache復元の両方で、保存済みの状態を再確認する。
+    void restoreInbox();
+    window.addEventListener("pageshow", restoreInbox);
+    return () => { controller.abort(); window.removeEventListener("pageshow", restoreInbox); };
+  }, []);
+
   async function selectNotification(notification: NotificationView) {
     if (activeNotificationId) return;
 
@@ -78,6 +99,8 @@ export function NotificationList({
         return;
       }
 
+      // 戻る操作でも更新前の未読一覧を復元しない。
+      router.refresh();
       router.push(target);
     } catch {
       setErrorMessage(
