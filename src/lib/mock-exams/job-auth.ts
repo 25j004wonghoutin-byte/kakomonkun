@@ -26,7 +26,8 @@ export async function verifyMockJobRequest(request: Request, config: JobConfig, 
   try { for (;;) { const result = await reader.read(); if (result.done) break; length += result.value.length; if (length > 64) { await reader.cancel(); throw denied(); } chunks.push(result.value); } }
   finally { reader.releaseLock(); }
   const raw = Buffer.concat(chunks);
-  if (!raw.equals(Buffer.from('{"action":"tick"}'))) throw denied();
+  // pg_net uses JSONB::text (one space); keep both exact encodings, never normalize signed bytes.
+  if (!raw.equals(Buffer.from('{"action":"tick"}')) && !raw.equals(Buffer.from('{"action": "tick"}'))) throw denied();
   const canonical = `POST\n${path}\n${config.projectRef}\n${config.environment}\n${time}\n${nonce}\n${createHash("sha256").update(raw).digest("hex")}`;
   const expected = createHmac("sha256", config.secret).update(canonical).digest();
   if (!timingSafeEqual(expected, Buffer.from(signature, "hex"))) throw denied();
