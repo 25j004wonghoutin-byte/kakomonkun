@@ -584,3 +584,76 @@ Task 14〜17の教師画面・署名付きジョブ・Cron/運用・最終受入
 | docs/operations/monthly-mock-exam-verification.md | CRLF保持・本文正常 |
 | .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/progress.md | CRLF保持・判定記録正常 |
 | .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/task-16-brief.md | 補助スクリプト新規UTF-8/BOMなし/LF・日本語正常 |
+
+### Task 16追記 — 承認後の実DB検証
+
+実装コミット`886e025`。2026-10-19の別承認で専用テストDBにscheduler SQLと秘密長チェック修正SQLを適用し、migration履歴へ記録した。適用前の実DBテストは関数未作成で失敗、適用後に実際のanon/authenticatedロールを使った拒否を確認。Prisma7のerror metadataとvoid型をテスト側で正しく扱い、権限を緩める回避は行っていない。
+
+SQL実行で正規表現の量指定上限を検出したため、適用済みのSQL/履歴を変更せず`20261019000000_mock_scheduler_secret_length.sql`を追加した。32/256文字は受理し、31/257文字・禁止文字を拒否。修正は想定する関数・所有者・search_path・1か所の旧式guardが一致するときだけ進め、不一致では中断する。
+
+| 確認 | 結果 |
+| --- | --- |
+| 最終対象テスト | 4件成功・失敗0・skip 0（実DBを含む） |
+| 署名 | 実際のVault→pg_net送信キューの生本文/headersをNode検証へ渡し一致。61秒遅延は拒否 |
+| 権限/設定 | schema/functionのPUBLIC既定許可なし、実anon/authenticated呼出し42501。未登録設定・環境不一致・query付きURL・localhostを拒否 |
+| 秘密/履歴 | 永続秘密をキューheaderに含めず、他job相当の20日前の履歴はcleanup後も保持。fixture全体をrollback |
+| 後確認 | Vault対象設定0件、fixtureキュー0件、Cron全体0件。業務件数不変。再適用は両migrationともalreadyApplied=true |
+| 未実施 | 実HTTP予約送信、登録済みjob自身の履歴削除、本番適用。Cron登録は承認対象外なので実施せず |
+
+前節の承認待ち状態はこの追記で解消。実ネットワーク運用の検証とは区別する。
+
+| パス | 文字形式・確認 |
+| --- | --- |
+| supabase/migrations/20261019000000_mock_scheduler_secret_length.sql | 新規UTF-8/BOMなし/CRLF・英文のみ、strict再読とguard差分確認 |
+| .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/apply-scheduler.mjs | 新規UTF-8/BOMなし/LF・英文のみ、専用接続先guardと実行後再読 |
+
+## Task 17 — 最終回帰（2026-10-19）
+
+アプリの検証対象コミットは`886e025`。新規E2EはHTTPハンドラーへ本物のサービスとPrisma接続を渡し、FE/ITの固定出題と共通学生で一連の処理を実施した。大きな仕様変更や新しい本体機能は追加していない。
+
+| 確認 | 結果 |
+| --- | --- |
+| 一連の実DB/HTTP契約/render | 5件成功。両試験初回20pt・2回目0ptで計40pt、best更新、元問題変更からの固定出題保護、他学生/教師/利用停止の拒否、締切前のJSON/HTMLから正解キー排除 |
+| 月次の境界/報酬 | 20日の両試験未提出者だけに1通、25日の保存済み選択採点→1/1/3固定、150/150/75。実通知書込後の故障で配布全体rollback→再開して一意ledger1行。無料手動称号購入と過去月表示、写真URL/名前/称号変更後も順位ID不変 |
+| 全mock関連の実DBテスト | 178件成功・失敗0・skip 0、直列実行。mock-*.test.mjsと教師mock API/画面を含む |
+| 全体suite | 418件中398成功・失敗0・opt-in 20件skip。別実行した上記DBテストをskipのまま成功と数えない |
+| 型/lint | npm run typecheck / npm run lintともexit0。既存outputのunused警告1件のみ |
+| 本番ビルド | git archive HEADのコピー内でnpm run build成功。Next16.2.9/Turbopack、Prisma7.8生成、型チェックと22静的ページ生成まで成功。原本20ファイルのhashすべて不変 |
+
+Windows標準tarが日本語画像名を展開できず、GitのGNU tarへUTF-8とMSYSパスを使って再実行した。Turbopackが原本外を指すnode_modules junctionを拒否したため、インストール済みパッケージをコピーして再利用した（npm installや依存変更なし）。成功コピーは可視化フォルダー`mock-exam-verification/build-1792372409165`に保持。原本のglob型チェック/lintに検証コピーが混入しないよう、終了後に自作5コピーだけをパス照合して可視化フォルダーへ移した。既存のユーザーoutputは移動/削除していない。
+
+### 実ブラウザー
+
+確認経路: `127.0.0.1:3001/mock-exam` → 初回開始 → 回答保存 → 2タブ競合 → 最新状態確認 → 提出確認 → 結果 → 試験別ランキング → 教師状況。
+
+| 確認 | 実証結果 |
+| --- | --- |
+| 接続/UI | CUAのin-app browserを使用。PC1280pxと375x812で意味のある画面を表示。空白/エラーoverlayなし、最終console error/warnなし |
+| 2タブ | Aのア保存後、古いBのイ保存を409で停止。未保存の注意と提出disabled。最新状態の読込でア選択・保存済みへ復帰 |
+| キーボード | 提出確認の初期focusはキャンセル。Tabで提出へ、Escapeで閉じて元の確認ボタンへfocus復帰 |
+| 提出結果 | 1/60正解、1.67点、初回20pt、25日0時公開案内。実DOM/埋込HTMLにcorrectChoiceId/isCorrect/explanationキーなし |
+| ランキング | IT未提出は結果なし、FE切替で自分の暫定1位1.67点。教師画面も提出済み1人、最高点1.67・1位、他学生未開始 |
+| 375px | 保存済み回答と問題移動を実操作。innerWidth375/scrollWidth360、横はみ出しなし。viewport適用は新しいタブに作用するため、そのタブの幅を実測して撮影 |
+| 既存機能回帰 | 練習のコース/問題数、掲示板投稿一覧、通知空状態を表示。称号ショップで高い順/購入済の選択→1件へ更新。プロフィールは練習0回/総回答1問/20pt、現在称号だけの欄と変更窓の開閉、アイコン変更導線を確認 |
+
+画面証跡は可視化フォルダーの`mock-task17-result.png`、`mock-task17-mobile.png`。2件の自作アカウント・FE模試1件・自作問題60件と受験/回答/ポイント/称号等の関連fixtureだけを識別して片付けた。ヘルパー終了確認済み。実操作タブは閉じ、viewportを解除。既存test-student/test-student2/掲示板データは保持した。
+
+### 未実施と公開ゲート
+
+- Supabase→到達可能な配備先への実HTTP/Cron予約実行は未承認・未実施。SQLキュー内での検証と区別する。
+- 実ブラウザーでのネットワーク切断/復旧は未実施（接続されたBrowser capabilityはvisibility/viewportのみ）。通信失敗・再送・競合の単体/DBテストと区別する。
+- 本検証では画像のStorageへの再アップロード、実Googleログイン、別ブラウザーを再実施していない。アイコンは導線/表示の回帰に限定した。
+- 本番DB追加SQL、実秘密、デプロイ、Cron開始、pushは実施していない。バックアップ→追加SQL4件の照合→停止状態の設定/秘密→承認後push/デプロイ→実HTTP→prepare→開始/Cronの順に別確認が必要。
+
+「全体運用確認済み」や本番での無事故保証ではない。以下の全ブランチレビューと指摘修正を経て、結果と上記の未実施項目を一緒に判断する。
+
+### テキスト形式
+
+| パス | 形式・検証 |
+| --- | --- |
+| tests/mock-end-to-end.integration.test.mjs | 新規UTF-8/BOMなし/CRLF。strict再読、学生名/固定解説の日本語、U+FFFDなし、差分確認 |
+| docs/operations/monthly-mock-exam-verification.md | UTF-8/BOMなし/CRLF保持。strict再読と本文日本語確認 |
+| .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/progress.md | UTF-8/BOMなし/CRLF保持。helper追加LFを機械的に統一後、strict再読と日本語確認 |
+| .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/verify-build.mjs | 新規UTF-8/BOMなし/LF。英文のみ、原本hash検証と再読 |
+| .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/task-17-brief.md | helper新規UTF-8/BOMなし/LF。全文再読、日本語正常 |
+| 可視化フォルダー/mock-task17-browser-qa.mjs | 新規UTF-8/BOMなし/LF。英文のみ、strict再読、fixture片付け確認 |
