@@ -135,3 +135,18 @@ test("test and regular dev builds use separate output directories", async () => 
   assert.equal((await readNextConfig("1")).distDir, "coverage/next-test");
   assert.equal((await readNextConfig(undefined)).distDir ?? ".next", ".next");
 });
+
+test("ambient production mock flags and signing secrets never enter a test child",()=>{
+  const base={KAKOMON_MOCK_JOB_SECRET:"production-secret",KAKOMON_MOCK_JOBS_ENABLED:"true",KAKOMON_MOCK_ENABLED:"true",KAKOMON_MOCK_STARTS_ENABLED:"true",KAKOMON_MOCK_PROJECT_REF:"ckgoikdjhtklhbzdgxxs",KAKOMON_MOCK_ENVIRONMENT:"production",KAKOMON_MOCK_UNKNOWN:"inherited"};
+  const env=environment.buildTestProcessEnv(valid(),base);
+  for(const key of Object.keys(base))assert.equal(env[key],"");
+});
+
+test("only validated dedicated-file mock settings enter a test child",()=>{
+  const settings={KAKOMON_MOCK_ENABLED:"true",KAKOMON_MOCK_STARTS_ENABLED:"true",KAKOMON_MOCK_JOBS_ENABLED:"true",KAKOMON_MOCK_PROJECT_REF:"grzylombpqmidltnbwhx",KAKOMON_MOCK_ENVIRONMENT:"test",KAKOMON_MOCK_JOB_SECRET:"ephemeral-test-secret-0123456789012345"};
+  const env=environment.buildTestProcessEnv({...valid(),...settings,KAKOMON_MOCK_UNKNOWN:"file-unknown"},{KAKOMON_MOCK_JOB_SECRET:"production-secret"});
+  for(const [key,value] of Object.entries(settings))assert.equal(env[key],value);
+  assert.equal(env.KAKOMON_MOCK_UNKNOWN,undefined);
+  for(const bad of [{KAKOMON_MOCK_ENVIRONMENT:"production"},{KAKOMON_MOCK_PROJECT_REF:"ckgoikdjhtklhbzdgxxs"},{KAKOMON_MOCK_JOB_SECRET:"short"},{KAKOMON_MOCK_JOBS_ENABLED:"yes"},{KAKOMON_MOCK_JOBS_ENABLED:"true"}])
+    assert.throws(()=>environment.buildTestProcessEnv({...valid(),...bad}),error=>/Invalid test configuration/.test(error.message)&&!error.message.includes("production-secret"));
+});

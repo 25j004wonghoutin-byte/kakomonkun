@@ -37,7 +37,22 @@ export function validateTestConfig(input) {
       if (payload.role !== "service_role" || payload.ref !== TEST_PROJECT_REF) invalid("TEST_SUPABASE_SERVICE_ROLE_KEY");
     } catch { invalid("TEST_SUPABASE_SERVICE_ROLE_KEY"); }
   }
+  const mock = {};
+  for (const name of ["KAKOMON_MOCK_ENABLED", "KAKOMON_MOCK_STARTS_ENABLED", "KAKOMON_MOCK_JOBS_ENABLED"]) {
+    const value = input[name] || "";
+    if (!["", "true", "false"].includes(value)) invalid(name);
+    mock[name] = value;
+  }
+  mock.KAKOMON_MOCK_PROJECT_REF = input.KAKOMON_MOCK_PROJECT_REF || "";
+  mock.KAKOMON_MOCK_ENVIRONMENT = input.KAKOMON_MOCK_ENVIRONMENT || "";
+  mock.KAKOMON_MOCK_JOB_SECRET = input.KAKOMON_MOCK_JOB_SECRET || "";
+  if (mock.KAKOMON_MOCK_PROJECT_REF && mock.KAKOMON_MOCK_PROJECT_REF !== TEST_PROJECT_REF) invalid("KAKOMON_MOCK_PROJECT_REF");
+  if (mock.KAKOMON_MOCK_ENVIRONMENT && mock.KAKOMON_MOCK_ENVIRONMENT !== "test") invalid("KAKOMON_MOCK_ENVIRONMENT");
+  if (mock.KAKOMON_MOCK_JOB_SECRET && !/^[a-zA-Z0-9_-]{32,256}$/.test(mock.KAKOMON_MOCK_JOB_SECRET)) invalid("KAKOMON_MOCK_JOB_SECRET");
+  if (mock.KAKOMON_MOCK_ENABLED === "true" && mock.KAKOMON_MOCK_PROJECT_REF !== TEST_PROJECT_REF) invalid("KAKOMON_MOCK_PROJECT_REF");
+  if (mock.KAKOMON_MOCK_JOBS_ENABLED === "true" && (mock.KAKOMON_MOCK_ENABLED !== "true" || mock.KAKOMON_MOCK_ENVIRONMENT !== "test" || !mock.KAKOMON_MOCK_JOB_SECRET)) invalid("KAKOMON_MOCK_JOBS_ENABLED");
   return {
+    ...mock,
     TEST_SUPABASE_PROJECT_REF: TEST_PROJECT_REF,
     NEXT_PUBLIC_SUPABASE_URL: input.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: key,
@@ -61,7 +76,7 @@ export function buildTestProcessEnv(input, base = process.env) {
   const config = validateTestConfig(input);
   const env = { ...base };
   for (const name of Object.keys(env)) {
-    if (/^(?:SUPABASE_|TEST_SUPABASE_|NEXT_PUBLIC_SUPABASE_|TEACHER_|GEMINI_|KAKOMON_SEED_)/.test(name)) env[name] = "";
+    if (/^(?:SUPABASE_|TEST_SUPABASE_|NEXT_PUBLIC_SUPABASE_|TEACHER_|GEMINI_|KAKOMON_SEED_|KAKOMON_MOCK_)/.test(name)) env[name] = "";
   }
   return {
     ...env, ...config, NODE_ENV: "development", KAKOMON_TEST_ENV: "1",

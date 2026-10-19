@@ -26,14 +26,16 @@ async function authorize(tx:Prisma.TransactionClient,actor:MockActor):Promise<vo
 }
 
 /** 公開済み試験内の期限切れ整合だけ。本人認証を迂回する受験変更APIではない。 */
-export async function settleExpiredMockAttempts(db:PrismaClient,mockExamId:string,limit=25,clock:MockClock=dbNow):Promise<number>{
+export async function settleExpiredMockAttempts(db:PrismaClient,mockExamId:string,limit=25,clock:MockClock=dbNow,canContinue:()=>boolean=()=>true):Promise<number>{
   if(!Number.isSafeInteger(limit)||limit<1||limit>25)throw new MockError("invalid_batch",400,"集計件数が正しくありません。");
   const due=await db.$transaction(async tx=>{
     const now=await clock(tx);
     return tx.mockAttempt.findMany({where:{mockExamId,status:"in_progress",expiresAt:{lte:now}},orderBy:[{expiresAt:"asc"},{id:"asc"}],take:limit,select:{id:true,userId:true}});
   },{maxWait:10000,timeout:30000});
   let count=0;
-  for(const row of due)await db.$transaction(async tx=>{
+  for(const row of due){
+    if(!canContinue())break;
+    await db.$transaction(async tx=>{
     // 利用停止後も受理済み受験の記録を消さず、DB期限でだけ整合する。
     await tx.$queryRaw`SELECT id FROM public.mock_exams WHERE id=${mockExamId}::uuid FOR NO KEY UPDATE`;
     await tx.$queryRaw`SELECT id FROM public.users WHERE id=${row.userId}::uuid FOR NO KEY UPDATE`;
@@ -42,6 +44,7 @@ export async function settleExpiredMockAttempts(db:PrismaClient,mockExamId:strin
     const a=await tx.mockAttempt.findUnique({where:{id:row.id}}),now=await clock(tx);
     if(a&&a.mockExamId===mockExamId&&a.status==="in_progress"&&+now>=+a.expiresAt){await gradeLockedAttempt(tx,a.id,now);count++;}
   },{maxWait:10000,timeout:30000});
+  }
   return count;
 }
 

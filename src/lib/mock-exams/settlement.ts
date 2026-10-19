@@ -18,13 +18,13 @@ async function lockedExam(tx:Prisma.TransactionClient,id:string,clock:MockClock)
 }
 
 /** 1回につき採点最大25件、または報酬最大25人。確定順位は再作成しない。 */
-export async function settleMockExamBatch(db:PrismaClient,mockExamId:string,clock:MockClock=dbNow):Promise<SettlementResult>{
+export async function settleMockExamBatch(db:PrismaClient,mockExamId:string,clock:MockClock=dbNow,canContinue:()=>boolean=()=>true):Promise<SettlementResult>{
   if(!readMockEnvironment(process.env).enabled)throw new MockError("mock_disabled",503,"模擬試験は現在準備中です。");
   if(!/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(mockExamId))throw new MockError("invalid_exam",400,"試験IDが正しくありません。");
   const before=await db.$transaction(tx=>lockedExam(tx,mockExamId,clock),{maxWait:10000,timeout:30000});
   if(before.exam.rewardsCompletedAt)return {phase:"complete",remaining:0};
   if(!before.exam.rankingFinalizedAt){
-    await settleExpiredMockAttempts(db,mockExamId,25,clock);
+    await settleExpiredMockAttempts(db,mockExamId,25,clock,canContinue);
     const frozen=await db.$transaction(async tx=>{
       const {exam,now}=await lockedExam(tx,mockExamId,clock);
       if(exam.rankingFinalizedAt)return null;
@@ -41,7 +41,7 @@ export async function settleMockExamBatch(db:PrismaClient,mockExamId:string,cloc
     if(frozen)return frozen;
   }
   const pending=await db.monthlyRanking.findMany({where:{mockExamId,isFinal:true,rewardProcessedAt:null},orderBy:{userId:"asc"},take:25,select:{id:true}});
-  for(const row of pending)await rewardMockRanking(db,row.id,clock);
+  for(const row of pending){if(!canContinue())break;await rewardMockRanking(db,row.id,clock);}
   return db.$transaction(async tx=>{
     const {exam,now}=await lockedExam(tx,mockExamId,clock);
     const remaining=await tx.monthlyRanking.count({where:{mockExamId,isFinal:true,rewardProcessedAt:null}});
