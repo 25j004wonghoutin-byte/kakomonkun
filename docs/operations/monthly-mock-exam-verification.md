@@ -527,3 +527,60 @@ Task 14〜17の教師画面・署名付きジョブ・Cron/運用・最終受入
 | 可視化フォルダー/mock-task14-http-qa.mjs | 新規UTF-8/BOMなし/LF・英文のみ |
 
 本番変更・pushなし。Task 15〜17の署名付きジョブ、非公開Cron呼出し/運用、全体受入れが残る。
+
+## Task 15 — 2026-10-19
+
+実装コミット: `cc4872a`。短期HMAC認証とnonceの一度きり消費、120秒の実行権・交代後の進捗上書き拒否、1/5/15/60分の再試行を追加した。1回の呼出しで業務1バッチを扱い、期限切れ採点→出題準備→通知→確定/配布の順に進める。HTTP成功と業務完了は別で、残件を明示する。25秒の予算は学生間の区切りで判定し、実行中の原子的な学生処理は中断しないため、1件と進捗保存分だけ超過し得る（DBトランザクション上限30秒）。
+
+| 確認 | 実証結果 |
+| --- | --- |
+| RED→GREEN | 署名処理の不存在、通常envからテスト子プロセスへのmock設定混入、通知予算で3人処理してしまう問題を再現後に実装 |
+| 最終対象テスト | 単体＋専用DB45件成功・失敗0・skip 0。採点/通知回帰も含む拡大実行65件成功 |
+| 認証 | 時刻±60秒境界、method/path/query/body/project/environment/key改ざん、通常ログインのみを拒否。署名後の再送と並行nonce消費は一度だけ受理 |
+| 再開 | 独立2接続の並行取得、期限ちょうどのlease交代、旧workerのcursor/完了上書き拒否。業務commit後に停止しても再開時の参加ポイントは1件 |
+| 遅延/予算 | 20日通知、25日確定と翌月準備、未来月の再抽選なし、並行tickの重複配布なし。学生間で停止し未処理分をcursorへ引継ぎ |
+| 保持 | 3分超nonceの整理、30日超エラー詳細だけ消去。業務keyとcompletedAtを保持 |
+| 全体suite | 415件中397成功・失敗0・opt-in 18件skip |
+| 型/lint | exit 0。既存outputのunused警告1件のみ。専用DB実行時に既知のpg非推奨警告あり |
+
+テスト起動は継承した全KAKOMON_MOCK_設定を消し、専用ファイルで検証した許可済み値だけを渡す。通常envの本番署名秘密をテストへ持ち込まない。既存の起動済み子プロセスには後から設定変更が反映されないため、再起動時は専用ファイルに必要なmock設定を明示する。秘密値・既存envファイルは変更していない。
+
+下記はUTF-8/BOMなし/CRLF。strict再読、U+FFFDなし、代表日本語と差分を確認した。新規ファイルは機械的な改行整形後に再確認し、既存ファイルは元形式を保持した。
+
+| パス | 確認 |
+| --- | --- |
+| src/lib/mock-exams/job-auth.ts | 新規・認証/設定エラー文正常 |
+| src/lib/mock-exams/jobs.ts | 新規・再試行/期限切れコメント正常 |
+| src/app/api/internal/mock-exams/tick/route.ts | 新規・英文のみ |
+| src/lib/mock-exams/ranking.ts | 保持・期限切れ整合コメント正常 |
+| src/lib/mock-exams/settlement.ts | 保持・確定/配布エラー正常 |
+| src/lib/mock-exams/reminders.ts | 保持・送信直前再確認コメント正常 |
+| scripts/test-environment.mjs | 保持・英文のみ |
+| tests/mock-job-auth.test.mjs | 新規・英文のみ |
+| tests/mock-jobs.integration.test.mjs | 新規・英文のみ |
+| tests/test-environment.test.mjs | 保持・英文のみ |
+| docs/operations/monthly-mock-exam-verification.md | 保持・本文正常 |
+| .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/progress.md | 保持・検証記録正常 |
+| .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/task-15-brief.md | 補助スクリプト新規UTF-8/BOMなし/LF・日本語正常 |
+
+使い捨ての自作ユーザー/試験/問題/業務jobと関連行だけを片付け、既存データと保護対象の変更は保持。本番変更、Vault登録、Cron開始、pushなし。Task 16のSQL/運用とTask 17の全体受入れは未完了。
+
+## Task 16 — 準備中（2026-10-19）
+
+非公開scheduler SQL・運用書・実DBテストを作成したが、テストDBへの拡張/関数追加は別承認待ち。読取確認ではテストDBにpgcrypto/Vaultあり、pg_cron/pg_netとmock_exam_privateは未作成。anon/authenticatedのVault schema/平文viewアクセスはともになし。DB変更・秘密登録・HTTP送信・Cron登録はまだ行っていない。
+
+公式pg_net実装のbody::textが空白付きJSONを送るため、Task15のcompact本文限定では正しいHMACも401になることを実テストで再現した。2種類の完全固定本文だけを認め、生バイトのhash/署名はそのまま検証する最小修正後、互換性/改ざん/61秒遅延テストが成功。任意本文の解析や署名oracleは追加していない。
+
+最新suiteは417件中398成功・失敗0・opt-in 19件skip。新しいSQLの実DB検証はそのskipに含まれ、未検証を成功扱いしない。単体成功だけではSQLの構文/インストール済み権限/キューとの一致を保証できない。Task16完了と最終受入れは未宣言。
+
+下記はUTF-8/BOMなし/CRLF。strict再読、U+FFFD/BOM/改行と差分、日本語の代表行を確認。新規を機械的にCRLFへ整形し、既存形式は保持した。
+
+| パス | 確認 |
+| --- | --- |
+| supabase/migrations/20261016010000_mock_exam_scheduler.sql | 新規・英文のみ、未適用 |
+| tests/mock-cron-sql.test.mjs | 新規・英文のみ、DB部分未実行 |
+| docs/operations/monthly-mock-exams.md | 新規・接続先/停止/保持rollbackの日本語正常 |
+| src/lib/mock-exams/job-auth.ts | CRLF保持・既存エラー日本語正常 |
+| docs/operations/monthly-mock-exam-verification.md | CRLF保持・本文正常 |
+| .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/progress.md | CRLF保持・判定記録正常 |
+| .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/task-16-brief.md | 補助スクリプト新規UTF-8/BOMなし/LF・日本語正常 |
