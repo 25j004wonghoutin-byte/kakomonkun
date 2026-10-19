@@ -481,3 +481,49 @@ Task 12以降のランキング称号・通知・ジョブ・教師画面・運�
 | docs/operations/monthly-mock-exam-verification.md | CRLF保持・本文正常 |
 
 Task 14〜17の教師画面・署名付きジョブ・Cron/運用・最終受入れが残る。実装済みの通知処理を、実運用の配信開始とは扱わない。
+
+## Task 14 — 2026-10-19
+
+実装コミット: `1f0ce2d`。教師向けの試験/月別状況ページとAPIを追加。未開始・受験中・提出済みの人数は100人ページの外も集計し、提出済みを優先する。学生行には2回分の提出点・最高点・順位だけを返し、問題・回答・解説・メール等は含めない。対象学生は現在利用可能かつその月の締切前の登録者と明示した。確定後の順位は保存値を使い、教師の読取から採点・報酬・試験/受験を作らない。
+
+既存教師guardと固定の管理者表示を維持し、サイドバーへ既存方式のSVG付き導線を追加。手動出題・点数変更・回数追加・教師の称号/マイページは設けていない。サービスでもDB上の最新役割/状態を確認し、APIはprivate/no-storeと固定エラーメッセージ。不正月・試験・重複cursor配列等は400にする。
+
+| 確認 | 実証結果 |
+| --- | --- |
+| RED→GREEN | サービス/画面/導線不存在を確認後に実装。重複cursor配列がPrismaエラーになる再現後、400へ修正 |
+| 専用DB | 教師以外とDBで停止された教師の拒否、101人の100+1ページでも同じ全体件数、3状態、2回分/最高点、試験/月分離、確定順位保存値、採点/報酬副作用なし |
+| 全体suite | 408件中393成功・失敗0・opt-in 15件skip |
+| 型/lint | exit 0。既存output警告1件のみ |
+| 実HTTP | API: 教師200・学生403・匿名401、ページ: 教師200・学生307でホーム・匿名307で教師ログイン。教師から学生APIは403 |
+| PC | 1280x800の実画面で管理者名、導線、3状態、FEの50.00/75.00/最高75.00・1位を確認。IT切替でFE結果が消える |
+| 戻る操作 | 初回はURL/結果がFEでもselectだけITに復元される不具合を観測。フォームの履歴値自動復元を抑止し、同じFE→IT→Backでselect=fe・月2026-10・最高75.00の一致を確認 |
+| 375px | 375x812で表示。document.scrollWidth=360、フォーム左右16〜344px、サイドバーは画面外に閉じ、横はみ出しなし |
+| UI健康 | 教師表示で空白画面/エラーoverlayなし、コンソールerror/warnなし。通知の初回に既知のPrisma内部pg非推奨警告が1件出たが、最終の通知タブは空 |
+
+### Task 13の未確認項目の解消
+
+ブラウザー操作が再び利用可能になったため、専用DBの使い捨て通知でクリック→当月模試一覧を実操作した。DBのreadAtと未読0件を実HTTPでも確認。Nextルート履歴だけの更新では、別文書への移動後に古い初期未読表示が戻る経路が残ることも再現した。そのため既読更新後のルート更新に加え、一覧マウントとpageshowで現在のprivate通知一覧を再取得する。再実行した通常Backと別ページ経由Backの両方で未読0件を確認済み。通知1件を自作fixture内で未読へ戻して反復し、本番/既存学生は変更していない。
+
+証跡は可視化フォルダーの `mock-task14-desktop.png`、`mock-task14-mobile.png`、`mock-task13-read.png`。実操作用タブを閉じ、viewportを解除し、一時loopbackヘルパーも終了。4件の自作アカウント・模試1件・自作過去問60件と関連する回答/ポイント/通知/称号だけを識別照合後に削除した（使い捨てfixtureは再生成可能）。既存テスト学生/過去問は保持。
+
+### テキスト形式
+
+すべてUTF-8/BOMなし。strict UTF-8で再読し、代表日本語、U+FFFDなし、元の改行と差分を確認した。既存LF/CRLFは個別に保持、新規ソースはCRLF。
+
+| パス | 形式・日本語確認 |
+| --- | --- |
+| src/lib/teacher/mock-exams.ts | 新規CRLF・教師専用エラー/コメント正常 |
+| src/app/api/teacher/mock-exams/route.ts | 新規CRLF・英文のみ |
+| src/app/teacher/mock-exams/page.tsx | 新規CRLF・取得エラー文正常 |
+| src/app/teacher/mock-exams/mock-exam-status.tsx | 新規CRLF・状態/説明/欄名正常 |
+| src/components/role-shell.tsx | CRLF保持・管理者/導線正常 |
+| tests/teacher-mock-exams.test.mjs | 新規CRLF・学生名/状態assert正常 |
+| tests/teacher-shell.test.mjs | LF保持・既存日本語正常 |
+| src/app/notifications/notification-list.tsx | LF保持・再取得エラー/コメント正常 |
+| docs/operations/monthly-mock-exam-verification.md | CRLF保持・本文正常 |
+| .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/progress.md | CRLF保持・strict再読/日本語正常 |
+| .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/task-14-brief.md | 補助スクリプト新規UTF-8/BOMなし/LF・日本語正常 |
+| 可視化フォルダー/mock-task14-browser-qa.mjs | 新規UTF-8/BOMなし/LF・英文のみ |
+| 可視化フォルダー/mock-task14-http-qa.mjs | 新規UTF-8/BOMなし/LF・英文のみ |
+
+本番変更・pushなし。Task 15〜17の署名付きジョブ、非公開Cron呼出し/運用、全体受入れが残る。
