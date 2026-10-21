@@ -34,6 +34,7 @@ export async function prepareMockExam(
         }});
         const now=await clock(tx);
         if(!Number.isFinite(+now))throw new MockError("invalid_clock",503,"サーバー時刻を確認できません。");
+        if(+now>=+schedule.closesAt)throw new MockError("preparation_expired",409,"公開期間を過ぎた模擬試験は新規作成できません。");
         const frozen=selected.map((q,i)=>({id:randomUUID(),mockExamId,questionId:q.id,orderNo:i+1,score:1,
           questionText:q.questionText,imagePath:q.imagePath,explanation:q.explanation,categoryCode:q.category.code,
           sourceKey:q.sourceKey,sourceYear:q.sourceYear!,sourceSeason:q.sourceSeason,questionNo:q.questionNo,

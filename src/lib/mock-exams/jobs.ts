@@ -48,10 +48,15 @@ export async function cleanMockJobMetadata(db: PrismaClient, now: Date): Promise
   await db.mockExamJobRun.updateMany({ where: { kind: { not: "dispatch" }, lastErrorAt: { lt: new Date(+now - 30 * 86400000) } }, data: { lastErrorCode: null, lastErrorAt: null } });
 }
 
-async function enqueue(db: PrismaClient, now: Date) {
+function preparationTarget(now: Date): Date {
   const month = getTokyoDate(now).slice(0, 7), schedule = getMockSchedule(month);
   const date = new Date(`${month}-01T00:00:00Z`);
   if (+now >= +schedule.closesAt) date.setUTCMonth(date.getUTCMonth() + 1);
+  return date;
+}
+
+async function enqueue(db: PrismaClient, now: Date) {
+  const month = getTokyoDate(now).slice(0, 7), schedule = getMockSchedule(month), date = preparationTarget(now);
   const prepareMonth = date.toISOString().slice(0, 7);
   const ensure = async (jobKey: string, kind: string, targetMonth: Date, examCode: string | null) => db.mockExamJobRun.upsert({ where: { jobKey }, create: { jobKey, kind, targetMonth, examCode, nextRunAt: now }, update: {} });
   const due = await db.mockAttempt.findMany({ where: { status: "in_progress", expiresAt: { lte: now } }, orderBy: [{ expiresAt: "asc" }, { id: "asc" }], take: 25, select: { mockExamId: true, mockExam: { select: { targetMonth: true, exam: { select: { code: true } } } } } });
@@ -76,7 +81,7 @@ export async function runMockJobs(db: PrismaClient, clock: MockClock = dbNow): P
   let processed = 0, failed = 0;
   for (const kind of ["grade", "prepare", "remind", "settle"]) {
     if (!canContinue()) break;
-    const candidates = await db.mockExamJobRun.findMany({ where: { kind, OR: [{ status: { in: ["pending", "failed"] }, nextRunAt: { lte: now } }, { status: "running", leaseUntil: { lte: now } }] }, orderBy: [{ nextRunAt: "asc" }, { id: "asc" }], take: 4 });
+    const candidates = await db.mockExamJobRun.findMany({ where: { kind, ...(kind === "prepare" ? { targetMonth: { lte: preparationTarget(now) } } : {}), OR: [{ status: { in: ["pending", "failed"] }, nextRunAt: { lte: now } }, { status: "running", leaseUntil: { lte: now } }] }, orderBy: [{ nextRunAt: "asc" }, { id: "asc" }], take: 4 });
     for (const candidate of candidates) {
       if (!canContinue()) break;
       const lease = await claimMockJob(db, candidate.id, clock); if (!lease) continue;
@@ -88,7 +93,13 @@ export async function runMockJobs(db: PrismaClient, clock: MockClock = dbNow): P
           const current = validNow(await db.$transaction(clock, options));
           outcome = { done: await db.mockAttempt.count({ where: { mockExamId: examId, status: "in_progress", expiresAt: { lte: current } } }) === 0 };
         } else if (kind === "prepare") {
-          await prepareMockExam(db, { examCode: lease.examCode as ExamCode, month }, clock); outcome = { done: true };
+          const eligible = preparationTarget(validNow(await db.$transaction(clock, options)));
+          if (+lease.targetMonth === +eligible) {
+            try { await prepareMockExam(db, { examCode: lease.examCode as ExamCode, month }, clock); }
+            catch (cause) { if (!(cause instanceof MockError) || cause.code !== "preparation_expired") throw cause; }
+          }
+          // 古い準備は履歴を残して完了。未来分は時計が戻っても早期に消費しない。
+          outcome = { done: +lease.targetMonth <= +eligible };
         } else if (kind === "remind") {
           const result = await sendMockRemindersBatch(db, month, lease.cursor, clock, canContinue); outcome = { done: result.nextCursor === null, cursor: result.nextCursor };
         } else {

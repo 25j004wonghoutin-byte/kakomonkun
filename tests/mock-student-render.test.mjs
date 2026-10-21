@@ -20,3 +20,11 @@ test("result HTML before close never includes hidden review, after close display
   const released=await view("../src/app/mock-exam/attempts/[attemptId]/result/mock-result.tsx","MockResultView",{result:{...result,review:[{...question,selectedChoiceId:"c0",correctChoiceId:"c0",isCorrect:true,explanation:"解説は未登録です"}]}});
   assert.match(released,/解説は未登録です/);assert.match(released,/検証問題/);
 });
+
+test("released review shows every frozen choice text, including selected and correct answers without an explanation",async()=>{
+  const released=await view("../src/app/mock-exam/attempts/[attemptId]/result/mock-result.tsx","MockResultView",{result:{...result,review:[{...question,selectedChoiceId:"c1",correctChoiceId:"c0",isCorrect:false,explanation:"解説は未登録です"}]}});
+  assert.match(released,/選択肢ア/);assert.match(released,/選択肢イ/);assert.match(released,/選択肢ウ/);assert.match(released,/選択肢エ/);
+  assert.match(released,/あなたの回答：イ/);assert.match(released,/正解：ア/);
+  const hidden=await view("../src/app/mock-exam/attempts/[attemptId]/result/mock-result.tsx","MockResultView",{result});
+  assert.doesNotMatch(hidden,/選択肢ア|選択肢イ|選択肢ウ|選択肢エ/);
+});

@@ -126,3 +126,46 @@ test("cooperative worker budget stops between students without skipping remainin
     assert.equal(await f.db.pointTransaction.count({where:{userId:{in:f.actors.map(a=>a.id)},reason:"mock_rank_reward"}}),1);
   });
 });
+
+test("a retried preparation job cannot create a never-held past exam after the monthly preparation window",{skip:process.env.KAKOMON_RUN_MOCK_DB_QA!=="1",timeout:300000},async()=>{
+  const {runMockJobs:run}=await import("../src/lib/mock-exams/jobs.ts");
+  await withMockDb({examCode:"fe",month:"2048-01",userCount:1,prepared:false},async f=>{
+    const months=[new Date("2048-01-01"),new Date("2048-02-01"),new Date("2048-03-01")];
+    assert.equal(await f.db.mockExam.count({where:{examId:f.examId,targetMonth:{in:months}}}),0,"fixture refuses existing month exams");
+    assert.equal(await f.db.mockExamJobRun.count({where:{targetMonth:{in:months}}}),0,"fixture refuses existing month jobs");
+    const db=f.db.$extends({query:{
+      question:{findMany({args,query}){return query({...args,where:{AND:[args.where??{},{sourceKey:{startsWith:`mock-qa:${f.runId}:`}}]}});}},
+      mockAttempt:{findMany({args,query}){return query({...args,where:{AND:[args.where??{},{userId:f.actor.id}]}});}},
+      mockExam:{findMany({args,query}){return query({...args,where:{AND:[args.where??{},{examId:f.examId,targetMonth:{in:months}}]}});}},
+      mockExamJobRun:{findMany({args,query}){return query({...args,where:{AND:[args.where??{},{targetMonth:{in:months},examCode:"fe"}]}});}},
+    }});
+    const oldJobs=process.env.KAKOMON_MOCK_JOBS_ENABLED;process.env.KAKOMON_MOCK_JOBS_ENABLED="true";
+    try{
+      const obsolete=await f.db.mockExamJobRun.create({data:{jobKey:"mock:prepare:2048-01:fe",kind:"prepare",targetMonth:months[0],examCode:"fe",status:"failed",attempts:1,nextRunAt:f.now(),lastErrorCode:"pool_shortage",lastErrorAt:f.now()}});
+      const pending=await f.db.mockExamJobRun.create({data:{jobKey:`qa:${f.runId}:old-pending`,kind:"prepare",targetMonth:months[0],examCode:"fe",status:"pending",nextRunAt:new Date(+f.now()+1)}});
+      const expired=await f.db.mockExamJobRun.create({data:{jobKey:`qa:${f.runId}:old-running`,kind:"prepare",targetMonth:months[0],examCode:"fe",status:"running",nextRunAt:new Date(+f.now()+2),leaseToken:randomUUID(),leaseUntil:new Date(+f.now()+120000)}});
+      const future=await f.db.mockExamJobRun.create({data:{jobKey:"mock:prepare:2048-03:fe",kind:"prepare",targetMonth:months[2],examCode:"fe",nextRunAt:new Date(+f.now()-1000)}});
+      f.setNow(new Date("2048-01-25T00:00:00+09:00"));
+      assert.equal((await run(db,f.clock)).failed,0);
+      assert.equal(await f.db.mockExam.count({where:{examId:f.examId,targetMonth:months[0]}}),0,"never create an exam whose publication window already ended");
+      const retired=await f.db.mockExamJobRun.findUniqueOrThrow({where:{id:obsolete.id}});
+      assert.equal(retired.status,"completed");assert.ok(retired.completedAt);
+      f.setNow(new Date("2048-02-02T00:00:00+09:00"));
+      for(const job of [pending,expired]){
+        assert.equal((await run(db,f.clock)).failed,0);
+        assert.equal((await f.db.mockExamJobRun.findUniqueOrThrow({where:{id:job.id}})).status,"completed");
+        assert.equal(await f.db.mockExam.count({where:{examId:f.examId,targetMonth:months[0]}}),0);
+      }
+      await run(db,f.clock);
+      const next=await f.db.mockExam.findFirstOrThrow({where:{examId:f.examId,targetMonth:months[1]}});f.trackExam(next.id);
+      assert.equal(await f.db.mockExamQuestion.count({where:{mockExamId:next.id}}),60);
+      assert.equal(await f.db.monthlyRanking.count({where:{targetMonth:months[0],userId:f.actor.id}}),0);
+      assert.equal((await f.db.mockExamJobRun.findUniqueOrThrow({where:{id:future.id}})).status,"pending","future preparation waits for its own window");
+      assert.equal(await f.db.mockExam.count({where:{examId:f.examId,targetMonth:months[2]}}),0);
+    }finally{
+      process.env.KAKOMON_MOCK_JOBS_ENABLED=oldJobs;
+      for(const row of await f.db.mockExam.findMany({where:{examId:f.examId,targetMonth:{in:months}}}))f.trackExam(row.id);
+      await f.db.mockExamJobRun.deleteMany({where:{targetMonth:{in:months}}});
+    }
+  });
+});

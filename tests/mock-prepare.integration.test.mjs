@@ -54,3 +54,23 @@ test("preparation freezes one complete shared set per exam/month with atomic rol
     });
   }
 });
+
+test("preparation rechecks the publication deadline after locking and preserves an existing frozen exam",{
+  skip:process.env.KAKOMON_RUN_MOCK_DB_QA!=="1",timeout:180000,
+},async()=>{
+  const {prepareMockExam}=await import("../src/lib/mock-exams/prepare.ts");
+  await withMockDb({examCode:"fe",month:"2048-04",userCount:1,prepared:false},async f=>{
+    const db=ownPool(f.db,f.runId),input={examCode:"fe",month:"2048-04"},where={examId:f.examId,targetMonth:new Date("2048-04-01")};
+    try{
+      f.setNow(new Date("2048-04-25T00:00:00+09:00"));
+      await assert.rejects(prepareMockExam(db,input,f.clock),error=>error.code==="preparation_expired");
+      assert.equal(await f.db.mockExam.count({where}),0);
+      f.setNow(new Date("2048-04-24T23:59:59+09:00"));
+      const ready=await prepareMockExam(db,input,f.clock);f.trackExam(ready.mockExamId);
+      const before=await f.db.mockExam.findUniqueOrThrow({where:{id:ready.mockExamId}});
+      f.setNow(new Date("2048-05-02T00:00:00+09:00"));
+      assert.deepEqual(await prepareMockExam(db,input,f.clock),{mockExamId:ready.mockExamId,created:false});
+      assert.deepEqual(await f.db.mockExam.findUniqueOrThrow({where:{id:ready.mockExamId}}),before);
+    }finally{for(const row of await f.db.mockExam.findMany({where}))f.trackExam(row.id);}
+  });
+});

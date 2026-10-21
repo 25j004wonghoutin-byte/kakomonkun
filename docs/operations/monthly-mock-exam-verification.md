@@ -641,7 +641,7 @@ Windows標準tarが日本語画像名を展開できず、GitのGNU tarへUTF-8�
 ### 未実施と公開ゲート
 
 - Supabase→到達可能な配備先への実HTTP/Cron予約実行は未承認・未実施。SQLキュー内での検証と区別する。
-- 実ブラウザーでのネットワーク切断/復旧は未実施（接続されたBrowser capabilityはvisibility/viewportのみ）。通信失敗・再送・競合の単体/DBテストと区別する。
+- 今回の最終回帰では実ブラウザーでのネットワーク切断/復旧を未再実施（接続されたBrowser capabilityはvisibility/viewportのみ）。Task 9では自作サーバー停止/再起動による未保存・提出無効・復旧を実操作済み（上記Task 9参照）。応答喪失の正確な同一ID再送はHTTP/DB検証で、ブラウザーだけの検証とは区別する。
 - 本検証では画像のStorageへの再アップロード、実Googleログイン、別ブラウザーを再実施していない。アイコンは導線/表示の回帰に限定した。
 - 本番DB追加SQL、実秘密、デプロイ、Cron開始、pushは実施していない。バックアップ→追加SQL4件の照合→停止状態の設定/秘密→承認後push/デプロイ→実HTTP→prepare→開始/Cronの順に別確認が必要。
 
@@ -657,3 +657,58 @@ Windows標準tarが日本語画像名を展開できず、GitのGNU tarへUTF-8�
 | .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/verify-build.mjs | 新規UTF-8/BOMなし/LF。英文のみ、原本hash検証と再読 |
 | .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/task-17-brief.md | helper新規UTF-8/BOMなし/LF。全文再読、日本語正常 |
 | 可視化フォルダー/mock-task17-browser-qa.mjs | 新規UTF-8/BOMなし/LF。英文のみ、strict再読、fixture片付け確認 |
+
+## 最終ブランチレビューと修正（2026-10-21）
+
+同じ独立レビュアーが利用上限による中断から再開し、全ブランチの確認を完了。Critical 0件、Important 2件、Minor 0件で「修正後に統合可」。下記2件は実コードと失敗する回帰テストで独立に再現してから修正した。再レビューを追加していない。
+
+1. 締切後の結果画面に固定された全選択肢の本文を表示。「正解」と「あなたの回答」は文字と色で区別し、画像の選択肢は既存部品で表示する。締切前は引き続きreview=nullで、本文・正解・解説を渡さない。
+2. 準備ジョブは実行時のJST時刻でも対象月を判定する。過去のfailed/pending/lease切れは業務キーと完了日を残して完了し、未来月の準備はまだ消費しない。準備サービス自身もロック後の時刻で締切を過ぎた新規作成をrollbackする。既存の固定試験は変更・削除しない。
+
+| 検証 | 結果 |
+| --- | --- |
+| 復習の回帰 | 修正前3成功/1失敗（選択肢本文なし）→修正後4成功。解説未登録、本人の誤答、全4選択肢、締切前の非表示を確認 |
+| 準備/ジョブの実DB | 修正前は締切後の試験作成と未来ジョブ早期消費を再現→修正後18件成功。25日境界、翌月のfailed/pending/lease切れ、未来ジョブ保持、既存試験保持を確認 |
+| 全体suite | 421件中399成功・失敗0・opt-in 22件skip |
+| 全mock関連の実DB | 181件成功・失敗0・skip 0。専用DBだけで直列実行し、Cron登録・HTTP送信なし |
+| 型/lint | 両方exit0。既存outputのunused警告1件のみ。Prisma側の既知pg非推奨警告は依存変更せず記録 |
+| ビルド | 修正を反映した分離コピーでnpm run build成功。Prisma生成・Next16.2.9/Turbopack・型チェック・22ページ生成までexit0。原本20ファイルのhash不変 |
+
+### 実画面の確認
+
+対象経路は`127.0.0.1:3001/mock-exam/attempts/<自作ID>/result`→公開後の選択肢確認→「模擬試験一覧へ」。専用テストDBに自作した2026年9月FE受験のみを使用し、アが正解・本人はイを選択・解説未登録とした。
+
+| チェック | 結果 |
+| --- | --- |
+| ページ/空白/overlay | アプリ名・結果URL一致。本文あり、フレームワークのエラー画面なし |
+| PC1280 | 60問すべてに選択肢リスト。最初の問題の全4本文、正解ア、本人イ、解説未登録を表示 |
+| mobile375x900 | innerWidth375/scrollWidth360を実測。長い本文が折り返され、全4本文と回答/解説欄に横はみ出しなし |
+| 操作 | 一覧へ戻るリンクを操作し、当月一覧と過去月リンクへの遷移を確認 |
+| console | 最終mobileはerror/warnなし。PC初期ログには既知のサーバーpg非推奨警告だけが転送された。新規アプリ例外なし |
+| 証跡/片付け | 可視化フォルダーmock-final-review-desktop.png/mobile.png。検証ユーザー1件・試験1件・問題60件等の自作データだけを片付け、終了メッセージ確認。検証サーバー/タブ停止・viewport解除 |
+
+CUAを使用。専用envファイルの停止設定を変更せず、検証プロセスだけで模試を有効化した。自動ジョブは停止のまま。画面操作はreload→DOM/URL確認→viewport実測→スクロール/リンク→画面保存で確認した。実Googleログイン・Storage再アップロード・今回のoffline再実行・本番配備・外部Cron HTTPはこの確認に含まない。
+
+ビルドはd6cefa8のarchiveに上記7ファイルの作業差分をコピーし、ビルド前後の一致を確認。最初の可視化フォルダー直下での実行はWindowsのパス長制限で失敗したため、自作コピーだけを短いoutput/mock-final-buildへ移して成功後、可視化フォルダーmock-exam-verification/build-final-1792542026217へ戻した。依存追加・本体ビルド設定変更・原本のPrisma再生成は行っていない。
+
+### 配備前の必須条件
+
+追加DB migration 4件の適用がコード配置より先。新通知カラムは共通通知処理でも参照するため、模試の停止フラグだけでは未移行DBとの互換性を保証しない。コード先行配置は不可。バックアップ、SQL照合、秘密登録、配備、実HTTP、Cron有効化は別承認が必要。既存の無関係な20ファイルは本レビュー・コミット対象外のまま保持した。
+
+### 文字形式の再確認
+
+以下の既存7ファイルとledgerはUTF-8/BOMなし/CRLFを保持。strict UTF-8再読・U+FFFD不在・BOM/改行の照合・該当差分を確認し、記載した代表日本語が正常であることを確認した。
+
+| パス | 代表日本語/確認 |
+| --- | --- |
+| src/app/mock-exam/attempts/[attemptId]/result/mock-result.tsx | 「あなたの回答」「正解」、実DOMと差分で正常 |
+| src/lib/mock-exams/jobs.ts | 「古い準備は履歴を残して完了」、strict再読・差分正常 |
+| src/lib/mock-exams/prepare.ts | 「公開期間を過ぎた模擬試験は新規作成できません」、strict再読・実DB拒否正常 |
+| tests/mock-student-render.test.mjs | 「選択肢ア」「解説は未登録です」、実render assertion正常 |
+| tests/mock-jobs.integration.test.mjs | 既存の日本語コメントを含めstrict再読・差分正常 |
+| tests/mock-prepare.integration.test.mjs | 「元データを変更した検証」、strict再読・実DBテスト正常 |
+| docs/operations/monthly-mock-exam-verification.md | 本節の日本語、strict再読・差分正常 |
+| .superpowers/sdd/2026-10-16-monthly-mock-exam-ranking-implementation/progress.md | helperの末尾LFを機械的にCRLFへ戻し、strict再読・日本語正常 |
+| 可視化フォルダー/mock-final-review-qa.mjs | 新規UTF-8/BOMなし/LF。「共通鍵暗号方式」、strict再読と実表示正常 |
+| 可視化フォルダー/mock-final-server.mjs | 新規UTF-8/BOMなし/LF、英文のみ。再読・専用環境guard確認 |
+| 可視化フォルダー/mock-final-build.mjs | 新規UTF-8/BOMなし/LF、英文のみ。再読・保護hashとコピー元照合 |
