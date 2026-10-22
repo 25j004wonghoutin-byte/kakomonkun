@@ -148,7 +148,9 @@ export type RankingStudentView = {
 export type RankingView = {
   examCode: ExamCode;
   month: MonthKey;
+  currentMonth: MonthKey;
   availableMonths: MonthKey[];
+  participantCount: number;
   state: "provisional" | "settling" | "final";
   top: RankingStudentView[];
   mine: RankingStudentView | null;

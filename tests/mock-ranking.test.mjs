@@ -38,3 +38,34 @@ test("a late previous-month response cannot replace a newer month or an unmounte
   assert.deepEqual(published,[{month:"2040-02"}]);
   const last=loader.refresh("last");loader.dispose();waits.get("last")({month:"2040-03"});await last;assert.equal(published.length,1);
 });
+
+test("ranking DTO counts submitted people once, includes lower ranks and uses the DB clock's Tokyo month",async()=>{
+  const {getMockRanking}=await load("ranking");
+  const ref="grzylombpqmidltnbwhx",connection=`postgresql://postgres:fixture@db.${ref}.supabase.co:5432/postgres`;
+  const env={KAKOMON_MOCK_ENABLED:"true",KAKOMON_MOCK_PROJECT_REF:ref,NEXT_PUBLIC_SUPABASE_URL:`https://${ref}.supabase.co`,DATABASE_URL:connection,DIRECT_URL:connection};
+  const before=new Map(Object.keys(env).map(key=>[key,process.env[key]]));
+  Object.assign(process.env,env);
+  try{
+    const actor={id:"e",roleName:"student",status:"active",deletedAt:null};
+    const attempts=[...[50,40,30,20,10].map((correctCount,i)=>({id:`attempt-${i}`,userId:"abcde"[i],attemptNo:1,correctCount,totalQuestions:60})),{id:"second",userId:"a",attemptNo:2,correctCount:50,totalQuestions:60}];
+    let finalized=false;
+    const tx={
+      user:{findUnique:async()=>({status:"active",deletedAt:null,role:{name:"student"}}),findMany:async()=>[..."abcde"].map(id=>({id,displayName:`学生${id}`,status:"active",deletedAt:null,role:{name:"student"},studentProfile:{avatarUrl:null,currentTitle:null}}))},
+      mockExam:{findFirst:async()=>({id:"exam",rankingFinalizedAt:finalized?new Date("2040-02-25T00:00:00Z"):null}),findUniqueOrThrow:async()=>({id:"exam",rankingFinalizedAt:finalized?new Date("2040-02-25T00:00:00Z"):null,rewardsCompletedAt:null}),findMany:async()=>[{targetMonth:new Date("2040-02-01T00:00:00Z")}]},
+      mockAttempt:{findMany:async args=>args.where.status==="in_progress"?[]:attempts,count:async()=>0},
+      monthlyRanking:{findMany:async()=>attempts.filter(r=>r.attemptNo===1).map((r,i)=>({userId:r.userId,bestAttemptId:r.id,rankNo:i+1,mockScore:r.correctCount/60*100,correctCount:r.correctCount,totalQuestions:60,bestAttempt:{attemptNo:1}}))},
+    };
+    const db={$transaction:async callback=>callback(tx)};
+    const clock=async()=>new Date("2040-02-29T15:00:00Z");
+    const live=await getMockRanking(db,actor,"fe","2040-02",clock);
+    assert.equal(live.participantCount,5,"six submissions by five people must count as five participants");
+    assert.equal(live.currentMonth,"2040-03","DB time at midnight JST, not the browser's local month");
+    assert.equal(live.mine.rankNo,5);
+    finalized=true;
+    const final=await getMockRanking(db,actor,"fe","2040-02",clock);
+    assert.equal(final.participantCount,5,"final denominator is based on the saved final ranking");
+    assert.equal(final.state,"final");
+  }finally{
+    for(const [key,value]of before){if(value===undefined)delete process.env[key];else process.env[key]=value;}
+  }
+});

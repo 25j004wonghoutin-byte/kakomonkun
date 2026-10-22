@@ -82,7 +82,7 @@ export async function getMockRanking(db:PrismaClient,actor:MockActor,examCode:Ex
         profileHref:active?`/board/users/${row.userId}`:null};
     };
     const mine=ranked.find(row=>row.userId===actor.id);
-    return {examCode,month,availableMonths,state:exam?.rankingFinalizedAt?"final":settling?"settling":"provisional",
+    return {examCode,month,currentMonth:currentMonth.toISOString().slice(0,7),availableMonths,participantCount:ranked.length,state:exam?.rankingFinalizedAt?"final":settling?"settling":"provisional",
       top:ranked.filter(row=>row.rankNo<=3).map(view),mine:mine?view(mine):null,rewardsComplete:exam?.rewardsCompletedAt!==null&&exam?.rewardsCompletedAt!==undefined};
   },{isolationLevel:"RepeatableRead",maxWait:10000,timeout:30000});
 }
