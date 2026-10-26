@@ -3,6 +3,7 @@ import { getPracticeCompletionPoints } from "../practice-config";
 import { getTokyoDate } from "../tokyo-date";
 import { lockTitleOwner } from "./unlocks";
 import { recordTitleActivity } from "./activity";
+import { recordWrongPracticeAnswer } from "../review-notebook/write";
 
 export class LearningEventError extends Error {
   constructor(public readonly status: 400 | 403 | 404 | 409, message: string) {
@@ -52,6 +53,7 @@ export async function savePracticeAnswer(
   await tx.practiceAnswer.create({ data: { ...key, selectedChoiceId: choice.id, isCorrect: choice.isCorrect, orderNo: sessionQuestion.orderNo, answeredAt: now } });
   await tx.practiceSession.update({ where: { id: sessionId }, data: { answeredCount: { increment: 1 }, correctCount: choice.isCorrect ? { increment: 1 } : undefined } });
   if (user.isStudent) await recordTitleAnswer(tx, user.id, now);
+  if (user.isStudent && !choice.isCorrect) await recordWrongPracticeAnswer(tx, { userId: user.id, questionId: value.questionId, answeredAt: now });
   return { selectedChoiceId: choice.id, isCorrect: choice.isCorrect, explanation: question.explanation, correctChoice: { id: correct.id, choiceLabel: correct.choiceLabel, choiceText: correct.choiceText } };
 }
 

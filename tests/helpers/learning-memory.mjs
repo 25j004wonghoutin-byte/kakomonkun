@@ -9,7 +9,7 @@ export function makeLearningMemory(overrides = {}) {
       { id: "correct", choiceLabel: "ア", choiceText: "正解", isCorrect: true },
       { id: "wrong", choiceLabel: "イ", choiceText: "不正解", isCorrect: false },
     ] }],
-    sessionQuestions: [], points: [], ...overrides,
+    sessionQuestions: [], points: [], reviewItems: [], reviewAnswers: [], ...overrides,
   });
   const mutate = (row, data) => {
     for (const [key, value] of Object.entries(data)) {
@@ -22,8 +22,38 @@ export function makeLearningMemory(overrides = {}) {
     const tx = makeTitleMemory(state).tx;
     const question = (id) => state.questions.find((row) => row.id === id);
     const enrich = (row) => ({ ...row, question: question(row.questionId) });
+    const matchesReview = (row, where) => {
+      if (where.id !== undefined && row.id !== where.id || where.userId !== undefined && row.userId !== where.userId) return false;
+      if (typeof where.status === "string" && row.status !== where.status || where.status?.in && !where.status.in.includes(row.status)) return false;
+      if (where.question) {
+        const q = question(row.questionId), filter = where.question;
+        if (!q || filter.status && q.status !== filter.status || "deletedAt" in filter && q.deletedAt !== filter.deletedAt || filter.exam && q.exam.code !== filter.exam.code || filter.category && q.category.code !== filter.category.code) return false;
+        if (filter.practiceAnswers?.some) { const a = filter.practiceAnswers.some; if (!state.practiceAnswers.some(answer => answer.questionId === q.id && answer.sessionId === a.sessionId && answer.isCorrect === a.isCorrect && state.sessions.some(session => session.id === a.sessionId && session.userId === a.session.userId))) return false; }
+      }
+      return true;
+    };
     tx.user.update = async ({ data }) => mutate(state.user, data);
     tx.question = { findUnique: async ({ where }) => question(where.id) ?? null };
+    tx.reviewNotebookItem = {
+      findUnique: async ({ where, include }) => { const row = state.reviewItems.find(row => matchesReview(row, where)); return row ? include ? enrich(row) : row : null; },
+      count: async ({ where }) => state.reviewItems.filter(row => matchesReview(row, where)).length,
+      findMany: async ({ where, skip = 0, take }) => state.reviewItems.filter(row => matchesReview(row, where)).sort((a, b) => +b.lastWrongAt - +a.lastWrongAt || a.id.localeCompare(b.id)).slice(skip, take === undefined ? undefined : skip + take).map(enrich),
+      upsert: async ({ where, create, update }) => {
+        if (state.failReviewItem) throw Error("review item save failed");
+        const row = state.reviewItems.find(row => row.userId === where.userId_questionId.userId && row.questionId === where.userId_questionId.questionId);
+        if (row) return mutate(row, update);
+        const added = { id: "11111111-1111-4111-8111-111111111111", lastReviewedAt: null, ...create }; state.reviewItems.push(added); return added;
+      },
+      update: async ({ where, data }) => mutate(state.reviewItems.find(row => row.id === where.id), data),
+    };
+    tx.reviewNotebookAnswer = {
+      findUnique: async ({ where }) => state.reviewAnswers.find(row => row.userId === where.userId_requestId.userId && row.requestId === where.userId_requestId.requestId) ?? null,
+      create: async ({ data }) => {
+        if (state.failReviewReceipt) throw Error("review receipt save failed");
+        if (state.reviewAnswers.some(row => row.userId === data.userId && row.requestId === data.requestId || row.itemId === data.itemId && row.expectedRevision === data.expectedRevision)) throw Object.assign(Error("duplicate receipt"), { code: "P2002" });
+        state.reviewAnswers.push(data); return data;
+      },
+    };
     tx.studentProfile.update = async ({ data }) => mutate(state.profile, data);
     tx.studentProfile.upsert = async ({ create, update }) => state.profile ? mutate(state.profile, update) : (state.profile = create);
     tx.studentProfile.findUniqueOrThrow = async () => { if (!state.profile) throw Error("profile not found"); return state.profile; };
@@ -46,7 +76,7 @@ export function makeLearningMemory(overrides = {}) {
       findMany: async ({ where }) => state.random.filter((row) => row.userId === where.userId && row.answeredAt !== null).sort((a, b) => a.answerSequence - b.answerSequence).map(enrich),
     };
     tx.practiceSession = {
-      findUnique: async ({ where }) => state.sessions.find((row) => row.id === where.id) ?? null,
+      findUnique: async ({ where }) => state.sessions.find((row) => row.id === where.id && (where.userId === undefined || row.userId === where.userId)) ?? null,
       findFirst: async ({ where }) => state.sessions.filter((row) => row.userId === where.userId && row.status === "completed").sort((a, b) => b.completedAt - a.completedAt)[0] ?? null,
       findMany: async ({ where }) => state.sessions.filter((row) => row.userId === where.userId && row.status === where.status).sort((a, b) => a.completedAt - b.completedAt),
       update: async ({ where, data }) => mutate(state.sessions.find((row) => row.id === where.id), data),
