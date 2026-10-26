@@ -2,6 +2,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { forbidden, notFound, unauthorized } from "@/lib/http";
 import { getQuestionPresentation } from "@/lib/official-question";
 import { prisma } from "@/lib/prisma";
+import { countPracticeReviewItems } from "@/lib/review-notebook/read";
 
 export async function GET(
   _request: Request,
@@ -56,6 +57,8 @@ export async function GET(
   if (session.userId !== user.id && user.role.name !== "teacher") return forbidden();
 
   const answers = new Map(session.answers.map((answer) => [answer.questionId, answer]));
+  const reviewNotebookCount = user.role.name === "student" && session.userId === user.id
+    ? await countPracticeReviewItems(prisma, user.id, sessionId) : null;
 
   return Response.json({
     id: session.id,
@@ -65,6 +68,7 @@ export async function GET(
     answeredCount: session.answeredCount,
     correctCount: session.correctCount,
     earnedPoints: session.earnedPoints,
+    reviewNotebookCount,
     questions: session.sessionQuestions.map(({ orderNo, question }) => ({
       id: question.id,
       orderNo,
@@ -80,7 +84,7 @@ export async function GET(
       })),
       answer: buildAnswer(question.choices, answers.get(question.id)),
     })),
-  });
+  }, { headers: { "Cache-Control": "private, no-store, max-age=0", Vary: "Cookie" } });
 }
 
 function buildAnswer(
