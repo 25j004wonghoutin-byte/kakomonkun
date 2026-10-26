@@ -43,6 +43,7 @@ model User {
   navigationProgress StudentNavigationProgress[]
   monthlyRankings   MonthlyRanking[]
   practiceSessions  PracticeSession[]
+  reviewNotebookItems ReviewNotebookItem[]
   pointTransactions PointTransaction[]
   aiUsageLogs       AiUsageLog[]
   boardPosts        BoardPost[]        @relation("BoardPostAuthor")
@@ -144,6 +145,7 @@ model Question {
   practiceAnswers          PracticeAnswer[]
   randomAttempts           RandomQuizAttempt[]
   aiExplanations           AiExplanation[]
+  reviewNotebookItems      ReviewNotebookItem[]
   aiUsageLogs              AiUsageLog[]
 
   @@index([examId], map: "idx_questions_exam_id")
@@ -167,6 +169,7 @@ model QuestionChoice {
   dailyQaAnswers  DailyQaAnswer[]
   practiceAnswers PracticeAnswer[]
   randomAttempts  RandomQuizAttempt[]
+  reviewNotebookAnswers ReviewNotebookAnswer[]
 
   @@unique([questionId, choiceLabel], map: "question_choices_question_id_choice_label_key")
   @@unique([questionId, sortOrder], map: "question_choices_question_id_sort_order_key")
@@ -685,4 +688,47 @@ model Notification {
   @@index([titleId], map: "idx_notifications_title_id")
   @@index([recipientId, createdAt(sort: Desc), id(sort: Desc)], map: "idx_notifications_recipient_created")
   @@map("notifications")
+}
+
+model ReviewNotebookItem {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  questionId     String   @map("question_id") @db.Uuid
+  status         String   @default("unreviewed") @db.VarChar(30)
+  firstWrongAt   DateTime @map("first_wrong_at") @db.Timestamptz(3)
+  lastWrongAt    DateTime @map("last_wrong_at") @db.Timestamptz(3)
+  lastReviewedAt DateTime? @map("last_reviewed_at") @db.Timestamptz(3)
+  revision       Int      @default(0)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question       Question @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  answers        ReviewNotebookAnswer[]
+
+  @@unique([userId, questionId], map: "review_items_user_question_key")
+  @@unique([id, userId], map: "review_items_id_user_key")
+  @@index([userId, status, lastWrongAt(sort: Desc), id], map: "idx_review_items_user_status_wrong")
+  @@index([userId, lastWrongAt(sort: Desc), id], map: "idx_review_items_user_wrong")
+  @@index([questionId], map: "idx_review_items_question")
+  @@map("review_notebook_items")
+}
+
+model ReviewNotebookAnswer {
+  userId           String   @map("user_id") @db.Uuid
+  requestId        String   @map("request_id") @db.Uuid
+  itemId           String   @map("item_id") @db.Uuid
+  expectedRevision Int      @map("expected_revision")
+  questionVersion  String   @map("question_version") @db.VarChar(64)
+  selectedChoiceId String   @map("selected_choice_id") @db.Uuid
+  isCorrect        Boolean  @map("is_correct")
+  answeredAt       DateTime @map("answered_at") @db.Timestamptz(3)
+  result           Json     @db.JsonB
+  item             ReviewNotebookItem @relation(fields: [itemId, userId], references: [id, userId], onDelete: Cascade)
+  selectedChoice   QuestionChoice @relation(fields: [selectedChoiceId], references: [id], onDelete: Restrict)
+
+  @@id([userId, requestId])
+  @@unique([itemId, expectedRevision], map: "review_answers_item_revision_key")
+  @@index([itemId, userId], map: "idx_review_answers_item_user")
+  @@index([selectedChoiceId], map: "idx_review_answers_choice")
+  @@map("review_notebook_answers")
 }
