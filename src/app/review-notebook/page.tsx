@@ -7,5 +7,5 @@ export default async function ReviewNotebookPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
   if (user.role.name !== "student") redirect("/teacher");
-  return <StudentShell userName={user.displayName} avatarUrl={user.studentProfile?.avatarUrl ?? null}><Suspense fallback={<p role="status">復習ノートを読み込み中…</p>}><ReviewNotebookClient /></Suspense></StudentShell>;
+  return <StudentShell userName={user.displayName} avatarUrl={user.studentProfile?.avatarUrl ?? null}><Suspense fallback={<p role="status">復習ノートを読み込み中…</p>}><ReviewNotebookClient key={user.id} ownerId={user.id} /></Suspense></StudentShell>;
 }

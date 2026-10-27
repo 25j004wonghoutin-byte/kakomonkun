@@ -4,6 +4,9 @@ export type ReviewAnswerState = {
   requiresReload: boolean; requiresLogin: boolean; unavailable: boolean;
 };
 export const initialReviewAnswerState = (): ReviewAnswerState => ({ pending: null, result: null, saving: false, error: "", requiresReload: false, requiresLogin: false, unavailable: false });
+export function mergeCurrentReviewStatus(answered: ReviewDetail, current: ReviewDetail): ReviewDetail {
+  return { ...answered, status: current.status, revision: current.revision, lastWrongAt: current.lastWrongAt, lastReviewedAt: current.lastReviewedAt };
+}
 export function createReviewAnswerController(deps: {
   detail: ReviewDetail;
   send(itemId: string, input: ReviewAnswerInput): Promise<ReviewAnswerResult>;

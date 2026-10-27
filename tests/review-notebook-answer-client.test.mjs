@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createReviewAnswerController } from "../src/lib/review-notebook/answer-controller.ts";
+import * as answerClient from "../src/lib/review-notebook/answer-controller.ts";
 const detail = { id: "item", revision: 1, questionVersion: "a".repeat(64), question: { choices: [{ id: "choice" }, { id: "other" }] } };
 const result = { item: { id: "item", status: "reviewed", revision: 2, lastReviewedAt: "2026-10-26T00:00:00Z" }, answer: { isCorrect: true }, replayed: false };
 function setup(send) { const states = []; let id = 0; return { states, controller: createReviewAnswerController({ detail, send, newId: () => `request-${++id}`, onState: value => states.push(structuredClone(value)) }) }; }
@@ -25,4 +26,18 @@ test("401 or 404 clears private result and blocks retry", async () => {
 test("dispose ignores late result and concurrent submit is not sent twice", async () => {
   let resolve, calls = 0; const pending = new Promise(yes => { resolve = yes; }); const { controller, states } = setup(() => { calls++; return pending; });
   const first = controller.submit("choice"); await controller.submit("choice"); assert.equal(calls, 1); controller.dispose(); const count = states.length; resolve(result); await first; assert.equal(states.length, count);
+});
+test("receipt replay after question edit refreshes status without mixing new question and old answer", async () => {
+  const original = { ...detail, status: "unreviewed", lastWrongAt: "2026-10-26T00:00:00Z", lastReviewedAt: null, question: { text: "Original question", choices: [{ id: "choice" }, { id: "other" }] } };
+  const sent = []; let calls = 0;
+  const controller = createReviewAnswerController({ detail: original, newId: () => "same-request", onState() {}, send: async (_id, input) => { sent.push(input); if (++calls === 1) throw Error("response lost"); return { ...result, replayed: true }; } });
+  await controller.submit("choice"); await controller.retry();
+  assert.deepEqual(sent[0], sent[1]);
+  const current = { ...original, revision: 4, status: "unreviewed", lastWrongAt: "2026-10-27T00:00:00Z", lastReviewedAt: result.item.lastReviewedAt, questionVersion: "b".repeat(64), question: { text: "Edited question", choices: [{ id: "new-choice" }] } };
+  assert.equal(typeof answerClient.mergeCurrentReviewStatus, "function", "post-answer refresh must preserve the answered question snapshot");
+  const refreshed = answerClient.mergeCurrentReviewStatus(original, current);
+  assert.equal(refreshed.question, original.question);
+  assert.equal(refreshed.questionVersion, original.questionVersion);
+  assert.equal(refreshed.status, current.status); assert.equal(refreshed.revision, current.revision);
+  assert.equal(refreshed.lastWrongAt, current.lastWrongAt); assert.equal(refreshed.lastReviewedAt, current.lastReviewedAt);
 });
