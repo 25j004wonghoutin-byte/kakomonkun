@@ -24,7 +24,8 @@ export async function saveReviewAnswer(tx: Prisma.TransactionClient, actor: Revi
   await tx.$queryRaw`SELECT id FROM public.review_notebook_items WHERE id=${itemId}::uuid AND user_id=${actor.id}::uuid FOR UPDATE`;
   const item = await tx.reviewNotebookItem.findUnique({ where: { id: itemId, userId: actor.id } });
   if (!item) throw missing();
-  await tx.$queryRaw`SELECT id FROM public.questions WHERE id=${item.questionId}::uuid FOR SHARE`;
+  // Also block the FK key-share taken when inserting a new choice during grading.
+  await tx.$queryRaw`SELECT id FROM public.questions WHERE id=${item.questionId}::uuid FOR UPDATE`;
   await tx.$queryRaw`SELECT id FROM public.question_choices WHERE question_id=${item.questionId}::uuid ORDER BY id FOR SHARE`;
   const question = await tx.question.findUnique({ where: { id: item.questionId }, include: { choices: { orderBy: { sortOrder: "asc" } } } });
   if (!question || question.status !== "published" || question.deletedAt !== null) throw missing();
