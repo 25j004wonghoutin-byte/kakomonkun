@@ -45,7 +45,6 @@ export default async function ProfileLearningPage({
             <span aria-hidden="true">›</span>
             <span>学習状況詳細</span>
           </div>
-          <p className="mb-1 text-xs font-black text-blue-600">LEARNING ANALYTICS</p>
           <h1 className="text-3xl font-black text-slate-950">学習状況詳細</h1>
         </div>
 
@@ -109,11 +108,11 @@ function SummaryStrip({ data }: { data: ProfileLearningData }) {
             index < 3 ? "lg:border-r" : "lg:border-r-0"
           }`}
         >
-          <span className="block text-[11px] font-bold text-slate-500">{cell.label}</span>
+          <span className="block text-xs font-bold text-slate-500">{cell.label}</span>
           <strong className="mt-1 block text-xl font-black text-slate-950 sm:text-2xl">
             {cell.value}
           </strong>
-          <span className="mt-1 block text-[10px] font-bold text-slate-500">{cell.note}</span>
+          <span className="mt-1 block text-xs font-bold text-slate-500">{cell.note}</span>
         </article>
       ))}
     </section>
@@ -174,7 +173,7 @@ function AccuracyTrendChart({ points }: { points: ProfileLearningData["trend"] }
 
   return (
     <div className="min-w-0">
-      <div className="mb-3 flex items-center justify-between gap-3 text-[10px] font-bold text-slate-500">
+      <div className="mb-3 flex items-center justify-between gap-3 text-xs font-bold text-slate-500">
         <span>{points[0]?.label.includes("週") ? "週ごとの正答率" : "月ごとの正答率"}</span>
         <span>目標 70%</span>
       </div>
@@ -200,12 +199,12 @@ function AccuracyTrendChart({ points }: { points: ProfileLearningData["trend"] }
           x2={width - right}
           y1={top + plotHeight - plotHeight * 0.7}
           y2={top + plotHeight - plotHeight * 0.7}
-          stroke="#16a34a"
+          stroke="var(--positive)"
           strokeDasharray="5 5"
           strokeWidth="1.5"
         />
         {plottedPoints.length > 1 ? (
-          <path d={path} fill="none" stroke="#2563eb" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" />
+          <path d={path} fill="none" stroke="var(--accent)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" />
         ) : null}
         {pointCoordinates.map((point) => (
           <text key={point.key} x={point.x} y={height - 14} textAnchor="middle" fill="#475569" fontSize="11" fontWeight="700">
@@ -213,7 +212,7 @@ function AccuracyTrendChart({ points }: { points: ProfileLearningData["trend"] }
           </text>
         ))}
         {plottedPoints.map((point) => (
-          <circle key={point.key} cx={point.x} cy={point.y} r="5" fill="#fff" stroke="#2563eb" strokeWidth="3" />
+          <circle key={point.key} cx={point.x} cy={point.y} r="5" fill="#fff" stroke="var(--accent)" strokeWidth="3" />
         ))}
       </svg>
     </div>
@@ -236,7 +235,7 @@ function BreakdownPanel({ data }: { data: ProfileLearningData }) {
                 </strong>
                 <span className="text-lg font-black text-slate-950">{exam.accuracy}%</span>
               </div>
-              <div className="mt-1 flex justify-between gap-3 text-[10px] font-bold text-slate-500">
+              <div className="mt-1 flex justify-between gap-3 text-xs font-bold text-slate-500">
                 <span>{exam.correctCount.toLocaleString()} / {exam.answerCount.toLocaleString()}問</span>
                 <span>{exam.practiceCount.toLocaleString()}回練習</span>
               </div>
@@ -288,7 +287,7 @@ function HistoryPanel({ data }: { data: ProfileLearningData }) {
       {data.history.length > 0 ? (
         <>
           <table className="hidden w-full table-fixed border-collapse md:table">
-            <thead className="bg-slate-50 text-left text-[10px] font-black text-slate-500">
+            <thead className="bg-slate-50 text-left text-xs font-black text-slate-500">
               <tr>
                 <th className="w-[18%] px-5 py-3">日時</th>
                 <th className="w-[24%] px-5 py-3">試験</th>
@@ -322,7 +321,7 @@ function HistoryPanel({ data }: { data: ProfileLearningData }) {
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <strong className="block break-words text-sm font-black text-slate-900">{shortExamName(session.examName)}</strong>
-                    <span className="mt-1 block text-[10px] font-bold text-slate-500">{dateFormatter.format(new Date(session.completedAt))} ・ {session.categoryName}</span>
+                    <span className="mt-1 block text-xs font-bold text-slate-500">{dateFormatter.format(new Date(session.completedAt))} ・ {session.categoryName}</span>
                   </div>
                   <strong className="shrink-0 text-sm font-black text-slate-950">{session.correctCount} / {session.answeredCount}</strong>
                 </div>

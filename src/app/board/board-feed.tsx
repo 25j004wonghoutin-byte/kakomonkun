@@ -255,15 +255,11 @@ export function BoardFeed({
 
   return (
     <div className="mx-auto w-full max-w-[960px]">
-      <PageHeading
-        eyebrow="COMMUNITY"
-        title="掲示板"
-        description="わからないを、みんなで解決。学習の気づきや頑張りを共有しよう。"
-      />
+      <PageHeading title="掲示板" />
 
       <section
         aria-label="投稿タイムライン"
-        className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
+        className="overflow-hidden rounded-xl border border-slate-200 bg-white "
       >
         <div
           role="tablist"
@@ -289,7 +285,7 @@ export function BoardFeed({
           ))}
         </div>
 
-        <div className="flex gap-3 border-b-8 border-[#f5f7fb] px-4 py-5 sm:gap-4 sm:px-6">
+        <div className="flex gap-3 border-b-8 border-[#ffffff] px-4 py-5 sm:gap-4 sm:px-6">
           <ViewerAvatar name={viewer.displayName} avatarUrl={viewer.avatarUrl ?? null} isTeacher={viewer.roleName === "teacher"} />
           <div className="min-w-0 flex-1">
             <label htmlFor="board-post-draft" className="sr-only">

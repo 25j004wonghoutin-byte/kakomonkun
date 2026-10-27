@@ -47,10 +47,7 @@ export function StudentLearningDetail({ data }: { data: TeacherStudentDetail }) 
             {data.student.displayName.slice(0, 1)}
           </span>
           <div className="min-w-0">
-            <p className="text-xs font-black tracking-[0.16em] text-blue-600">
-              STUDENT LEARNING DETAIL
-            </p>
-            <h1 className="mt-1 break-words text-2xl font-black text-[#071d36] sm:text-3xl">
+            <h1 className="break-words text-2xl font-black text-[#242823] sm:text-3xl">
               {data.student.displayName}
             </h1>
             <p className="mt-2 text-xs font-bold text-slate-500">
@@ -154,7 +151,7 @@ function SummaryCard({
   return (
     <article className="min-h-28 border-b border-r border-slate-200 px-5 py-5 last:border-r-0 even:border-r-0 lg:border-b-0 lg:even:border-r lg:last:border-r-0">
       <span className="block text-xs font-bold text-slate-500">{label}</span>
-      <strong className="mt-2 block text-2xl font-black text-[#071d36]">
+      <strong className="mt-2 block text-2xl font-black text-[#242823]">
         {value.toLocaleString()}
         <span className="ml-1 text-xs font-black text-blue-600">{unit}</span>
       </strong>
@@ -192,7 +189,7 @@ function PracticeHistory({ items }: { items: PracticeHistoryItem[] }) {
   return (
     <>
       <table className="hidden w-full table-fixed border-collapse md:table">
-        <thead className="bg-slate-50 text-left text-[11px] font-black text-slate-500">
+        <thead className="bg-slate-50 text-left text-xs font-black text-slate-500">
           <tr>
             <th className="w-[22%] px-5 py-3 sm:px-6">完了日時</th>
             <th className="w-[24%] px-5 py-3">試験</th>
@@ -256,7 +253,7 @@ function DailyHistory({ items }: { items: DailyHistoryItem[] }) {
   return (
     <>
       <table className="hidden w-full table-fixed border-collapse lg:table">
-        <thead className="bg-slate-50 text-left text-[11px] font-black text-slate-500">
+        <thead className="bg-slate-50 text-left text-xs font-black text-slate-500">
           <tr>
             <th className="w-[16%] px-5 py-3 sm:px-6">回答日</th>
             <th className="w-[44%] px-5 py-3">問題</th>
@@ -271,7 +268,7 @@ function DailyHistory({ items }: { items: DailyHistoryItem[] }) {
                 {dateFormatter.format(new Date(item.answerDate))}
               </td>
               <td className="px-5 py-4">
-                <span className="block text-[10px] font-black text-blue-700">
+                <span className="block text-xs font-black text-blue-700">
                   {formatQuestionSource(item)}
                 </span>
                 <span className="mt-1.5 block break-words leading-6 text-slate-950">
@@ -295,7 +292,7 @@ function DailyHistory({ items }: { items: DailyHistoryItem[] }) {
           <li key={item.id} className="p-5">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <span className="block text-[10px] font-black text-blue-700">
+                <span className="block text-xs font-black text-blue-700">
                   {formatQuestionSource(item)}
                 </span>
                 <span className="mt-1 block text-xs font-bold text-slate-500">
@@ -321,7 +318,7 @@ function DailyHistory({ items }: { items: DailyHistoryItem[] }) {
 function ResultBadge({ correct }: { correct: boolean }) {
   return (
     <span
-      className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-black ${
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-black ${
         correct
           ? "bg-emerald-50 text-emerald-700"
           : "bg-rose-50 text-rose-700"

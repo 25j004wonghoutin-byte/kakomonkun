@@ -28,7 +28,7 @@ export function StudentList({
   return (
     <>
       <table className="hidden w-full table-fixed border-collapse md:table">
-        <thead className="bg-slate-50 text-left text-[11px] font-black text-slate-500">
+        <thead className="bg-slate-50 text-left text-xs font-black text-slate-500">
           <tr>
             <th className={`${compact ? "w-[34%]" : "w-[30%]"} px-5 py-3 sm:px-6`}>学生</th>
             <th className={`${compact ? "w-[32%]" : "w-[27%]"} px-5 py-3`}>最終学習</th>

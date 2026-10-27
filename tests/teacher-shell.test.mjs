@@ -31,6 +31,11 @@ test("teacher mock navigation renders a real route without student account featu
     createElement(RoleShell, { roleName: "teacher", userName: "保存名", children: "内容" }) }));
   assert.match(html, /href="\/teacher\/mock-exams"/);
   assert.match(html, /管理者/);
+  const identity = html.match(/<span class="([^"]+)"[^>]*>管理者<\/span>/);
+  assert.ok(identity, "administrator name is a visible text element");
+  assert.doesNotMatch(identity[1], /\bhidden\b/);
+  assert.match(identity[1], /\bfont-(?:semibold|bold|black)\b/);
+  assert.match(identity[1], /\btext-(?:blue|violet)-(?:700|800)\b/);
   assert.doesNotMatch(html, /href="\/(?:profile|titles|ranking)"/);
 });
 

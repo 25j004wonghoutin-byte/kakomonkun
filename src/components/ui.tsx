@@ -1,20 +1,17 @@
 import type { ReactNode } from "react";
 
 export function PageHeading({
-  eyebrow,
   title,
   description,
 }: {
-  eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
 }) {
   return (
-    <div className="mb-7">
-      <p className="mb-2 text-sm font-black tracking-[0.14em] text-blue-600">{eyebrow}</p>
-      <h1 className="text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">{title}</h1>
-      <p className="mt-3 max-w-2xl leading-7 text-slate-600">{description}</p>
-    </div>
+    <header className="app-page-heading">
+      <h1>{title}</h1>
+      {description ? <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">{description}</p> : null}
+    </header>
   );
 }
 
@@ -34,7 +31,7 @@ export function StatusCard({
   };
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div className="rounded-2xl border border-slate-200 bg-white p-4 ">
       <p className="text-xs font-bold text-slate-500">{label}</p>
       <div className={`mt-2 inline-flex rounded-xl px-3 py-1.5 text-sm font-black ${accents[accent]}`}>
         {value}
@@ -45,7 +42,7 @@ export function StatusCard({
 
 export function LoadingCard({ message = "読み込み中です..." }: { message?: string }) {
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-sm">
+    <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center ">
       <div className="mx-auto size-8 animate-spin rounded-full border-4 border-blue-100 border-t-blue-600" />
       <p className="mt-4 font-bold text-slate-600">{message}</p>
     </div>

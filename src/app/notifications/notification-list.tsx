@@ -225,13 +225,13 @@ export function NotificationListView({
                         <span
                           className={`break-words text-sm leading-6 ${
                             teacherNotification
-                              ? "font-black text-violet-800"
+                              ? "font-black text-blue-800"
                               : "font-bold text-slate-950"
                           }`}
                         >
                           {notification.message}
                         </span>
-                        <time className="shrink-0 text-[11px] font-bold text-slate-400">
+                        <time className="shrink-0 text-xs font-bold text-slate-400">
                           {dateTimeFormatter.format(
                             new Date(notification.createdAt),
                           )}

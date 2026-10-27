@@ -31,13 +31,7 @@ export default async function TeacherStudentsPage({
     <TeacherShell>
       <div className="mx-auto w-full max-w-[1120px]">
         <div className="mb-5">
-          <p className="text-xs font-black tracking-[0.18em] text-blue-600">
-            LEARNING STATUS
-          </p>
-          <h1 className="mt-2 text-3xl font-black text-[#071d36]">学習状況</h1>
-          <p className="mt-3 text-sm font-medium leading-6 text-slate-500">
-            学生ごとの回答数、正解数、正答率を確認できます。
-          </p>
+          <h1 className="text-3xl font-black text-[#242823]">学習状況</h1>
         </div>
 
         <section className="overflow-hidden rounded-xl border border-slate-200 bg-white">

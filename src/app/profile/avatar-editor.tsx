@@ -47,7 +47,7 @@ function OpenAvatarEditor({ currentAvatarUrl, onSaved, onClose }: Props) {
   return (
     <dialog ref={dialogRef} aria-labelledby="avatar-editor-heading" aria-describedby="avatar-editor-description"
       onCancel={event => { event.preventDefault(); controller.close(); }}
-      className="fixed inset-0 m-auto max-h-[92dvh] w-[calc(100%-2rem)] max-w-[520px] overflow-hidden rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/50">
+      className="fixed inset-0 m-auto max-h-[92dvh] w-[calc(100%-2rem)] max-w-[520px] overflow-hidden rounded-2xl border border-slate-200 bg-white p-0 text-slate-900  backdrop:bg-slate-950/50">
       <div className="flex max-h-[92dvh] flex-col">
         <header className="flex shrink-0 items-center justify-between border-b border-slate-200 px-5 py-4">
           <h2 id="avatar-editor-heading" className="text-lg font-black">アイコンを変更</h2>

@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { HomeStudyTotals } from "@/components/home-study-totals";
+import type { MePayload } from "@/lib/me";
+import { createMeLoader, mergeMePoints, observeMeRefresh } from "@/lib/me-client";
 import { AiExplanationMarkdown } from "@/components/ai-explanation-markdown";
 import {
   QuizQuestionCard,
@@ -9,16 +12,6 @@ import {
   type QuizQuestion,
 } from "@/components/quiz-question-card";
 import { StudentShell } from "@/components/student-shell";
-
-type MeResponse = {
-  displayName: string;
-  profile: {
-    totalPoints: number;
-    totalPracticeCount: number;
-    totalCorrectCount: number;
-    totalAnswerCount: number;
-  } | null;
-};
 
 type DailyAnswer = QuizAnswerResult & {
   selectedChoiceId: string;
@@ -58,7 +51,10 @@ async function fetchDailyQuestion() {
 }
 
 export function StudentHome() {
-  const [me, setMe] = useState<MeResponse | null>(null);
+  const [me, setMe] = useState<MePayload | null>(null);
+  const [meLoading, setMeLoading] = useState(true);
+  const [meError, setMeError] = useState("");
+  const meLoader = useRef<ReturnType<typeof createMeLoader> | null>(null);
   const [question, setQuestion] = useState<QuizQuestion | null>(null);
   const [selectedChoiceId, setSelectedChoiceId] = useState<string | null>(null);
   const [answerResult, setAnswerResult] = useState<DailyAnswer | null>(null);
@@ -73,12 +69,19 @@ export function StudentHome() {
   useEffect(() => {
     let active = true;
 
-    fetch("/api/me")
-      .then((response) => (response.ok ? response.json() : Promise.reject()))
-      .then((data: MeResponse) => {
-        if (active) setMe(data);
-      })
-      .catch(() => undefined);
+    const loader = createMeLoader({
+      fetchMe: async (signal) => {
+        const response = await fetch("/api/me", { cache: "no-store", signal });
+        if (!response.ok) throw new Error("me request failed");
+        return response.json() as Promise<MePayload>;
+      },
+      onData: setMe,
+      onError: setMeError,
+      onLoading: setMeLoading,
+    });
+    meLoader.current = loader;
+    const removeRefreshListeners = observeMeRefresh(() => { void loader.load(); }, window, document);
+    void loader.load();
 
     fetchDailyQuestion()
       .then((data) => {
@@ -87,14 +90,7 @@ export function StudentHome() {
         setSelectedChoiceId(data.answer?.selectedChoiceId ?? null);
         setAnswerResult(data.answer);
         if (data.totalPoints !== null) {
-          setMe((current) =>
-            current?.profile
-              ? {
-                  ...current,
-                  profile: { ...current.profile, totalPoints: data.totalPoints! },
-                }
-              : current,
-          );
+          setMe((current) => mergeMePoints(current, data.totalPoints!));
         }
       })
       .catch((cause) => {
@@ -108,6 +104,9 @@ export function StudentHome() {
 
     return () => {
       active = false;
+      removeRefreshListeners();
+      loader.dispose();
+      meLoader.current = null;
     };
   }, []);
 
@@ -137,14 +136,7 @@ export function StudentHome() {
       setSelectedChoiceId(data.answer?.selectedChoiceId ?? selectedChoiceId);
       setAnswerResult(data.answer);
       if (data.totalPoints !== null) {
-        setMe((current) =>
-          current?.profile
-            ? {
-                ...current,
-                profile: { ...current.profile, totalPoints: data.totalPoints! },
-              }
-            : current,
-        );
+        setMe((current) => mergeMePoints(current, data.totalPoints!));
       }
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "回答を判定できませんでした。");
@@ -188,19 +180,14 @@ export function StudentHome() {
 
   const displayName = me?.displayName;
   const points = me?.profile?.totalPoints ?? 0;
-  const titleCount = 0;
 
   return (
     <StudentShell userName={displayName} points={points}>
-      <div className="mx-auto max-w-[980px] min-w-0">
-        <p className="mb-6 text-[15px] font-black text-slate-900">
-          {displayName ? `${displayName}さん` : "今日も"}、一問ずつ積み上げましょう。
-        </p>
-
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_230px]">
+      <div className="min-w-0">
+        <div className="study-grid">
           <QuizQuestionCard
             title="今日の一問一答"
-            description="毎日0時（日本時間）に更新され、回答は1日1回だけ記録されます。"
+            description="毎日0時更新（日本時間）・1日1回"
             question={question}
             selectedChoiceId={selectedChoiceId}
             answerResult={answerResult}
@@ -224,16 +211,11 @@ export function StudentHome() {
                 <div className="mt-4 rounded-md border border-sky-200 bg-sky-50 p-4">
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                      <p className="text-sm font-black text-sky-900">AI解説補助</p>
+                      <p className="text-sm font-black text-sky-900">AI解説</p>
                       <p className="mt-1 text-xs font-bold leading-5 text-sky-700">
-                        この解説はAIによる補助説明です。内容が不正確な場合があります。
+                        AIによる解説です。内容が不正確な場合があります。
                       </p>
                     </div>
-                    {aiExplanation ? (
-                      <span className="w-fit rounded-full bg-white px-3 py-1 text-xs font-black text-sky-700 ring-1 ring-sky-200">
-                        {aiExplanation.fromCache ? "保存済み" : "新規生成"} / {aiExplanation.modelName}
-                      </span>
-                    ) : null}
                   </div>
 
                   {aiExplanation ? (
@@ -263,7 +245,7 @@ export function StudentHome() {
                 </Link>
                 <Link
                   href="/practice"
-                  className="inline-flex h-12 min-w-64 items-center justify-center gap-6 rounded-md bg-blue-600 px-7 text-sm font-black text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                  className="inline-flex h-12 min-w-64 items-center justify-center gap-6 rounded-md bg-blue-600 px-7 text-sm font-black text-white   transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                 >
                   過去問練習へ
                   <span aria-hidden="true" className="text-xl leading-none">
@@ -274,12 +256,14 @@ export function StudentHome() {
             }
           />
 
-          <aside className="min-w-0 rounded-lg border border-slate-200 bg-white p-5 shadow-[0_14px_40px_-24px_rgba(15,23,42,0.55)]">
-            <h2 className="text-base font-black text-slate-950">所持情報</h2>
-            <div className="mt-4 space-y-2">
-              <StatusTile icon="point" label="所持ポイント" value={`${points.toLocaleString()} pt`} />
-              <StatusTile icon="title" label="所持称号" value={`${titleCount} 個`} />
-            </div>
+          <aside className="study-rail" aria-label="学習状況">
+            <HomeStudyTotals profile={me?.profile ?? null} loading={meLoading} error={meError} onRetry={() => { void meLoader.current?.load(); }} />
+            <section className="study-next" aria-labelledby="study-next-heading">
+              <h2 id="study-next-heading">学習を続ける</h2>
+              <Link href="/practice">過去問練習 <NextArrow /></Link>
+              <Link href="/random-quiz">ランダム出題 <NextArrow /></Link>
+              <Link href="/mock-exam">模擬試験 <NextArrow /></Link>
+            </section>
           </aside>
         </div>
       </div>
@@ -287,50 +271,6 @@ export function StudentHome() {
   );
 }
 
-function StatusTile({
-  icon,
-  label,
-  value,
-}: {
-  icon: "point" | "title";
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="flex items-center gap-4 rounded-lg border border-slate-200 bg-white p-4">
-      <span className="grid size-10 shrink-0 place-items-center rounded-full bg-amber-100">
-        {icon === "point" ? <PointIcon /> : <TitleIcon />}
-      </span>
-      <span className="min-w-0 flex-1">
-        <span className="block text-xs font-bold text-slate-500">{label}</span>
-        <span className="mt-1 block text-right text-lg font-black text-slate-950">{value}</span>
-      </span>
-    </div>
-  );
-}
-
-function PointIcon() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 32 32" className="size-8">
-      <circle cx="16" cy="16" r="13" fill="#f59e0b" />
-      <circle cx="16" cy="16" r="10" fill="#fbbf24" stroke="#fff7ed" strokeWidth="2" />
-      <path
-        d="M12 22V10h5.2c2.8 0 4.8 1.8 4.8 4.4s-2 4.4-4.8 4.4h-2V22h-3.2Zm3.2-6h1.6c1.2 0 2-.6 2-1.6s-.8-1.6-2-1.6h-1.6V16Z"
-        fill="#fff7ed"
-      />
-    </svg>
-  );
-}
-
-function TitleIcon() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 32 32" className="size-8">
-      <path
-        d="M16 3 19.2 8l5.8-.5-.5 5.8 5 3.2-5 3.2.5 5.8-5.8-.5L16 30l-3.2-5-5.8.5.5-5.8-5-3.2 5-3.2L7 7.5l5.8.5L16 3Z"
-        fill="#f59e0b"
-      />
-      <circle cx="16" cy="16" r="7" fill="#fef3c7" />
-      <path d="m16 11 1.4 3 3.2.4-2.3 2.2.5 3.2L16 18.3l-2.8 1.5.5-3.2-2.3-2.2 3.2-.4L16 11Z" fill="#f59e0b" />
-    </svg>
-  );
+function NextArrow() {
+  return <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>;
 }

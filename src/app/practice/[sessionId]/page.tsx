@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { QuestionImage } from "@/components/question-image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -252,24 +252,23 @@ export default function PracticeSessionPage() {
     <StudentShell>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm font-black tracking-[0.14em] text-blue-600">PRACTICE</p>
-          <h1 className="mt-1 text-2xl font-black text-slate-950 sm:text-3xl">
+          <h1 className="text-2xl font-black text-slate-950 sm:text-3xl">
             {session.exam.name} 過去問練習
           </h1>
         </div>
-        <div className="rounded-full bg-white px-4 py-2 text-sm font-black text-slate-700 shadow-sm ring-1 ring-slate-200">
+        <div className="rounded-full bg-white px-4 py-2 text-sm font-black text-slate-700  ring-1 ring-slate-200">
           {currentIndex + 1} / {session.questionCount} 問目
         </div>
       </div>
 
       <div className="mb-6 h-2 overflow-hidden rounded-full bg-slate-200">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 transition-all"
+          className="h-full rounded-full bg-blue-600 transition-[width,transform]"
           style={{ width: `${progress}%` }}
         />
       </div>
 
-      <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+      <section className="rounded-3xl border border-slate-200 bg-white p-6  sm:p-8">
         <p className="mb-3 text-xs font-black text-blue-600">{question.category.name}</p>
         {!officialScan ? (
           <p className="whitespace-pre-wrap text-lg font-bold leading-8 text-slate-950">
@@ -277,28 +276,9 @@ export default function PracticeSessionPage() {
           </p>
         ) : null}
 
-        {officialScan && question.imagePath ? (
-          <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 sm:p-4">
-            <Image
-              src={question.imagePath}
-              alt={question.source?.label ?? "IPA公開問題"}
-              width={1400}
-              height={1800}
-              loading="eager"
-              className="mx-auto h-auto w-full max-w-full object-contain"
-              sizes="(max-width: 768px) 100vw, 800px"
-            />
-          </div>
-        ) : question.imagePath ? (
-          <div className="relative mt-5 min-h-52 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
-            <Image
-              src={question.imagePath}
-              alt="問題の図"
-              fill
-              loading="eager"
-              className="object-contain p-4"
-              sizes="(max-width: 768px) 100vw, 800px"
-            />
+        {question.imagePath ? (
+          <div className="mt-5 bg-white">
+            <QuestionImage src={question.imagePath} alt={officialScan ? question.text : "問題の図"} />
           </div>
         ) : null}
 
@@ -335,7 +315,7 @@ export default function PracticeSessionPage() {
                 type="button"
                 disabled={Boolean(displayedResult)}
                 onClick={() => setSelectedChoice(choice.id)}
-                className={`flex items-center gap-4 border font-bold transition ${
+                className={`relative flex min-h-16 items-center gap-4 rounded-2xl border font-bold transition-colors ${
                   correct
                     ? "border-emerald-400 bg-emerald-50 text-emerald-900"
                     : wrong
@@ -343,9 +323,7 @@ export default function PracticeSessionPage() {
                       : chosen
                         ? "border-blue-500 bg-blue-50 text-blue-950 ring-2 ring-blue-100"
                         : "border-slate-200 hover:border-blue-300 hover:bg-blue-50/50"
-                } min-h-16 rounded-2xl px-4 sm:px-5 ${officialScan ? "justify-center text-center" : "text-left"} ${answerResult && correct ? "answer-choice-correct-motion" : ""} ${
-                  answerResult && delayedCorrectReveal ? "answer-choice-correct-delay" : ""
-                } ${answerResult && wrong ? "answer-choice-wrong-motion" : ""}`}
+                } ${officialScan ? "justify-center px-12 text-center sm:px-14" : "px-4 pr-16 text-left sm:pl-5"}`}
               >
                 {officialScan ? (
                   <span className="text-base font-black">{choice.choiceLabel}</span>
@@ -358,7 +336,7 @@ export default function PracticeSessionPage() {
                   </>
                 )}
                 {correct || wrong ? (
-                  <span className="ml-auto">
+                  <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 sm:right-5">
                     <AnswerStateMark
                       state={correct ? "correct" : "incorrect"}
                       animate={Boolean(answerResult)}
@@ -399,16 +377,11 @@ export default function PracticeSessionPage() {
           <div className="mt-4 rounded-2xl border border-sky-200 bg-sky-50 p-5">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <p className="font-black text-sky-900">AI解説補助</p>
+                <p className="font-black text-sky-900">AI解説</p>
                 <p className="mt-1 text-xs font-bold leading-5 text-sky-700">
-                  この解説はAIによる補助説明です。内容が不正確な場合があります。
+                  AIによる解説です。内容が不正確な場合があります。
                 </p>
               </div>
-              {aiExplanation ? (
-                <span className="w-fit rounded-full bg-white px-3 py-1 text-xs font-black text-sky-700 ring-1 ring-sky-200">
-                  {aiExplanation.fromCache ? "保存済み" : "新規生成"} / {aiExplanation.modelName}
-                </span>
-              ) : null}
             </div>
 
             {aiExplanation ? (

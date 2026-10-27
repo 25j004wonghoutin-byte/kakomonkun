@@ -69,34 +69,24 @@ export function RoleNavigationShell({
   }
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#f5f7fb] text-slate-900">
-      <div className="flex min-h-screen">
+    <div className="app-shell" data-sidebar-collapsed={!desktopSidebarVisible}>
+      <a href="#main-content" className="app-skip-link">本文へ移動</a>
+      <div className="app-frame">
         <aside
-          className={`fixed inset-y-0 left-0 z-30 w-[230px] shrink-0 bg-[#031f3d] text-white shadow-2xl transition-all duration-300 lg:static lg:translate-x-0 ${
-            mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } ${
-            desktopSidebarVisible
-              ? "lg:w-[230px]"
-              : "lg:w-0 lg:overflow-hidden lg:shadow-none"
-          }`}
+          className={`app-sidebar ${mobileSidebarOpen ? "app-sidebar--open" : ""} ${desktopSidebarVisible ? "" : "app-sidebar--collapsed"}`}
         >
-          <div className="flex h-full flex-col">
-            <Link href="/teacher" className="flex gap-3 px-6 pb-7 pt-8">
-              <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-white/10 text-2xl">
-                🏆
+          <div className="app-sidebar-inner">
+            <Link href="/teacher" className="app-brand">
+              <span className="app-brand-mark">
+                <svg aria-hidden="true" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M6 3h12v18H6zM9 8h6M9 12h6m-6 4 2 2 4-4" /></svg>
               </span>
               <span>
-                <span className="block text-lg font-black leading-5">目指せ合格!</span>
-                <span className="mt-0.5 block text-lg font-black leading-5">過去問くん</span>
-                <span className="mt-2 block text-[11px] font-semibold leading-5 text-blue-100">
-                  ITパスポート・基本情報技術者試験
-                  <br />
-                  対策学習アプリ
-                </span>
+                <span className="app-brand-slogan">目指せ合格!</span>
+                <span className="app-brand-name">過去問くん</span>
               </span>
             </Link>
 
-            <nav className="space-y-2 px-4">
+            <nav aria-label="メインナビゲーション" className="app-nav">
               {navigation.map((item) => {
                 const active =
                   item.href === "/teacher"
@@ -107,11 +97,9 @@ export function RoleNavigationShell({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex h-12 items-center gap-4 rounded-lg px-5 text-sm font-bold transition ${
-                      active
-                        ? "bg-blue-600 text-white shadow-lg shadow-blue-950/30"
-                        : "text-blue-50 hover:bg-white/10"
-                    }`}
+                    aria-current={active ? "page" : undefined}
+                    onClick={() => setMobileSidebarOpen(false)}
+                    className={`app-nav-link ${active ? "app-nav-link--active" : ""}`}
                   >
                     <RoleIcon name={item.icon} />
                     {item.label}
@@ -122,7 +110,7 @@ export function RoleNavigationShell({
               <form action="/auth/signout" method="post">
                 <button
                   type="submit"
-                  className="flex h-12 w-full items-center gap-4 rounded-lg px-5 text-left text-sm font-bold text-blue-50 transition hover:bg-white/10"
+                  className="app-nav-link"
                 >
                   <LogoutIcon />
                   ログアウト
@@ -136,30 +124,31 @@ export function RoleNavigationShell({
           <button
             type="button"
             aria-label="サイドバーを閉じる"
-            className="fixed inset-0 z-20 bg-slate-950/30 lg:hidden"
+            className="app-sidebar-backdrop"
             onClick={() => setMobileSidebarOpen(false)}
           />
         ) : null}
 
-        <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-10 border-b border-slate-200 bg-white">
-            <div className="flex h-[72px] items-center justify-between px-5 sm:px-7 lg:px-8">
+        <div className="app-workspace">
+          <header className="app-header">
+            <div className="app-toolbar">
               <button
                 type="button"
                 aria-label="サイドバーを表示または非表示"
                 onClick={toggleSidebar}
-                className="grid size-10 place-items-center rounded-lg text-slate-700 transition hover:bg-slate-100"
+                className="app-menu-toggle"
               >
                 <MenuIcon />
               </button>
 
-              <div className="flex items-center gap-4">
+              <Link href="/" className="app-mobile-brand">過去問くん</Link>
+              <div className="app-user-tools">
                 <NotificationBell />
                 <div className="flex items-center gap-3 rounded-full py-1 pl-1 pr-2">
-                  <span className="grid size-11 place-items-center rounded-full border-2 border-violet-200 bg-violet-50 text-base font-black text-violet-700">
+                  <span className="grid size-9 place-items-center rounded-full bg-slate-100 text-sm font-medium text-slate-700">
                     {avatarLabel}
                   </span>
-                  <span className="hidden text-sm font-black text-violet-800 sm:inline">
+                  <span className="text-xs font-black text-blue-800">
                     {userName}
                   </span>
                 </div>
@@ -167,7 +156,7 @@ export function RoleNavigationShell({
             </div>
           </header>
 
-          <main className="w-full min-w-0 overflow-x-hidden px-4 py-7 sm:px-7 lg:px-8">
+          <main id="main-content" className="app-main">
             {children}
           </main>
         </div>

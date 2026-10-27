@@ -122,7 +122,7 @@ export function ReplyDialog({
       ref={dialogRef}
       onClose={onClose}
       aria-labelledby="board-reply-heading"
-      className="m-auto max-h-[90vh] w-[calc(100%_-_28px)] max-w-[620px] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/50"
+      className="m-auto max-h-[90vh] w-[calc(100%_-_28px)] max-w-[620px] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-0 text-slate-900  backdrop:bg-slate-950/50"
     >
       <header className="sticky top-0 z-10 flex items-center gap-3 border-b border-slate-200 bg-white px-4 py-3">
         <button
@@ -204,7 +204,7 @@ export function ReplyDialog({
         ) : null}
       </div>
 
-      <h3 className="border-y border-slate-200 border-t-8 border-t-[#f5f7fb] px-4 py-3 text-sm font-black sm:px-6">
+      <h3 className="border-y border-slate-200 border-t-8 border-t-[#ffffff] px-4 py-3 text-sm font-black sm:px-6">
         返信
       </h3>
       <div>

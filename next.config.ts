@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 import { PHASE_PRODUCTION_BUILD } from "next/constants";
 
 const nextConfig: NextConfig = {
+  devIndicators: false,
   distDir: process.env.KAKOMON_TEST_ENV === "1" ? "coverage/next-test" : ".next",
   turbopack: {
     root: path.resolve(__dirname),

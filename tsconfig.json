@@ -32,5 +32,5 @@
     "coverage/next-test/types/**/*.ts",
     "coverage/next-test/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "output", ".taste-skill"]
 }

@@ -19,31 +19,22 @@ const exams = [
   {
     code: "it_passport",
     shortName: "ITパスポート",
-    description: "ITの基礎知識を幅広く確認します。",
-    color: "from-blue-600 to-cyan-500",
   },
   {
     code: "fe",
-    shortName: "基本情報技術者",
-    description: "科目Aの基礎問題に挑戦します。",
-    color: "from-violet-600 to-fuchsia-500",
+    shortName: "基本情報技術者（科目A）",
   },
 ];
 
 const categoryOptions: Array<{
   code: PracticeCategoryCode;
   label: string;
-  description: string;
 }> = [
   {
     code: ALL_PRACTICE_CATEGORY_CODE,
-    label: "指定なし",
-    description: "3分野から同じ問題数ずつ出題",
+    label: "全分野（均等）",
   },
-  ...PRACTICE_CATEGORIES.map((category) => ({
-    ...category,
-    description: `${category.label}系の問題だけを出題`,
-  })),
+  ...PRACTICE_CATEGORIES,
 ];
 
 const startedAtFormatter = new Intl.DateTimeFormat("ja-JP", {
@@ -181,18 +172,13 @@ export default function PracticeStartPage() {
 
   return (
     <StudentShell userName={userName} points={points}>
-      <PageHeading
-        eyebrow="PAST QUESTIONS"
-        title="過去問練習"
-        description="試験と問題数を選んで、自分に合った練習を始めましょう。"
-      />
+      <PageHeading title="過去問練習" />
 
       {activeSessions.length > 0 ? (
         <section className="mb-8" aria-labelledby="active-practice-heading">
           <div className="mb-3 flex items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-black text-blue-600">CONTINUE</p>
-              <h2 id="active-practice-heading" className="mt-1 text-lg font-black text-slate-950">
+              <h2 id="active-practice-heading" className="text-lg font-black text-slate-950">
                 途中の練習
               </h2>
             </div>
@@ -205,7 +191,7 @@ export default function PracticeStartPage() {
               return (
                 <article
                   key={session.id}
-                  className="flex min-w-0 flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center"
+                  className="flex min-w-0 flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4  sm:flex-row sm:items-center"
                 >
                   <div className="flex min-w-0 w-full items-center gap-4">
                     <div className="grid size-12 shrink-0 place-items-center rounded-xl bg-blue-50 text-sm font-black text-blue-700">
@@ -249,63 +235,36 @@ export default function PracticeStartPage() {
         </section>
       ) : null}
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="practice-exams" role="group" aria-label="試験を選択">
         {exams.map((exam) => {
           const selected = selectedExam === exam.code;
           return (
             <button
               key={exam.code}
               type="button"
+              aria-pressed={selected}
+              aria-label={exam.shortName}
               onClick={() => setSelectedExam(exam.code)}
-              className={`group overflow-hidden rounded-3xl border bg-white text-left shadow-sm transition hover:-translate-y-1 hover:shadow-xl ${
-                selected ? "border-blue-500 ring-4 ring-blue-100" : "border-slate-200"
-              }`}
+              className="practice-exam"
             >
-              <div className={`h-3 bg-gradient-to-r ${exam.color}`} />
-              <div className="p-6 sm:p-8">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h2 className="text-2xl font-black text-slate-950">{exam.shortName}</h2>
-                  </div>
-                  <span
-                    className={`grid size-7 place-items-center rounded-full border-2 ${
-                      selected ? "border-blue-600 bg-blue-600 text-white" : "border-slate-300"
-                    }`}
-                    aria-hidden="true"
-                  >
-                    {selected ? <span className="size-2 rounded-full bg-white" /> : null}
-                  </span>
-                </div>
-                <p className="mt-4 leading-7 text-slate-600">{exam.description}</p>
-                <div className="mt-6 flex gap-2">
-                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">
-                    30 / 60問
-                  </span>
-                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">
-                    選択式
-                  </span>
-                </div>
-              </div>
+              <span className="practice-exam-label">
+                <span>{exam.code === "fe" ? "基本情報技術者" : exam.shortName}</span>
+                {exam.code === "fe" ? <small>科目A</small> : null}
+              </span>
+              <span className="practice-radio" aria-hidden="true" />
             </button>
           );
         })}
       </div>
 
-      <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+      <div className="practice-options">
         <div
-          className={`grid gap-8 ${
-            categorySelectionEnabled
-              ? "lg:grid-cols-[minmax(0,1fr)_minmax(220px,0.4fr)]"
-              : "max-w-md"
-          }`}
+          className="practice-config-grid"
         >
           {categorySelectionEnabled ? (
             <fieldset>
               <legend className="text-lg font-black text-slate-950">出題分野</legend>
-              <p className="mt-1 text-sm font-medium text-slate-500">
-                指定なしでは3分野から均等に出題します。
-              </p>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="practice-category-grid">
                 {categoryOptions.map((category) => {
                   const selected = selectedCategory === category.code;
                   return (
@@ -314,16 +273,9 @@ export default function PracticeStartPage() {
                       type="button"
                       aria-pressed={selected}
                       onClick={() => setSelectedCategory(category.code)}
-                      className={`min-h-20 rounded-xl border px-4 py-3 text-left transition ${
-                        selected
-                          ? "border-blue-500 bg-blue-50 text-blue-950 ring-2 ring-blue-100"
-                          : "border-slate-200 text-slate-700 hover:border-blue-300 hover:bg-slate-50"
-                      }`}
+                      className="practice-choice"
                     >
                       <span className="block font-black">{category.label}</span>
-                      <span className="mt-1 block text-xs font-bold text-slate-500">
-                        {category.description}
-                      </span>
                     </button>
                   );
                 })}
@@ -333,11 +285,8 @@ export default function PracticeStartPage() {
 
           <fieldset>
             <legend className="text-lg font-black text-slate-950">問題数</legend>
-            <p className="mt-1 text-sm font-medium text-slate-500">1回の練習で解く問題数です。</p>
             <div
-              className={`mt-4 grid grid-cols-2 gap-3 ${
-                categorySelectionEnabled ? "lg:grid-cols-1" : ""
-              }`}
+              className="practice-count-grid"
             >
               {PRACTICE_QUESTION_COUNTS.map((count) => {
                 const selected = selectedQuestionCount === count;
@@ -347,11 +296,7 @@ export default function PracticeStartPage() {
                     type="button"
                     aria-pressed={selected}
                     onClick={() => setSelectedQuestionCount(count)}
-                    className={`min-h-16 rounded-xl border px-4 text-center text-xl font-black transition ${
-                      selected
-                        ? "border-blue-500 bg-blue-600 text-white ring-2 ring-blue-100"
-                        : "border-slate-200 text-slate-700 hover:border-blue-300 hover:bg-slate-50"
-                    }`}
+                    className="practice-choice practice-count"
                   >
                     {count}問
                   </button>
@@ -361,23 +306,18 @@ export default function PracticeStartPage() {
           </fieldset>
         </div>
 
-        <div className="mt-8 border-y border-slate-200 py-5">
+        <div className="practice-summary">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
-              <p className="text-xs font-black text-slate-500">選択中のコース</p>
-              <p className="mt-1 text-lg font-black text-slate-950">
+              <p className="text-lg font-black text-slate-950">
                 {selectedExamData.shortName} ・{" "}
                 {categorySelectionEnabled ? `${selectedCategoryData.label} ・ ` : ""}
                 {selectedQuestionCount}問
               </p>
-              <p className="mt-1 text-sm font-medium text-slate-600">
-                {!categorySelectionEnabled
-                  ? `全分野から${selectedQuestionCount}問をランダムに出題します。`
-                  : selectedCategory === ALL_PRACTICE_CATEGORY_CODE
-                    ? `テクノロジ・マネジメント・ストラテジから各${questionsPerCategory}問出題します。`
-                    : `${selectedCategoryData.label}系から${selectedQuestionCount}問出題します。`}
-              </p>
-              <p className="mt-1 text-sm font-bold text-blue-700">
+              {categorySelectionEnabled && selectedCategory === ALL_PRACTICE_CATEGORY_CODE ? (
+                <p className="mt-1 text-sm text-slate-500">3分野から各{questionsPerCategory}問</p>
+              ) : null}
+              <p className="mt-2 text-xs leading-6 text-slate-500">
                 全問回答で{getPracticeCompletionPoints(selectedQuestionCount)}pt（1日2回まで）＋10問正解ごとに1ptボーナス。
               </p>
             </div>
@@ -385,7 +325,7 @@ export default function PracticeStartPage() {
               type="button"
               onClick={startPractice}
               disabled={submitting}
-              className="min-h-12 w-full shrink-0 rounded-xl bg-blue-600 px-6 py-3 text-base font-black text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-wait disabled:bg-slate-400 sm:w-auto sm:min-w-48"
+              className="app-primary w-full sm:w-auto sm:min-w-44"
             >
               {submitting ? "準備しています..." : "練習を開始する"}
             </button>

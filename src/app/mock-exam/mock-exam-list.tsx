@@ -10,9 +10,9 @@ import { mockRequest } from "@/lib/mock-exams/client-state";
 const date=(value:string)=>new Intl.DateTimeFormat("ja-JP",{timeZone:"Asia/Tokyo",month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"}).format(new Date(value));
 export function MockExamListView({data,onStart,busy}:{data:MockListView;onStart:(id:string)=>void;busy:boolean}){
   return <>
-    <PageHeading eyebrow="MONTHLY MOCK EXAM" title="模擬試験" description="毎月1日から24日まで受験できます。各試験2回まで、最高点をランキングに反映します。"/>
+    <PageHeading title="模擬試験" description="毎月1〜24日・各試験2回まで。最高点をランキングに反映。" />
     <div className="mb-6 flex flex-wrap items-center gap-3"><h2 className="text-xl font-black">{data.month} の模擬試験</h2><Link href="/mock-exam" className="text-sm text-blue-700 underline">当月へ</Link></div>
-    <div className="grid gap-5 lg:grid-cols-2">{data.exams.map(exam=><section key={exam.examCode} className="min-w-0 rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+    <div className="grid gap-5 lg:grid-cols-2">{data.exams.map(exam=><section key={exam.examCode} className="min-w-0 rounded-xl border border-slate-200 bg-white p-5  sm:p-7">
       <h3 className="text-xl font-black">{exam.title}</h3><p className="mt-3 text-sm">{exam.questionCount}問 / {exam.timeLimitMinutes}分 / 残り{exam.remainingAttempts}回</p>
       <p className="mt-2 text-sm text-slate-500">締切：{date(exam.closesAt)}（日本時間）</p>
       <p className="mt-4 text-sm text-slate-600">正解・解説は25日0時に公開します。初回提出で20pt、2回目はポイントなし。</p>

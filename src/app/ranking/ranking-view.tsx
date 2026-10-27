@@ -90,7 +90,7 @@ export function RankingViewContent({ data, onMonthChange }: { data: RankingView;
   const tabClass = (active: boolean) => `flex min-h-12 flex-1 items-center justify-center border-b-2 px-3 text-center text-sm font-bold transition ${active ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-blue-700"}`;
   return (
     <div className="mx-auto max-w-6xl">
-      <PageHeading eyebrow="MONTHLY RANKING" title="ランキング" description="毎月の模擬試験の最高得点で、学習の成果を確認しましょう。" />
+      <PageHeading title="ランキング" />
       <nav aria-label="試験を選択" className="mb-5 flex flex-wrap gap-2">
         {(["it_passport", "fe"] as const).map(code => <Link prefetch={false} key={code} aria-current={code === data.examCode ? "page" : undefined} className={`rounded-lg border px-4 py-2.5 text-sm font-bold transition ${code === data.examCode ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 bg-white text-slate-600 hover:border-blue-300"}`} href={`/ranking?examCode=${code}&month=${data.month}`}>{code === "fe" ? "基本情報技術者（科目A）" : "ITパスポート"}</Link>)}
       </nav>

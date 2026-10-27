@@ -4,43 +4,49 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { StudentShell } from "@/components/student-shell";
+import { PracticeReviewLink } from "@/components/practice-review-link";
 import { ErrorCard, LoadingCard } from "@/components/ui";
 import { readJsonResponse } from "@/lib/read-json-response";
 
 type ResultSession = {
+  id: string;
   exam: { name: string };
   questionCount: number;
   answeredCount: number;
   correctCount: number;
   earnedPoints: number;
+  reviewNotebookCount: number | null;
 };
 
 export default function PracticeResultPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const [session, setSession] = useState<ResultSession | null>(null);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<{ sessionId: string; message: string } | null>(null);
 
   useEffect(() => {
-    fetch(`/api/practice/sessions/${sessionId}`)
+    let active = true;
+    const controller = new AbortController();
+    fetch(`/api/practice/sessions/${sessionId}`, { cache: "no-store", signal: controller.signal })
       .then(async (response) => {
         const data = await readJsonResponse<ResultSession & { error?: string }>(response);
         if (!response.ok) throw new Error(data?.error ?? "結果を読み込めませんでした。");
         if (!data) throw new Error("結果を読み込めませんでした。");
         return data;
       })
-      .then(setSession)
-      .catch((cause) => setError(cause instanceof Error ? cause.message : "結果を読み込めませんでした。"));
+      .then(data => { if (active) setSession(data); })
+      .catch((cause) => { if (active) setError({ sessionId, message: cause instanceof Error ? cause.message : "結果を読み込めませんでした。" }); });
+    return () => { active = false; controller.abort(); };
   }, [sessionId]);
 
-  if (error) {
+  if (error?.sessionId === sessionId) {
     return (
       <StudentShell>
-        <ErrorCard message={error} />
+        <ErrorCard message={error.message} />
       </StudentShell>
     );
   }
 
-  if (!session) {
+  if (!session || session.id !== sessionId) {
     return (
       <StudentShell>
         <LoadingCard message="結果を集計しています..." />
@@ -55,15 +61,12 @@ export default function PracticeResultPage() {
   return (
     <StudentShell>
       <div className="mx-auto max-w-3xl">
-        <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white text-center shadow-xl">
-          <div className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400 px-6 py-10 text-white">
-            <p className="text-sm font-black tracking-[0.16em] text-blue-100">
-              {answeredAllQuestions ? "PRACTICE COMPLETE" : "PRACTICE SAVED"}
-            </p>
-            <h1 className="mt-2 text-3xl font-black sm:text-4xl">
+        <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white text-center ">
+          <div className="bg-slate-50 px-6 py-10 text-slate-950">
+            <h1 className="text-3xl font-black sm:text-4xl">
               {answeredAllQuestions ? "練習おつかれさまでした！" : "ここまでの結果を保存しました"}
             </h1>
-            <p className="mt-2 font-bold text-blue-50">{session.exam.name}</p>
+            <p className="mt-2 font-bold text-slate-600">{session.exam.name}</p>
           </div>
 
           <div className="p-6 sm:p-10">
@@ -82,7 +85,7 @@ export default function PracticeResultPage() {
 
             <div className="mt-8 h-3 overflow-hidden rounded-full bg-slate-100">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-cyan-400"
+                className="h-full rounded-full bg-blue-600"
                 style={{ width: `${accuracy}%` }}
               />
             </div>
@@ -95,6 +98,7 @@ export default function PracticeResultPage() {
             </p>
 
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <PracticeReviewLink sessionId={sessionId} reviewNotebookCount={session.reviewNotebookCount} />
               <Link
                 href="/practice"
                 className="rounded-xl bg-blue-600 px-6 py-3 font-black text-white transition hover:bg-blue-700"

@@ -131,13 +131,12 @@ export function PublicProfile({
 
   return (
     <div className="mx-auto w-full max-w-[960px]">
-      <p className="mb-2 text-sm font-black tracking-[0.14em] text-blue-600">COMMUNITY</p>
       <h1 className="mb-5 text-3xl font-black text-slate-950 sm:text-4xl">プロフィール</h1>
-      <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+      <section className="overflow-hidden rounded-xl border border-slate-200 bg-white ">
         <header className="flex min-h-16 items-center gap-4 border-b border-slate-200 px-4 py-3 sm:px-6">
           <Link href="/board" aria-label="掲示板へ戻る" className="grid size-9 place-items-center rounded-full text-2xl text-slate-700 hover:bg-slate-100">←</Link>
           <div>
-            <h2 className={`font-black ${initialProfile.isTeacher ? "text-violet-800" : "text-slate-950"}`}>{initialProfile.displayName}</h2>
+            <h2 className={`font-black ${initialProfile.isTeacher ? "text-blue-800" : "text-slate-950"}`}>{initialProfile.displayName}</h2>
             <p className="text-xs text-slate-500">{postCount}件の投稿</p>
           </div>
         </header>
@@ -151,7 +150,7 @@ export function PublicProfile({
             {initialProfile.isTeacher ? initialProfile.displayName.slice(0, 1) : <StudentAvatar avatarUrl={initialProfile.avatarUrl} displayName={initialProfile.displayName} size={72} />}
           </div>
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <h3 className={`text-xl font-black ${initialProfile.isTeacher ? "text-violet-800" : "text-slate-950"}`}>{initialProfile.displayName}</h3>
+            <h3 className={`text-xl font-black ${initialProfile.isTeacher ? "text-blue-800" : "text-slate-950"}`}>{initialProfile.displayName}</h3>
             <TeacherBadge isTeacher={initialProfile.isTeacher} />
           </div>
           {initialProfile.titleName ? <span className="mt-2 inline-flex rounded bg-blue-50 px-2 py-1 text-xs font-black text-blue-900">{initialProfile.titleName}</span> : null}

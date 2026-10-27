@@ -38,7 +38,7 @@ export function GoogleLoginButton({ nextPath }: GoogleLoginButtonProps) {
         type="button"
         onClick={signIn}
         disabled={loading}
-        className="flex h-20 w-full items-center justify-center gap-4 rounded-xl border border-slate-300 bg-white px-5 text-xl font-black text-[#071d36] shadow-[0_10px_22px_-16px_rgba(15,23,42,0.85)] transition hover:border-blue-400 hover:bg-blue-50 disabled:cursor-wait disabled:opacity-60 sm:gap-8 sm:px-6 sm:text-2xl"
+        className="flex h-20 w-full items-center justify-center gap-4 rounded-xl border border-slate-300 bg-white px-5 text-xl font-black text-[#242823]  transition hover:border-blue-400 hover:bg-blue-50 disabled:cursor-wait disabled:opacity-60 sm:gap-8 sm:px-6 sm:text-2xl"
       >
         <GoogleIcon />
         {loading ? "Googleへ移動しています..." : "Googleでログイン"}

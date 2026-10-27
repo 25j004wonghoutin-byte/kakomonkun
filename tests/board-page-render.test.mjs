@@ -134,7 +134,7 @@ test("teacher public profile does not invent a bio or title", () => {
     }),
   );
 
-  assert.match(html, /text-violet-800[^>]*>管理者</);
+  assert.match(html, /text-blue-800[^>]*>管理者</);
   assert.match(html, /先生/);
   assert.doesNotMatch(html, /自己紹介|称号|ITパスポート|利用開始/);
 });
@@ -161,7 +161,7 @@ test("reply icon opens the composer while reply count links to the single post",
   assert.match(html, /href="\/board\/posts\/00000000-0000-4000-8000-000000000002"[^>]*>2<\/a>/);
 });
 
-test("teacher post and reply names use the distinct violet treatment and badge", () => {
+test("teacher post and reply names use the distinct accent treatment and badge", () => {
   const { PostCard } = require("../src/app/board/post-card.tsx");
   const { PostDetail } = require("../src/app/board/posts/[postId]/post-detail.tsx");
   const teacher = {
@@ -191,10 +191,10 @@ test("teacher post and reply names use the distinct violet treatment and badge",
     }),
   );
 
-  assert.match(postHtml, /font-black text-violet-800[^>]*>管理者<\/a>/);
-  assert.match(postHtml, /bg-violet-50[^>]*text-violet-700[^>]*>先生<\/span>/);
-  assert.match(detailHtml, /font-black text-violet-800[^>]*>管理者<\/a>/);
-  assert.match(detailHtml, /bg-violet-50[^>]*text-violet-700[^>]*>先生<\/span>/);
+  assert.match(postHtml, /font-black text-blue-800[^>]*>管理者<\/a>/);
+  assert.match(postHtml, /bg-blue-50[^>]*text-blue-700[^>]*>先生<\/span>/);
+  assert.match(detailHtml, /font-black text-blue-800[^>]*>管理者<\/a>/);
+  assert.match(detailHtml, /bg-blue-50[^>]*text-blue-700[^>]*>先生<\/span>/);
   assert.doesNotMatch(detailHtml, /管理者<\/a>さん/);
 
   const { ReplyDialog } = require("../src/app/board/reply-dialog.tsx");
@@ -206,6 +206,6 @@ test("teacher post and reply names use the distinct violet treatment and badge",
       onSent() {},
     }),
   );
-  assert.match(replyHtml, /font-black text-violet-800[^>]*>管理者<\/a>/);
+  assert.match(replyHtml, /font-black text-blue-800[^>]*>管理者<\/a>/);
   assert.doesNotMatch(replyHtml, /管理者<\/a>さん/);
 });

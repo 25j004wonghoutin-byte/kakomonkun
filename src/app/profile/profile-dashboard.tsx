@@ -147,17 +147,16 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
       <AvatarEditor open={avatarEditorOpen} currentAvatarUrl={profile.avatarUrl} onClose={() => setAvatarEditorOpen(false)} onSaved={avatarUrl => setProfile(current => ({ ...current, avatarUrl }))} />
       <div className="mx-auto w-full max-w-[1120px] min-w-0">
         <div className="mb-5">
-          <p className="mb-1 text-xs font-black text-blue-600">MY PAGE</p>
           <h1 className="text-3xl font-black text-slate-950">マイページ</h1>
         </div>
 
         <section
           aria-labelledby="profile-name"
-          className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-4 rounded-lg border border-l-4 border-slate-200 border-l-blue-600 bg-white p-5 shadow-[0_14px_40px_-30px_rgba(15,23,42,0.55)] sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-5 sm:p-6"
+          className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-4 rounded-lg border border-slate-200 bg-white p-5  sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-5 sm:p-6"
         >
           <div className="flex flex-col items-center gap-2">
             <StudentAvatar displayName={profile.displayName} avatarUrl={profile.avatarUrl} size={72} className="border-4 border-blue-100 text-2xl" />
-            <button type="button" onClick={() => setAvatarEditorOpen(true)} className="min-h-9 rounded px-1 text-xs font-bold text-blue-600 hover:bg-blue-50">アイコンを変更</button>
+            <button type="button" onClick={() => setAvatarEditorOpen(true)} className="min-h-9 rounded px-1 text-[13px] font-bold text-blue-600 hover:bg-blue-50">アイコンを変更</button>
           </div>
           <div className="min-w-0">
             <div className="flex min-w-0 flex-wrap items-center gap-2.5">
@@ -165,7 +164,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                 {profile.displayName}
               </h2>
               {profile.currentTitle ? (
-                <span className="inline-flex min-h-7 items-center rounded-full border border-amber-200 bg-amber-50 px-2.5 text-xs font-black text-amber-800">
+                <span className="inline-flex min-h-7 items-center rounded-full border border-amber-200 bg-amber-50 px-2.5 text-[13px] font-black text-amber-800">
                   {profile.currentTitle.name}
                 </span>
               ) : null}
@@ -208,7 +207,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
 
         <div className="mt-4 grid min-w-0 items-start gap-4 lg:grid-cols-[minmax(0,1fr)_330px]">
           <div className="min-w-0 space-y-4">
-            <section aria-labelledby="learning-status-heading" className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-[0_14px_40px_-30px_rgba(15,23,42,0.55)]">
+            <section aria-labelledby="learning-status-heading" className="overflow-hidden rounded-lg border border-slate-200 bg-white ">
               <div className="flex min-h-[66px] flex-col items-start justify-between gap-3 border-b border-slate-200 px-5 py-4 sm:flex-row sm:items-center">
                 <h2 id="learning-status-heading" className="text-base font-black text-slate-950">
                   学習状況
@@ -225,9 +224,9 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                         type="button"
                         aria-pressed={period === option}
                         onClick={() => setPeriod(option)}
-                        className={`min-h-9 min-w-16 rounded px-3 text-xs font-black transition ${
+                        className={`min-h-9 min-w-16 rounded px-3 text-[13px] font-black transition ${
                           period === option
-                            ? "bg-white text-blue-700 shadow-sm"
+                            ? "bg-white text-blue-700 "
                             : "text-slate-500 hover:text-slate-800"
                         }`}
                       >
@@ -237,7 +236,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                   </div>
                   <Link
                     href="/profile/learning"
-                    className="inline-flex min-h-11 items-center justify-center px-2 text-xs font-black text-blue-700 hover:text-blue-900"
+                    className="inline-flex min-h-11 items-center justify-center px-2 text-[13px] font-black text-blue-700 hover:text-blue-900"
                   >
                     詳細を見る&nbsp;→
                   </Link>
@@ -249,7 +248,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                   <AccuracyRing accuracy={accuracy} period={period} />
                   <div>
                     <h3 className="text-sm font-black text-slate-950">{insight.heading}</h3>
-                    <p className="mt-1 text-xs font-semibold leading-6 text-slate-600">
+                    <p className="mt-1 text-[13px] font-semibold leading-6 text-slate-600">
                       {insight.detail}
                     </p>
                   </div>
@@ -268,7 +267,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                         key={category.code}
                         className="grid grid-cols-[92px_minmax(0,1fr)_42px] items-center gap-2.5 sm:grid-cols-[108px_minmax(0,1fr)_46px] sm:gap-3"
                       >
-                        <span className="truncate text-xs font-black text-slate-700" title={category.name}>
+                        <span className="truncate text-[13px] font-black text-slate-700" title={category.name}>
                           {category.name.replace(/系$/, "")}
                         </span>
                         <div
@@ -281,7 +280,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                             style={{ width: `${value}%` }}
                           />
                         </div>
-                        <strong className="text-right text-xs text-slate-800">{value}%</strong>
+                        <strong className="text-right text-[13px] text-slate-800">{value}%</strong>
                       </div>
                     );
                   })}
@@ -289,14 +288,14 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
               </div>
             </section>
 
-            <section aria-labelledby="recent-learning-heading" className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-[0_14px_40px_-30px_rgba(15,23,42,0.55)]">
+            <section aria-labelledby="recent-learning-heading" className="overflow-hidden rounded-lg border border-slate-200 bg-white ">
               <div className="flex min-h-[66px] items-center justify-between gap-4 border-b border-slate-200 px-5 py-3">
                 <h2 id="recent-learning-heading" className="text-base font-black text-slate-950">
                   最近の学習
                 </h2>
                 <Link
                   href="/profile/learning"
-                  className="inline-flex min-h-11 items-center text-xs font-black text-blue-700 hover:text-blue-900"
+                  className="inline-flex min-h-11 items-center text-[13px] font-black text-blue-700 hover:text-blue-900"
                 >
                   履歴を見る&nbsp;→
                 </Link>
@@ -316,12 +315,12 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
           </div>
 
           <aside className="space-y-4">
-            <section aria-labelledby="titles-heading" className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-[0_14px_40px_-30px_rgba(15,23,42,0.55)]">
+            <section aria-labelledby="titles-heading" className="overflow-hidden rounded-lg border border-slate-200 bg-white ">
               <div className="flex min-h-[66px] items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
                 <h2 id="titles-heading" className="text-base font-black text-slate-950">
                   称号
                 </h2>
-                <span className="text-xs font-bold text-slate-500">
+                <span className="text-[13px] font-bold text-slate-500">
                   {ownedTitles.length.toLocaleString()} 個所持
                 </span>
               </div>
@@ -330,7 +329,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                 <div className="flex items-center gap-3 border-b border-amber-200 bg-amber-50 px-5 py-5">
                   <TitleSymbol rarity={profile.currentTitle.rarity} large />
                   <div className="min-w-0">
-                    <span className="block text-[10px] font-black text-amber-800">現在の称号</span>
+                    <span className="block text-[13px] font-black text-amber-800">現在の称号</span>
                     <strong className="mt-1 block break-words text-base font-black text-amber-950">
                       {profile.currentTitle.name}
                     </strong>
@@ -340,9 +339,6 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                 <div className="border-b border-slate-200 bg-slate-50 px-5 py-6 text-center">
                   <span className="flex justify-center"><TitleSymbol rarity="normal" large /></span>
                   <strong className="mt-3 block text-sm font-black text-slate-800">称号未装備</strong>
-                  <p className="mt-1 text-xs font-semibold leading-5 text-slate-500">
-                    所持している称号を装備すると、ここに表示されます。
-                  </p>
                 </div>
               )}
 
@@ -366,7 +362,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
 
             <section
               aria-labelledby="point-history-heading"
-              className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-[0_14px_40px_-30px_rgba(15,23,42,0.55)]"
+              className="overflow-hidden rounded-lg border border-slate-200 bg-white "
             >
               <div className="flex min-h-[62px] items-center justify-between gap-3 border-b border-slate-200 px-5 py-3">
                 <h2 id="point-history-heading" className="text-base font-black text-slate-950">
@@ -377,7 +373,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                     type="button"
                     aria-expanded={showAllPoints}
                     onClick={() => setShowAllPoints((current) => !current)}
-                    className="inline-flex min-h-11 items-center text-xs font-black text-blue-700 hover:text-blue-900"
+                    className="inline-flex min-h-11 items-center text-[13px] font-black text-blue-700 hover:text-blue-900"
                   >
                     {showAllPoints ? "閉じる" : "すべて見る"}
                   </button>
@@ -391,10 +387,10 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                       className="grid min-h-[62px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-5 py-3"
                     >
                       <span className="min-w-0">
-                        <strong className="block break-words text-xs font-black text-slate-900">
+                        <strong className="block break-words text-[13px] font-black text-slate-900">
                           {history.description}
                         </strong>
-                        <span className="mt-1 block text-[10px] font-bold text-slate-500">
+                        <span className="mt-1 block text-[13px] font-bold text-slate-500">
                           {activityDateFormatter.format(new Date(history.occurredAt))}
                         </span>
                       </span>
@@ -409,7 +405,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                   ))}
                 </ul>
               ) : (
-                <p className="px-5 py-8 text-center text-xs font-semibold text-slate-500">
+                <p className="px-5 py-8 text-center text-[13px] font-semibold text-slate-500">
                   ポイント履歴はまだありません。
                 </p>
               )}
@@ -422,7 +418,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
         ref={profileDialogRef}
         aria-labelledby="profile-edit-title"
         onClose={() => setProfileError("")}
-        className="m-auto w-[calc(100%-2rem)] max-w-lg rounded-lg border-0 p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/50"
+        className="m-auto w-[calc(100%-2rem)] max-w-lg rounded-lg border-0 p-0 text-slate-900  backdrop:bg-slate-950/50"
       >
         <form onSubmit={saveProfile}>
           <div className="flex min-h-[66px] items-center justify-between gap-4 border-b border-slate-200 px-5 py-3">
@@ -455,7 +451,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
               <label htmlFor="profile-bio" className="block text-sm font-black text-slate-800">
                 自己紹介
               </label>
-              <span className="text-xs font-bold text-slate-500">{editBio.length} / 200</span>
+              <span className="text-[13px] font-bold text-slate-500">{editBio.length} / 200</span>
             </div>
             <textarea
               id="profile-bio"
@@ -495,7 +491,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
         ref={titleDialogRef}
         aria-labelledby="title-equip-heading"
         onClose={() => setTitleError("")}
-        className="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-hidden rounded-lg border-0 p-0 text-slate-900 shadow-2xl open:flex open:flex-col backdrop:bg-slate-950/50"
+        className="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-hidden rounded-lg border-0 p-0 text-slate-900  open:flex open:flex-col backdrop:bg-slate-950/50"
       >
         <div className="flex min-h-[66px] shrink-0 items-center justify-between gap-4 border-b border-slate-200 px-5 py-3">
           <h2 id="title-equip-heading" className="text-lg font-black">
@@ -531,11 +527,11 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                   <strong className="block break-words text-sm font-black text-slate-900">
                     {ownedTitle.name}
                   </strong>
-                  <span className="mt-0.5 block text-[10px] font-bold uppercase text-slate-500">
+                  <span className="mt-0.5 block text-[13px] font-bold uppercase text-slate-500">
                     {ownedTitle.rarity}
                   </span>
                 </span>
-                <span className="text-xs font-black text-blue-700">{selected ? "選択中" : ""}</span>
+                <span className="text-[13px] font-black text-blue-700">{selected ? "選択中" : ""}</span>
               </button>
             );
           })}
@@ -579,11 +575,11 @@ function MetricCard({
   return (
     <article className="flex min-h-[104px] min-w-0 items-center rounded-lg border border-slate-200 bg-white p-4 sm:min-h-[92px] sm:px-5">
       <span className="min-w-0">
-        <span className="block text-[11px] font-bold text-slate-500">{label}</span>
+        <span className="block text-[13px] font-bold text-slate-500">{label}</span>
         <strong className="mt-0.5 block break-words text-xl font-black leading-tight text-slate-950">
           {value}
         </strong>
-        <span className="mt-1 block text-[10px] font-bold text-slate-500">{note}</span>
+        <span className="mt-1 block text-[13px] font-bold text-slate-500">{note}</span>
       </span>
     </article>
   );
@@ -595,14 +591,14 @@ function AccuracyRing({ accuracy, period }: { accuracy: number; period: Period }
       role="img"
       aria-label={`${period === "overall" ? "総合" : "今月"}の正答率 ${accuracy}%`}
       className="relative mx-auto grid size-[108px] place-items-center rounded-full"
-      style={{
-        background: `conic-gradient(#2563eb 0 ${accuracy}%, #e2e8f0 ${accuracy}% 100%)`,
-      }}
     >
-      <span className="absolute inset-[10px] rounded-full bg-white" />
+      <svg aria-hidden="true" viewBox="0 0 108 108" className="absolute inset-0 size-full -rotate-90" fill="none" strokeWidth="6">
+        <circle cx="54" cy="54" r="48" stroke="var(--border)" />
+        <circle cx="54" cy="54" r="48" pathLength="100" stroke="var(--accent)" strokeDasharray={`${accuracy} ${100 - accuracy}`} />
+      </svg>
       <span className="relative z-[1] text-center">
-        <strong className="block text-2xl font-black leading-none text-slate-950">{accuracy}%</strong>
-        <span className="mt-1 block text-[10px] font-bold text-slate-500">正答率</span>
+        <strong className="block text-2xl font-normal leading-none text-slate-950">{accuracy}%</strong>
+        <span className="mt-1 block text-[13px] font-bold text-slate-500">正答率</span>
       </span>
     </div>
   );
@@ -613,10 +609,10 @@ function RecentActivityRow({ activity }: { activity: ProfileRecentActivity }) {
   return (
     <li className="grid min-h-[72px] grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 px-5 py-3">
       <span className="min-w-0">
-        <strong className="block break-words text-xs font-black text-slate-900 sm:text-sm">
+        <strong className="block break-words text-[13px] font-black text-slate-900 sm:text-sm">
           {activity.title}
         </strong>
-        <span className="mt-1 block text-[10px] font-bold text-slate-500">
+        <span className="mt-1 block text-[13px] font-bold text-slate-500">
           {activityDateFormatter.format(new Date(activity.occurredAt))} ・ {activity.detail}
         </span>
       </span>
@@ -625,7 +621,7 @@ function RecentActivityRow({ activity }: { activity: ProfileRecentActivity }) {
           {activity.result}
         </strong>
         <span
-          className={`ml-2 text-[10px] font-black sm:ml-0 sm:mt-1 sm:block ${
+          className={`ml-2 text-[13px] font-black sm:ml-0 sm:mt-1 sm:block ${
             activity.earnedPoints > 0 ? "text-emerald-700" : "text-slate-500"
           }`}
         >
@@ -639,9 +635,9 @@ function RecentActivityRow({ activity }: { activity: ProfileRecentActivity }) {
 function TitleSymbol({ rarity, large = false }: { rarity: string; large?: boolean }) {
   const colorClass =
     rarity === "epic"
-      ? "border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700"
+      ? "border-blue-200 bg-blue-50 text-blue-700"
       : rarity === "rare"
-        ? "border-cyan-200 bg-cyan-50 text-cyan-700"
+        ? "border-blue-200 bg-blue-50 text-blue-700"
         : "border-blue-200 bg-blue-50 text-blue-700";
 
   return (

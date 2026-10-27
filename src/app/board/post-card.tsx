@@ -137,7 +137,7 @@ export function BoardAuthorName({ author }: { author: BoardAuthorView }) {
       href={`/board/users/${author.id}`}
       className={
         author.isTeacher
-          ? "font-black text-violet-800 hover:underline"
+          ? "font-black text-blue-800 hover:underline"
           : "font-black text-slate-950 hover:underline"
       }
     >
@@ -148,7 +148,7 @@ export function BoardAuthorName({ author }: { author: BoardAuthorView }) {
 
 export function TeacherBadge({ isTeacher }: { isTeacher: boolean }) {
   return isTeacher ? (
-    <span className="rounded bg-violet-50 px-1.5 py-0.5 text-[10px] font-black text-violet-700">
+    <span className="rounded bg-blue-50 px-1.5 py-0.5 text-xs font-black text-blue-700">
       先生
     </span>
   ) : null;

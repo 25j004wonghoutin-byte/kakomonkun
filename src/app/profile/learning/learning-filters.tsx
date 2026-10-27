@@ -58,7 +58,7 @@ export function LearningFilters({
               onClick={() => navigate(option.value, examId)}
               className={`min-h-10 rounded px-3 text-xs font-black transition sm:min-w-24 ${
                 period === option.value
-                  ? "bg-white text-blue-700 shadow-sm"
+                  ? "bg-white text-blue-700 "
                   : "text-slate-500 hover:text-slate-900"
               }`}
             >

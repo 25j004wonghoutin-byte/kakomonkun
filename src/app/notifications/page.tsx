@@ -26,13 +26,7 @@ export default async function NotificationsPage() {
   const content = (
     <div className="mx-auto w-full max-w-[960px]">
       <div className="mb-5">
-        <p className="text-xs font-black tracking-[0.18em] text-blue-600">
-          NOTIFICATIONS
-        </p>
-        <h1 className="mt-2 text-3xl font-black text-[#071d36]">通知</h1>
-        <p className="mt-3 text-sm font-medium leading-6 text-slate-500">
-          掲示板への返信や、新しいお知らせを確認できます。
-        </p>
+        <h1 className="text-3xl font-black text-[#242823]">通知</h1>
       </div>
 
       <NotificationList

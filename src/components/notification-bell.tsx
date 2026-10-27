@@ -52,7 +52,7 @@ export function NotificationBell({ href = "/notifications" }: NotificationBellPr
         />
       </svg>
       {badge ? (
-        <span className="absolute -right-1 -top-1 grid min-w-5 place-items-center rounded-full bg-rose-500 px-1 text-[10px] font-black leading-5 text-white ring-2 ring-white">
+        <span className="absolute -right-1 -top-1 grid min-w-5 place-items-center rounded-full bg-rose-500 px-1 text-xs font-black leading-5 text-white ring-2 ring-white">
           {badge}
         </span>
       ) : null}

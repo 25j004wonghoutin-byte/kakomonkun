@@ -76,16 +76,13 @@ export function TeacherLoginForm() {
 
   return (
     <div className="w-full max-w-[430px]">
-      <h1 className="text-3xl font-black tracking-[0.01em] text-[#071d36] sm:text-4xl">
+      <h1 className="text-3xl font-black tracking-[0.01em] text-[#242823] sm:text-4xl">
         教師ログイン
       </h1>
-      <p className="mt-3 text-sm font-medium leading-6 text-slate-500 sm:text-base">
-        共通アカウントの情報を入力してください。
-      </p>
 
       <form className="mt-8 space-y-5" onSubmit={submitLogin} noValidate>
         <label className="block">
-          <span className="mb-2 block text-sm font-bold text-[#071d36]">アカウント</span>
+          <span className="mb-2 block text-sm font-bold text-[#242823]">アカウント</span>
           <input
             type="text"
             name="teacherAccount"
@@ -94,12 +91,12 @@ export function TeacherLoginForm() {
             onChange={(event) => setAccount(event.target.value)}
             placeholder="アカウント名を入力"
             disabled={submitting}
-            className="h-14 w-full rounded-lg border border-[#c9d5e5] bg-white px-4 text-base font-medium text-[#071d36] outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-50"
+            className="h-14 w-full rounded-lg border border-[#c9d5e5] bg-white px-4 text-base font-medium text-[#242823] outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-50"
           />
         </label>
 
         <label className="block">
-          <span className="mb-2 block text-sm font-bold text-[#071d36]">パスワード</span>
+          <span className="mb-2 block text-sm font-bold text-[#242823]">パスワード</span>
           <span className="relative block">
             <input
               type={showPassword ? "text" : "password"}
@@ -109,7 +106,7 @@ export function TeacherLoginForm() {
               onChange={(event) => setPassword(event.target.value)}
               placeholder="パスワードを入力"
               disabled={submitting}
-              className="h-14 w-full rounded-lg border border-[#c9d5e5] bg-white px-4 pr-14 text-base font-medium text-[#071d36] outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-50"
+              className="h-14 w-full rounded-lg border border-[#c9d5e5] bg-white px-4 pr-14 text-base font-medium text-[#242823] outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-50"
             />
             <button
               type="button"
@@ -132,7 +129,7 @@ export function TeacherLoginForm() {
         <button
           type="submit"
           disabled={submitting}
-          className="h-14 w-full rounded-lg bg-blue-600 px-6 text-base font-black text-white shadow-[0_12px_24px_-14px_rgba(37,99,235,0.8)] transition hover:bg-blue-700 disabled:cursor-wait disabled:opacity-65"
+          className="h-14 w-full rounded-lg bg-blue-600 px-6 text-base font-black text-white  transition hover:bg-blue-700 disabled:cursor-wait disabled:opacity-65"
         >
           {submitting ? "ログイン中..." : "ログイン"}
         </button>

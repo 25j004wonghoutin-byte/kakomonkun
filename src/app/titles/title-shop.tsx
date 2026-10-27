@@ -105,8 +105,8 @@ export function TitleShop({ initialData }: { initialData: TitleShopInitialData }
   return (
     <StudentShell userName={initialData.displayName} points={totalPoints}>
       <div className="mx-auto w-full max-w-[1120px]">
-        <PageHeading eyebrow="TITLE SHOP" title="称号ショップ" description="学習でためたポイントや、達成した条件で新しい称号を手に入れましょう。" />
-        <section aria-label="現在の称号とポイント" className="grid gap-5 rounded-xl border border-l-4 border-slate-200 border-l-blue-600 bg-white px-5 py-4 shadow-sm sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+        <PageHeading title="称号ショップ" />
+        <section aria-label="現在の称号とポイント" className="grid gap-5 rounded-xl border border-l border-slate-200 border-l-blue-600 bg-white px-5 py-4  sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
           <div className="min-w-0">
             <p className="text-xs font-bold text-slate-500">現在装備中の称号</p>
             <p className="mt-1 truncate text-lg font-black text-slate-950">{initialData.currentTitle?.name ?? "未設定"}</p>
@@ -118,7 +118,6 @@ export function TitleShop({ initialData }: { initialData: TitleShopInitialData }
         </section>
         <div className="mb-3 mt-7 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <h2 className="text-lg font-black text-slate-950">称号一覧</h2>
-          <p className="text-xs font-bold leading-5 text-slate-500 sm:text-right">購入した称号は、マイページから装備できます。<br />称号名・価格は暫定値です。</p>
         </div>
         <div ref={listRef} role="region" aria-label="称号一覧" tabIndex={-1} className="rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-500">
           <TitleShopList titles={titles} totalPoints={totalPoints} onSelect={selectTitle} />

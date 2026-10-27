@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { QuestionImage } from "@/components/question-image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -10,7 +10,7 @@ import type { AttemptView, MockQuestionView, ResultView, SaveInput, SaveResult, 
 import { createAnswerQueue, mockRequest } from "@/lib/mock-exams/client-state";
 
 export function MockQuestionBody({question}:{question:MockQuestionView}){
-  return <><p className="whitespace-pre-wrap break-words text-sm leading-7 [overflow-wrap:anywhere]">{question.questionText}</p>{question.imagePath?<Image src={question.imagePath} alt="問題画像" width={1400} height={900} className="mt-4 h-auto max-w-full rounded-lg border border-slate-200"/>:null}<p className="mt-3 text-right text-xs text-slate-500">出典：{question.sourceLabel}</p></>;
+  return <><p className="whitespace-pre-wrap break-words text-sm leading-7 [overflow-wrap:anywhere]">{question.questionText}</p>{question.imagePath?<QuestionImage src={question.imagePath} alt="問題の図"/>:null}<p className="mt-3 text-right text-xs text-slate-500">出典：{question.sourceLabel}</p></>;
 }
 type ViewProps={attempt:AttemptView;index:number;remainingSeconds:number;saving:boolean;blocked:boolean;onSelect:(id:string|null)=>void;onMove:(index:number)=>void;onSubmit:()=>void};
 export function MockAttemptView({attempt,index,remainingSeconds,saving,blocked,onSelect,onMove,onSubmit}:ViewProps){
@@ -19,7 +19,7 @@ export function MockAttemptView({attempt,index,remainingSeconds,saving,blocked,o
   return <div className="mx-auto max-w-4xl">
     <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><h1 className="text-xl font-black">模擬試験 {attempt.attemptNo}回目</h1><p className="font-bold tabular-nums" role="timer">残り {time}</p></div>
     <div className="mb-4 flex flex-wrap justify-between gap-2 text-sm"><p>未回答{unanswered}問 / {attempt.questions.length}問</p><p role="status" aria-live="polite">{blocked?"未保存・確認が必要です":saving?"保存中…":"保存済み"}</p></div>
-    <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7"><h2 tabIndex={-1} id="mock-question-heading" className="mb-5 font-black">問{index+1}</h2><MockQuestionBody question={q}/>
+    <section className="rounded-xl border border-slate-200 bg-white p-5  sm:p-7"><h2 tabIndex={-1} id="mock-question-heading" className="mb-5 font-black">問{index+1}</h2><MockQuestionBody question={q}/>
       <fieldset className="mt-5 space-y-2" disabled={blocked||remainingSeconds===0}><legend className="sr-only">回答を選択</legend>{q.choices.map(c=><button key={c.id} type="button" aria-pressed={answer?.selectedChoiceId===c.id} onClick={()=>onSelect(c.id)} className={`flex min-h-12 w-full items-center gap-3 rounded-lg border px-4 py-3 text-left text-sm disabled:opacity-50 ${answer?.selectedChoiceId===c.id?"border-blue-600 bg-blue-50 ring-1 ring-blue-600":"border-slate-200 hover:bg-slate-50"}`}><span className="font-bold">{c.label}</span><QuestionChoiceContent text={c.text} label={c.label}/></button>)}<button type="button" onClick={()=>onSelect(null)} className="min-h-11 px-3 text-sm text-slate-600 underline">選択を解除</button></fieldset>
       <div className="mt-6 flex flex-wrap justify-between gap-3"><button type="button" disabled={index===0} onClick={()=>onMove(index-1)} className="min-h-11 rounded-lg border border-slate-200 px-5 disabled:opacity-40">前の問題</button><button type="button" disabled={index===attempt.questions.length-1} onClick={()=>onMove(index+1)} className="min-h-11 rounded-lg border border-slate-200 px-5 disabled:opacity-40">次の問題</button></div>
     </section>
@@ -95,6 +95,6 @@ export default function MockAttempt({initial}:{initial:AttemptView}){
   function move(to:number){setIndex(to);requestAnimationFrame(()=>document.getElementById("mock-question-heading")?.focus());}
   return <>{error?<div className="mx-auto mb-5 max-w-4xl"><ErrorCard message={error}/><div className="mt-3 flex flex-wrap gap-3"><button type="button" disabled={saving||submitting} onClick={reconcile} className="rounded-lg border bg-white px-4 py-3 text-sm">最新状態を読み込み・確認する</button>{lastFailed&&remaining>0?<button type="button" disabled={saving||submitting} onClick={()=>save(null,lastFailed!)} className="rounded-lg border bg-white px-4 py-3 text-sm">同じ保存を再試行</button>:null}</div></div>:null}
     <MockAttemptView attempt={attempt} index={index} remainingSeconds={remaining} saving={saving||submitting} blocked={blocked} onSelect={choice=>save(choice)} onMove={move} onSubmit={openSubmit}/>
-    <dialog ref={dialog} onCancel={event=>{if(submitting)event.preventDefault();}} className="m-auto w-[calc(100%_-_2rem)] max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-xl backdrop:bg-slate-950/40" aria-labelledby="mock-submit-title"><h2 id="mock-submit-title" className="text-lg font-black">この回答で提出しますか？</h2><p className="mt-4 text-sm">未回答{attempt.answers.filter(a=>a.selectedChoiceId===null).length}問。提出後は回答を変更できません。</p><div className="mt-6 flex flex-wrap justify-end gap-3"><button type="button" autoFocus disabled={submitting} onClick={()=>dialog.current?.close()} className="rounded-lg border px-4 py-3">キャンセル</button><button type="button" disabled={submitting} onClick={submit} className="rounded-lg bg-blue-600 px-4 py-3 text-white">{submitting?"提出を確認中…":"提出する"}</button></div></dialog>
+    <dialog ref={dialog} onCancel={event=>{if(submitting)event.preventDefault();}} className="m-auto w-[calc(100%_-_2rem)] max-w-md rounded-xl border border-slate-200 bg-white p-6  backdrop:bg-slate-950/40" aria-labelledby="mock-submit-title"><h2 id="mock-submit-title" className="text-lg font-black">この回答で提出しますか？</h2><p className="mt-4 text-sm">未回答{attempt.answers.filter(a=>a.selectedChoiceId===null).length}問。提出後は回答を変更できません。</p><div className="mt-6 flex flex-wrap justify-end gap-3"><button type="button" autoFocus disabled={submitting} onClick={()=>dialog.current?.close()} className="rounded-lg border px-4 py-3">キャンセル</button><button type="button" disabled={submitting} onClick={submit} className="rounded-lg bg-blue-600 px-4 py-3 text-white">{submitting?"提出を確認中…":"提出する"}</button></div></dialog>
   </>;
 }

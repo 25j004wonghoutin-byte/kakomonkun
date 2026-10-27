@@ -3,8 +3,7 @@ import { StudentShell } from "@/components/student-shell";
 export default function ProfileLoading() {
   return (
     <StudentShell>
-      <div className="mx-auto w-full max-w-[1120px] animate-pulse">
-        <div className="h-3 w-20 rounded bg-blue-100" />
+      <div role="status" aria-label="学習状況を読み込み中" className="mx-auto w-full max-w-[1120px]">
         <div className="mt-3 h-9 w-44 rounded bg-slate-200" />
         <div className="mt-7 h-32 rounded-lg border border-slate-200 bg-white" />
         <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">

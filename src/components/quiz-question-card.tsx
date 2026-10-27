@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { QuestionImage } from "@/components/question-image";
 import type { ReactNode } from "react";
 import { QuestionChoiceContent } from "@/components/question-choice-content";
 import { AnswerStateMark } from "@/components/ui";
@@ -79,19 +79,15 @@ export function QuizQuestionCard({
   );
 
   return (
-    <section className="min-w-0 rounded-lg border border-slate-200 bg-white p-5 shadow-[0_14px_40px_-24px_rgba(15,23,42,0.55)] sm:p-7">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-xl font-black text-slate-950">{title}</h1>
+    <section className="question-card">
+      <div className="question-heading">
+        <div>
+          <h1>{title}</h1>
           {question ? (
-            <>
-              <span className="rounded-md bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700">
-                {question.exam.name}
-              </span>
-              <span className="rounded-md bg-purple-100 px-3 py-1 text-xs font-bold text-purple-700">
-                {question.category.name}
-              </span>
-            </>
+            <p className="question-meta">
+              <span>{question.exam.name}</span>
+              <span>{question.category.name}</span>
+            </p>
           ) : null}
         </div>
         {headerAction}
@@ -127,22 +123,16 @@ export function QuizQuestionCard({
           ) : null}
 
           {question.imagePath ? (
-            <div className="mt-5 overflow-hidden rounded-lg border border-slate-200 bg-white p-2 sm:p-3">
-              <Image
+            <div className="question-body">
+              <QuestionImage
                 src={question.imagePath}
-                alt={question.source?.label ?? "問題画像"}
-                width={1400}
-                height={900}
-                loading="eager"
-                className={`mx-auto h-auto max-w-full object-contain ${
-                  officialScan ? "w-full" : "max-h-[520px] w-auto"
-                }`}
+                alt={officialScan ? question.text : "問題の図"}
               />
             </div>
           ) : null}
 
           {question.source ? (
-            <p className="mt-2 text-right text-xs font-bold text-slate-500">
+            <p className="question-source">
               出典：
               <a
                 href={question.source.url}
@@ -175,26 +165,26 @@ export function QuizQuestionCard({
                   aria-pressed={chosen}
                   disabled={Boolean(answerResult) || answering}
                   onClick={() => onSelectChoice(choice.id)}
-                  className={`flex min-h-12 w-full items-center gap-3 text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
+                  className={`relative flex min-h-12 w-full items-center gap-3 rounded-md border py-3 text-left text-sm font-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
+                    officialScan ? "justify-center px-12" : "px-3 pr-14"
+                  } ${
                     correct
-                      ? "rounded-md border border-emerald-200 bg-emerald-50 px-3 font-bold text-slate-900"
+                      ? "border-emerald-200 bg-emerald-50 text-slate-900"
                       : wrong
-                        ? "rounded-md border border-rose-200 bg-rose-50 px-3 font-bold text-slate-900"
+                        ? "border-rose-200 bg-rose-50 text-slate-900"
                         : officialScan
                           ? chosen
-                            ? "justify-center rounded-md border border-blue-500 bg-blue-50 px-3 py-3 font-black text-blue-950 ring-2 ring-blue-100"
-                            : "justify-center rounded-md border border-slate-200 px-3 py-3 font-black text-slate-700 hover:border-blue-300 hover:bg-blue-50"
-                          : "px-2 py-3 text-left text-slate-700 hover:bg-blue-50 disabled:hover:bg-transparent"
-                  } ${animateAnswerResult && correct ? "answer-choice-correct-motion" : ""} ${
-                    animateAnswerResult && delayedCorrectReveal ? "answer-choice-correct-delay" : ""
-                  } ${animateAnswerResult && wrong ? "answer-choice-wrong-motion" : ""}`}
+                            ? "border-blue-500 bg-blue-50 text-blue-950 ring-2 ring-blue-100"
+                            : "border-slate-200 text-slate-700 hover:border-blue-300 hover:bg-blue-50"
+                          : "border-transparent text-slate-700 hover:bg-blue-50 disabled:hover:bg-transparent"
+                  }`}
                 >
                   {officialScan ? (
                     <span className="text-base font-black">{choice.label}</span>
                   ) : (
                     <>
                       <span
-                        className={`grid size-5 shrink-0 place-items-center rounded-full border text-[11px] ${
+                        className={`grid size-5 shrink-0 place-items-center rounded-full border text-xs ${
                           chosen && !answerResult
                             ? "border-blue-600 bg-blue-600 text-white"
                             : "border-slate-400 bg-white text-slate-500"
@@ -211,7 +201,7 @@ export function QuizQuestionCard({
                     </>
                   )}
                   {correct || wrong ? (
-                    <span className="ml-auto">
+                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
                       <AnswerStateMark
                         state={correct ? "correct" : "incorrect"}
                         animate={animateAnswerResult}
@@ -225,15 +215,12 @@ export function QuizQuestionCard({
           </div>
 
           {!answerResult ? (
-            <div className="mt-7 flex flex-col items-start gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm font-bold text-slate-500">
-                選択肢を選んでから回答してください。
-              </p>
+            <div className="mt-7 flex justify-end border-t border-slate-200 pt-6">
               <button
                 type="button"
                 disabled={!selectedChoiceId || answering}
                 onClick={onSubmit}
-                className="inline-flex h-11 min-w-36 items-center justify-center rounded-md bg-blue-600 px-5 text-sm font-black text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 motion-reduce:transform-none disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
+                className="app-primary min-w-36"
               >
                 {answering ? "判定中..." : "回答する"}
               </button>

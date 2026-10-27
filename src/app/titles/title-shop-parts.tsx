@@ -75,7 +75,7 @@ export function TitleShopCard({ title, totalPoints, onSelect }: { title: TitleSh
   const action = titleShopAction(title, totalPoints);
   const label = title.owned ? "所持済み" : title.state === "starter" ? "初期称号" : action === "condition" ? "購入条件未達成" : action === "none" ? "ポイント不足" : "購入する";
   return (
-    <article tabIndex={-1} className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+    <article tabIndex={-1} className="overflow-hidden rounded-xl border border-slate-200 bg-white ">
       <button type="button" disabled={action === "none"} onClick={(event) => onSelect(title, event.currentTarget)} className="flex min-h-32 w-full flex-col text-left transition enabled:hover:border-blue-400 enabled:hover:bg-blue-50/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 disabled:cursor-default">
         <span className="flex w-full flex-1 items-start justify-between gap-4 px-5 py-4">
           <span role="heading" aria-level={3} className="font-black leading-6 text-slate-950">{title.name}</span>
@@ -97,7 +97,7 @@ export function TitleShopDialog({ title, kind, totalPoints, submitting, error, o
 }) {
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/45 p-4" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
-      <section ref={dialogRef} role="dialog" tabIndex={-1} aria-modal="true" aria-labelledby="title-dialog-title" aria-describedby="title-dialog-description" className="max-h-[90dvh] w-full max-w-md overflow-y-auto rounded-xl bg-white shadow-2xl">
+      <section ref={dialogRef} role="dialog" tabIndex={-1} aria-modal="true" aria-labelledby="title-dialog-title" aria-describedby="title-dialog-description" className="max-h-[90dvh] w-full max-w-md overflow-y-auto rounded-xl bg-white ">
         <header className="flex items-center justify-between gap-4 border-b border-slate-200 px-5 py-4">
           <h2 id="title-dialog-title" className="font-black text-slate-950">{kind === "condition" ? "称号の購入条件" : "称号の購入確認"}</h2>
           <button type="button" aria-label="閉じる" onClick={onClose} disabled={submitting} className="grid size-9 place-items-center rounded-full border border-slate-200 text-xl text-slate-500 hover:bg-slate-50 disabled:opacity-50">×</button>

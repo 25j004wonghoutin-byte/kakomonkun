@@ -126,13 +126,9 @@ export default function RandomQuizPage() {
   return (
     <StudentShell userName={displayName} points={points}>
       <div className="mx-auto max-w-[760px] min-w-0">
-        <p className="mb-6 text-[15px] font-black text-slate-900">
-          好きなペースで、いろいろな過去問に挑戦しましょう。
-        </p>
-
         <QuizQuestionCard
           title="ランダム出題"
-          description="ポイント対象外。回答後は何度でも次の問題に進めます。"
+          description="ポイント対象外"
           question={question}
           selectedChoiceId={selectedChoiceId}
           answerResult={answerResult}
@@ -152,11 +148,6 @@ export default function RandomQuizPage() {
               別の問題を表示
             </button>
           }
-          resultNotice={
-            <div className="mt-5 rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-600">
-              この回答によるポイント加算はありません。
-            </div>
-          }
           resultActions={
             <>
               <button
@@ -168,7 +159,7 @@ export default function RandomQuizPage() {
               </button>
               <Link
                 href="/practice"
-                className="inline-flex h-12 min-w-48 items-center justify-center rounded-md bg-blue-600 px-7 text-sm font-black text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                className="inline-flex h-12 min-w-48 items-center justify-center rounded-md bg-blue-600 px-7 text-sm font-black text-white   transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
                 過去問練習へ
               </Link>

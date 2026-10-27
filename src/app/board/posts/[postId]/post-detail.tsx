@@ -158,8 +158,7 @@ export function PostDetail({
 
   return (
     <div className="mx-auto w-full max-w-[960px]">
-      <p className="mb-2 text-sm font-black tracking-[0.14em] text-blue-600">COMMUNITY</p>
-      <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+      <section className="overflow-hidden rounded-xl border border-slate-200 bg-white ">
         <header className="flex h-16 items-center gap-4 border-b border-slate-200 px-4 sm:px-6">
           <Link href="/board" aria-label="掲示板へ戻る" className="grid size-9 place-items-center rounded-full text-2xl text-slate-700 hover:bg-slate-100">
             ←

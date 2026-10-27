@@ -10,7 +10,7 @@ const score = (value: number | null) => value === null ? "—" : value.toFixed(2
 export function MockExamStatus({ data }: { data: TeacherMockView }) {
   const href = (cursor?: string) => `/teacher/mock-exams?examCode=${data.examCode}&month=${data.month}${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ""}`;
   return <div className="mx-auto w-full max-w-[1120px] space-y-6">
-    <header><p className="text-xs font-black tracking-[0.18em] text-blue-600">MONTHLY MOCK STATUS</p><h1 className="mt-2 text-3xl font-black text-[#071d36]">模擬試験状況</h1><p className="mt-3 text-sm leading-6 text-slate-500">月ごとの受験状況と結果を確認できます。採点・点数・受験回数の変更はできません。</p></header>
+    <header><h1 className="text-3xl font-black text-[#242823]">模擬試験状況</h1></header>
     <form action="/teacher/mock-exams" method="get" autoComplete="off" className="flex flex-wrap items-end gap-4 rounded-xl border border-slate-200 bg-white p-5">
       <label className="flex min-w-0 flex-col gap-2 text-sm font-bold">試験種別<select name="examCode" defaultValue={data.examCode} className="min-h-11 max-w-full rounded-lg border border-slate-300 px-3"><option value="it_passport">ITパスポート</option><option value="fe">基本情報（科目A）</option></select></label>
       <label className="flex flex-col gap-2 text-sm font-bold">対象月<input type="month" name="month" required defaultValue={data.month} min="0001-01" className="min-h-11 rounded-lg border border-slate-300 px-3" /></label>

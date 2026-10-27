@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { NotificationBell } from "@/components/notification-bell";
 import { TitleActivityTracker } from "@/components/title-activity-tracker";
 import { StudentAvatar as ProfileImage } from "@/components/student-avatar";
@@ -31,6 +31,7 @@ const navigation: NavigationItem[] = [
   { label: "ホーム", href: "/", icon: "home" },
   { label: "ランダム出題", href: "/random-quiz", icon: "shuffle" },
   { label: "過去問練習", href: "/practice", icon: "book" },
+  { label: "復習ノート", href: "/review-notebook", icon: "book" },
   { label: "模擬試験", href: "/mock-exam", icon: "clipboard" },
   { label: "ランキング", href: "/ranking", icon: "crown" },
   { label: "称号ショップ", href: "/titles", icon: "medal" },
@@ -57,6 +58,27 @@ export function StudentShell({
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [desktopSidebarVisible, setDesktopSidebarVisible] = useState(true);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const accountMenu = useRef<HTMLDivElement>(null);
+  const accountTrigger = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!userMenuOpen) return;
+    function dismissOutside(event: PointerEvent) {
+      if (!accountMenu.current?.contains(event.target as Node)) setUserMenuOpen(false);
+    }
+    function dismissWithEscape(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      setUserMenuOpen(false);
+      accountTrigger.current?.focus();
+    }
+    document.addEventListener("pointerdown", dismissOutside);
+    document.addEventListener("keydown", dismissWithEscape);
+    return () => {
+      document.removeEventListener("pointerdown", dismissOutside);
+      document.removeEventListener("keydown", dismissWithEscape);
+    };
+  }, [userMenuOpen]);
+
 
   useEffect(() => {
     if (userName !== undefined && avatarUrl !== undefined) {
@@ -102,35 +124,25 @@ export function StudentShell({
   }
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#f5f7fb] text-slate-900">
+    <div className="app-shell" data-sidebar-collapsed={!desktopSidebarVisible}>
+      <a href="#main-content" className="app-skip-link">本文へ移動</a>
       <TitleActivityTracker />
-      <div className="flex min-h-screen">
+      <div className="app-frame">
         <aside
-          className={`fixed inset-y-0 left-0 z-30 w-[230px] shrink-0 bg-[#031f3d] text-white shadow-2xl transition-all duration-300 lg:static lg:translate-x-0 ${
-            mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } ${
-            desktopSidebarVisible
-              ? "lg:w-[230px]"
-              : "lg:w-0 lg:overflow-hidden lg:shadow-none"
-          }`}
+          className={`app-sidebar ${mobileSidebarOpen ? "app-sidebar--open" : ""} ${desktopSidebarVisible ? "" : "app-sidebar--collapsed"}`}
         >
-          <div className="flex h-full flex-col">
-            <Link href="/" className="flex gap-3 px-6 pb-7 pt-8">
-              <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-white/10 text-2xl">
+          <div className="app-sidebar-inner">
+            <Link href="/" className="app-brand">
+              <span className="app-brand-mark">
                 <TrophyMark />
               </span>
               <span>
-                <span className="block text-lg font-black leading-5">目指せ合格!</span>
-                <span className="mt-0.5 block text-lg font-black leading-5">過去問くん</span>
-                <span className="mt-2 block text-[11px] font-semibold leading-5 text-blue-100">
-                  ITパスポート・基本情報技術者試験
-                  <br />
-                  対策学習アプリ
-                </span>
+                <span className="app-brand-slogan">目指せ合格!</span>
+                <span className="app-brand-name">過去問くん</span>
               </span>
             </Link>
 
-            <nav className="space-y-2 px-4">
+            <nav aria-label="メインナビゲーション" className="app-nav">
               {navigation.map((item) => {
                 const active =
                   item.href === "/"
@@ -141,11 +153,9 @@ export function StudentShell({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex h-12 items-center gap-4 rounded-lg px-5 text-sm font-bold transition ${
-                      active
-                        ? "bg-blue-600 text-white shadow-lg shadow-blue-950/30"
-                        : "text-blue-50 hover:bg-white/10"
-                    }`}
+                    aria-current={active ? "page" : undefined}
+                    onClick={() => setMobileSidebarOpen(false)}
+                    className={`app-nav-link ${active ? "app-nav-link--active" : ""}`}
                   >
                     <AppIcon name={item.icon} className="size-5" />
                     {item.label}
@@ -160,29 +170,31 @@ export function StudentShell({
           <button
             type="button"
             aria-label="サイドバーを閉じる"
-            className="fixed inset-0 z-20 bg-slate-950/30 lg:hidden"
+            className="app-sidebar-backdrop"
             onClick={() => setMobileSidebarOpen(false)}
           />
         ) : null}
 
-        <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-10 border-b border-slate-200 bg-white">
-            <div className="flex h-[72px] items-center justify-between px-5 sm:px-7 lg:px-8">
+        <div className="app-workspace">
+          <header className="app-header">
+            <div className="app-toolbar">
               <button
                 type="button"
                 aria-label="サイドバーを表示または非表示"
                 onClick={toggleSidebar}
-                className="grid size-10 place-items-center rounded-lg text-slate-700 transition hover:bg-slate-100"
+                className="app-menu-toggle"
               >
                 <AppIcon name="menu" className="size-5" />
               </button>
 
-              <div className="flex items-center gap-4">
+              <Link href="/" className="app-mobile-brand">過去問くん</Link>
+              <div className="app-user-tools">
                 <NotificationBell />
 
-                <div className="relative">
+                <div ref={accountMenu} className="relative">
                   <button
                     type="button"
+                    ref={accountTrigger}
                     aria-label="ユーザーメニュー"
                     aria-expanded={userMenuOpen}
                     onClick={() => {
@@ -190,14 +202,14 @@ export function StudentShell({
                     }}
                     className="flex items-center gap-3 rounded-full py-1 pl-1 pr-2 transition hover:bg-slate-100"
                   >
-                    <ProfileImage avatarUrl={resolvedAvatarUrl} displayName={resolvedUserName ?? "学生"} size={44} className="border-2 border-blue-100 text-xl" fallback={<StudentAvatar />} />
+                    <ProfileImage avatarUrl={resolvedAvatarUrl} displayName={resolvedUserName ?? "学生"} size={36} className="text-xl" fallback={<StudentAvatar />} />
                     {userLoading || !resolvedUserName ? (
                       <span
                         aria-label="ユーザー情報を読み込み中"
                         className="hidden h-4 w-20 rounded-full bg-slate-200 sm:inline-block"
                       />
                     ) : (
-                      <span className="hidden text-sm font-black sm:inline">
+                      <span className="app-user-name">
                         {resolvedUserName}
                       </span>
                     )}
@@ -205,9 +217,11 @@ export function StudentShell({
                   </button>
 
                   {userMenuOpen ? (
-                    <div className="absolute right-0 mt-3 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white py-2 shadow-2xl shadow-slate-300/40">
+                    <div className="app-account-menu">
+                      <p className="app-menu-identity">{resolvedUserName ?? "学生"}</p>
                       <Link
                         href="/profile"
+                        onClick={() => setUserMenuOpen(false)}
                         className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
                       >
                         <AppIcon name="user" className="size-4" />
@@ -229,7 +243,7 @@ export function StudentShell({
             </div>
           </header>
 
-          <main className="w-full min-w-0 overflow-x-hidden px-4 py-7 sm:px-7 lg:px-8">{children}</main>
+          <main id="main-content" className="app-main">{children}</main>
         </div>
       </div>
     </div>
@@ -348,7 +362,7 @@ function StudentAvatar() {
       <circle cx="18" cy="20" r="1" fill="#111827" />
       <circle cx="24" cy="20" r="1" fill="#111827" />
       <path d="M18 25c2 1.5 4 1.5 6 0" stroke="#7c2d12" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M10 36c2-6 6-9 11-9s9 3 11 9" fill="#2563eb" />
+      <path d="M10 36c2-6 6-9 11-9s9 3 11 9" fill="var(--accent)" />
       <path d="M18 30h6l-3 4-3-4Z" fill="#fff" />
     </svg>
   );
