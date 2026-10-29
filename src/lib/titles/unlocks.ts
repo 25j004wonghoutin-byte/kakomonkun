@@ -1,8 +1,8 @@
 import type { Prisma, PrismaClient } from "../../../prisma/generated/client";
 import { createTitleUnlockNotifications } from "../notifications/write";
 import { TITLE_CATALOG } from "./catalog";
-import type { UnlockContext, UnlockSummary } from "./contract";
-import { collectTitleFacts } from "./facts";
+import type { TitleFacts, UnlockContext, UnlockSummary } from "./contract";
+import { collectTitleFacts, createActivityTitleFactsReader } from "./facts";
 import { evaluateTitleRules } from "./rules";
 
 export async function lockTitleOwner(tx: Prisma.TransactionClient, userId: string): Promise<void> {
@@ -24,9 +24,32 @@ export async function syncTitleUnlocks(
 ): Promise<UnlockSummary> {
   await lockTitleOwner(tx, userId);
   if (!await isActiveStudent(tx, userId)) return { newlyUnlockedKeys: [] };
-  const facts = await collectTitleFacts(tx, userId, context.now);
+  return applyTitleUnlocks(tx, userId, context, await collectTitleFacts(tx, userId, context.now));
+}
+
+/** The owner remains locked for this activity transaction, including both evaluations. */
+export async function createActivityTitleUnlockSync(tx: Prisma.TransactionClient, userId: string, now: Date) {
+  await lockTitleOwner(tx, userId);
+  if (!await isActiveStudent(tx, userId)) return null;
+  const readFacts = createActivityTitleFactsReader(tx, userId, now);
+  const eligibleKeys = new Set<string>();
+  return async (options?: { defer?: boolean }) => {
+    const facts = await readFacts();
+    for (const key of evaluateTitleRules(facts, TITLE_CATALOG)) eligibleKeys.add(key);
+    if (options?.defer) return { newlyUnlockedKeys: [] };
+    return applyTitleUnlocks(tx, userId, { now, source: "event" }, facts, [...eligibleKeys]);
+  };
+}
+
+async function applyTitleUnlocks(
+  tx: Prisma.TransactionClient,
+  userId: string,
+  context: UnlockContext,
+  facts: TitleFacts,
+  eligibleKeys?: string[],
+): Promise<UnlockSummary> {
   facts.nameChanged = context.displayNameChanged === true;
-  const eligible = evaluateTitleRules(facts, TITLE_CATALOG);
+  const eligible = eligibleKeys ?? evaluateTitleRules(facts, TITLE_CATALOG);
   if (eligible.length === 0) return { newlyUnlockedKeys: [] };
   const [titles, existing, owned] = await Promise.all([
     tx.title.findMany({ where: { catalogKey: { in: eligible }, isActive: true }, select: { id: true, catalogKey: true } }),

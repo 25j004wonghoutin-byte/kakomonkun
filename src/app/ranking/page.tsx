@@ -15,5 +15,5 @@ export default async function RankingPage({searchParams}:{searchParams:Promise<{
   let initial,error="";
   try{initial=await getMockRanking(prisma,{id:user.id,roleName:user.role.name,status:user.status,deletedAt:user.deletedAt},examCode as ExamCode,month);}
   catch(cause){error=cause instanceof MockError?cause.message:"ランキングを取得できませんでした。";}
-  return <StudentShell>{initial?<Ranking key={`${examCode}:${month}`} initial={initial}/>:<ErrorCard message={error}/>}</StudentShell>;
+  return <StudentShell userName={user.displayName} avatarUrl={user.studentProfile?.avatarUrl ?? null}>{initial?<Ranking key={`${examCode}:${month}`} initial={initial}/>:<ErrorCard message={error}/>}</StudentShell>;
 }

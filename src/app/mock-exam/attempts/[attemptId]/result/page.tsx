@@ -14,5 +14,5 @@ export default async function MockResultPage({params}:{params:Promise<{attemptId
   let result,error="";
   try{result=await getMockResult(prisma,{id:user.id,roleName:user.role.name,status:user.status,deletedAt:user.deletedAt},attemptId);}
   catch(cause){error=cause instanceof MockError?cause.message:"結果を読み込めませんでした。";}
-  return <StudentShell>{result?<MockResult result={result}/>:<ErrorCard message={error}/>}</StudentShell>;
+  return <StudentShell userName={user.displayName} avatarUrl={user.studentProfile?.avatarUrl ?? null}>{result?<MockResult result={result}/>:<ErrorCard message={error}/>}</StudentShell>;
 }

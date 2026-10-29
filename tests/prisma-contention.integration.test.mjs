@@ -9,6 +9,8 @@ test("a queued transaction survives a four-second single-connection contention",
 }, async () => {
   const config = loadTestConfig();
   const originalUrl = process.env.DATABASE_URL;
+  const originalMax = process.env.KAKOMON_DATABASE_POOL_MAX;
+  process.env.KAKOMON_DATABASE_POOL_MAX = "1";
   process.env.DATABASE_URL = config.DATABASE_URL;
   let prisma;
   try {
@@ -38,6 +40,8 @@ test("a queued transaction survives a four-second single-connection contention",
     await prisma?.$disconnect();
     if (originalUrl === undefined) delete process.env.DATABASE_URL;
     else process.env.DATABASE_URL = originalUrl;
+    if (originalMax === undefined) delete process.env.KAKOMON_DATABASE_POOL_MAX;
+    else process.env.KAKOMON_DATABASE_POOL_MAX = originalMax;
     if (globalThis.prisma === prisma) delete globalThis.prisma;
   }
 });

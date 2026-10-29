@@ -15,5 +15,5 @@ export default async function MockExamPage({searchParams}:{searchParams:Promise<
   let initial,error="";
   try{initial=await getMockList(prisma,{id:user.id,roleName:user.role.name,status:user.status,deletedAt:user.deletedAt},month);}
   catch(cause){error=cause instanceof MockError?cause.message:"模擬試験を読み込めませんでした。";}
-  return <StudentShell>{initial?<MockExamList initial={initial}/>:<ErrorCard message={error}/>}</StudentShell>;
+  return <StudentShell userName={user.displayName} avatarUrl={user.studentProfile?.avatarUrl ?? null}>{initial?<MockExamList initial={initial}/>:<ErrorCard message={error}/>}</StudentShell>;
 }

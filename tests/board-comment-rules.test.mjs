@@ -13,6 +13,7 @@ const originalResolveFilename = Module._resolveFilename;
 const originalLoad = Module._load;
 
 Module._load = function loadBoardCommentDependency(request, ...args) {
+  if (request === "../../../prisma/generated/client") return { Prisma: { sql: require("@prisma/client/runtime/client").sqltag } };
   if (request === "@/lib/prisma") {
     return { prisma: {} };
   }

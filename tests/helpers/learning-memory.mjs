@@ -1,3 +1,4 @@
+import { titleHistoryMemory } from "./title-history-memory.mjs";
 import { makeTitleMemory } from "./title-memory.mjs";
 import { TITLE_CATALOG } from "../../src/lib/titles/catalog.ts";
 
@@ -20,6 +21,9 @@ export function makeLearningMemory(overrides = {}) {
   };
   const txFor = (state) => {
     const tx = makeTitleMemory(state).tx;
+    const raw = tx.$queryRaw;
+    tx.$queryRaw = (query, ...values) => query.sql?.includes("title-history")
+      ? Promise.resolve([titleHistoryMemory(state, query.values[0], query.values[1])]) : raw(query, ...values);
     const question = (id) => state.questions.find((row) => row.id === id);
     const enrich = (row) => ({ ...row, question: question(row.questionId) });
     const matchesReview = (row, where) => {

@@ -35,7 +35,7 @@ export default async function ProfileLearningPage({
   }
 
   return (
-    <StudentShell userName={user.displayName} points={user.studentProfile.totalPoints}>
+    <StudentShell userName={user.displayName} avatarUrl={user.studentProfile?.avatarUrl ?? null} points={user.studentProfile.totalPoints}>
       <div className="mx-auto w-full max-w-[1120px] min-w-0">
         <div className="mb-5">
           <div className="mb-2 flex items-center gap-2 text-xs font-black text-slate-500">

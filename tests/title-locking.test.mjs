@@ -12,7 +12,9 @@ test("concurrent cross-user replies can both save recipient FK notifications", a
   const run = async (id, recipient) => {
     const db = makeLearningMemory({ user: { id, role: { name: "student" }, status: "active", deletedAt: null } });
     const tx = db.tx;
+    const readRaw=tx.$queryRaw;
     tx.$queryRaw = async (strings, ...values) => {
+      if(strings.sql?.includes("title-history"))return readRaw(strings,...values);
       const sql = strings.join("?");
       if (sql.includes("public.users")) ownerLocks.set(values[0], /FOR NO KEY UPDATE/.test(sql) ? "NO KEY UPDATE" : "UPDATE");
       return [{ id }];

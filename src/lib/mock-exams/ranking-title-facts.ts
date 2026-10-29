@@ -10,11 +10,15 @@ export function emptyRankingTitleFacts(): RankingTitleFacts {
 
 /** 確定済みの新形式順位だけを使い、試験別の完全一致回数と過去最大の暦月連続を集計する。 */
 export async function collectRankingTitleFacts(tx: Prisma.TransactionClient, userId: string): Promise<RankingTitleFacts> {
-  const facts = emptyRankingTitleFacts();
   const rows = await tx.monthlyRanking.findMany({
     where: { userId, isFinal: true, mockExam: { rankingFinalizedAt: { not: null }, exam: { code: { in: ["it_passport", "fe"] } } } },
     select: { rankNo: true, targetMonth: true, mockExam: { select: { exam: { select: { code: true } } } } },
   });
+  return rankingTitleFactsFromRows(rows);
+}
+
+export function rankingTitleFactsFromRows(rows: ReadonlyArray<{ rankNo: number; targetMonth: Date; mockExam: { exam: { code: string } } }>): RankingTitleFacts {
+  const facts = emptyRankingTitleFacts();
   const topMonths = { it_passport: new Set<number>(), fe: new Set<number>() };
   for (const row of rows) {
     const code = row.mockExam.exam.code;

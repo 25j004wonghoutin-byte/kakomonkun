@@ -40,6 +40,6 @@ export default async function NotificationsPage() {
   return teacher ? (
     <TeacherShell>{content}</TeacherShell>
   ) : (
-    <StudentShell userName={user.displayName}>{content}</StudentShell>
+    <StudentShell userName={user.displayName} avatarUrl={user.studentProfile?.avatarUrl ?? null}>{content}</StudentShell>
   );
 }

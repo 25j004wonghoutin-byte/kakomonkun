@@ -1,3 +1,4 @@
+import { titleHistoryMemory } from "./title-history-memory.mjs";
 import { TITLE_CATALOG } from "../../src/lib/titles/catalog.ts";
 
 // This boundary fake is not evidence of real PostgreSQL concurrency or lock enforcement.
@@ -18,7 +19,10 @@ export function makeTitleMemory(overrides = {}) {
     return true;
   });
   const txFor = (draft) => ({
-    $queryRaw: async (strings) => { draft.locks.push(strings.join("?")); return [{ id: "student" }]; },
+    $queryRaw: async (query) => {
+      if (query.sql?.includes("title-history")) return [titleHistoryMemory(draft, query.values[0], query.values[1])];
+      draft.locks.push(query.join("?")); return [{ id: "student" }];
+    },
     user: { findUnique: async () => draft.user },
     studentProfile: {
       findUnique: async () => draft.profile,

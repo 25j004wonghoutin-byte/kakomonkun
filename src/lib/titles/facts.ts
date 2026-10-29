@@ -3,8 +3,7 @@ import { getTokyoDate } from "../tokyo-date";
 import type { TitleCategory, TitleFacts } from "./contract";
 import { maxDateRun, maxPerfectPracticeRun, maxRandomCorrectRun } from "./rules";
 import { readMockEnvironment } from "../mock-exams/environment";
-import { collectMockLearningFacts } from "../mock-exams/title-facts";
-import { collectRankingTitleFacts, emptyRankingTitleFacts } from "../mock-exams/ranking-title-facts";
+import { readTitleHistory } from "./history";
 
 const dateOnly = (date: Date) => date.toISOString().slice(0, 10);
 const dayNumber = (day: string) => Date.parse(`${day}T00:00:00Z`) / 86_400_000;
@@ -15,22 +14,31 @@ export async function collectTitleFacts(
   now: Date,
   options?: { mockExamsEnabled: boolean },
 ): Promise<TitleFacts> {
-  const mockEnabled=options?.mockExamsEnabled??readMockEnvironment(process.env).enabled;
-  const mock=mockEnabled?await collectMockLearningFacts(tx,userId):{answerCount:0,categoryCorrect:{technology:0,management:0,strategy:0}};
-  const ranking=mockEnabled?await collectRankingTitleFacts(tx,userId):emptyRankingTitleFacts();
-  const answerSelect = { isCorrect: true, answeredAt: true, question: { select: { category: { select: { code: true } } } } } as const;
-  const [profile, daily, random, practiceAnswers, sessions, activities, navigation, owned, boardPostCount, boardCommentCount] = await Promise.all([
-    tx.studentProfile.findUnique({ where: { userId }, select: { titleTrackingStartedAt: true } }),
-    tx.dailyQaAnswer.findMany({ where: { userId }, select: { ...answerSelect, answerDate: true } }),
-    tx.randomQuizAttempt.findMany({ where: { userId, answeredAt: { not: null } }, select: { ...answerSelect, answerDate: true }, orderBy: { answerSequence: "asc" } }),
-    tx.practiceAnswer.findMany({ where: { session: { userId } }, select: answerSelect }),
-    tx.practiceSession.findMany({ where: { userId, status: "completed" }, select: { questionCount: true, answeredCount: true, correctCount: true }, orderBy: [{ completedAt: "asc" }, { id: "asc" }] }),
+  return collectFacts(tx, userId, now, () => readStableFacts(tx, userId, options));
+}
+
+/** Only share history within one locked activity transaction; days and navigation stay fresh. */
+export function createActivityTitleFactsReader(tx: Prisma.TransactionClient, userId: string, now: Date) {
+  let history: ReturnType<typeof readStableFacts> | undefined;
+  return () => collectFacts(tx, userId, now, () => history ??= readStableFacts(tx, userId));
+}
+
+async function readStableFacts(tx: Prisma.TransactionClient, userId: string, options?: { mockExamsEnabled: boolean }) {
+  return readTitleHistory(tx, userId, options?.mockExamsEnabled ?? readMockEnvironment(process.env).enabled);
+}
+
+async function collectFacts(
+  tx: Prisma.TransactionClient,
+  userId: string,
+  now: Date,
+  readHistory: () => ReturnType<typeof readStableFacts>,
+): Promise<TitleFacts> {
+  const [history, activities, navigation] = await Promise.all([
+    readHistory(),
     tx.studentActivityDay.findMany({ where: { userId }, select: { activityDate: true, hasAnswered: true } }),
     tx.studentNavigationProgress.findMany({ where: { userId }, select: { roundTrips: true } }),
-    tx.userTitle.findMany({ where: { userId }, select: { titleId: true, title: { select: { catalogKey: true } } } }),
-    tx.boardPost.count({ where: { authorId: userId } }),
-    tx.boardComment.count({ where: { authorId: userId } }),
   ]);
+  const { profile, daily, random, practiceAnswers, sessions, owned, boardPostCount, boardCommentCount, mock, ranking } = history;
 
   const categoryCorrect: Record<TitleCategory, number> = { ...mock.categoryCorrect };
   const answers = [...daily, ...random, ...practiceAnswers];

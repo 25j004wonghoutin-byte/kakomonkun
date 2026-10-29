@@ -14,6 +14,16 @@ export type MeActor = {
   } | null;
 };
 
+export type StudentIdentity = { id: string; displayName: string; avatarUrl: string | null };
+
+export function getStudentIdentity(user: MeActor): StudentIdentity {
+  return {
+    id: user.id,
+    displayName: displayNameForRole(user.role.name, user.displayName),
+    avatarUrl: user.role.name === "student" ? user.studentProfile?.avatarUrl ?? null : null,
+  };
+}
+
 export type MePayload = {
   id: string;
   displayName: string;

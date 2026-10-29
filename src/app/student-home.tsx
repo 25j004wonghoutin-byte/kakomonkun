@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { HomeStudyTotals } from "@/components/home-study-totals";
-import type { MePayload } from "@/lib/me";
+import type { MePayload, StudentIdentity } from "@/lib/me";
 import { createMeLoader, mergeMePoints, observeMeRefresh } from "@/lib/me-client";
 import { AiExplanationMarkdown } from "@/components/ai-explanation-markdown";
 import {
@@ -50,7 +50,7 @@ async function fetchDailyQuestion() {
   return (await response.json()) as DailyQuestionResponse;
 }
 
-export function StudentHome() {
+export function StudentHome({ initialIdentity }: { initialIdentity: StudentIdentity }) {
   const [me, setMe] = useState<MePayload | null>(null);
   const [meLoading, setMeLoading] = useState(true);
   const [meError, setMeError] = useState("");
@@ -178,11 +178,12 @@ export function StudentHome() {
     }
   }
 
-  const displayName = me?.displayName;
+  const displayName = me?.displayName ?? initialIdentity.displayName;
+  const avatarUrl = me ? me.profile?.avatarUrl ?? null : initialIdentity.avatarUrl;
   const points = me?.profile?.totalPoints ?? 0;
 
   return (
-    <StudentShell userName={displayName} points={points}>
+    <StudentShell userName={displayName} avatarUrl={avatarUrl} points={points}>
       <div className="min-w-0">
         <div className="study-grid">
           <QuizQuestionCard

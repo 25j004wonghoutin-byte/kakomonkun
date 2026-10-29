@@ -13,7 +13,7 @@ export default async function MockAttemptPage({params}:{params:Promise<{attemptI
   const {attemptId}=await params;
   let view;
   try{view=await getMockAttempt(prisma,{id:user.id,roleName:user.role.name,status:user.status,deletedAt:user.deletedAt},attemptId);}
-  catch(cause){return <StudentShell><ErrorCard message={cause instanceof MockError?cause.message:"受験を読み込めませんでした。"}/></StudentShell>;}
+  catch(cause){return <StudentShell userName={user.displayName} avatarUrl={user.studentProfile?.avatarUrl ?? null}><ErrorCard message={cause instanceof MockError?cause.message:"受験を読み込めませんでした。"}/></StudentShell>;}
   if(view.kind==="result")redirect(`/mock-exam/attempts/${view.result.attemptId}/result`);
-  return <StudentShell><MockAttempt key={view.attempt.id} initial={view.attempt}/></StudentShell>;
+  return <StudentShell userName={user.displayName} avatarUrl={user.studentProfile?.avatarUrl ?? null}><MockAttempt key={view.attempt.id} initial={view.attempt}/></StudentShell>;
 }

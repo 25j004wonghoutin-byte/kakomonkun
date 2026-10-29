@@ -33,3 +33,11 @@ test("missing student profile stays null without qualification writes", async ()
   const response = await createMeHandler({ getUser: async () => ({ ...student, studentProfile: null }), countOwnedTitles: async () => { throw new Error("must not count"); } })();
   assert.equal((await response.json()).profile, null);
 });
+
+test("server identity exposes only the signed-in student's header fields", async () => {
+  const identity = await import("../src/lib/me.ts");
+  assert.equal(typeof identity.getStudentIdentity, "function");
+  assert.deepEqual(identity.getStudentIdentity(student), { id: student.id, displayName: "あおい", avatarUrl: null });
+  assert.deepEqual(identity.getStudentIdentity({ ...student, studentProfile: null }), { id: student.id, displayName: "あおい", avatarUrl: null });
+  assert.deepEqual(identity.getStudentIdentity({ ...student, role: { name: "teacher" } }), { id: student.id, displayName: "管理者", avatarUrl: null });
+});

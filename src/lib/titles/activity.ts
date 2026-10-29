@@ -1,7 +1,7 @@
 import type { Prisma } from "../../../prisma/generated/client";
 import { getTokyoDate } from "../tokyo-date";
 import type { ActivityInput } from "./contract";
-import { lockTitleOwner, syncTitleUnlocks } from "./unlocks";
+import { createActivityTitleUnlockSync } from "./unlocks";
 
 export type NavigationState = { lastSequence: number; stage: "idle" | "home" | "profile"; roundTrips: number };
 
@@ -20,14 +20,13 @@ export function advanceNavigation(state: NavigationState, visit: { sequence: num
 }
 
 export async function recordTitleActivity(tx: Prisma.TransactionClient, userId: string, input: ActivityInput): Promise<void> {
-  await lockTitleOwner(tx, userId);
-  const user = await tx.user.findUnique({ where: { id: userId }, select: { status: true, deletedAt: true, role: { select: { name: true } } } });
-  if (user?.role.name !== "student" || user.status !== "active" || user.deletedAt !== null) return;
+  const syncUnlocks = await createActivityTitleUnlockSync(tx, userId, input.now);
+  if (!syncUnlocks) return;
   const profile = await tx.studentProfile.findUnique({ where: { userId }, select: { titleTrackingStartedAt: true } });
   if (!profile) return;
   if (profile.titleTrackingStartedAt === null) await tx.studentProfile.update({ where: { userId }, data: { titleTrackingStartedAt: input.now } });
   // 現在日の保存前に、閉じた無回答日・観測開始後の空白を評価する。
-  await syncTitleUnlocks(tx, userId, { now: input.now, source: "event" });
+  await syncUnlocks({ defer: true });
   const activityDate = new Date(`${getTokyoDate(input.now)}T00:00:00.000Z`);
   await tx.studentActivityDay.upsert({
     where: { userId_activityDate: { userId, activityDate } },
@@ -41,5 +40,5 @@ export async function recordTitleActivity(tx: Prisma.TransactionClient, userId: 
     const after = advanceNavigation(before, input.navigation);
     if (after !== before) await tx.studentNavigationProgress.upsert({ where: { userId_tabId: key }, create: { ...key, ...after }, update: after });
   }
-  await syncTitleUnlocks(tx, userId, { now: input.now, source: "event" });
+  await syncUnlocks();
 }
