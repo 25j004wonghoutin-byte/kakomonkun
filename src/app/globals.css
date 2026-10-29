@@ -128,6 +128,7 @@ dialog::backdrop { background: rgb(29 36 30 / .35); }
 .app-nav-link svg { flex: none; width: 18px; height: 18px; }
 .app-nav-link:hover { background: var(--surface); color: var(--text); }
 .app-nav-link--active { background: var(--active); color: var(--text); font-weight: 600; }
+.app-nav-link:has([data-navigation-pending="true"]) { background: var(--active); color: var(--text); }
 .app-sidebar-backdrop { position: fixed; inset: 0; z-index: 20; background: rgb(29 36 30 / .28); border: 0; }
 .app-workspace { min-width: 0; }
 .app-header { position: sticky; top: 0; z-index: 15; background: var(--ground); border-bottom: 1px solid var(--border); }

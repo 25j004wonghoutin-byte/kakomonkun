@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { NotificationBell } from "@/components/notification-bell";
+import { NavigationPendingIndicator } from "@/components/navigation-pending-indicator";
 import { TitleActivityTracker } from "@/components/title-activity-tracker";
 import { StudentAvatar as ProfileImage } from "@/components/student-avatar";
 
@@ -44,12 +45,14 @@ type StudentShellProps = {
   userName?: string;
   avatarUrl?: string | null;
   points?: number;
+  isLoading?: boolean;
 };
 
 export function StudentShell({
   children,
   userName,
   avatarUrl,
+  isLoading = false,
 }: StudentShellProps) {
   const pathname = usePathname();
   const [fetchedUserName, setFetchedUserName] = useState<string | null>(null);
@@ -81,7 +84,7 @@ export function StudentShell({
 
 
   useEffect(() => {
-    if (userName !== undefined && avatarUrl !== undefined) {
+    if (isLoading || (userName !== undefined && avatarUrl !== undefined)) {
       return;
     }
 
@@ -108,7 +111,7 @@ export function StudentShell({
     return () => {
       active = false;
     };
-  }, [userName, avatarUrl]);
+  }, [userName, avatarUrl, isLoading]);
 
   const resolvedUserName = userName ?? fetchedUserName;
   const resolvedAvatarUrl = avatarUrl !== undefined ? avatarUrl : fetchedAvatarUrl;
@@ -126,7 +129,7 @@ export function StudentShell({
   return (
     <div className="app-shell" data-sidebar-collapsed={!desktopSidebarVisible}>
       <a href="#main-content" className="app-skip-link">本文へ移動</a>
-      <TitleActivityTracker />
+      {isLoading ? null : <TitleActivityTracker />}
       <div className="app-frame">
         <aside
           className={`app-sidebar ${mobileSidebarOpen ? "app-sidebar--open" : ""} ${desktopSidebarVisible ? "" : "app-sidebar--collapsed"}`}
@@ -159,6 +162,7 @@ export function StudentShell({
                   >
                     <AppIcon name={item.icon} className="size-5" />
                     {item.label}
+                    <NavigationPendingIndicator label={item.label} />
                   </Link>
                 );
               })}
@@ -189,7 +193,7 @@ export function StudentShell({
 
               <Link href="/" className="app-mobile-brand">過去問くん</Link>
               <div className="app-user-tools">
-                <NotificationBell />
+                <NotificationBell enabled={!isLoading} />
 
                 <div ref={accountMenu} className="relative">
                   <button

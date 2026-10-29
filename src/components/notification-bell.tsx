@@ -6,13 +6,15 @@ import { useEffect, useState } from "react";
 
 type NotificationBellProps = {
   href?: string;
+  enabled?: boolean;
 };
 
-export function NotificationBell({ href = "/notifications" }: NotificationBellProps) {
+export function NotificationBell({ href = "/notifications", enabled = true }: NotificationBellProps) {
   const pathname = usePathname();
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
+    if (!enabled) return;
     const controller = new AbortController();
 
     async function loadUnreadCount() {
@@ -32,7 +34,7 @@ export function NotificationBell({ href = "/notifications" }: NotificationBellPr
 
     void loadUnreadCount();
     return () => controller.abort();
-  }, [pathname]);
+  }, [pathname, enabled]);
 
   const badge = formatUnreadBadge(unreadCount);
 
