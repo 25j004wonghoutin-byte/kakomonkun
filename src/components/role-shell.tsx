@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useSidebarVisibility } from "@/components/study-ui-preferences";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { NotificationBell } from "@/components/notification-bell";
@@ -24,9 +25,10 @@ type RoleShellProps = {
   children: ReactNode;
   roleName: string;
   userName: string;
+  avatarUrl?: string | null;
 };
 
-export function RoleShell({ children, roleName, userName }: RoleShellProps) {
+export function RoleShell({ children, roleName, userName, avatarUrl }: RoleShellProps) {
   if (roleName === "teacher") {
     return (
       <RoleNavigationShell
@@ -39,7 +41,7 @@ export function RoleShell({ children, roleName, userName }: RoleShellProps) {
     );
   }
 
-  return <StudentShell userName={userName}>{children}</StudentShell>;
+  return <StudentShell userName={userName} avatarUrl={avatarUrl}>{children}</StudentShell>;
 }
 
 type RoleNavigationShellProps = {
@@ -57,7 +59,7 @@ export function RoleNavigationShell({
 }: RoleNavigationShellProps) {
   const pathname = usePathname();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [desktopSidebarVisible, setDesktopSidebarVisible] = useState(true);
+  const [desktopSidebarVisible, setDesktopSidebarVisible] = useSidebarVisibility("teacher");
 
   function toggleSidebar() {
     if (window.matchMedia("(min-width: 1024px)").matches) {

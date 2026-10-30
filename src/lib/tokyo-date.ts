@@ -51,3 +51,15 @@ function getTokyoMonthBoundary(year: number, zeroBasedMonth: number) {
   const normalizedMonth = String(normalized.getUTCMonth() + 1).padStart(2, "0");
   return new Date(`${normalizedYear}-${normalizedMonth}-01T00:00:00+09:00`);
 }
+
+const tokyoDateTimeFormatter = new Intl.DateTimeFormat("ja-JP", {
+  timeZone: "Asia/Tokyo",
+  month: "numeric",
+  day: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
+export function formatTokyoDateTime(value: Date | string | number) {
+  return tokyoDateTimeFormatter.format(new Date(value));
+}

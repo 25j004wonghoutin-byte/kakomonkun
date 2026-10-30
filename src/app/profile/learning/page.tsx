@@ -1,3 +1,4 @@
+import { formatTokyoDateTime } from "@/lib/tokyo-date";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { StudentShell } from "@/components/student-shell";
@@ -12,12 +13,7 @@ import { LearningFilters as LearningFilterControls } from "./learning-filters";
 
 export const dynamic = "force-dynamic";
 
-const dateFormatter = new Intl.DateTimeFormat("ja-JP", {
-  month: "numeric",
-  day: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-});
+
 
 export default async function ProfileLearningPage({
   searchParams,
@@ -46,6 +42,7 @@ export default async function ProfileLearningPage({
             <span>学習状況詳細</span>
           </div>
           <h1 className="text-3xl font-black text-slate-950">学習状況詳細</h1>
+          <p className="mt-2 text-sm leading-6 text-slate-600">過去問練習の学習記録です。日時は日本時間で表示しています。</p>
         </div>
 
         <div className="space-y-4">
@@ -300,7 +297,7 @@ function HistoryPanel({ data }: { data: ProfileLearningData }) {
             <tbody className="divide-y divide-slate-100">
               {data.history.map((session) => (
                 <tr key={session.id} className="text-xs font-bold text-slate-700">
-                  <td className="px-5 py-4">{dateFormatter.format(new Date(session.completedAt))}</td>
+                  <td className="px-5 py-4">{formatTokyoDateTime(session.completedAt)}</td>
                   <td className="truncate px-5 py-4" title={session.examName}>{shortExamName(session.examName)}</td>
                   <td className="px-5 py-4">{session.categoryName}</td>
                   <td className="px-5 py-4 font-black text-slate-950">{session.correctCount} / {session.answeredCount}</td>
@@ -321,7 +318,7 @@ function HistoryPanel({ data }: { data: ProfileLearningData }) {
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <strong className="block break-words text-sm font-black text-slate-900">{shortExamName(session.examName)}</strong>
-                    <span className="mt-1 block text-xs font-bold text-slate-500">{dateFormatter.format(new Date(session.completedAt))} ・ {session.categoryName}</span>
+                    <span className="mt-1 block text-xs font-bold text-slate-500">{formatTokyoDateTime(session.completedAt)} ・ {session.categoryName}</span>
                   </div>
                   <strong className="shrink-0 text-sm font-black text-slate-950">{session.correctCount} / {session.answeredCount}</strong>
                 </div>

@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useSidebarVisibility } from "@/components/study-ui-preferences";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { NotificationBell } from "@/components/notification-bell";
 import { NavigationPendingIndicator } from "@/components/navigation-pending-indicator";
 import { TitleActivityTracker } from "@/components/title-activity-tracker";
 import { StudentAvatar as ProfileImage } from "@/components/student-avatar";
+import type { StudentIdentity } from "@/lib/me";
 
 type NavigationItem = {
   label: string;
@@ -42,6 +44,7 @@ const navigation: NavigationItem[] = [
 
 type StudentShellProps = {
   children: ReactNode;
+  identity?: StudentIdentity | null;
   userName?: string;
   avatarUrl?: string | null;
   points?: number;
@@ -50,16 +53,18 @@ type StudentShellProps = {
 
 export function StudentShell({
   children,
+  identity,
   userName,
   avatarUrl,
   isLoading = false,
 }: StudentShellProps) {
   const pathname = usePathname();
+  const identityProvided = identity !== undefined;
   const [fetchedUserName, setFetchedUserName] = useState<string | null>(null);
   const [fetchedAvatarUrl, setFetchedAvatarUrl] = useState<string | null>(null);
   const [userFetchComplete, setUserFetchComplete] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [desktopSidebarVisible, setDesktopSidebarVisible] = useState(true);
+  const [desktopSidebarVisible, setDesktopSidebarVisible] = useSidebarVisibility("student");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const accountMenu = useRef<HTMLDivElement>(null);
   const accountTrigger = useRef<HTMLButtonElement>(null);
@@ -84,7 +89,7 @@ export function StudentShell({
 
 
   useEffect(() => {
-    if (isLoading || (userName !== undefined && avatarUrl !== undefined)) {
+    if (isLoading || identityProvided || (userName !== undefined && avatarUrl !== undefined)) {
       return;
     }
 
@@ -111,11 +116,11 @@ export function StudentShell({
     return () => {
       active = false;
     };
-  }, [userName, avatarUrl, isLoading]);
+  }, [userName, avatarUrl, isLoading, identityProvided]);
 
-  const resolvedUserName = userName ?? fetchedUserName;
-  const resolvedAvatarUrl = avatarUrl !== undefined ? avatarUrl : fetchedAvatarUrl;
-  const userLoading = userName === undefined && !userFetchComplete;
+  const resolvedUserName = identityProvided ? identity?.displayName ?? null : userName ?? fetchedUserName;
+  const resolvedAvatarUrl = identityProvided ? identity?.avatarUrl ?? null : avatarUrl !== undefined ? avatarUrl : fetchedAvatarUrl;
+  const userLoading = identityProvided ? identity === null : userName === undefined && !userFetchComplete;
 
   function toggleSidebar() {
     if (window.matchMedia("(min-width: 1024px)").matches) {

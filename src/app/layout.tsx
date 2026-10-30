@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { StudyUiPreferencesProvider } from "@/components/study-ui-preferences";
 
 export const metadata: Metadata = {
   title: "目指せ合格！過去問くん",
@@ -13,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body><StudyUiPreferencesProvider>{children}</StudyUiPreferencesProvider></body>
     </html>
   );
 }

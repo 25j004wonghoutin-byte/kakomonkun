@@ -13,7 +13,7 @@ test("a hundred-question result does not eagerly load previews or closed dialog 
   const html = renderToStaticMarkup(React.createElement(React.Fragment, null,
     ...Array.from({ length: 100 }, (_, index) => React.createElement(QuestionImage, { key: index, src: `/questions/test-${index}.png`, alt: `公開問題 ${index + 1}` }))));
   const images = html.match(/<img\b[^>]*>/g) ?? [];
-  assert.equal(images.length, 200);
+  assert.equal(images.length, 100, "unopened enlargements must not render any image resource");
   assert.ok(images.every(image => /loading="lazy"/.test(image)), "all offscreen previews and unopened image variants must remain lazy");
   assert.doesNotMatch(html, /loading="eager"/);
 });

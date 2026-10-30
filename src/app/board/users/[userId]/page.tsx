@@ -28,7 +28,7 @@ export default async function BoardUserPage({
   }
 
   return (
-    <RoleShell roleName={user.role.name} userName={user.displayName}>
+    <RoleShell roleName={user.role.name} userName={user.displayName} avatarUrl={user.role.name === "student" ? user.studentProfile?.avatarUrl ?? null : null}>
       <PublicProfile initialProfile={profile} viewerName={user.displayName} />
     </RoleShell>
   );

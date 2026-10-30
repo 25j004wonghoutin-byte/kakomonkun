@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { generateAiExplanation, getGeminiModelName } from "@/lib/gemini";
 import { prisma } from "@/lib/prisma";
 
@@ -9,11 +10,21 @@ export async function getOrCreateAiExplanation({
   userId: string;
 }) {
   const modelName = getGeminiModelName();
+  const metadata = await prisma.question.findUnique({
+    where: { id: questionId },
+    select: { imagePath: true },
+  });
+  if (!metadata) return null;
+
+  // Image-aware entries must not reuse explanations generated from text alone.
+  const cacheModelName = metadata.imagePath
+    ? "image-v1:" + createHash("sha256").update(modelName).digest("hex")
+    : modelName;
   const cachedExplanation = await prisma.aiExplanation.findUnique({
     where: {
       questionId_modelName: {
         questionId,
-        modelName,
+        modelName: cacheModelName,
       },
     },
   });
@@ -24,7 +35,7 @@ export async function getOrCreateAiExplanation({
     return {
       explanation: cachedExplanation.answerText,
       fromCache: true,
-      modelName: cachedExplanation.modelName,
+      modelName,
     };
   }
 
@@ -52,13 +63,14 @@ export async function getOrCreateAiExplanation({
     examName: question.exam.name,
     categoryName: question.category.name,
     questionText: question.questionText,
+    imagePath: question.imagePath,
     officialExplanation: question.explanation,
     choices: question.choices,
   });
 
   const explanation = await createOrFindExplanation({
     questionId,
-    modelName: generated.modelName,
+    modelName: cacheModelName,
     answerText: generated.answerText,
   });
 
@@ -67,7 +79,7 @@ export async function getOrCreateAiExplanation({
   return {
     explanation: explanation.answerText,
     fromCache: explanation.answerText !== generated.answerText,
-    modelName: explanation.modelName,
+    modelName,
   };
 }
 

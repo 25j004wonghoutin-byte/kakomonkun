@@ -1,7 +1,7 @@
 "use client";
 
 import { QuestionImage } from "@/components/question-image";
-import type { ReactNode } from "react";
+import type { ReactNode, Ref } from "react";
 import { QuestionChoiceContent } from "@/components/question-choice-content";
 import { AnswerStateMark } from "@/components/ui";
 
@@ -41,6 +41,7 @@ export type QuizAnswerResult = {
 
 type QuizQuestionCardProps = {
   title: string;
+  headingRef?: Ref<HTMLHeadingElement>;
   description: string;
   question: QuizQuestion | null;
   selectedChoiceId: string | null;
@@ -59,6 +60,7 @@ type QuizQuestionCardProps = {
 
 export function QuizQuestionCard({
   title,
+  headingRef,
   description,
   question,
   selectedChoiceId,
@@ -82,7 +84,7 @@ export function QuizQuestionCard({
     <section className="question-card">
       <div className="question-heading">
         <div>
-          <h1>{title}</h1>
+          <h1 ref={headingRef} tabIndex={headingRef ? -1 : undefined} className="scroll-mt-24 focus:outline-none lg:scroll-mt-6">{title}</h1>
           {question ? (
             <p className="question-meta">
               <span>{question.exam.name}</span>

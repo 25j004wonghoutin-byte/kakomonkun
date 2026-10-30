@@ -28,7 +28,7 @@ export default async function BoardPostPage({
   }
 
   return (
-    <RoleShell roleName={user.role.name} userName={user.displayName}>
+    <RoleShell roleName={user.role.name} userName={user.displayName} avatarUrl={user.role.name === "student" ? user.studentProfile?.avatarUrl ?? null : null}>
       <PostDetail initialThread={thread} viewerName={user.displayName} viewerAvatarUrl={user.role.name === "student" ? user.studentProfile?.avatarUrl ?? null : null} viewerIsTeacher={user.role.name === "teacher"} />
     </RoleShell>
   );

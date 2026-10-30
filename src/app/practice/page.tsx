@@ -2,7 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRememberedPracticePreferences, type PracticePreferences } from "@/components/study-ui-preferences";
 import { StudentShell } from "@/components/student-shell";
+import type { StudentIdentity } from "@/lib/me";
 import { ErrorCard, PageHeading } from "@/components/ui";
 import {
   ALL_PRACTICE_CATEGORY_CODE,
@@ -13,6 +15,8 @@ import {
   type PracticeCategoryCode,
   type PracticeQuestionCount,
 } from "@/lib/practice-config";
+import { waitForPracticeSaves } from "@/lib/pending-practice-saves";
+import { formatTokyoDateTime } from "@/lib/tokyo-date";
 import { readJsonResponse } from "@/lib/read-json-response";
 
 const exams = [
@@ -24,7 +28,7 @@ const exams = [
     code: "fe",
     shortName: "基本情報技術者（科目A）",
   },
-];
+] as const;
 
 const categoryOptions: Array<{
   code: PracticeCategoryCode;
@@ -37,12 +41,7 @@ const categoryOptions: Array<{
   ...PRACTICE_CATEGORIES,
 ];
 
-const startedAtFormatter = new Intl.DateTimeFormat("ja-JP", {
-  month: "numeric",
-  day: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-});
+
 
 type ActiveSession = {
   id: string;
@@ -68,47 +67,62 @@ type SessionStartError = {
 
 export default function PracticeStartPage() {
   const router = useRouter();
-  const [selectedExam, setSelectedExam] = useState("it_passport");
+  const [selectedExam, setSelectedExam] = useState<PracticePreferences["examCode"]>("it_passport");
   const [selectedCategory, setSelectedCategory] = useState<PracticeCategoryCode>(
     ALL_PRACTICE_CATEGORY_CODE,
   );
   const [selectedQuestionCount, setSelectedQuestionCount] = useState<PracticeQuestionCount>(30);
   const [activeSessions, setActiveSessions] = useState<ActiveSession[]>([]);
-  const [userName, setUserName] = useState<string | undefined>();
+  const [identity, setIdentity] = useState<StudentIdentity | null>(null);
   const [points, setPoints] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [endingSessionId, setEndingSessionId] = useState<string | null>(null);
   const [sessionActionError, setSessionActionError] = useState("");
   const [error, setError] = useState("");
+  const [identityLoading, setIdentityLoading] = useState(true);
+  const { getPracticePreferences, rememberPracticePreferences } = useRememberedPracticePreferences();
+
+  function changePreferences(patch: Partial<PracticePreferences>) {
+    if (identityLoading) return;
+    const next = { examCode: selectedExam, categoryCode: selectedCategory, questionCount: selectedQuestionCount, ...patch };
+    setSelectedExam(next.examCode);
+    setSelectedCategory(next.categoryCode);
+    setSelectedQuestionCount(next.questionCount);
+    if (identity) rememberPracticePreferences(identity.id, next);
+  }
 
   useEffect(() => {
     let cancelled = false;
 
     async function loadPageData() {
-      const [meResponse, sessionsResponse] = await Promise.all([
-        fetch("/api/me"),
-        fetch("/api/practice/sessions"),
-      ]);
-      const [meData, sessionsData] = await Promise.all([
-        meResponse.ok ? meResponse.json() : null,
-        sessionsResponse.ok ? sessionsResponse.json() : null,
-      ]);
+      const identityRequest = fetch("/api/me")
+        .then(response => response.ok ? response.json() : null)
+        .then(meData => {
+          if (cancelled || !meData) return;
+          setIdentity({ id: meData.id, displayName: meData.displayName, avatarUrl: meData.profile?.avatarUrl ?? null });
+          setPoints(meData.profile?.totalPoints ?? 0);
+          const remembered = getPracticePreferences(meData.id);
+          if (remembered) {
+            setSelectedExam(remembered.examCode);
+            setSelectedCategory(remembered.categoryCode);
+            setSelectedQuestionCount(remembered.questionCount);
+          }
+        })
+        .finally(() => { if (!cancelled) setIdentityLoading(false); });
 
-      if (cancelled) return;
-      if (meData) {
-        setUserName(meData.displayName);
-        setPoints(meData.profile?.totalPoints ?? 0);
-      }
-      if (Array.isArray(sessionsData?.sessions)) {
-        setActiveSessions(sessionsData.sessions);
-      }
+      const sessionsRequest = waitForPracticeSaves()
+        .then(() => cancelled ? null : fetch("/api/practice/sessions", { cache: "no-store" }))
+        .then(response => response?.ok ? response.json() : null)
+        .then(data => {
+          if (!cancelled && Array.isArray(data?.sessions)) setActiveSessions(data.sessions);
+        });
+
+      await Promise.allSettled([identityRequest, sessionsRequest]);
     }
 
-    loadPageData().catch(() => undefined);
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+    void loadPageData();
+    return () => { cancelled = true; };
+  }, [getPracticePreferences]);
 
   async function startPractice() {
     setSubmitting(true);
@@ -171,7 +185,7 @@ export default function PracticeStartPage() {
   const questionsPerCategory = selectedQuestionCount / PRACTICE_CATEGORIES.length;
 
   return (
-    <StudentShell userName={userName} points={points}>
+    <StudentShell identity={identity} points={points}>
       <PageHeading title="過去問練習" />
 
       {activeSessions.length > 0 ? (
@@ -201,7 +215,7 @@ export default function PracticeStartPage() {
                       <h3 className="truncate font-black text-slate-950">{session.exam.name}</h3>
                       <p className="mt-1 text-xs font-bold text-slate-500">
                         {session.answeredCount} / {session.questionCount} 問回答 ・{" "}
-                        {startedAtFormatter.format(new Date(session.startedAt))}
+                        {formatTokyoDateTime(session.startedAt)}
                       </p>
                     </div>
                   </div>
@@ -235,7 +249,7 @@ export default function PracticeStartPage() {
         </section>
       ) : null}
 
-      <div className="practice-exams" role="group" aria-label="試験を選択">
+      <div className="practice-exams" role="group" aria-label="試験を選択" aria-busy={identityLoading}>
         {exams.map((exam) => {
           const selected = selectedExam === exam.code;
           return (
@@ -244,8 +258,9 @@ export default function PracticeStartPage() {
               type="button"
               aria-pressed={selected}
               aria-label={exam.shortName}
-              onClick={() => setSelectedExam(exam.code)}
-              className="practice-exam"
+              disabled={identityLoading || submitting}
+              onClick={() => changePreferences({ examCode: exam.code })}
+              className="practice-exam disabled:cursor-wait disabled:opacity-50"
             >
               <span className="practice-exam-label">
                 <span>{exam.code === "fe" ? "基本情報技術者" : exam.shortName}</span>
@@ -272,8 +287,9 @@ export default function PracticeStartPage() {
                       key={category.code}
                       type="button"
                       aria-pressed={selected}
-                      onClick={() => setSelectedCategory(category.code)}
-                      className="practice-choice"
+                      disabled={identityLoading || submitting}
+                      onClick={() => changePreferences({ categoryCode: category.code })}
+                      className="practice-choice disabled:cursor-wait disabled:opacity-50"
                     >
                       <span className="block font-black">{category.label}</span>
                     </button>
@@ -295,8 +311,9 @@ export default function PracticeStartPage() {
                     key={count}
                     type="button"
                     aria-pressed={selected}
-                    onClick={() => setSelectedQuestionCount(count)}
-                    className="practice-choice practice-count"
+                    disabled={identityLoading || submitting}
+                    onClick={() => changePreferences({ questionCount: count })}
+                    className="practice-choice practice-count disabled:cursor-wait disabled:opacity-50"
                   >
                     {count}問
                   </button>
@@ -324,7 +341,7 @@ export default function PracticeStartPage() {
             <button
               type="button"
               onClick={startPractice}
-              disabled={submitting}
+              disabled={submitting || identityLoading}
               className="app-primary w-full sm:w-auto sm:min-w-44"
             >
               {submitting ? "準備しています..." : "練習を開始する"}

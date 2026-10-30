@@ -21,7 +21,7 @@ export default async function BoardPage() {
   const initial = await listBoardPosts(user.id, "all", null);
 
   return (
-    <RoleShell roleName={user.role.name} userName={user.displayName}>
+    <RoleShell roleName={user.role.name} userName={user.displayName} avatarUrl={user.role.name === "student" ? user.studentProfile?.avatarUrl ?? null : null}>
       <BoardFeed
         initialPosts={initial.posts}
         initialNextCursor={initial.nextCursor}

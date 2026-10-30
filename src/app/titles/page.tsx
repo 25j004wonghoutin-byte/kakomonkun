@@ -52,6 +52,7 @@ export default async function TitlesPage() {
 
   const initialData: TitleShopInitialData = {
     displayName: user.displayName,
+    avatarUrl: user.studentProfile.avatarUrl,
     totalPoints: profile.totalPoints,
     currentTitle: profile.currentTitle,
     titles: toTitleShopItems(titles.map(({ unlocks, ...title }) => ({ ...title, userTitleUnlocks: unlocks })), profile.totalPoints),

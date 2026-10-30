@@ -18,6 +18,7 @@ export function HomeStudyTotals({ profile, loading, error, onRetry }: {
         <div className="study-stat"><dt>練習完了</dt><dd>{profile ? `${profile.totalPracticeCount.toLocaleString()} 回` : "—"}</dd></div>
         <div className="study-stat"><dt>所持称号</dt><dd>{profile && !error ? `${profile.ownedTitleCount.toLocaleString()} 個` : "— 個"}</dd></div>
       </dl>
+      <p className="mt-3 text-xs leading-6 text-slate-600">回答数・正答率は、終了した過去問練習と提出済みの模擬試験を集計しています。</p>
       {error ? <div role="alert" className="mt-3 text-sm"><p>{error}</p><button type="button" onClick={onRetry} disabled={loading} className="mt-1 min-h-11 underline underline-offset-4 disabled:cursor-wait">再試行</button></div> : null}
     </section>
   );

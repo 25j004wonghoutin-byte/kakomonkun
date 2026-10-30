@@ -3,12 +3,13 @@
 import { QuestionImage } from "@/components/question-image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AiExplanationMarkdown } from "@/components/ai-explanation-markdown";
 import { QuestionChoiceContent } from "@/components/question-choice-content";
 import { StudentShell } from "@/components/student-shell";
 import { AnswerStateMark, ErrorCard, LoadingCard } from "@/components/ui";
 import { getPracticeCompletionPoints } from "@/lib/practice-config";
+import { trackPracticeSave } from "@/lib/pending-practice-saves";
 import { readJsonResponse } from "@/lib/read-json-response";
 
 type Choice = {
@@ -78,6 +79,9 @@ export default function PracticeSessionPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const questionHeading = useRef<HTMLHeadingElement>(null);
+  const questionNavigationPending = useRef(false);
+  const answerInFlight = useRef(false);
 
   useEffect(() => {
     fetch(`/api/practice/sessions/${sessionId}`)
@@ -98,6 +102,13 @@ export default function PracticeSessionPage() {
       .finally(() => setLoading(false));
   }, [sessionId]);
 
+  useEffect(() => {
+    if (!questionNavigationPending.current) return;
+    questionNavigationPending.current = false;
+    questionHeading.current?.focus({ preventScroll: true });
+    questionHeading.current?.scrollIntoView({ block: "start", behavior: "instant" });
+  }, [currentIndex]);
+
   const question = session?.questions[currentIndex];
   const progress = useMemo(
     () => (session ? Math.round((session.answeredCount / session.questionCount) * 100) : 0),
@@ -105,22 +116,26 @@ export default function PracticeSessionPage() {
   );
 
   async function submitAnswer() {
-    if (!question || !selectedChoice) return;
+    if (!question || !selectedChoice || question.answer || submitting || answerInFlight.current) return;
+    answerInFlight.current = true;
     setSubmitting(true);
     setError("");
 
     try {
-      const response = await fetch(`/api/practice/sessions/${sessionId}/answer`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          questionId: question.id,
-          selectedChoiceId: selectedChoice,
-        }),
+      const data = await trackPracticeSave(async () => {
+        const response = await fetch(`/api/practice/sessions/${sessionId}/answer`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            questionId: question.id,
+            selectedChoiceId: selectedChoice,
+          }),
+        });
+        const result = await readJsonResponse<PracticeAnswerResult & { error?: string }>(response);
+        if (!response.ok) throw new Error(result?.error ?? "回答を保存できませんでした。");
+        if (!result) throw new Error("回答を保存できませんでした。");
+        return result;
       });
-      const data = await readJsonResponse<PracticeAnswerResult & { error?: string }>(response);
-      if (!response.ok) throw new Error(data?.error ?? "回答を保存できませんでした。");
-      if (!data) throw new Error("回答を保存できませんでした。");
 
       setAnswerResult(data);
       setSession((current) =>
@@ -148,6 +163,7 @@ export default function PracticeSessionPage() {
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "回答を保存できませんでした。");
     } finally {
+      answerInFlight.current = false;
       setSubmitting(false);
     }
   }
@@ -216,7 +232,8 @@ export default function PracticeSessionPage() {
   }
 
   function goToQuestion(index: number) {
-    if (!session) return;
+    if (!session || submitting || answerInFlight.current) return;
+    questionNavigationPending.current = index !== currentIndex;
     setCurrentIndex(index);
     setSelectedChoice(session.questions[index].answer?.selectedChoiceId ?? "");
     setAnswerResult(null);
@@ -252,7 +269,7 @@ export default function PracticeSessionPage() {
     <StudentShell>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-slate-950 sm:text-3xl">
+          <h1 ref={questionHeading} tabIndex={-1} className="scroll-mt-24 text-2xl font-black text-slate-950 focus:outline-none sm:text-3xl lg:scroll-mt-6">
             {session.exam.name} 過去問練習
           </h1>
         </div>
@@ -313,7 +330,7 @@ export default function PracticeSessionPage() {
               <button
                 key={choice.id}
                 type="button"
-                disabled={Boolean(displayedResult)}
+                disabled={Boolean(displayedResult) || submitting}
                 onClick={() => setSelectedChoice(choice.id)}
                 className={`relative flex min-h-16 items-center gap-4 rounded-2xl border font-bold transition-colors ${
                   correct
@@ -403,11 +420,15 @@ export default function PracticeSessionPage() {
 
         {error ? <div className="mt-5"><ErrorCard message={error} /></div> : null}
 
+        {submitting ? <p id="practice-save-status" role="status" className="mt-5 text-sm font-bold text-slate-700">処理中です。保存が終わるまでお待ちください。</p> : null}
+
         <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-2 sm:flex-row">
             <Link
               href="/practice"
-              className="rounded-xl border border-slate-300 px-5 py-3 text-center text-sm font-black text-slate-700 transition hover:bg-slate-100"
+              aria-disabled={submitting}
+              onNavigate={(event) => { if (submitting || answerInFlight.current) event.preventDefault(); }}
+              className="rounded-xl border border-slate-300 px-5 py-3 text-center text-sm font-black text-slate-700 transition hover:bg-slate-100 aria-disabled:cursor-wait aria-disabled:opacity-50"
             >
               あとで続ける
             </Link>
@@ -459,9 +480,10 @@ export default function PracticeSessionPage() {
             key={item.id}
             type="button"
             onClick={() => goToQuestion(index)}
+            disabled={submitting}
             aria-label={`${index + 1}問目へ`}
             aria-current={index === currentIndex ? "step" : undefined}
-            className={`size-9 rounded-full text-sm font-black transition ${
+            className={`size-9 rounded-full text-sm font-black transition disabled:cursor-wait disabled:opacity-50 ${
               index === currentIndex
                 ? "bg-blue-600 text-white"
                 : item.answer?.isCorrect

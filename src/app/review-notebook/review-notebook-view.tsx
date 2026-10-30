@@ -14,7 +14,7 @@ export function ReviewNotebookListView({ data, query, loading, error, onQueryCha
   const filtered = Boolean(query.examCode || query.categoryCode || query.sessionId || query.status !== "unfinished");
   const pages = data ? Array.from({ length: Math.min(5, data.pageCount) }, (_, i) => Math.max(1, Math.min(query.page - 2, data.pageCount - 4)) + i) : [];
   return <div className="review-notebook">
-    <PageHeading title="復習ノート" />
+    <PageHeading title="復習ノート" description="過去問練習で間違えた問題を復習できます。今日の一問・ランダム出題・模擬試験は対象外です。" />
     <div className="review-tabs" role="group" aria-label="復習状況">
       {tabs.map(tab => <button key={tab.value} type="button" aria-pressed={query.status === tab.value} onClick={() => onQueryChange({ ...query, status: tab.value, page: 1 })}>{tab.label}</button>)}
     </div>

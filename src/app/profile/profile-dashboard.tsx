@@ -1,5 +1,7 @@
 "use client";
 
+import { formatTokyoDateTime } from "@/lib/tokyo-date";
+
 import Link from "next/link";
 import { useRef, useState, type FormEvent } from "react";
 import { StudentShell } from "@/components/student-shell";
@@ -13,12 +15,7 @@ import { readJsonResponse } from "@/lib/read-json-response";
 import { StudentAvatar } from "@/components/student-avatar";
 import { AvatarEditor } from "./avatar-editor";
 
-const activityDateFormatter = new Intl.DateTimeFormat("ja-JP", {
-  month: "numeric",
-  day: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-});
+
 
 type Period = "overall" | "month";
 
@@ -205,12 +202,14 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
           />
         </section>
 
+        <p className="mt-2 text-xs leading-6 text-slate-600">総回答数・総合正答率は、終了した過去問練習と提出済みの模擬試験を集計しています。</p>
+
         <div className="mt-4 grid min-w-0 items-start gap-4 lg:grid-cols-[minmax(0,1fr)_330px]">
           <div className="min-w-0 space-y-4">
             <section aria-labelledby="learning-status-heading" className="overflow-hidden rounded-lg border border-slate-200 bg-white ">
               <div className="flex min-h-[66px] flex-col items-start justify-between gap-3 border-b border-slate-200 px-5 py-4 sm:flex-row sm:items-center">
                 <h2 id="learning-status-heading" className="text-base font-black text-slate-950">
-                  学習状況
+                  過去問練習の学習状況
                 </h2>
                 <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
                   <div
@@ -391,7 +390,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                           {history.description}
                         </strong>
                         <span className="mt-1 block text-[13px] font-bold text-slate-500">
-                          {activityDateFormatter.format(new Date(history.occurredAt))}
+                          {formatTokyoDateTime(history.occurredAt)}
                         </span>
                       </span>
                       <strong
@@ -613,7 +612,7 @@ function RecentActivityRow({ activity }: { activity: ProfileRecentActivity }) {
           {activity.title}
         </strong>
         <span className="mt-1 block text-[13px] font-bold text-slate-500">
-          {activityDateFormatter.format(new Date(activity.occurredAt))} ・ {activity.detail}
+          {formatTokyoDateTime(activity.occurredAt)} ・ {activity.detail}
         </span>
       </span>
       <span className="text-right">

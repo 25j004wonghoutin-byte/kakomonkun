@@ -1,3 +1,5 @@
+import { readQuestionImageInput } from "@/lib/question-image-input";
+
 type GeminiChoice = {
   choiceLabel: string;
   choiceText: string;
@@ -8,6 +10,7 @@ type GenerateAiExplanationInput = {
   examName: string;
   categoryName: string;
   questionText: string;
+  imagePath?: string | null;
   officialExplanation: string | null;
   choices: GeminiChoice[];
 };
@@ -37,6 +40,10 @@ export async function generateAiExplanation(input: GenerateAiExplanationInput) {
   }
 
   const model = getGeminiModelName();
+  const prompt = buildPrompt(input);
+  const contents = input.imagePath
+    ? [{ type: "text" as const, text: prompt }, await readQuestionImageInput(input.imagePath)]
+    : prompt;
   const response = await fetch("https://generativelanguage.googleapis.com/v1beta/interactions", {
     method: "POST",
     headers: {
@@ -47,7 +54,7 @@ export async function generateAiExplanation(input: GenerateAiExplanationInput) {
       model,
       system_instruction:
         "あなたはITパスポート試験・基本情報技術者試験を学ぶ学生向けの解説者です。与えられた問題情報だけを根拠に、日本語で簡潔かつ正確に説明してください。断定できない内容は推測せず、その旨を短く述べてください。",
-      input: buildPrompt(input),
+      input: contents,
       generation_config: {
         temperature: 0.2,
         thinking_level: "low",
@@ -126,6 +133,8 @@ function buildPrompt(input: GenerateAiExplanationInput) {
   return `以下の過去問について、学生が復習しやすいAI補助解説を作成してください。
 
 条件:
+- 添付画像がある場合は、問題文・図表・選択肢を画像で確認する。文章データと画像が異なる場合は原本画像を優先する
+- 画像で読み取れない部分は推測せず、その旨を明記する
 - 学生の選択肢は考慮しない
 - 全ての選択肢について、正しい理由または違う理由を書く
 - 出力は次の見出しを必ず使う

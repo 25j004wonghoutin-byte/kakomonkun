@@ -1,18 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   QuizQuestionCard,
   type QuizAnswerResult,
   type QuizQuestion,
 } from "@/components/quiz-question-card";
 import { StudentShell } from "@/components/student-shell";
+import type { StudentIdentity } from "@/lib/me";
 
 type MeResponse = {
+  id: string;
   displayName: string;
   profile: {
     totalPoints: number;
+    avatarUrl: string | null;
   } | null;
 };
 
@@ -44,8 +47,21 @@ export default function RandomQuizPage() {
   const [answering, setAnswering] = useState(false);
   const [animateAnswerResult, setAnimateAnswerResult] = useState(false);
   const [error, setError] = useState("");
+  const questionHeading = useRef<HTMLHeadingElement>(null);
+  const questionNavigationPending = useRef(false);
+  const questionRequestPending = useRef(false);
+
+  useEffect(() => {
+    if (loading || !questionNavigationPending.current) return;
+    questionNavigationPending.current = false;
+    questionHeading.current?.focus({ preventScroll: true });
+    questionHeading.current?.scrollIntoView({ block: "start", behavior: "instant" });
+  }, [loading, randomAttempt]);
 
   async function loadQuestion() {
+    if (loading || answering || questionRequestPending.current) return;
+    questionRequestPending.current = true;
+    questionNavigationPending.current = true;
     setLoading(true);
     setError("");
     setSelectedChoiceId(null);
@@ -58,6 +74,7 @@ export default function RandomQuizPage() {
       setRandomAttempt(null);
       setError(cause instanceof Error ? cause.message : "問題を読み込めませんでした。");
     } finally {
+      questionRequestPending.current = false;
       setLoading(false);
     }
   }
@@ -120,14 +137,15 @@ export default function RandomQuizPage() {
     }
   }
 
-  const displayName = me?.displayName;
+  const identity: StudentIdentity | null = me ? { id: me.id, displayName: me.displayName, avatarUrl: me.profile?.avatarUrl ?? null } : null;
   const points = me?.profile?.totalPoints ?? 0;
 
   return (
-    <StudentShell userName={displayName} points={points}>
+    <StudentShell identity={identity} points={points}>
       <div className="mx-auto max-w-[760px] min-w-0">
         <QuizQuestionCard
           title="ランダム出題"
+          headingRef={questionHeading}
           description="ポイント対象外"
           question={question}
           selectedChoiceId={selectedChoiceId}
@@ -153,6 +171,7 @@ export default function RandomQuizPage() {
               <button
                 type="button"
                 onClick={loadQuestion}
+                disabled={loading || answering}
                 className="inline-flex h-12 min-w-48 items-center justify-center rounded-md border border-blue-200 bg-white px-7 text-sm font-black text-blue-700 transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
                 次の問題
