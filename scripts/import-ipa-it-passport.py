@@ -11,10 +11,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
 
-import pdfplumber
 import numpy as np
 from PIL import Image, ImageOps
-from pypdf import PdfReader
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -89,102 +87,6 @@ FALLBACK_CATEGORY_RANGES = {
     2026: ((1, 34, "strategy"), (35, 54, "management"), (55, 100, "technology")),
 }
 
-MANUAL_TEXT_OVERRIDES: dict[tuple[int, int], tuple[str, tuple[str, str, str, str]]] = {
-    (2021, 29): (
-        "粗利益を求める計算式はどれか。",
-        (
-            "（売上高）-（売上原価）",
-            "（営業利益）+（営業外収益）-（営業外費用）",
-            "（経常利益）+（特別利益）-（特別損失）",
-            "（税引前当期純利益）-（法人税、住民税及び事業税）",
-        ),
-    ),
-    (2022, 30): (
-        "営業利益を求める計算式はどれか。",
-        (
-            "（売上高）-（売上原価）",
-            "（売上総利益）-（販売費及び一般管理費）",
-            "（経常利益）+（特別利益）-（特別損失）",
-            "（税引前当期純利益）-（法人税、住民税及び事業税）",
-        ),
-    ),
-    (2023, 20): (
-        "資本活用の効率性を示す指標はどれか。",
-        ("売上高営業利益率", "自己資本比率", "総資本回転率", "損益分岐点比率"),
-    ),
-    (2024, 78): (
-        "利用者がスマートスピーカーに向けて話し掛けた内容に対して、スマートスピーカーから音声で応答するための処理手順が（1）～（4）のとおりであるとき、音声認識に該当する処理はどれか。\n\n（1）利用者の音声をテキストデータに変換する。\n（2）テキストデータを解析して、その意味を理解する。\n（3）応答する内容を決定して、テキストデータを生成する。\n（4）生成したテキストデータを読み上げる。",
-        ("（1）", "（2）", "（3）", "（4）"),
-    ),
-    (2024, 83): (
-        "1から6までの六つの目をもつサイコロを3回投げたとき、1回も1の目が出ない確率は幾らか。",
-        ("1/216", "5/72", "91/216", "125/216"),
-    ),
-    (2024, 93): (
-        "関係データベースで管理している「従業員」表から、氏名が「%葉_」に該当する従業員を抽出した。抽出された従業員は何名か。ここで、「_」は任意の1文字を表し、「%」は0文字以上の任意の文字列を表すものとする。\n\n従業員番号 | 氏名\nS001 | 千葉翔\nS002 | 葉山花子\nS003 | 鈴木葉子\nS004 | 佐藤乙葉\nS005 | 秋葉彩葉\nS006 | 稲葉小春",
-        ("1", "2", "3", "4"),
-    ),
-    (2025, 39): (
-        "ソフトウェア開発モデルであるアジャイルモデルの特徴に関して、次の記述中の a、b に入れる字句の適切な組合せはどれか。\n\nアジャイルモデルとは、要件を確定してから開発を実施するウォーターフォールモデルの［a］する形で提唱された、［b］できるようにソフトウェアを開発するための手法の総称である。",
-        (
-            "a：課題を改善／b：開発工程で生じる種々の変更に迅速に対応",
-            "a：課題を改善／b：開発工程を順に実施",
-            "a：特徴を継承／b：開発工程で生じる種々の変更に迅速に対応",
-            "a：特徴を継承／b：開発工程を順に実施",
-        ),
-    ),
-    (2025, 69): (
-        "バイオメトリクス認証の他人受入率と本人拒否率に関する次の記述中の a、b に入れる字句の適切な組合せはどれか。\n\nバイオメトリクス認証の認証精度において、他人受入率を低く抑えようとすると［a］が高くなり、本人拒否率を低く抑えようとすると［b］が高くなる。",
-        (
-            "a：安全性／b：可用性",
-            "a：安全性／b：利便性",
-            "a：利便性／b：安全性",
-            "a：利便性／b：可用性",
-        ),
-    ),
-    (2026, 76): (
-        "IoTデバイスで用いられるLPWAに関する次の記述中の a、b に入れる字句の適切な組合せはどれか。\n\nLPWAに分類される無線通信方式の特徴は、通信可能な範囲が無線LANに比べて［a］、消費する電力が第4世代移動通信規格（4G）に比べて［b］。",
-        (
-            "a：狭く／b：多い",
-            "a：狭く／b：少ない",
-            "a：広く／b：多い",
-            "a：広く／b：少ない",
-        ),
-    ),
-    (2026, 67): (
-        "手続 sort は、要素数が2以上の整数型の配列を引数 numberArray で受け取り、その要素を昇順に並べ替えた結果を出力する。手続 sort の動作確認のために、処理の途中で j の値と workArray の全ての要素を出力する。配列 numberArray を {3, 5, 1, 2, 4} とし、手続 sort を sort(numberArray) として呼び出したとき、j の値が3と出力された直後の workArray の全ての要素の出力はどれか。ここで、配列の要素番号は1から始まる。\n\n［プログラム］\n○sort（整数型の配列：numberArray）\n  整数型：minIndex、j、k\n  整数型の配列：workArray ← numberArray  // 配列の複製を作る\n  for（j を 1 から（workArray の要素数 - 1）まで 1 ずつ増やす）\n    // j 番目から末尾までの要素の中で最も小さい値をもつ要素の要素番号を一つ求める\n    minIndex ← j\n    for（k を（j + 1）から workArray の要素数まで 1 ずつ増やす）\n      if（workArray[k] が workArray[minIndex] より小さい）\n        minIndex ← k\n      endif\n    endfor\n    workArray[j] と workArray[minIndex] の値を入れ替える\n    // 動作確認のために、j の値と workArray の全ての要素を出力する\n    j の値を出力する\n    workArray の全ての要素を先頭から順にコンマ区切りで出力する\n  endfor\n  workArray の全ての要素を先頭から順にコンマ区切りで出力する",
-        ("1, 2, 3, 4, 5", "1, 2, 3, 5, 4", "4, 5, 3, 2, 1", "5, 4, 3, 2, 1"),
-    ),
-    (2026, 80): (
-        "バイオメトリクス認証に関する次の記述中の a、b に入れる字句の適切な組合せはどれか。\n\nバイオメトリクス認証を利用したシステムの設計を始めるときには、システムの目的と認証の用途を明らかにし、認証精度の設定方針を策定することが必要である。他人受入率が［a］なるように設定した場合は、安全性を重視した認証になり、本人拒否率が［b］なるように設定した場合は、本人の利便性を重視した認証になるといえる。",
-        (
-            "a：高く／b：高く",
-            "a：高く／b：低く",
-            "a：低く／b：高く",
-            "a：低く／b：低く",
-        ),
-    ),
-    (2026, 85): (
-        "関数 isPrime は、引数として与えられた正の整数が、素数であれば true を、素数でなければ false を戻り値とする。例えば、関数 isPrime を isPrime(2) として呼び出したときの戻り値は true である。プログラム中の a、b に入れる字句の適切な組合せはどれか。\n\n［プログラム］\n○論理型：isPrime（整数型：num）\n  整数型：div ← 2\n  if（num が 2［a］）\n    return false\n  else\n    while（num が div［b］）\n      if（num ÷ div の余り が 0 と等しい）\n        return false\n      else\n        div ← div + 1\n      endif\n    endwhile\n    return true\n  endif",
-        (
-            "a：以下／b：と等しい",
-            "a：以下／b：より大きい",
-            "a：より小さい／b：と等しい",
-            "a：より小さい／b：より大きい",
-        ),
-    ),
-    (2026, 99): (
-        "入力装置に関する次の記述中の a、b に入れる字句の適切な組合せはどれか。\n\n［a］は、紙などに光を当て、反射光を読み取り、文字や図形をデジタルデータに変換してPCに取り込む。［a］が文字や図形をどの程度細かく読み取れるかの性能を示す単位として［b］が使われる。",
-        (
-            "a：イメージスキャナー／b：bps",
-            "a：イメージスキャナー／b：dpi",
-            "a：スクリーンリーダー／b：bps",
-            "a：スクリーンリーダー／b：dpi",
-        ),
-    ),
-}
-
-
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Build the official IPA IT Passport 2021-2026 question dataset.",
@@ -234,6 +136,8 @@ def ensure_inputs(
 
 
 def extract_page_images(pdf_path: Path, output_dir: Path) -> list[Path]:
+    from pypdf import PdfReader
+
     output_dir.mkdir(parents=True, exist_ok=True)
     reader = PdfReader(pdf_path)
     page_paths: list[Path] = []
@@ -709,6 +613,8 @@ def category_for(number: int, ranges: list[CategoryRange]) -> str:
 
 
 def extract_answers(answer_pdf: Path) -> list[str]:
+    import pdfplumber
+
     with pdfplumber.open(answer_pdf) as document:
         text = "\n".join(page.extract_text() or "" for page in document.pages)
     pairs = re.findall(r"問\s*([0-9]{1,3})\s*([アイウエ])", text)
@@ -802,280 +708,12 @@ def crop_question(
     return cropped.size
 
 
-JAPANESE = r"\u3040-\u30ff\u3400-\u9fff\uff01-\uff60"
-
-
-def clean_ocr_line(text: str) -> str:
-    value = re.sub(r"\s+", " ", text).strip()
-    value = re.sub(fr"(?<=[{JAPANESE}])\s+(?=[{JAPANESE}])", "", value)
-    value = re.sub(fr"(?<=[A-Za-z0-9])\s+(?=[{JAPANESE}])", "", value)
-    value = re.sub(fr"(?<=[{JAPANESE}])\s+(?=[A-Za-z0-9])", "", value)
-    value = re.sub(r"\s+([、。・，．,:;!?）】」』])", r"\1", value)
-    value = re.sub(r"([（【「『])\s+", r"\1", value)
-    return value
-
-
-OPTION_MARKER_BOUNDARY = r"(?<![A-Za-z0-9\u3040-\u30ff\u3400-\u9fff])"
-OPTION_MARKERS = {
-    label: re.compile(OPTION_MARKER_BOUNDARY + label)
-    for label in LABELS
-}
-STRICT_OPTION_MARKERS = {
-    label: re.compile(OPTION_MARKER_BOUNDARY + label + r"(?=\s|$)")
-    for label in LABELS
-}
-
-
-def run_tesseract_text(
-    image_path: Path,
-    tesseract: Path,
-    tessdata: Path,
-    cache_dir: Path,
-    psm: int,
-) -> str:
-    cache_path = cache_dir / f"{image_path.stem}-psm{psm}.txt"
-    if cache_path.is_file():
-        return cache_path.read_text(encoding="utf-8")
-
-    cache_dir.mkdir(parents=True, exist_ok=True)
-    prepared_path = cache_dir / f"{image_path.stem}-2x.png"
-    if not prepared_path.is_file():
-        with Image.open(image_path) as source:
-            grayscale = ImageOps.autocontrast(source.convert("L"))
-            prepared = grayscale.resize(
-                (grayscale.width * 2, grayscale.height * 2),
-                Image.Resampling.LANCZOS,
-            )
-            prepared.save(prepared_path, format="PNG", optimize=True)
-
-    command = [
-        str(tesseract),
-        str(prepared_path),
-        "stdout",
-        "--tessdata-dir",
-        str(tessdata),
-        "-l",
-        "jpn",
-        "--psm",
-        str(psm),
-    ]
-    result = subprocess.run(command, check=True, capture_output=True)
-    text = result.stdout.decode("utf-8", errors="strict")
-    cache_path.write_text(text, encoding="utf-8", newline="\n")
-    return text
-
-
-def normalize_question_ocr(text: str) -> str:
-    lines = [re.sub(r"\s+", " ", line).strip() for line in text.splitlines()]
-    value = "\n".join(line for line in lines if line)
-    value = re.sub(r"^\s*[問間]\s*\d{1,3}\s*", "", value, count=1)
-    value = re.sub(r"(?m)^\s*[ー―\-–—]+\s*\d+\s*[ー―\-–—]+\s*$", "", value)
-    value = re.sub(r"(?m)^\s*[|｜]\s*(?=[アイウエ])", "", value)
-    value = re.sub(OPTION_MARKER_BOUNDARY + r"(?:エエ|[工ェ皇])(?=\s|$)", "エ", value)
-    value = re.sub(OPTION_MARKER_BOUNDARY + r"(?:ワウ|ヴ|ウ[ー―])(?=\s|$)", "ウ", value)
-    value = re.sub(r"\n{3,}", "\n\n", value)
-    return value.strip()
-
-
-def clean_question_part(text: str) -> str:
-    value = text.strip(" \t\r\n|｜_ー―-・")
-    value = re.sub(r"(?m)^\s*[|｜]\s*", "", value)
-    value = "\n".join(clean_ocr_line(line) for line in value.splitlines())
-    value = re.sub(r"\n{3,}", "\n\n", value)
-    return value.strip()
-
-
-def split_with_marker_patterns(
-    text: str,
-    patterns: dict[str, re.Pattern[str]],
-) -> tuple[str, list[str]] | None:
-    positions = {
-        label: [match.start() for match in patterns[label].finditer(text)]
-        for label in LABELS
-    }
-    best: tuple[float, str, list[str]] | None = None
-
-    for first in positions["ア"]:
-        for second in (value for value in positions["イ"] if value > first):
-            for third in (value for value in positions["ウ"] if value > second):
-                for fourth in (value for value in positions["エ"] if value > third):
-                    marker_positions = [first, second, third, fourth]
-                    question_text = clean_question_part(text[:first])
-                    choice_texts = [
-                        clean_question_part(
-                            text[
-                                marker_positions[index] + 1 :
-                                marker_positions[index + 1]
-                                if index + 1 < len(marker_positions)
-                                else len(text)
-                            ],
-                        )
-                        for index in range(4)
-                    ]
-                    lengths = [len(choice) for choice in choice_texts]
-                    if len(question_text) < 10 or any(length < 1 for length in lengths):
-                        continue
-
-                    balance_penalty = max(lengths) - min(lengths)
-                    score = (
-                        min(len(question_text), 200)
-                        + sum(min(length, 100) for length in lengths)
-                        - balance_penalty * 0.25
-                        + first / max(len(text), 1) * 20
-                    )
-                    if best is None or score > best[0]:
-                        best = (score, question_text, choice_texts)
-
-    return (best[1], best[2]) if best is not None else None
-
-
-def split_question_and_choices(text: str) -> tuple[str, list[str]] | None:
-    return split_with_marker_patterns(text, STRICT_OPTION_MARKERS) or split_with_marker_patterns(
-        text,
-        OPTION_MARKERS,
-    )
-
-
-PADDLE_STANDALONE_LABEL_ALIASES = {
-    "P": "ア",
-    "人": "イ",
-    "ヨ": "イ",
-    "1": "イ",
-    ":": "イ",
-    "|": "イ",
-    "ヴ": "ウ",
-    "工": "エ",
-    "ェ": "エ",
-    "皇": "エ",
-    "-": "エ",
-}
-
-
-def paddle_ocr_text(cache_path: Path) -> str:
-    payload = json.loads(cache_path.read_text(encoding="utf-8"))
-    texts = payload.get("rec_texts")
-    boxes = payload.get("rec_boxes")
-    if not isinstance(texts, list) or not isinstance(boxes, list) or len(texts) != len(boxes):
-        raise ValueError(f"Invalid PaddleOCR cache: {cache_path}")
-
-    items: list[dict[str, object]] = []
-    image_bottom = max((int(box[3]) for box in boxes), default=1)
-    for raw_text, raw_box in zip(texts, boxes, strict=True):
-        text = str(raw_text).strip()
-        if not text:
-            continue
-        left, top, right, bottom = (int(value) for value in raw_box)
-        if len(text) <= 2 and top >= image_bottom * 0.25:
-            text = PADDLE_STANDALONE_LABEL_ALIASES.get(text, text)
-        if len(text) >= 2 and text[1].isspace() and top >= image_bottom * 0.25:
-            text = PADDLE_STANDALONE_LABEL_ALIASES.get(text[0], text[0]) + text[1:]
-        if text.startswith("工") and top >= image_bottom * 0.25:
-            text = "エ" + text[1:]
-        items.append(
-            {
-                "text": text,
-                "left": left,
-                "top": top,
-                "right": right,
-                "bottom": bottom,
-                "center": (top + bottom) / 2,
-            },
-        )
-
-    rows: list[list[dict[str, object]]] = []
-    for item in sorted(items, key=lambda value: (float(value["center"]), int(value["left"]))):
-        matching_row = next(
-            (
-                row
-                for row in reversed(rows[-4:])
-                if abs(
-                    float(item["center"])
-                    - sum(float(value["center"]) for value in row) / len(row)
-                )
-                <= 18
-            ),
-            None,
-        )
-        if matching_row is None:
-            rows.append([item])
-        else:
-            matching_row.append(item)
-
-    return "\n".join(
-        " ".join(str(item["text"]) for item in sorted(row, key=lambda value: int(value["left"])))
-        for row in sorted(rows, key=lambda row: min(int(item["top"]) for item in row))
-    )
-
-
-def question_text_and_choices_from_image(
-    image_path: Path,
-    tesseract: Path,
-    tessdata: Path,
-    cache_dir: Path,
-) -> tuple[str, list[str]]:
-    override = MANUAL_TEXT_OVERRIDES.get(
-        (int(image_path.parent.name), int(image_path.stem.removeprefix("q"))),
-    )
-    if override is not None:
-        return override[0], list(override[1])
-
-    attempts: list[str] = []
-    for psm in (6, 11):
-        normalized = normalize_question_ocr(
-            run_tesseract_text(image_path, tesseract, tessdata, cache_dir, psm),
-        )
-        attempts.append(normalized)
-        parsed = split_question_and_choices(normalized)
-        if parsed is not None:
-            return parsed
-
-    paddle_cache = cache_dir / f"{image_path.stem}-paddle.json"
-    if paddle_cache.is_file():
-        normalized = normalize_question_ocr(paddle_ocr_text(paddle_cache))
-        attempts.append(normalized)
-        parsed = split_question_and_choices(normalized)
-        if parsed is not None:
-            return parsed
-
-    preview = "\n---\n".join(attempts)
-    raise ValueError(f"Could not split question and choices for {image_path}:\n{preview}")
-
-
-def trim_following_question(text: str, question_number: int) -> str:
-    next_question = question_number + 1
-    marker = re.search(
-        rf'''(?m)^[\s・･"'“”‘’|]*[問間]\s*{next_question}(?=\D|$)''',
-        text,
-    )
-    return text[: marker.start()].rstrip() if marker else text
-
-
-def question_ocr_text(
-    marker: QuestionMarker,
-    end_page: int,
-    end_top: int,
-    lines_by_page: list[list[OcrLine]],
-    page_heights: list[int],
-) -> str:
-    collected: list[str] = []
-    for page_index in range(marker.page_index, end_page + 1):
-        for line in lines_by_page[page_index]:
-            if page_index == marker.page_index and line.top < marker.top - 20:
-                continue
-            if page_index == end_page and line.top >= end_top:
-                continue
-            if line.top > page_heights[page_index] * 0.94:
-                continue
-            collected.append(clean_ocr_line(line.text))
-
-    text = "\n".join(value for value in collected if value)
-    text = re.sub(r"^\s*[問間]\s*\d{1,3}\s*", "", text, count=1)
-    text = re.sub(r"(?m)^\s*[ー―\-–—]+\s*\d+\s*[ー―\-–—]+\s*$", "", text)
-    text = re.sub(r"\n{3,}", "\n\n", text).strip()
-    text = trim_following_question(text, marker.number)
-    if len(text) < 20:
-        raise ValueError(f"OCR text for question {marker.number} is unexpectedly short: {text!r}")
-    return text
+def image_question_reference(year: int, question_no: int) -> str:
+    if type(year) is not int or year not in range(2021, 2027):
+        raise ValueError("Unsupported IPA year")
+    if type(question_no) is not int or question_no not in range(1, 101):
+        raise ValueError("Invalid IPA question number")
+    return f"{year}年度 ITパスポート試験 公開問題 問{question_no}（原題画像を参照）"
 
 
 def build_year(config: YearConfig, args: argparse.Namespace) -> list[dict[str, object]]:
@@ -1131,13 +769,7 @@ def build_year(config: YearConfig, args: argparse.Namespace) -> list[dict[str, o
             )
 
         answer = answers[marker.number - 1]
-        question_text = question_ocr_text(
-            marker,
-            end_page,
-            end_top,
-            lines_by_page,
-            page_heights,
-        )
+        question_text = image_question_reference(config.year, marker.number)
         records.append(
             {
                 "sourceKey": f"ipa-it-passport-{config.year}-{marker.number:03}",
@@ -1191,6 +823,7 @@ def rebuild_from_existing_crops(args: argparse.Namespace) -> list[dict[str, obje
 
         return {
             **record,
+            "questionText": image_question_reference(year, question_no),
             "imagePath": f"/kakomon/img/ipa/{year}/q{question_no:03}.webp",
             "displayMode": "official_scan",
             "choices": [
@@ -1237,6 +870,8 @@ def validate_year(year: int, records: list[dict[str, object]], image_dir: Path) 
         if sum(bool(choice["isCorrect"]) for choice in choices) != 1:
             raise ValueError(f"{record['sourceKey']} does not have exactly one correct answer.")
         question_no = int(record["questionNo"])
+        if record["questionText"] != image_question_reference(year, question_no):
+            raise ValueError(f"{record['sourceKey']} must contain an image reference, not OCR text.")
         expected_image_path = f"/kakomon/img/ipa/{year}/q{question_no:03}.webp"
         if record["imagePath"] != expected_image_path:
             raise ValueError(f"{record['sourceKey']} has an invalid question image path.")

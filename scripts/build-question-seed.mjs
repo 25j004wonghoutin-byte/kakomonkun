@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { validateOfficialImageRecord } from "./ipa-image-record.mjs";
 
 const defaultSourceRoot = fs.existsSync("kakomon")
   ? "kakomon"
@@ -195,7 +196,10 @@ const subjectS = buildFeQuestions({
   seasonName: subjectSSeason,
 });
 
-const questions = [...supplemental, ...officialItPassport, ...subjectA, ...subjectS];
+const imageOnlyItPassport = officialItPassport.map(question => ({
+  ...question, questionText: validateOfficialImageRecord(question),
+}));
+const questions = [...supplemental, ...imageOnlyItPassport, ...subjectA, ...subjectS];
 
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 const serialized = `${JSON.stringify(questions, null, 2)}\n`.replace(/\r?\n/g, "\r\n");

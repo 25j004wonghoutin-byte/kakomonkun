@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import pg from "pg";
+import { imageQuestionReference } from "./ipa-image-record.mjs";
 
 const { Client } = pg;
 
@@ -72,7 +73,7 @@ try {
     ) invalid
   `);
   const textResult = await client.query(`
-    select question_no, question_text
+    select source_year, question_no, question_text
     from questions
     where source_key like 'ipa-it-passport-%'
     order by source_year, question_no
@@ -88,6 +89,7 @@ try {
     officialChoices: choiceResult.rows[0].count,
     imageQuestionCount: imageResult.rows[0].count,
     invalidOfficialQuestions: invalidResult.rows[0].count,
+    ocrBodyCount: textResult.rows.filter(row => row.question_text !== imageQuestionReference({ sourceYear: row.source_year, questionNo: row.question_no })).length,
     numberedQuestionCount: textResult.rows.filter((row) =>
       /^\s*[問間]\s*\d+/.test(row.question_text),
     ).length,
@@ -107,6 +109,7 @@ try {
     result.officialChoices === 2400 &&
     result.imageQuestionCount === 600 &&
     result.invalidOfficialQuestions === 0 &&
+    result.ocrBodyCount === 0 &&
     result.numberedQuestionCount === 0 &&
     result.leakedFollowingQuestionCount === 0;
 
