@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { StudentIdentityProvider } from "@/components/student-identity-provider";
 import { StudyUiPreferencesProvider } from "@/components/study-ui-preferences";
 
 export const metadata: Metadata = {
@@ -14,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body><StudyUiPreferencesProvider>{children}</StudyUiPreferencesProvider></body>
+      <body><StudyUiPreferencesProvider><StudentIdentityProvider>{children}</StudentIdentityProvider></StudyUiPreferencesProvider></body>
     </html>
   );
 }

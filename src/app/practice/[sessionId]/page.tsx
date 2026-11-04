@@ -285,6 +285,7 @@ export default function PracticeSessionPage() {
         />
       </div>
 
+      <div className="question-workspace">
       <section className="rounded-3xl border border-slate-200 bg-white p-6  sm:p-8">
         <p className="mb-3 text-xs font-black text-blue-600">{question.category.name}</p>
         {!officialScan ? (
@@ -430,7 +431,7 @@ export default function PracticeSessionPage() {
               onNavigate={(event) => { if (submitting || answerInFlight.current) event.preventDefault(); }}
               className="rounded-xl border border-slate-300 px-5 py-3 text-center text-sm font-black text-slate-700 transition hover:bg-slate-100 aria-disabled:cursor-wait aria-disabled:opacity-50"
             >
-              あとで続ける
+              中断する
             </Link>
             {!answeredAllQuestions ? (
               <button
@@ -474,7 +475,9 @@ export default function PracticeSessionPage() {
         </div>
       </section>
 
-      <div className="mx-auto mt-5 grid max-w-3xl grid-cols-6 gap-2 sm:grid-cols-10">
+      <nav aria-label="問題番号" className="question-number-panel">
+        <h2 className="question-number-heading">問題番号</h2>
+      <div className="question-number-grid mx-auto mt-5 grid max-w-3xl grid-cols-6 gap-2 sm:grid-cols-10">
         {session.questions.map((item, index) => (
           <button
             key={item.id}
@@ -496,6 +499,8 @@ export default function PracticeSessionPage() {
             {index + 1}
           </button>
         ))}
+      </div>
+      </nav>
       </div>
     </StudentShell>
   );

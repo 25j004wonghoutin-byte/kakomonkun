@@ -16,7 +16,10 @@ export function encodeBoardCursor(
         }
       : { createdAt: last.createdAt, id: last.id };
 
-  return Buffer.from(JSON.stringify(value)).toString("base64url");
+  return Buffer.from(JSON.stringify({
+    ...value,
+    ...(last.activityAt !== undefined ? { activityAt: last.activityAt } : {}),
+  })).toString("base64url");
 }
 
 export function decodeBoardCursor(
@@ -35,6 +38,9 @@ export function decodeBoardCursor(
     if (
       typeof row.createdAt !== "string" ||
       !Number.isFinite(Date.parse(row.createdAt)) ||
+      (row.activityAt !== undefined &&
+        (typeof row.activityAt !== "string" ||
+          !Number.isFinite(Date.parse(row.activityAt)))) ||
       typeof row.id !== "string" ||
       !CURSOR_UUID_PATTERN.test(row.id)
     ) {
@@ -45,13 +51,18 @@ export function decodeBoardCursor(
       return null;
     }
 
+    const activity = row.activityAt !== undefined
+      ? { activityAt: row.activityAt as string }
+      : {};
+
     return scope === "all"
       ? {
+          ...activity,
           isPinned: row.isPinned as boolean,
           createdAt: row.createdAt,
           id: row.id,
         }
-      : { createdAt: row.createdAt, id: row.id };
+      : { ...activity, createdAt: row.createdAt, id: row.id };
   } catch {
     return null;
   }

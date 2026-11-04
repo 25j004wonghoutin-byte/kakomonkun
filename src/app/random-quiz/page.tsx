@@ -1,5 +1,7 @@
 "use client";
 
+import { useStudentMeRequest } from "@/components/student-identity-provider";
+
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -16,6 +18,7 @@ type MeResponse = {
   profile: {
     totalPoints: number;
     avatarUrl: string | null;
+    currentTitleName?: string | null;
   } | null;
 };
 
@@ -38,6 +41,7 @@ async function fetchRandomQuestion() {
 }
 
 export default function RandomQuizPage() {
+  const requestMe = useStudentMeRequest();
   const [me, setMe] = useState<MeResponse | null>(null);
   const [randomAttempt, setRandomAttempt] = useState<{ question: QuizQuestion; attemptId: string | null } | null>(null);
   const question = randomAttempt?.question ?? null;
@@ -82,7 +86,7 @@ export default function RandomQuizPage() {
   useEffect(() => {
     let active = true;
 
-    fetch("/api/me")
+    requestMe()
       .then((response) => (response.ok ? response.json() : Promise.reject()))
       .then((data: MeResponse) => {
         if (active) setMe(data);
@@ -105,7 +109,7 @@ export default function RandomQuizPage() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [requestMe]);
 
   async function submitAnswer() {
     if (!question || !selectedChoiceId || answerResult || answering) return;
@@ -137,7 +141,7 @@ export default function RandomQuizPage() {
     }
   }
 
-  const identity: StudentIdentity | null = me ? { id: me.id, displayName: me.displayName, avatarUrl: me.profile?.avatarUrl ?? null } : null;
+  const identity: StudentIdentity | null = me ? { id: me.id, displayName: me.displayName, avatarUrl: me.profile?.avatarUrl ?? null, titleName: me.profile?.currentTitleName ?? null } : null;
   const points = me?.profile?.totalPoints ?? 0;
 
   return (

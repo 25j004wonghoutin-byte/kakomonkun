@@ -51,6 +51,7 @@ export default async function TitlesPage() {
   ]);
 
   const initialData: TitleShopInitialData = {
+    userId: user.id,
     displayName: user.displayName,
     avatarUrl: user.studentProfile.avatarUrl,
     totalPoints: profile.totalPoints,

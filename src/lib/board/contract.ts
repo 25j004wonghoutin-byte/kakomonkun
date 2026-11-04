@@ -11,6 +11,7 @@ export type BoardScope = "all" | "mine";
 
 export type BoardCursor = {
   isPinned?: boolean;
+  activityAt?: string;
   createdAt: string;
   id: string;
 };
@@ -54,6 +55,7 @@ export type BoardPostView = {
   id: string;
   body: string;
   isPinned: boolean;
+  activityAt?: string;
   createdAt: string;
   author: BoardAuthorView;
   commentCount: number;

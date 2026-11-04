@@ -48,6 +48,7 @@ export type ProfilePointHistory = {
 
 export type ProfilePageData = {
   profile: {
+    userId?: string;
     displayName: string;
     avatarUrl: string | null;
     bio: string | null;
@@ -325,6 +326,7 @@ export async function getStudentProfileData(userId: string): Promise<ProfilePage
 
   return {
     profile: {
+      userId,
       displayName: profile.user.displayName,
       avatarUrl: profile.avatarUrl,
       bio: profile.bio,

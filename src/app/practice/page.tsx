@@ -1,5 +1,7 @@
 "use client";
 
+import { useStudentMeRequest } from "@/components/student-identity-provider";
+
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRememberedPracticePreferences, type PracticePreferences } from "@/components/study-ui-preferences";
@@ -10,7 +12,7 @@ import {
   ALL_PRACTICE_CATEGORY_CODE,
   getPracticeCompletionPoints,
   PRACTICE_CATEGORIES,
-  PRACTICE_QUESTION_COUNTS,
+  getPracticeQuestionCounts,
   supportsPracticeCategorySelection,
   type PracticeCategoryCode,
   type PracticeQuestionCount,
@@ -66,6 +68,7 @@ type SessionStartError = {
 };
 
 export default function PracticeStartPage() {
+  const requestMe = useStudentMeRequest();
   const router = useRouter();
   const [selectedExam, setSelectedExam] = useState<PracticePreferences["examCode"]>("it_passport");
   const [selectedCategory, setSelectedCategory] = useState<PracticeCategoryCode>(
@@ -85,6 +88,7 @@ export default function PracticeStartPage() {
   function changePreferences(patch: Partial<PracticePreferences>) {
     if (identityLoading) return;
     const next = { examCode: selectedExam, categoryCode: selectedCategory, questionCount: selectedQuestionCount, ...patch };
+    if (!getPracticeQuestionCounts(next.examCode).includes(next.questionCount)) next.questionCount = 30;
     setSelectedExam(next.examCode);
     setSelectedCategory(next.categoryCode);
     setSelectedQuestionCount(next.questionCount);
@@ -95,17 +99,17 @@ export default function PracticeStartPage() {
     let cancelled = false;
 
     async function loadPageData() {
-      const identityRequest = fetch("/api/me")
+      const identityRequest = requestMe()
         .then(response => response.ok ? response.json() : null)
         .then(meData => {
           if (cancelled || !meData) return;
-          setIdentity({ id: meData.id, displayName: meData.displayName, avatarUrl: meData.profile?.avatarUrl ?? null });
+          setIdentity({ id: meData.id, displayName: meData.displayName, avatarUrl: meData.profile?.avatarUrl ?? null, titleName: meData.profile?.currentTitleName ?? null });
           setPoints(meData.profile?.totalPoints ?? 0);
           const remembered = getPracticePreferences(meData.id);
           if (remembered) {
             setSelectedExam(remembered.examCode);
             setSelectedCategory(remembered.categoryCode);
-            setSelectedQuestionCount(remembered.questionCount);
+            setSelectedQuestionCount(getPracticeQuestionCounts(remembered.examCode).includes(remembered.questionCount) ? remembered.questionCount : 30);
           }
         })
         .finally(() => { if (!cancelled) setIdentityLoading(false); });
@@ -122,7 +126,7 @@ export default function PracticeStartPage() {
 
     void loadPageData();
     return () => { cancelled = true; };
-  }, [getPracticePreferences]);
+  }, [getPracticePreferences, requestMe]);
 
   async function startPractice() {
     setSubmitting(true);
@@ -304,7 +308,7 @@ export default function PracticeStartPage() {
             <div
               className="practice-count-grid"
             >
-              {PRACTICE_QUESTION_COUNTS.map((count) => {
+              {getPracticeQuestionCounts(selectedExam).map((count) => {
                 const selected = selectedQuestionCount === count;
                 return (
                   <button

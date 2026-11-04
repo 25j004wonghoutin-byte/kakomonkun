@@ -1,5 +1,7 @@
 "use client";
 
+import { useStudentMeRequest } from "@/components/student-identity-provider";
+
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { HomeStudyTotals } from "@/components/home-study-totals";
@@ -51,6 +53,7 @@ async function fetchDailyQuestion() {
 }
 
 export function StudentHome({ initialIdentity }: { initialIdentity: StudentIdentity }) {
+  const requestMe = useStudentMeRequest();
   const [me, setMe] = useState<MePayload | null>(null);
   const [meLoading, setMeLoading] = useState(true);
   const [meError, setMeError] = useState("");
@@ -70,8 +73,8 @@ export function StudentHome({ initialIdentity }: { initialIdentity: StudentIdent
     let active = true;
 
     const loader = createMeLoader({
-      fetchMe: async (signal) => {
-        const response = await fetch("/api/me", { cache: "no-store", signal });
+      fetchMe: async () => {
+        const response = await requestMe();
         if (!response.ok) throw new Error("me request failed");
         return response.json() as Promise<MePayload>;
       },
@@ -108,7 +111,7 @@ export function StudentHome({ initialIdentity }: { initialIdentity: StudentIdent
       loader.dispose();
       meLoader.current = null;
     };
-  }, []);
+  }, [requestMe]);
 
   async function submitAnswer() {
     if (!question || !selectedChoiceId || answerResult) return;
@@ -183,7 +186,7 @@ export function StudentHome({ initialIdentity }: { initialIdentity: StudentIdent
   const points = me?.profile?.totalPoints ?? 0;
 
   return (
-    <StudentShell userName={displayName} avatarUrl={avatarUrl} points={points}>
+    <StudentShell userId={initialIdentity.id} userName={displayName} avatarUrl={avatarUrl} points={points}>
       <div className="min-w-0">
         <div className="study-grid">
           <QuizQuestionCard

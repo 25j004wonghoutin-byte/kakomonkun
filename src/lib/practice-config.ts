@@ -8,7 +8,7 @@ export const PRACTICE_CATEGORIES = [
   { code: "strategy", label: "ストラテジ" },
 ] as const;
 
-export const PRACTICE_QUESTION_COUNTS = [30, 60] as const;
+export const PRACTICE_QUESTION_COUNTS = [30, 60, 100] as const;
 
 export type PracticeCategoryCode =
   | typeof ALL_PRACTICE_CATEGORY_CODE
@@ -19,6 +19,7 @@ export type PracticeQuestionCount = (typeof PRACTICE_QUESTION_COUNTS)[number];
 export const PRACTICE_COMPLETION_POINTS: Record<PracticeQuestionCount, number> = {
   30: 5,
   60: 15,
+  100: 25,
 };
 
 export function isPracticeCategoryCode(value: unknown): value is PracticeCategoryCode {
@@ -40,4 +41,8 @@ export function getPracticeCompletionPoints(questionCount: number) {
 
 export function supportsPracticeCategorySelection(examCode: string) {
   return examCode === CATEGORIZED_PRACTICE_EXAM_CODE;
+}
+
+export function getPracticeQuestionCounts(examCode: string): readonly PracticeQuestionCount[] {
+  return examCode === "it_passport" ? PRACTICE_QUESTION_COUNTS : [30, 60];
 }

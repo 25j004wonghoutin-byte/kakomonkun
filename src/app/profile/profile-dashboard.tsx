@@ -3,7 +3,8 @@
 import { formatTokyoDateTime } from "@/lib/tokyo-date";
 
 import Link from "next/link";
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useStudentIdentityStore } from "@/components/student-identity-provider";
 import { StudentShell } from "@/components/student-shell";
 import type {
   ProfileCategoryStat,
@@ -33,6 +34,10 @@ type EquipTitleResponse = {
 
 export function ProfileDashboard({ initialData }: { initialData: ProfilePageData }) {
   const [profile, setProfile] = useState(initialData.profile);
+  const identityStore = useStudentIdentityStore();
+  useEffect(() => {
+    if (profile.userId) identityStore.seed({ id: profile.userId, displayName: profile.displayName, avatarUrl: profile.avatarUrl, titleName: profile.currentTitle?.name ?? null });
+  }, [identityStore, profile]);
   const [avatarEditorOpen, setAvatarEditorOpen] = useState(false);
   const [ownedTitles, setOwnedTitles] = useState(initialData.ownedTitles);
   const [period, setPeriod] = useState<Period>("overall");
@@ -57,6 +62,14 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
     : initialData.pointHistory.slice(0, 3);
   const insight = getLearningInsight(initialData.categoryStats, period);
   const accuracyTrend = formatAccuracyTrend(initialData.stats);
+
+  function rememberProfileChange(patch: { displayName?: string; avatarUrl?: string | null; titleName?: string | null }) {
+    const cached = identityStore.getSnapshot();
+    const id = profile.userId ?? cached?.id;
+    if (!id) return;
+    const current = cached?.id === id ? cached : { id, displayName: profile.displayName, avatarUrl: profile.avatarUrl, titleName: profile.currentTitle?.name ?? null };
+    identityStore.remember({ ...current, ...patch });
+  }
 
   function openProfileDialog() {
     setEditDisplayName(profile.displayName);
@@ -86,6 +99,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
         displayName: data.displayName!,
         bio: data.bio ?? null,
       }));
+      rememberProfileChange({ displayName: data.displayName! });
       profileDialogRef.current?.close();
     } catch (cause) {
       setProfileError(
@@ -124,6 +138,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
       }
 
       setProfile((current) => ({ ...current, currentTitle: data.currentTitle! }));
+      rememberProfileChange({ titleName: data.currentTitle.name });
       setOwnedTitles((current) =>
         current.map((ownedTitle) =>
           ownedTitle.id === data.currentTitle!.id
@@ -140,8 +155,8 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
   }
 
   return (
-    <StudentShell userName={profile.displayName} points={profile.totalPoints} avatarUrl={profile.avatarUrl}>
-      <AvatarEditor open={avatarEditorOpen} currentAvatarUrl={profile.avatarUrl} onClose={() => setAvatarEditorOpen(false)} onSaved={avatarUrl => setProfile(current => ({ ...current, avatarUrl }))} />
+    <StudentShell identity={profile.userId ? { id: profile.userId, displayName: profile.displayName, avatarUrl: profile.avatarUrl, titleName: profile.currentTitle?.name ?? null } : undefined} userName={profile.displayName} points={profile.totalPoints} avatarUrl={profile.avatarUrl} titleName={profile.currentTitle?.name ?? null}>
+      <AvatarEditor open={avatarEditorOpen} currentAvatarUrl={profile.avatarUrl} onClose={() => setAvatarEditorOpen(false)} onSaved={avatarUrl => { setProfile(current => ({ ...current, avatarUrl })); rememberProfileChange({ avatarUrl }); }} />
       <div className="mx-auto w-full max-w-[1120px] min-w-0">
         <div className="mb-5">
           <h1 className="text-3xl font-black text-slate-950">マイページ</h1>

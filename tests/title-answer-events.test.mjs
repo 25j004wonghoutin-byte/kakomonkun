@@ -68,3 +68,23 @@ test("practice answer and counters roll back when eligibility notification fails
   const db = database({ failNotifications: true, posts: Array.from({ length: 10 }, () => ({ deletedAt: null })) }); await assert.rejects(answer(db), /notification save failed/);
   assert.equal(db.state.practiceAnswers.length, 0); assert.equal(db.state.sessions[0].answeredCount, 29); assert.equal(db.state.activities.length, 0);
 });
+
+test("a completed100-question practice awards25 plus the unchanged correct bonus once", async () => {
+  const db = database({ sessions: [session({ questionCount: 100, answeredCount: 100, correctCount: 90 })] });
+  const result = await finish(db);
+  assert.equal(result.completionPoints, 25);
+  assert.equal(result.correctBonusPoints, 9);
+  assert.equal(result.earnedPoints, 34);
+  assert.equal(db.state.profile.totalPoints, 34);
+  const replay = await finish(db);
+  assert.equal(replay.alreadyCompleted, true);
+  assert.equal(db.state.profile.totalPoints, 34);
+});
+test("100-question practice preserves the daily completion cap and incomplete rules", async () => {
+  const capped = database({ sessions: [session({ questionCount: 100, answeredCount: 100, correctCount: 90 })], points: [1, 2].map(() => ({ userId: "student", reason: "practice_complete", transactionDate: new Date("2026-10-02T00:00:00Z") })) });
+  const third = await finish(capped);
+  assert.equal(third.completionPoints, 0); assert.equal(third.correctBonusPoints, 9);
+  const incomplete = database({ sessions: [session({ questionCount: 100, answeredCount: 99, correctCount: 90 })] });
+  const stopped = await finish(incomplete);
+  assert.equal(stopped.earnedPoints, 0);
+});

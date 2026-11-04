@@ -8,6 +8,7 @@ import { NotificationBell } from "@/components/notification-bell";
 import { NavigationPendingIndicator } from "@/components/navigation-pending-indicator";
 import { TitleActivityTracker } from "@/components/title-activity-tracker";
 import { StudentAvatar as ProfileImage } from "@/components/student-avatar";
+import { useRememberedStudentIdentity } from "@/components/student-identity-provider";
 import type { StudentIdentity } from "@/lib/me";
 
 type NavigationItem = {
@@ -46,7 +47,9 @@ type StudentShellProps = {
   children: ReactNode;
   identity?: StudentIdentity | null;
   userName?: string;
+  userId?: string;
   avatarUrl?: string | null;
+  titleName?: string | null;
   points?: number;
   isLoading?: boolean;
 };
@@ -55,14 +58,14 @@ export function StudentShell({
   children,
   identity,
   userName,
+  userId,
   avatarUrl,
+  titleName,
   isLoading = false,
 }: StudentShellProps) {
   const pathname = usePathname();
   const identityProvided = identity !== undefined;
-  const [fetchedUserName, setFetchedUserName] = useState<string | null>(null);
-  const [fetchedAvatarUrl, setFetchedAvatarUrl] = useState<string | null>(null);
-  const [userFetchComplete, setUserFetchComplete] = useState(false);
+  const { store: identityStore, identity: rememberedIdentity, signedOut } = useRememberedStudentIdentity();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [desktopSidebarVisible, setDesktopSidebarVisible] = useSidebarVisibility("student");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -89,38 +92,18 @@ export function StudentShell({
 
 
   useEffect(() => {
-    if (isLoading || identityProvided || (userName !== undefined && avatarUrl !== undefined)) {
-      return;
-    }
+    if (isLoading || (identityProvided && !identity)) return;
+    const supplied = identity ?? (userId && userName ? { id: userId, displayName: userName, avatarUrl: avatarUrl ?? null, ...(titleName !== undefined ? { titleName } : {}) } : null);
+    if (supplied) identityStore.seed(supplied);
+    void identityStore.load();
+  }, [identityStore, identityProvided, identity, isLoading, titleName, userId, userName, avatarUrl]);
 
-    let active = true;
-
-    fetch("/api/me", { cache: "no-store" })
-      .then((response) => (response.ok ? response.json() : Promise.reject()))
-      .then((data: { displayName?: unknown; profile?: { avatarUrl?: unknown } | null }) => {
-        if (!active) return;
-        setFetchedUserName(
-          typeof data.displayName === "string" && data.displayName.trim()
-            ? data.displayName
-            : null,
-        );
-        setFetchedAvatarUrl(typeof data.profile?.avatarUrl === "string" ? data.profile.avatarUrl : null);
-      })
-      .catch(() => {
-        if (active) setFetchedUserName(null);
-      })
-      .finally(() => {
-        if (active) setUserFetchComplete(true);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [userName, avatarUrl, isLoading, identityProvided]);
-
-  const resolvedUserName = identityProvided ? identity?.displayName ?? null : userName ?? fetchedUserName;
-  const resolvedAvatarUrl = identityProvided ? identity?.avatarUrl ?? null : avatarUrl !== undefined ? avatarUrl : fetchedAvatarUrl;
-  const userLoading = identityProvided ? identity === null : userName === undefined && !userFetchComplete;
+  const compatibleRemembered = rememberedIdentity && (!identity?.id && !userId || rememberedIdentity.id === (identity?.id ?? userId))
+    ? rememberedIdentity : null;
+  const resolvedUserName = signedOut ? null : compatibleRemembered?.displayName ?? (identityProvided ? identity?.displayName ?? null : userName ?? null);
+  const resolvedAvatarUrl = signedOut ? null : compatibleRemembered ? compatibleRemembered.avatarUrl : (identityProvided ? identity?.avatarUrl ?? null : avatarUrl ?? null);
+  const resolvedTitleName = signedOut ? null : compatibleRemembered?.titleName !== undefined ? compatibleRemembered.titleName : identity?.titleName !== undefined ? identity.titleName : titleName;
+  const userLoading = !resolvedUserName;
 
   function toggleSidebar() {
     if (window.matchMedia("(min-width: 1024px)").matches) {
@@ -132,7 +115,7 @@ export function StudentShell({
   }
 
   return (
-    <div className="app-shell" data-sidebar-collapsed={!desktopSidebarVisible}>
+    <div className="app-shell" data-student-shell="true" data-sidebar-collapsed={!desktopSidebarVisible}>
       <a href="#main-content" className="app-skip-link">本文へ移動</a>
       {isLoading ? null : <TitleActivityTracker />}
       <div className="app-frame">
@@ -198,9 +181,9 @@ export function StudentShell({
 
               <Link href="/" className="app-mobile-brand">過去問くん</Link>
               <div className="app-user-tools">
-                <NotificationBell enabled={!isLoading} />
+                <div className="app-notification-control"><NotificationBell enabled={!isLoading} /></div>
 
-                <div ref={accountMenu} className="relative">
+                <div ref={accountMenu} className="app-profile-control relative">
                   <button
                     type="button"
                     ref={accountTrigger}
@@ -209,7 +192,7 @@ export function StudentShell({
                     onClick={() => {
                       setUserMenuOpen((current) => !current);
                     }}
-                    className="flex items-center gap-3 rounded-full py-1 pl-1 pr-2 transition hover:bg-slate-100"
+                    className="app-account-trigger flex min-w-0 items-center gap-3 rounded-full py-1 pl-1 pr-2 transition hover:bg-slate-100"
                   >
                     <ProfileImage avatarUrl={resolvedAvatarUrl} displayName={resolvedUserName ?? "学生"} size={36} className="text-xl" fallback={<StudentAvatar />} />
                     {userLoading || !resolvedUserName ? (
@@ -218,8 +201,9 @@ export function StudentShell({
                         className="hidden h-4 w-20 rounded-full bg-slate-200 sm:inline-block"
                       />
                     ) : (
-                      <span className="app-user-name">
-                        {resolvedUserName}
+                      <span className="app-user-identity">
+                        <span className="app-user-name" title={resolvedUserName}>{resolvedUserName}</span>
+                        <span className="app-user-title" title={resolvedTitleName ?? undefined}>{resolvedTitleName === undefined ? "称号を確認中" : resolvedTitleName ?? "称号未設定"}</span>
                       </span>
                     )}
                     <AppIcon name="chevron" className="size-4 text-slate-600" />

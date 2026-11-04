@@ -11,6 +11,7 @@ import { titleShopAction } from "@/lib/titles/shop";
 import { TitleShopDialog, TitleShopList } from "./title-shop-parts";
 
 export type TitleShopInitialData = {
+  userId?: string;
   displayName: string;
   avatarUrl?: string | null;
   totalPoints: number;
@@ -104,7 +105,7 @@ export function TitleShop({ initialData }: { initialData: TitleShopInitialData }
   }
 
   return (
-    <StudentShell userName={initialData.displayName} avatarUrl={initialData.avatarUrl} points={totalPoints}>
+    <StudentShell userId={initialData.userId} userName={initialData.displayName} avatarUrl={initialData.avatarUrl} points={totalPoints} titleName={initialData.currentTitle?.name ?? null}>
       <div className="mx-auto w-full max-w-[1120px]">
         <PageHeading title="称号ショップ" />
         <section aria-label="現在の称号とポイント" className="grid gap-5 rounded-xl border border-l border-slate-200 border-l-blue-600 bg-white px-5 py-4  sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">

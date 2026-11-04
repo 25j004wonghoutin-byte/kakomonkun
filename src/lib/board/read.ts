@@ -1,4 +1,4 @@
-import type { Prisma } from "../../../prisma/generated/client";
+import { Prisma } from "../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import {
   toBoardAuthor,
@@ -110,6 +110,7 @@ export function cursorWhereFor(
 async function toBoardPostViews(
   rows: BoardPostRow[],
   actor: BoardActor,
+  activities?: Map<string, Date>,
 ): Promise<BoardPostView[]> {
   const postIds = rows.map((row) => row.id);
   if (postIds.length === 0) {
@@ -149,6 +150,9 @@ async function toBoardPostViews(
     id: row.id,
     body: row.body,
     isPinned: row.isPinned,
+    ...(activities?.has(row.id)
+      ? { activityAt: activities.get(row.id)!.toISOString() }
+      : {}),
     createdAt: row.createdAt.toISOString(),
     author: toBoardAuthor(row.author),
     commentCount: commentCounts.get(row.id) ?? 0,
@@ -180,6 +184,13 @@ function nextCursorFor(
   });
 }
 
+type BoardActivityRow = {
+  id: string;
+  isPinned: boolean;
+  createdAt: Date;
+  activityAt: Date;
+};
+
 export async function listBoardPosts(
   viewerId: string,
   scope: BoardScope,
@@ -187,33 +198,69 @@ export async function listBoardPosts(
 ): Promise<{ posts: BoardPostView[]; nextCursor: string | null }> {
   const actor = await requireBoardActor(viewerId);
   const parsedCursor = parseCursor(scope, cursor);
-  const cursorWhere = cursorWhereFor(scope, parsedCursor);
+  const activityAt = parsedCursor
+    ? new Date(parsedCursor.activityAt ?? parsedCursor.createdAt)
+    : null;
+  const afterCursor = !parsedCursor
+    ? Prisma.empty
+    : scope === "all"
+      ? Prisma.sql`AND (p.is_pinned, activity.at, p.id) <
+          (${parsedCursor.isPinned}, ${activityAt}, ${parsedCursor.id}::uuid)`
+      : Prisma.sql`AND (activity.at, p.id) < (${activityAt}, ${parsedCursor.id}::uuid)`;
 
-  const rows = await prisma.boardPost.findMany({
+  // The existing post/date comment index supports the latest visible reply lookup.
+  // Derive activity instead of changing a parent timestamp for likes, pins or replies.
+  const activityRows = await prisma.$queryRaw<BoardActivityRow[]>(Prisma.sql`
+    SELECT p.id, p.is_pinned AS "isPinned", p.created_at AS "createdAt",
+      activity.at AS "activityAt"
+    FROM public.board_posts p
+    JOIN public.users author ON author.id = p.author_id
+    LEFT JOIN LATERAL (
+      SELECT reply.created_at
+      FROM public.board_comments reply
+      JOIN public.users reply_author ON reply_author.id = reply.author_id
+      WHERE reply.post_id = p.id AND reply.deleted_at IS NULL
+        AND reply_author.status = 'active' AND reply_author.deleted_at IS NULL
+      ORDER BY reply.created_at DESC, reply.id DESC
+      LIMIT 1
+    ) latest_reply ON true
+    CROSS JOIN LATERAL (
+      SELECT GREATEST(p.created_at, latest_reply.created_at) AS at
+    ) activity
+    WHERE p.deleted_at IS NULL AND author.status = 'active' AND author.deleted_at IS NULL
+      ${scope === "mine" ? Prisma.sql`AND p.author_id = ${viewerId}::uuid` : Prisma.empty}
+      ${afterCursor}
+    ORDER BY ${scope === "all" ? Prisma.sql`p.is_pinned DESC,` : Prisma.empty}
+      activity.at DESC, p.id DESC
+    LIMIT ${PAGE_SIZE + 1}
+  `);
+  const page = activityRows.slice(0, PAGE_SIZE);
+  const rows = page.length === 0 ? [] : await prisma.boardPost.findMany({
     where: {
+      id: { in: page.map((row) => row.id) },
       deletedAt: null,
       author: { status: "active", deletedAt: null },
-      ...(scope === "mine" ? { authorId: viewerId } : {}),
-      ...cursorWhere,
     },
-    orderBy:
-      scope === "all"
-        ? [
-            { isPinned: "desc" },
-            { createdAt: "desc" },
-            { id: "desc" },
-          ]
-        : [{ createdAt: "desc" }, { id: "desc" }],
-    take: PAGE_SIZE + 1,
     include: postWithAuthorInclude,
   });
-
-  const hasMore = rows.length > PAGE_SIZE;
-  const pageRows = rows.slice(0, PAGE_SIZE);
+  const rowsById = new Map(rows.map((row) => [row.id, row]));
+  const orderedRows = page.flatMap((row) => {
+    const post = rowsById.get(row.id);
+    return post ? [post] : [];
+  });
+  const last = page.at(-1);
 
   return {
-    posts: await toBoardPostViews(pageRows, actor),
-    nextCursor: nextCursorFor(scope, pageRows, hasMore),
+    posts: await toBoardPostViews(orderedRows, actor,
+      new Map(page.map((row) => [row.id, row.activityAt]))),
+    nextCursor: activityRows.length > PAGE_SIZE && last
+      ? encodeBoardCursor(scope, {
+          ...(scope === "all" ? { isPinned: last.isPinned } : {}),
+          createdAt: last.createdAt.toISOString(),
+          activityAt: last.activityAt.toISOString(),
+          id: last.id,
+        })
+      : null,
   };
 }
 

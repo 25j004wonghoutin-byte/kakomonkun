@@ -402,3 +402,26 @@ body { font-family: "Instrument Sans", "Yu Gothic UI", "Hiragino Kaku Gothic Pro
 
 .question-image-view-controls { display: flex; flex-basis: 100%; flex-wrap: wrap; gap: 4px; }
 .question-image-view-controls button[aria-pressed="true"] { background: var(--surface); color: var(--text); box-shadow: inset 0 0 0 1px var(--border); }
+
+/* Keep phone question grids; place the navigator beside the question on desktops. */
+.question-workspace { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; }
+.question-workspace > section, .question-number-panel { min-width: 0; }
+.question-number-heading { display: none; }
+.app-user-identity { display: none; }
+@media (min-width: 1024px) {
+  .question-workspace { grid-template-columns: minmax(0, 1fr) 228px; gap: 24px; }
+  .question-number-panel { position: sticky; top: 24px; max-height: calc(100dvh - 168px); overflow-y: auto; scrollbar-gutter: stable; }
+  .question-number-heading { display: block; margin-bottom: 12px; font-size: 13px; font-weight: 600; }
+  .question-number-panel .question-number-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); max-width: none; margin-top: 0; }
+  .app-shell[data-student-shell] .app-sidebar { bottom: 136px; }
+  .app-shell[data-student-shell] .app-toolbar { display: grid; grid-template-columns: 44px 44px minmax(0, 1fr); grid-template-rows: minmax(52px, auto) 44px; gap: 4px; min-height: 136px; padding: 12px; }
+  .app-shell[data-student-shell] .app-user-tools { display: contents; }
+  .app-shell[data-student-shell] .app-menu-toggle { grid-column: 1; grid-row: 2; }
+  .app-shell[data-student-shell] .app-notification-control { grid-column: 2; grid-row: 2; }
+  .app-profile-control { grid-column: 1 / -1; grid-row: 1; min-width: 0; }
+  .app-account-trigger { width: 100%; border-radius: 8px; }
+  .app-user-identity { display: grid; min-width: 0; flex: 1; gap: 2px; text-align: left; }
+  .app-shell[data-student-shell] .app-user-name { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 600; }
+  .app-user-title { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow-wrap: anywhere; font-size: 11px; line-height: 1.4; color: var(--muted); }
+  .app-shell[data-student-shell] .app-account-menu { left: 0; }
+}

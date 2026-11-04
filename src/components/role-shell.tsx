@@ -25,10 +25,11 @@ type RoleShellProps = {
   children: ReactNode;
   roleName: string;
   userName: string;
+  userId?: string;
   avatarUrl?: string | null;
 };
 
-export function RoleShell({ children, roleName, userName, avatarUrl }: RoleShellProps) {
+export function RoleShell({ children, roleName, userName, userId, avatarUrl }: RoleShellProps) {
   if (roleName === "teacher") {
     return (
       <RoleNavigationShell
@@ -41,7 +42,7 @@ export function RoleShell({ children, roleName, userName, avatarUrl }: RoleShell
     );
   }
 
-  return <StudentShell userName={userName} avatarUrl={avatarUrl}>{children}</StudentShell>;
+  return <StudentShell userId={userId} userName={userName} avatarUrl={avatarUrl}>{children}</StudentShell>;
 }
 
 type RoleNavigationShellProps = {

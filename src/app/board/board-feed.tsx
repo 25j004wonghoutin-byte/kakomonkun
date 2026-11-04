@@ -4,9 +4,11 @@ import { useCallback, useRef, useState } from "react";
 import { PageHeading } from "@/components/ui";
 import type {
   BoardActor,
+  BoardCommentView,
   BoardPostView,
   BoardScope,
 } from "@/lib/board/contract";
+import { mergeBoardPage, promoteRepliedPost } from "@/lib/board/activity";
 import { readJsonResponse } from "@/lib/read-json-response";
 import { PostCard } from "./post-card";
 import { ReplyDialog } from "./reply-dialog";
@@ -85,7 +87,7 @@ export function BoardFeed({
         return;
       }
 
-      setPosts((current) => (append ? [...current, ...data.posts] : data.posts));
+      setPosts((current) => (append ? mergeBoardPage(current, data.posts, requestedScope) : data.posts));
       setNextCursor(data.nextCursor);
     } catch (cause) {
       if (sequence === requestSequence.current) {
@@ -243,14 +245,9 @@ export function BoardFeed({
     }
   }
 
-  function handleReplySent(postId: string) {
-    setPosts((current) =>
-      current.map((post) =>
-        post.id === postId
-          ? { ...post, commentCount: post.commentCount + 1 }
-          : post,
-      ),
-    );
+  function handleReplySent(postId: string, comment: BoardCommentView) {
+    setPosts((current) => promoteRepliedPost(current, postId, comment.createdAt, scope));
+    void loadPosts(scope, null, false);
   }
 
   return (

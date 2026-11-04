@@ -4,6 +4,7 @@ import {
   ALL_PRACTICE_CATEGORY_CODE,
   isPracticeCategoryCode,
   isPracticeQuestionCount,
+  getPracticeQuestionCounts,
   PRACTICE_CATEGORIES,
   supportsPracticeCategorySelection,
 } from "@/lib/practice-config";
@@ -68,8 +69,8 @@ export async function POST(request: Request) {
   const questionCount = body.questionCount ?? 30;
 
   if (!examCode) return badRequest("examCode is required");
-  if (!isPracticeQuestionCount(questionCount)) {
-    return badRequest("questionCount must be 30 or 60");
+  if (!isPracticeQuestionCount(questionCount) || !getPracticeQuestionCounts(examCode).includes(questionCount)) {
+    return badRequest("questionCount must be " + getPracticeQuestionCounts(examCode).join(", "));
   }
 
   const exam = await prisma.exam.findUnique({ where: { code: examCode } });
