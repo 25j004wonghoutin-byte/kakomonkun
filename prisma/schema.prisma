@@ -63,6 +63,7 @@ model StudentProfile {
   studentNo          String?  @unique(map: "student_profiles_student_no_key") @map("student_no") @db.VarChar(50)
   avatarUrl          String?  @map("avatar_url")
   bio                String?
+  bannerColor        String   @default("#deece6") @map("banner_color") @db.VarChar(7)
   currentTitleId     String?  @map("current_title_id") @db.Uuid
   totalPoints        Int      @default(0) @map("total_points")
   totalPracticeCount Int      @default(0) @map("total_practice_count")

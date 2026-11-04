@@ -9,6 +9,7 @@ import type {
 } from "@/lib/board/contract";
 import { readJsonResponse } from "@/lib/read-json-response";
 import { StudentAvatar } from "@/components/student-avatar";
+import { getPublicProfileHref } from "@/lib/public-profile-navigation";
 import {
   BoardAuthorName,
   PostCard,
@@ -35,6 +36,7 @@ export function PostDetail({
   viewerIsTeacher?: boolean;
 }) {
   const [post, setPost] = useState(initialThread.post);
+  const profileReturnTo = `/board/posts/${post.id}`;
   const [comments, setComments] = useState(initialThread.comments);
   const [draft, setDraft] = useState("");
   const [error, setError] = useState("");
@@ -168,6 +170,7 @@ export function PostDetail({
 
         <PostCard
           post={post}
+          profileReturnTo={profileReturnTo}
           pending={pending}
           onReply={() => replyRef.current?.focus()}
           onLike={toggleLike}
@@ -181,7 +184,7 @@ export function PostDetail({
         {comments.map((comment) => (
           <article key={comment.id} className="flex gap-3 border-b border-slate-200 px-4 py-5 sm:gap-4 sm:px-6">
             <Link
-              href={`/board/users/${comment.author.id}`}
+              href={getPublicProfileHref(comment.author.id, profileReturnTo)}
               aria-label={`${comment.author.displayName}さんのプロフィール`}
               className="grid size-10 shrink-0 place-items-center rounded-full bg-blue-100 bg-cover bg-center text-sm font-black text-blue-700"
             >
@@ -189,7 +192,7 @@ export function PostDetail({
             </Link>
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <BoardAuthorName author={comment.author} />
+                <BoardAuthorName author={comment.author} profileReturnTo={profileReturnTo} />
                 <TeacherBadge isTeacher={comment.author.isTeacher} />
                 <time dateTime={comment.createdAt} className="text-xs text-slate-400">· {dateFormatter.format(new Date(comment.createdAt))}</time>
               </div>

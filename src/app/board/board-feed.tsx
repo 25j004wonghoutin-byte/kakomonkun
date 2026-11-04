@@ -13,6 +13,8 @@ import { readJsonResponse } from "@/lib/read-json-response";
 import { PostCard } from "./post-card";
 import { ReplyDialog } from "./reply-dialog";
 import { StudentAvatar } from "@/components/student-avatar";
+import Link from "next/link";
+import { getPublicProfileHref } from "@/lib/public-profile-navigation";
 
 type BoardViewer = BoardActor & { displayName: string; avatarUrl?: string | null };
 
@@ -283,7 +285,9 @@ export function BoardFeed({
         </div>
 
         <div className="flex gap-3 border-b-8 border-[#ffffff] px-4 py-5 sm:gap-4 sm:px-6">
-          <ViewerAvatar name={viewer.displayName} avatarUrl={viewer.avatarUrl ?? null} isTeacher={viewer.roleName === "teacher"} />
+          <Link href={getPublicProfileHref(viewer.id)} aria-label="自分の公開プロフィールを開く" className="h-fit shrink-0 rounded-full transition hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600">
+            <ViewerAvatar name={viewer.displayName} avatarUrl={viewer.avatarUrl ?? null} isTeacher={viewer.roleName === "teacher"} />
+          </Link>
           <div className="min-w-0 flex-1">
             <label htmlFor="board-post-draft" className="sr-only">
               投稿本文

@@ -1,3 +1,4 @@
+import { DEFAULT_BANNER_COLOR, normalizeBannerColor } from "../profile-banner";
 import { TEACHER_DISPLAY_NAME } from "@/lib/teacher/identity";
 
 export type BoardRoleName = "student" | "teacher";
@@ -80,6 +81,7 @@ export type BoardThreadView = {
 };
 
 export type BoardPublicProfileView = {
+  bannerColor?: string;
   id: string;
   displayName: string;
   avatarUrl: string | null;
@@ -94,6 +96,7 @@ export type BoardPublicProfileView = {
 export type PublicProfileRow = PublicAuthorRow & {
   studentProfile: (PublicAuthorRow["studentProfile"] & {
     bio: string | null;
+    bannerColor?: string;
   }) | null;
 };
 
@@ -101,7 +104,7 @@ export function toBoardPublicProfileIdentity(
   row: PublicProfileRow,
 ): Pick<
   BoardPublicProfileView,
-  "id" | "displayName" | "avatarUrl" | "bio" | "titleName" | "isTeacher"
+  "id" | "displayName" | "avatarUrl" | "bio" | "titleName" | "isTeacher" | "bannerColor"
 > {
   const author = toBoardAuthor(row);
 
@@ -110,6 +113,7 @@ export function toBoardPublicProfileIdentity(
     displayName: author.displayName,
     avatarUrl: author.avatarUrl,
     bio: author.isTeacher ? null : (row.studentProfile?.bio ?? null),
+    bannerColor: normalizeBannerColor(row.studentProfile?.bannerColor) ?? DEFAULT_BANNER_COLOR,
     titleName: author.titleName,
     isTeacher: author.isTeacher,
   };

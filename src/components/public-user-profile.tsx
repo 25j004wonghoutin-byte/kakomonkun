@@ -6,16 +6,24 @@ import Link from "next/link";
 import { useState } from "react";
 import type { BoardPostView, BoardPublicProfileView } from "@/lib/board/contract";
 import { readJsonResponse } from "@/lib/read-json-response";
-import { PostCard, TeacherBadge } from "../../post-card";
-import { ReplyDialog } from "../../reply-dialog";
+import { PostCard, TeacherBadge } from "@/app/board/post-card";
+import { ReplyDialog } from "@/app/board/reply-dialog";
+import { ProfileBanner } from "@/components/profile-banner";
+import { EquippedTitleBadge } from "@/components/equipped-title-badge";
+import { getProfileReturnTarget, type ProfileReturnTarget } from "@/lib/public-profile-navigation";
 
 export function PublicProfile({
   initialProfile,
   viewerName,
+  viewerId,
+  backTarget = getProfileReturnTarget(null),
 }: {
   initialProfile: BoardPublicProfileView;
   viewerName: string;
+  viewerId?: string;
+  backTarget?: ProfileReturnTarget;
 }) {
+  const [bannerColor, setBannerColor] = useState(initialProfile.bannerColor);
   const [posts, setPosts] = useState(initialProfile.posts);
   const [postCount, setPostCount] = useState(initialProfile.postCount);
   const [nextCursor, setNextCursor] = useState(initialProfile.nextCursor);
@@ -134,14 +142,14 @@ export function PublicProfile({
       <h1 className="mb-5 text-3xl font-black text-slate-950 sm:text-4xl">プロフィール</h1>
       <section className="overflow-hidden rounded-xl border border-slate-200 bg-white ">
         <header className="flex min-h-16 items-center gap-4 border-b border-slate-200 px-4 py-3 sm:px-6">
-          <Link href="/board" aria-label="掲示板へ戻る" className="grid size-9 place-items-center rounded-full text-2xl text-slate-700 hover:bg-slate-100">←</Link>
-          <div>
-            <h2 className={`font-black ${initialProfile.isTeacher ? "text-blue-800" : "text-slate-950"}`}>{initialProfile.displayName}</h2>
+          <Link href={backTarget.href} className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-md px-2 text-sm font-bold text-slate-700 hover:bg-slate-100"><svg aria-hidden="true" viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="m14 6-6 6 6 6M8 12h12" strokeLinecap="round" strokeLinejoin="round" /></svg>{backTarget.label}</Link>
+          <div className="min-w-0">
+            <h2 title={initialProfile.displayName} className={`truncate font-black ${initialProfile.isTeacher ? "text-blue-800" : "text-slate-950"}`}>{initialProfile.displayName}</h2>
             <p className="text-xs text-slate-500">{postCount}件の投稿</p>
           </div>
         </header>
 
-        <div className="h-32 bg-blue-100" aria-hidden="true" />
+        <ProfileBanner color={bannerColor} onSaved={viewerId === initialProfile.id && !initialProfile.isTeacher ? setBannerColor : undefined} />
         <div className="px-4 pb-6 sm:px-6">
           <div
             aria-hidden="true"
@@ -149,11 +157,11 @@ export function PublicProfile({
           >
             {initialProfile.isTeacher ? initialProfile.displayName.slice(0, 1) : <StudentAvatar avatarUrl={initialProfile.avatarUrl} displayName={initialProfile.displayName} size={72} />}
           </div>
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            <h3 className={`text-xl font-black ${initialProfile.isTeacher ? "text-blue-800" : "text-slate-950"}`}>{initialProfile.displayName}</h3>
+          <div className="mt-4 flex min-w-0 flex-wrap items-center gap-2.5">
+            <h3 className={`min-w-0 break-all text-xl font-black ${initialProfile.isTeacher ? "text-blue-800" : "text-slate-950"}`}>{initialProfile.displayName}</h3>
             <TeacherBadge isTeacher={initialProfile.isTeacher} />
+            {initialProfile.titleName ? <EquippedTitleBadge name={initialProfile.titleName} color={bannerColor} /> : null}
           </div>
-          {initialProfile.titleName ? <span className="mt-2 inline-flex rounded bg-blue-50 px-2 py-1 text-xs font-black text-blue-900">{initialProfile.titleName}</span> : null}
           {initialProfile.bio ? <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7 text-slate-700">{initialProfile.bio}</p> : null}
         </div>
 
@@ -163,6 +171,7 @@ export function PublicProfile({
           <PostCard
             key={post.id}
             post={post}
+            profileReturnTo={backTarget.href}
             pending={pendingIds.has(post.id)}
             onReply={setReplyPost}
             onLike={toggleLike}
@@ -181,6 +190,7 @@ export function PublicProfile({
       {replyPost ? <ReplyDialog
         post={replyPost}
         viewerName={viewerName}
+        profileReturnTo={backTarget.href}
         onClose={() => setReplyPost(null)}
         onSent={handleReplySent}
       /> : null}

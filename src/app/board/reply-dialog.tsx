@@ -11,12 +11,14 @@ import { readJsonResponse } from "@/lib/read-json-response";
 import { scheduleBoardDialogOpen } from "./dialog-lifecycle";
 import { BoardAuthorName, TeacherBadge } from "./post-card";
 import { StudentAvatar } from "@/components/student-avatar";
+import { getPublicProfileHref } from "@/lib/public-profile-navigation";
 
 export function ReplyDialog({
   post,
   viewerName,
   viewerAvatarUrl = null,
   viewerIsTeacher = false,
+  profileReturnTo = "/board",
   onClose,
   onSent,
 }: {
@@ -24,6 +26,7 @@ export function ReplyDialog({
   viewerName: string;
   viewerAvatarUrl?: string | null;
   viewerIsTeacher?: boolean;
+  profileReturnTo?: string;
   onClose: () => void;
   onSent: (postId: string, comment: BoardCommentView) => void;
 }) {
@@ -140,12 +143,12 @@ export function ReplyDialog({
 
       <div className="flex gap-3 px-4 pb-0 pt-4 sm:gap-4 sm:px-6">
         <div className="flex w-10 shrink-0 flex-col items-center sm:w-11">
-          <AuthorAvatar post={post} />
+          <AuthorAvatar post={post} profileReturnTo={profileReturnTo} />
           <span className="mt-2 min-h-8 w-0.5 flex-1 bg-slate-300" />
         </div>
         <div className="min-w-0 flex-1 pb-3">
           <div className="flex flex-wrap items-center gap-2">
-            <BoardAuthorName author={post.author} />
+            <BoardAuthorName author={post.author} profileReturnTo={profileReturnTo} />
             <TeacherBadge isTeacher={post.author.isTeacher} />
           </div>
           {post.author.titleName ? (
@@ -158,7 +161,7 @@ export function ReplyDialog({
           </p>
           <p className="mt-3 text-xs font-medium text-slate-500">
             返信先：
-            <BoardAuthorName author={post.author} />
+            <BoardAuthorName author={post.author} profileReturnTo={profileReturnTo} />
             {post.author.isTeacher ? null : "さん"}
           </p>
         </div>
@@ -218,9 +221,9 @@ export function ReplyDialog({
               key={comment.id}
               className="flex gap-3 border-b border-slate-200 px-4 py-4 last:border-b-0 sm:gap-4 sm:px-6"
             >
-              <CommentAvatar comment={comment} />
+              <CommentAvatar comment={comment} profileReturnTo={profileReturnTo} />
               <div className="min-w-0 flex-1">
-                <BoardAuthorName author={comment.author} />
+                <BoardAuthorName author={comment.author} profileReturnTo={profileReturnTo} />
                 <TeacherBadge isTeacher={comment.author.isTeacher} />
                 {comment.author.titleName ? (
                   <span className="mt-1.5 block w-fit rounded bg-blue-50 px-2 py-1 text-xs font-black text-blue-900">
@@ -243,10 +246,10 @@ export function ReplyDialog({
   );
 }
 
-function AuthorAvatar({ post }: { post: BoardPostView }) {
+function AuthorAvatar({ post, profileReturnTo }: { post: BoardPostView; profileReturnTo: string }) {
   return (
     <Link
-      href={`/board/users/${post.author.id}`}
+      href={getPublicProfileHref(post.author.id, profileReturnTo)}
       aria-label={`${post.author.displayName}さんのプロフィール`}
       className="grid size-10 shrink-0 place-items-center rounded-full bg-blue-100 bg-cover bg-center text-sm font-black text-blue-700 sm:size-11"
     >
@@ -255,10 +258,10 @@ function AuthorAvatar({ post }: { post: BoardPostView }) {
   );
 }
 
-function CommentAvatar({ comment }: { comment: BoardCommentView }) {
+function CommentAvatar({ comment, profileReturnTo }: { comment: BoardCommentView; profileReturnTo: string }) {
   return (
     <Link
-      href={`/board/users/${comment.author.id}`}
+      href={getPublicProfileHref(comment.author.id, profileReturnTo)}
       aria-label={`${comment.author.displayName}さんのプロフィール`}
       className="grid size-10 shrink-0 place-items-center rounded-full bg-blue-100 bg-cover bg-center text-sm font-black text-blue-700"
     >

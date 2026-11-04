@@ -15,6 +15,8 @@ import type {
 import { readJsonResponse } from "@/lib/read-json-response";
 import { StudentAvatar } from "@/components/student-avatar";
 import { AvatarEditor } from "./avatar-editor";
+import { ProfileBanner } from "@/components/profile-banner";
+import { EquippedTitleBadge } from "@/components/equipped-title-badge";
 
 
 
@@ -162,9 +164,11 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
           <h1 className="text-3xl font-black text-slate-950">マイページ</h1>
         </div>
 
+        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
+        <ProfileBanner color={profile.bannerColor} onSaved={bannerColor => setProfile(current => ({ ...current, bannerColor }))} />
         <section
           aria-labelledby="profile-name"
-          className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-4 rounded-lg border border-slate-200 bg-white p-5  sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-5 sm:p-6"
+          className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-4 bg-white p-5 sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-5 sm:p-6"
         >
           <div className="flex flex-col items-center gap-2">
             <StudentAvatar displayName={profile.displayName} avatarUrl={profile.avatarUrl} size={72} className="border-4 border-blue-100 text-2xl" />
@@ -176,9 +180,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
                 {profile.displayName}
               </h2>
               {profile.currentTitle ? (
-                <span className="inline-flex min-h-7 items-center rounded-full border border-amber-200 bg-amber-50 px-2.5 text-[13px] font-black text-amber-800">
-                  {profile.currentTitle.name}
-                </span>
+                <EquippedTitleBadge name={profile.currentTitle.name} color={profile.bannerColor} />
               ) : null}
             </div>
             <p className="mt-2 max-w-2xl break-words text-sm font-semibold leading-7 text-slate-600">
@@ -193,6 +195,7 @@ export function ProfileDashboard({ initialData }: { initialData: ProfilePageData
             プロフィール編集
           </button>
         </section>
+        </div>
 
         <section aria-label="学習状況の概要" className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
           <MetricCard

@@ -7,6 +7,7 @@ import { assertMockStudent, dbNow } from "./locks";
 import { getMockPolicy, getMockSchedule } from "./schedule";
 import { gradeLockedAttempt } from "./submit";
 import { getTokyoDate } from "../tokyo-date";
+import { getPublicProfileHref } from "../public-profile-navigation";
 
 export function rankBestAttempts(rows:readonly RankResult[]):RankedResult[]{
   const best=new Map<string,RankResult>();
@@ -79,7 +80,7 @@ export async function getMockRanking(db:PrismaClient,actor:MockActor,examCode:Ex
       return {userId:row.userId,rankNo:row.rankNo,score:row.score,
         displayName:user?.deletedAt?"退会した学生":user?.displayName.trim()||"学生",
         avatarUrl:avatar?.userId===row.userId?avatar.url:null,currentTitleName:active?user.studentProfile?.currentTitle?.name??null:null,
-        profileHref:active?`/board/users/${row.userId}`:null};
+        profileHref:active?getPublicProfileHref(row.userId,`/ranking?examCode=${examCode}&month=${month}`):null};
     };
     const mine=ranked.find(row=>row.userId===actor.id);
     return {examCode,month,currentMonth:currentMonth.toISOString().slice(0,7),availableMonths,participantCount:ranked.length,state:exam?.rankingFinalizedAt?"final":settling?"settling":"provisional",

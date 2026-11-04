@@ -52,6 +52,7 @@ export type ProfilePageData = {
     displayName: string;
     avatarUrl: string | null;
     bio: string | null;
+    bannerColor?: string;
     totalPoints: number;
     currentTitle: ProfileTitleData | null;
   };
@@ -100,6 +101,7 @@ export async function getStudentProfileData(userId: string): Promise<ProfilePage
       select: {
         avatarUrl: true,
         bio: true,
+        bannerColor: true,
         totalPoints: true,
         totalPracticeCount: true,
         totalCorrectCount: true,
@@ -330,6 +332,7 @@ export async function getStudentProfileData(userId: string): Promise<ProfilePage
       displayName: profile.user.displayName,
       avatarUrl: profile.avatarUrl,
       bio: profile.bio,
+      bannerColor: profile.bannerColor,
       totalPoints: profile.totalPoints,
       currentTitle: profile.currentTitle,
     },

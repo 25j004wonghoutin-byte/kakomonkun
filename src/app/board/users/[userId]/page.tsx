@@ -1,35 +1,9 @@
 import { notFound, redirect } from "next/navigation";
-import { RoleShell } from "@/components/role-shell";
-import { getCurrentUser } from "@/lib/auth";
-import { getBoardPublicProfile } from "@/lib/board/read";
 import { isUuid } from "@/lib/board/validation";
-import { PublicProfile } from "./public-profile";
+import { getPublicProfileHref } from "@/lib/public-profile-navigation";
 
-export const dynamic = "force-dynamic";
-
-export default async function BoardUserPage({
-  params,
-}: {
-  params: Promise<{ userId: string }>;
-}) {
-  const user = await getCurrentUser();
-  if (!user) {
-    redirect("/login");
-  }
-
+export default async function BoardUserPage({ params }: { params: Promise<{ userId: string }> }) {
   const { userId } = await params;
-  if (!isUuid(userId)) {
-    notFound();
-  }
-
-  const profile = await getBoardPublicProfile(user.id, userId, null);
-  if (!profile) {
-    notFound();
-  }
-
-  return (
-    <RoleShell roleName={user.role.name} userId={user.id} userName={user.displayName} avatarUrl={user.role.name === "student" ? user.studentProfile?.avatarUrl ?? null : null}>
-      <PublicProfile initialProfile={profile} viewerName={user.displayName} />
-    </RoleShell>
-  );
+  if (!isUuid(userId)) notFound();
+  redirect(getPublicProfileHref(userId));
 }

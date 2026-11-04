@@ -35,9 +35,7 @@ function TitleBadge({ name, className = "border-blue-200 bg-blue-50 text-blue-70
 
 function PodiumCard({ student }: { student: RankingStudentView }) {
   const style = podiumStyles[student.rankNo as keyof typeof podiumStyles];
-  return (
-    <article className={`flex h-full min-w-0 flex-col items-center rounded-xl border px-5 pb-5 pt-3 text-center ${style.card}`}>
-      <h3 className="sr-only">{`${student.rankNo}位`}</h3>
+  const identity = <>
       <div className="relative flex w-40 flex-col items-center">
         <Crown rankNo={student.rankNo} className={style.crown} />
         <svg aria-hidden="true" viewBox="0 0 160 24" className={`pointer-events-none absolute top-12 h-6 w-40 ${style.crown}`} fill="currentColor">
@@ -47,14 +45,17 @@ function PodiumCard({ student }: { student: RankingStudentView }) {
           <StudentAvatar avatarUrl={student.avatarUrl} displayName={student.displayName} size={80} className="bg-transparent text-3xl" />
         </div>
       </div>
-      <p className="mt-3 w-full text-base font-black [overflow-wrap:anywhere]">{student.displayName}</p>
+      <span className="mt-3 block w-full text-base font-black [overflow-wrap:anywhere]">{student.displayName}</span>
+    </>;
+  return (
+    <article className={`flex h-full min-w-0 flex-col items-center rounded-xl border px-5 pb-5 pt-3 text-center ${style.card}`}>
+      <h3 className="sr-only">{`${student.rankNo}位`}</h3>
+      {student.profileHref ? <Link prefetch={false} href={student.profileHref} aria-label={`${student.displayName}のプロフィールを見る`} className="flex w-full min-w-0 flex-col items-center rounded-lg transition hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600">{identity}</Link> : <div className="flex w-full min-w-0 flex-col items-center">{identity}</div>}
       <div className="mt-2 min-h-6 w-full"><TitleBadge name={student.currentTitleName} className={style.title} /></div>
       <div className="mt-auto w-full pt-5">
         <p className="text-xs font-medium text-slate-600">最高得点</p>
         <p className="mt-1 whitespace-nowrap text-4xl font-black tracking-tight tabular-nums text-slate-950">{student.score.toFixed(2)}<span className="ml-1 text-sm font-bold">点</span></p>
-        <div className="mt-3 min-h-10">
-          {student.profileHref ? <Link prefetch={false} href={student.profileHref} aria-label={`${student.displayName}のプロフィールを見る`} className="inline-flex min-h-10 items-center justify-center whitespace-nowrap rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50">プロフィールを見る</Link> : <span className="inline-flex min-h-10 items-center text-xs text-slate-500">プロフィール非公開</span>}
-        </div>
+        {!student.profileHref ? <p className="mt-3 text-xs text-slate-500">プロフィール非公開</p> : null}
       </div>
     </article>
   );

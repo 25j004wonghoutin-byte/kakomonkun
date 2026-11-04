@@ -3,6 +3,7 @@
 import { StudentAvatar } from "@/components/student-avatar";
 
 import Link from "next/link";
+import { getPublicProfileHref } from "@/lib/public-profile-navigation";
 import type { BoardAuthorView, BoardPostView } from "@/lib/board/contract";
 
 const dateFormatter = new Intl.DateTimeFormat("ja-JP", {
@@ -20,9 +21,11 @@ export function PostCard({
   onLike,
   onPin,
   onDelete,
+  profileReturnTo = "/board",
 }: {
   post: BoardPostView;
   pending: boolean;
+  profileReturnTo?: string;
   onReply: (post: BoardPostView) => void;
   onLike: (post: BoardPostView) => void;
   onPin: (post: BoardPostView) => void;
@@ -42,10 +45,10 @@ export function PostCard({
       ) : null}
 
       <div className="flex gap-3 sm:gap-4">
-        <AuthorAvatar post={post} />
+        <AuthorAvatar post={post} profileReturnTo={profileReturnTo} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 leading-5">
-            <BoardAuthorName author={post.author} />
+            <BoardAuthorName author={post.author} profileReturnTo={profileReturnTo} />
             <TeacherBadge isTeacher={post.author.isTeacher} />
             <time
               dateTime={post.createdAt}
@@ -131,10 +134,10 @@ export function PostCard({
   );
 }
 
-export function BoardAuthorName({ author }: { author: BoardAuthorView }) {
+export function BoardAuthorName({ author, profileReturnTo = "/board" }: { author: BoardAuthorView; profileReturnTo?: string }) {
   return (
     <Link
-      href={`/board/users/${author.id}`}
+      href={getPublicProfileHref(author.id, profileReturnTo)}
       className={
         author.isTeacher
           ? "font-black text-blue-800 hover:underline"
@@ -154,13 +157,13 @@ export function TeacherBadge({ isTeacher }: { isTeacher: boolean }) {
   ) : null;
 }
 
-function AuthorAvatar({ post }: { post: BoardPostView }) {
+function AuthorAvatar({ post, profileReturnTo }: { post: BoardPostView; profileReturnTo: string }) {
   const className =
     "grid size-10 shrink-0 place-items-center rounded-full bg-blue-100 bg-cover bg-center text-sm font-black text-blue-700 transition hover:brightness-95 sm:size-11";
 
   return (
     <Link
-      href={`/board/users/${post.author.id}`}
+      href={getPublicProfileHref(post.author.id, profileReturnTo)}
       aria-label={`${post.author.displayName}${post.author.isTeacher ? "" : "さん"}のプロフィール`}
       className={className}
     >

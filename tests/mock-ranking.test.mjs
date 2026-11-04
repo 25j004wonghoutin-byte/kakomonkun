@@ -61,6 +61,9 @@ test("ranking DTO counts submitted people once, includes lower ranks and uses th
     assert.equal(live.participantCount,5,"six submissions by five people must count as five participants");
     assert.equal(live.currentMonth,"2040-03","DB time at midnight JST, not the browser's local month");
     assert.equal(live.mine.rankNo,5);
+    const profile = new URL(live.top[0].profileHref, "http://local");
+    assert.equal(profile.pathname, "/users/a");
+    assert.equal(profile.searchParams.get("returnTo"), "/ranking?examCode=fe&month=2040-02");
     finalized=true;
     const final=await getMockRanking(db,actor,"fe","2040-02",clock);
     assert.equal(final.participantCount,5,"final denominator is based on the saved final ranking");

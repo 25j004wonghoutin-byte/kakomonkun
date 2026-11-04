@@ -343,6 +343,7 @@ export async function getBoardPublicProfile(
         select: {
           avatarUrl: true,
           bio: true,
+          bannerColor: true,
           currentTitle: { select: { name: true } },
         },
       },

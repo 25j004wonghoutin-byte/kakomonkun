@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
 const boardPages = [
   "src/app/board/page.tsx",
   "src/app/board/posts/[postId]/page.tsx",
-  "src/app/board/users/[userId]/page.tsx",
+  "src/app/users/layout.tsx",
 ];
 
 test("board pages select their shell from the authenticated role", () => {

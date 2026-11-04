@@ -90,7 +90,7 @@ test("single post renders chronological replies and a reply field without the re
 });
 
 test("public profile shows real bio, title and posts without private or duplicate metadata", () => {
-  const { PublicProfile } = require("../src/app/board/users/[userId]/public-profile.tsx");
+  const { PublicProfile } = require("../src/components/public-user-profile.tsx");
   const html = renderToStaticMarkup(
     React.createElement(PublicProfile, {
       initialProfile: {
@@ -116,7 +116,7 @@ test("public profile shows real bio, title and posts without private or duplicat
 });
 
 test("teacher public profile does not invent a bio or title", () => {
-  const { PublicProfile } = require("../src/app/board/users/[userId]/public-profile.tsx");
+  const { PublicProfile } = require("../src/components/public-user-profile.tsx");
   const html = renderToStaticMarkup(
     React.createElement(PublicProfile, {
       initialProfile: {
@@ -208,4 +208,12 @@ test("teacher post and reply names use the distinct accent treatment and badge",
   );
   assert.match(replyHtml, /font-black text-blue-800[^>]*>管理者<\/a>/);
   assert.doesNotMatch(replyHtml, /管理者<\/a>さん/);
+});
+
+test("the board composer avatar opens the viewer public profile", () => {
+  const { BoardFeed } = require("../src/app/board/board-feed.tsx");
+  const html = renderToStaticMarkup(React.createElement(BoardFeed, { initialPosts: [], initialNextCursor: null, viewer: { id: author.id, roleName: "student", displayName: "self", avatarUrl: null } }));
+  const link = html.match(/<a[^>]*aria-label="自分の公開プロフィールを開く"[^>]*>/)?.[0];
+  assert.ok(link);
+  assert.ok(link.includes('href="/users/' + author.id + '?returnTo=%2Fboard"'));
 });

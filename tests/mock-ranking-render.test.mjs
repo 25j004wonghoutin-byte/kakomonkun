@@ -6,18 +6,26 @@ import {renderToStaticMarkup} from "react-dom/server";
 test("ranking includes everyone tied in third rank, own lower rank, exam/month controls and disabled profile links",async()=>{
   const p=new URL("../src/app/ranking/ranking-view.tsx",import.meta.url);assert.ok(existsSync(p),"ranking view must exist");
   const {RankingViewContent}=await import(p.href);
-  const row=(userId,rankNo,profileHref=`/board/users/${userId}`)=>({userId,rankNo,score:50,displayName:`学生${userId}`,avatarUrl:null,currentTitleName:"初期称号",profileHref});
+  const row=(userId,rankNo,profileHref=`/users/${userId}?returnTo=%2Franking%3FexamCode%3Dfe%26month%3D2040-01`)=>({userId,rankNo,score:50,displayName:`学生${userId}`,avatarUrl:null,currentTitleName:"初期称号",profileHref});
   const html=renderToStaticMarkup(React.createElement(RankingViewContent,{data:{examCode:"fe",month:"2040-01",currentMonth:"2040-01",availableMonths:["2040-01","2039-12"],participantCount:12,state:"settling",top:[row("a",1),row("b",1),row("c",3),row("d",3,null)],mine:row("me",8),rewardsComplete:false}}));
   for(const text of ["学生a","学生b","学生c","学生d","学生me","2039年12月","ITパスポート","基本情報","集計中","あなたの順位"])assert.ok(html.includes(text),text);
-  assert.ok(!html.includes('href="/board/users/d"'));assert.ok(html.includes('href="/board/users/me"'));
+  assert.ok(!html.includes('href="/users/d'));assert.ok(html.includes('href="/users/me?returnTo='));
+  assert.ok(!html.includes('href="/board/users/'));
   assert.equal((html.match(/<article\b/g)||[]).length,4,"all tied podium students have a card");
-  assert.equal((html.match(/>プロフィールを見る<\/a>/g)||[]).length,3,"unavailable profiles have no button");
+  assert.equal((html.match(/>プロフィールを見る<\/a>/g)||[]).length,0,"profile buttons are removed");
+  for (const article of html.match(/<article\b[\s\S]*?<\/article>/g) ?? []) {
+    if (article.includes("学生d")) { assert.doesNotMatch(article, /<a\b/); continue; }
+    const identity = article.match(/<a\b[^>]*href="\/users\/[^"]+"[^>]*>([\s\S]*?)<\/a>/);
+    assert.ok(identity, "the identity is a profile link");
+    assert.match(identity[1], /学生[abc]/, "the visible name is clickable");
+    assert.match(identity[1], /<(img|svg)\b/, "the avatar is in the same clickable link");
+  }
   assert.ok(html.includes("12人中"),"denominator is the server's submitted participant count");
   assert.ok(html.includes("8位"),"own lower rank is not omitted");
   assert.ok(!html.includes("ランキング一覧"),"no full ranking list or link is offered");
 });
 
-const student=(userId,rankNo,score)=>({userId,rankNo,score,displayName:`学生${userId}`,avatarUrl:null,currentTitleName:"学びを続ける人",profileHref:`/board/users/${userId}`});
+const student=(userId,rankNo,score)=>({userId,rankNo,score,displayName:`学生${userId}`,avatarUrl:null,currentTitleName:"学びを続ける人",profileHref:`/users/${userId}?returnTo=%2Franking%3FexamCode%3Dfe%26month%3D2040-01`});
 const data=()=>({examCode:"fe",month:"2040-02",currentMonth:"2040-02",availableMonths:["2040-02","2040-01","2039-12"],participantCount:120,state:"provisional",top:[student("a",1,92.4),student("b",2,88.7),student("c",3,86.1)],mine:student("me",8,72.33),rewardsComplete:false});
 async function render(overrides={}){
   const {RankingViewContent}=await import("../src/app/ranking/ranking-view.tsx");
