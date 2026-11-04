@@ -104,6 +104,7 @@ export function StudentShell({
   const resolvedAvatarUrl = signedOut ? null : compatibleRemembered ? compatibleRemembered.avatarUrl : (identityProvided ? identity?.avatarUrl ?? null : avatarUrl ?? null);
   const resolvedTitleName = signedOut ? null : compatibleRemembered?.titleName !== undefined ? compatibleRemembered.titleName : identity?.titleName !== undefined ? identity.titleName : titleName;
   const userLoading = !resolvedUserName;
+  const notificationOwnerId = signedOut ? null : rememberedIdentity?.id ?? identity?.id ?? userId ?? null;
 
   function toggleSidebar() {
     if (window.matchMedia("(min-width: 1024px)").matches) {
@@ -181,7 +182,7 @@ export function StudentShell({
 
               <Link href="/" className="app-mobile-brand">過去問くん</Link>
               <div className="app-user-tools">
-                <div className="app-notification-control"><NotificationBell enabled={!isLoading} /></div>
+                <div className="app-notification-control"><NotificationBell ownerId={notificationOwnerId} enabled={!isLoading} /></div>
 
                 <div ref={accountMenu} className="app-profile-control relative">
                   <button

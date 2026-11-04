@@ -9,6 +9,7 @@ export async function GET() {
   }
 
   return Response.json({
+    ownerId: user.id,
     unreadCount: await getUnreadNotificationCount(user.id),
   });
 }

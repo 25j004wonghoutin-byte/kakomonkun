@@ -3,38 +3,33 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { notificationClient, NotificationOwnerChangedError } from "@/lib/notifications/client";
 
 type NotificationBellProps = {
+  ownerId?: string | null;
   href?: string;
   enabled?: boolean;
 };
 
-export function NotificationBell({ href = "/notifications", enabled = true }: NotificationBellProps) {
+export function NotificationBell({ ownerId = null, href = "/notifications", enabled = true }: NotificationBellProps) {
   const pathname = usePathname();
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [count, setCount] = useState<{ ownerId: string | null; value: number }>({ ownerId: null, value: 0 });
+  const unreadCount = enabled && count.ownerId === ownerId ? count.value : 0;
 
   useEffect(() => {
-    if (!enabled) return;
-    const controller = new AbortController();
-
-    async function loadUnreadCount() {
-      try {
-        const response = await fetch("/api/notifications/unread-count", {
-          cache: "no-store",
-          signal: controller.signal,
-        });
-        if (!response.ok) return;
-
-        const data = (await response.json()) as { unreadCount: number };
-        setUnreadCount(data.unreadCount);
-      } catch (error) {
-        if (error instanceof DOMException && error.name === "AbortError") return;
+    const scope = notificationClient.setOwner(enabled ? ownerId : null);
+    if (!scope) return;
+    const unsubscribe = scope.subscribe((update) => {
+      setCount({ ownerId, value: update.unreadCount });
+    });
+    void scope.refreshUnreadCount().catch((error) => {
+      if (error instanceof NotificationOwnerChangedError && scope.isCurrent()) {
+        setCount({ ownerId: null, value: 0 });
+        window.location.reload();
       }
-    }
-
-    void loadUnreadCount();
-    return () => controller.abort();
-  }, [pathname, enabled]);
+    });
+    return unsubscribe;
+  }, [pathname, enabled, ownerId]);
 
   const badge = formatUnreadBadge(unreadCount);
 

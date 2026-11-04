@@ -149,3 +149,35 @@ export async function markNotificationRead(
 
   return notificationReadResult(true);
 }
+
+export type NotificationReadAllResult = {
+  updatedCount: number;
+  unreadCount: number;
+  readAt: string;
+};
+
+export async function markAllNotificationsReadInTransaction(
+  tx: Pick<Prisma.TransactionClient, "notification">,
+  recipientId: string,
+  cutoff: Date,
+): Promise<NotificationReadAllResult> {
+  const updated = await tx.notification.updateMany({
+    where: { recipientId, readAt: null, createdAt: { lte: cutoff } },
+    data: { readAt: cutoff },
+  });
+  const unreadCount = await tx.notification.count({
+    where: { recipientId, readAt: null },
+  });
+  return { updatedCount: updated.count, unreadCount, readAt: cutoff.toISOString() };
+}
+
+export async function markAllNotificationsRead(
+  recipientId: string,
+): Promise<NotificationReadAllResult> {
+  // Capture once on the server; notifications arriving later remain unread.
+  const cutoff = new Date();
+  const { prisma } = await import("../prisma");
+  return prisma.$transaction((tx) =>
+    markAllNotificationsReadInTransaction(tx, recipientId, cutoff),
+  );
+}

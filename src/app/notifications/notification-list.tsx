@@ -1,11 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   notificationTarget,
   type NotificationView,
 } from "@/lib/notifications/contract";
+import {
+  applyNotificationReadCutoff,
+  notificationClient,
+  NotificationOwnerChangedError,
+} from "@/lib/notifications/client";
+import { useRememberedStudentIdentity } from "@/components/student-identity-provider";
 
 const dateTimeFormatter = new Intl.DateTimeFormat("ja-JP", {
   timeZone: "Asia/Tokyo",
@@ -16,19 +22,29 @@ const dateTimeFormatter = new Intl.DateTimeFormat("ja-JP", {
   minute: "2-digit",
 });
 
-type NotificationPageResponse = {
-  notifications: NotificationView[];
-  nextCursor: string | null;
-  unreadCount: number;
-};
-
 type NotificationListProps = {
+  ownerId: string;
   initialNotifications: NotificationView[];
   initialNextCursor: string | null;
   initialUnreadCount: number;
 };
 
-export function NotificationList({
+export function NotificationList(props: NotificationListProps) {
+  const router = useRouter();
+  const { identity, signedOut } = useRememberedStudentIdentity();
+  const currentOwnerId = signedOut ? null : identity?.id ?? props.ownerId;
+  const ownerChanged = currentOwnerId !== props.ownerId;
+  useEffect(() => {
+    if (!ownerChanged) return;
+    notificationClient.setOwner(currentOwnerId);
+    router.refresh();
+  }, [currentOwnerId, ownerChanged, router]);
+  if (ownerChanged) return <p role="status">ログイン情報を確認しています…</p>;
+  return <OwnedNotificationList key={props.ownerId} {...props} />;
+}
+
+export function OwnedNotificationList({
+  ownerId,
   initialNotifications,
   initialNextCursor,
   initialUnreadCount,
@@ -45,52 +61,93 @@ export function NotificationList({
   >(null);
   const [loadingMore, setLoadingMore] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [inboxErrorMessage, setInboxErrorMessage] = useState<string | null>(null);
+  const [markingRead, setMarkingRead] = useState(true);
+  const [retryAttempt, setRetryAttempt] = useState(0);
+  const [ownerInvalid, setOwnerInvalid] = useState(false);
+  const opening = useRef({});
+  const activeRef = useRef(false);
+  const scopeRef = useRef<ReturnType<typeof notificationClient.setOwner>>(null);
 
   useEffect(() => {
-    const controller = new AbortController();
-    async function restoreInbox() {
+    let active = true;
+    activeRef.current = true;
+    const scope = notificationClient.setOwner(ownerId)!;
+    scopeRef.current = scope;
+    let restoreRequest = 0;
+    const unsubscribe = scope.subscribe((update) => {
+      if (!active) return;
+      setUnreadCount(update.unreadCount);
+      if (update.readAt) {
+        setNotifications((current) => applyNotificationReadCutoff(current, update.readAt ?? null));
+      }
+    });
+
+    async function restoreInbox(token = opening.current) {
+      const request = ++restoreRequest;
+      let marked = false;
+      setMarkingRead(true);
+      setErrorMessage(null);
+      setInboxErrorMessage(null);
       try {
-        const response = await fetch("/api/notifications", { cache: "no-store", signal: controller.signal });
-        if (!response.ok) throw new Error("notification restore failed");
-        const data = (await response.json()) as NotificationPageResponse;
-        if (controller.signal.aborted) return;
+        // Only an actual mounted inbox writes; server rendering and prefetch do not.
+        await scope.openInbox(token);
+        if (!active || request !== restoreRequest) return;
+        marked = true;
+        const data = await scope.loadPage();
+        if (!active || request !== restoreRequest) return;
         setNotifications(data.notifications);
         setNextCursor(data.nextCursor);
         setUnreadCount(data.unreadCount);
-      } catch {
-        if (!controller.signal.aborted) setErrorMessage("最新の通知を確認できませんでした。再読み込みしてください。");
+      } catch (error) {
+        if (active && request === restoreRequest) {
+          if (error instanceof NotificationOwnerChangedError) {
+            setOwnerInvalid(true);
+            router.refresh();
+            return;
+          }
+          setInboxErrorMessage(marked
+            ? "最新の通知を確認できませんでした。もう一度お試しください。"
+            : "通知を既読にできませんでした。もう一度お試しください。");
+        }
+      } finally {
+        if (active && request === restoreRequest) setMarkingRead(false);
       }
     }
-    // 履歴からの再マウントとbfcache復元の両方で、保存済みの状態を再確認する。
+
+    function restoreFromHistory(event: PageTransitionEvent) {
+      if (event.persisted) void restoreInbox({});
+    }
+    // 再マウントとbfcache復元で、開いた時点の未読をまとめて既読にする。
     void restoreInbox();
-    window.addEventListener("pageshow", restoreInbox);
-    return () => { controller.abort(); window.removeEventListener("pageshow", restoreInbox); };
-  }, []);
+    window.addEventListener("pageshow", restoreFromHistory);
+    return () => {
+      active = false;
+      activeRef.current = false;
+      unsubscribe();
+      window.removeEventListener("pageshow", restoreFromHistory);
+    };
+  }, [ownerId, retryAttempt, router]);
 
   async function selectNotification(notification: NotificationView) {
-    if (activeNotificationId) return;
+    const scope = scopeRef.current;
+    if (markingRead || activeNotificationId || !scope?.isCurrent()) return;
 
     setActiveNotificationId(notification.id);
     setErrorMessage(null);
 
     try {
-      const response = await fetch(
-        `/api/notifications/${notification.id}/read`,
-        { method: "PATCH" },
-      );
-      if (!response.ok) {
-        throw new Error("notification read failed");
-      }
+      const readAt = await scope.markRead(notification.id);
+      if (!activeRef.current || !scope.isCurrent()) return;
 
       if (!notification.readAt) {
         setNotifications((current) =>
           current.map((item) =>
             item.id === notification.id
-              ? { ...item, readAt: new Date().toISOString() }
+              ? { ...item, readAt }
               : item,
           ),
         );
-        setUnreadCount((current) => Math.max(0, current - 1));
       }
 
       const target = notificationTarget(notification);
@@ -102,7 +159,13 @@ export function NotificationList({
       // 戻る操作でも更新前の未読一覧を復元しない。
       router.refresh();
       router.push(target);
-    } catch {
+    } catch (error) {
+      if (!activeRef.current || !scope.isCurrent()) return;
+      if (error instanceof NotificationOwnerChangedError) {
+        setOwnerInvalid(true);
+        router.refresh();
+        return;
+      }
       setErrorMessage(
         "通知を開けませんでした。時間をおいてもう一度お試しください。",
       );
@@ -112,24 +175,25 @@ export function NotificationList({
   }
 
   async function loadMore() {
-    if (!nextCursor || loadingMore) return;
+    const scope = scopeRef.current;
+    if (!nextCursor || loadingMore || markingRead || !scope?.isCurrent()) return;
 
     setLoadingMore(true);
     setErrorMessage(null);
 
     try {
-      const response = await fetch(
-        `/api/notifications?cursor=${encodeURIComponent(nextCursor)}`,
-      );
-      if (!response.ok) {
-        throw new Error("notification loading failed");
-      }
-
-      const data = (await response.json()) as NotificationPageResponse;
+      const data = await scope.loadPage(nextCursor);
+      if (!activeRef.current || !scope.isCurrent()) return;
       setNotifications((current) => [...current, ...data.notifications]);
       setNextCursor(data.nextCursor);
       setUnreadCount(data.unreadCount);
-    } catch {
+    } catch (error) {
+      if (!activeRef.current || !scope.isCurrent()) return;
+      if (error instanceof NotificationOwnerChangedError) {
+        setOwnerInvalid(true);
+        router.refresh();
+        return;
+      }
       setErrorMessage(
         "通知を読み込めませんでした。時間をおいてもう一度お試しください。",
       );
@@ -137,6 +201,8 @@ export function NotificationList({
       setLoadingMore(false);
     }
   }
+
+  if (ownerInvalid) return <p role="status">ログイン情報を確認しています…</p>;
 
   return (
     <NotificationListView
@@ -148,7 +214,9 @@ export function NotificationList({
       nextCursor={nextCursor}
       loadingMore={loadingMore}
       onLoadMore={loadMore}
-      errorMessage={errorMessage}
+      errorMessage={inboxErrorMessage ?? errorMessage}
+      markingRead={markingRead}
+      onRetry={() => setRetryAttempt((current) => current + 1)}
     />
   );
 }
@@ -163,6 +231,8 @@ export function NotificationListView({
   loadingMore = false,
   onLoadMore,
   errorMessage = null,
+  markingRead = false,
+  onRetry,
 }: {
   notifications: NotificationView[];
   unreadCount: number;
@@ -173,6 +243,8 @@ export function NotificationListView({
   loadingMore?: boolean;
   onLoadMore?: () => void;
   errorMessage?: string | null;
+  markingRead?: boolean;
+  onRetry?: () => void;
 }) {
   return (
     <section className="overflow-hidden rounded-xl border border-slate-200 bg-white">
@@ -182,9 +254,14 @@ export function NotificationListView({
       </div>
 
       {errorMessage ? (
-        <p role="alert" className="border-b border-rose-100 bg-rose-50 px-5 py-3 text-sm font-bold text-rose-700 sm:px-6">
-          {errorMessage}
-        </p>
+        <div role="alert" className="border-b border-rose-100 bg-rose-50 px-5 py-3 text-sm font-bold text-rose-700 sm:px-6">
+          <p>{errorMessage}</p>
+          {onRetry ? (
+            <button type="button" disabled={markingRead} onClick={onRetry} className="mt-2 min-h-11 rounded-lg border border-rose-300 bg-white px-4 font-black disabled:opacity-60">
+              再試行
+            </button>
+          ) : null}
+        </div>
       ) : null}
 
       {notifications.length === 0 ? (
@@ -205,7 +282,7 @@ export function NotificationListView({
               <li key={notification.id}>
                 <button
                   type="button"
-                  disabled={activeNotificationId === notification.id}
+                  disabled={markingRead || activeNotificationId === notification.id}
                   onClick={() => onSelect(notification)}
                   className={`block min-h-24 w-full px-5 py-4 text-left transition hover:bg-slate-50 disabled:cursor-wait sm:px-6 ${
                     unread ? "bg-blue-50" : "bg-white"
@@ -255,7 +332,7 @@ export function NotificationListView({
         <div className="border-t border-slate-200 p-4 text-center">
           <button
             type="button"
-            disabled={loadingMore}
+            disabled={loadingMore || markingRead}
             onClick={onLoadMore}
             className="min-h-11 rounded-lg border border-slate-300 bg-white px-5 text-sm font-black text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 disabled:cursor-wait disabled:opacity-60"
           >

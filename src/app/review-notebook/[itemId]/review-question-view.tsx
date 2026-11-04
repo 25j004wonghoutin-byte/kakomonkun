@@ -1,13 +1,18 @@
 import Link from "next/link";
 import { QuizQuestionCard } from "@/components/quiz-question-card";
 import { REVIEW_STATUS_LABELS, type ReviewDetail, type ReviewAnswerResult } from "@/lib/review-notebook/contract";
+import { initialReviewAiState, type ReviewAiState } from "@/lib/review-notebook/ai-contract";
+import { ReviewAiExplanation } from "./review-ai-explanation";
 
 export function ReviewQuestionView(props: {
   detail: ReviewDetail | null; selectedChoiceId: string | null; result: ReviewAnswerResult | null;
   saving: boolean; error: string; requiresReload: boolean; requiresLogin: boolean; unavailable: boolean;
+  ai?: ReviewAiState; onRequestAi?(): void;
   onSelect(choiceId: string): void; onSubmit(): void; onRetry(): void; onReload(): void; onReset(): void; backHref: string;
 }) {
-  const { detail, result, requiresLogin, unavailable, requiresReload, error } = props;
+  const { detail, result, requiresReload, error } = props;
+  const requiresLogin = props.requiresLogin || props.ai?.requiresLogin;
+  const unavailable = props.unavailable || props.ai?.unavailable;
   return <div className="review-notebook">
     <div className="review-actions"><Link className="review-text-action" href={props.backHref}>一覧へ戻る</Link></div>
     {requiresLogin || unavailable ? <div className="review-message" role="alert"><p>{requiresLogin ? "ログインし直してください。" : "この問題は利用できません。"}</p>{requiresLogin ? <Link className="review-button" href="/login">ログインへ</Link> : <Link className="review-button" href={props.backHref}>一覧へ戻る</Link>}</div> : <>
@@ -17,6 +22,7 @@ export function ReviewQuestionView(props: {
         answerResult={result ? { ...result.answer, explanation: result.answer.explanation?.trim() ? result.answer.explanation : "解説は未登録です。" } : null}
         loading={!detail && !error} answering={props.saving || requiresReload || Boolean(error)} error=""
         onSelectChoice={props.onSelect} onSubmit={props.onSubmit}
+        resultExtra={result ? <ReviewAiExplanation state={props.ai ?? initialReviewAiState()} onRequest={() => props.onRequestAi?.()} onReload={props.onReload} /> : null}
         resultActions={<div className="review-actions"><Link className="review-button" href={props.backHref}>一覧へ戻る</Link><button type="button" className="review-button" onClick={props.onReset}>もう一度解く</button></div>} />
       {error ? <div className="review-message" role="alert"><p>{error}</p><button type="button" className="review-button" onClick={requiresReload || !detail ? props.onReload : props.onRetry}>{requiresReload || !detail ? "再読み込み" : "再試行"}</button></div> : null}
     </>}

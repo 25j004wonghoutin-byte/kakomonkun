@@ -8,6 +8,7 @@ import { QuestionChoiceContent } from "@/components/question-choice-content";
 import { ErrorCard } from "@/components/ui";
 import type { AttemptView, MockQuestionView, ResultView, SaveInput, SaveResult, StartResult } from "@/lib/mock-exams/contract";
 import { createAnswerQueue, mockRequest } from "@/lib/mock-exams/client-state";
+import { addAnswerDraft, projectAnswerDrafts, settleAnswerDraft, type AnswerDrafts } from "@/lib/mock-exams/answer-drafts";
 
 export function MockQuestionBody({question}:{question:MockQuestionView}){
   return <><p className="whitespace-pre-wrap break-words text-sm leading-7 [overflow-wrap:anywhere]">{question.questionText}</p>{question.imagePath?<QuestionImage src={question.imagePath} alt="問題の図"/>:null}<p className="mt-3 text-right text-xs text-slate-500">出典：{question.sourceLabel}</p></>;
@@ -35,6 +36,7 @@ export default function MockAttempt({initial}:{initial:AttemptView}){
   const [saving,setSaving]=useState(false),[blocked,setBlocked]=useState(false),[error,setError]=useState(""),[submitting,setSubmitting]=useState(false);
   const dialog=useRef<HTMLDialogElement>(null),expiredRead=useRef(false);
   const [lastFailed,setLastFailed]=useState<SaveInput|null>(null);
+  const [drafts,setDrafts]=useState<AnswerDrafts>({});
   const queue=useRef<ReturnType<typeof createAnswerQueue>|null>(null),busy=useRef(false),mounted=useRef(true),pendingSaves=useRef(0);
   const base=`/api/mock-exams/attempts/${initial.id}`;
   const accept=(view:AttemptView)=>{confirmed.current=view;anchor.current={server:+new Date(view.serverNow),client:performance.now()};if(mounted.current)setAttempt(view);};
@@ -73,12 +75,13 @@ export default function MockAttempt({initial}:{initial:AttemptView}){
     pendingSaves.current++;setSaving(true);setError("");
     const q=confirmed.current.questions[index],a=confirmed.current.answers.find(v=>v.mockQuestionId===q.id)!;
     const input=retry??{attemptId:initial.id,mockQuestionId:q.id,selectedChoiceId:choice,expectedRevision:a.revision,requestId:crypto.randomUUID()};
-    try{await getQueue().save(input);setLastFailed(null);setBlocked(false);}catch(cause){setLastFailed(previous=>previous??input);setBlocked(true);setError(cause instanceof Error?cause.message:"保存できませんでした。");}
+    setDrafts(current=>addAnswerDraft(current,input));
+    try{await getQueue().save(input);setDrafts(current=>settleAnswerDraft(current,input));setLastFailed(null);setBlocked(false);}catch(cause){setDrafts({});setLastFailed(previous=>previous??input);setBlocked(true);setError(cause instanceof Error?cause.message:"保存できませんでした。");}
     finally{pendingSaves.current--;setSaving(pendingSaves.current>0);}
   }
   async function reconcile(){
     if(busy.current)return;busy.current=true;setSaving(true);
-    try{await reload();queue.current=null;setLastFailed(null);setBlocked(false);setError("");}
+    try{await reload();queue.current=null;setDrafts({});setLastFailed(null);setBlocked(false);setError("");}
     catch{setError("最新状態を取得できません。接続を確認してください。");}
     finally{busy.current=false;setSaving(false);}
   }
@@ -95,7 +98,7 @@ export default function MockAttempt({initial}:{initial:AttemptView}){
   }
   function move(to:number){setIndex(to);requestAnimationFrame(()=>document.getElementById("mock-question-heading")?.focus());}
   return <>{error?<div className="mx-auto mb-5 max-w-4xl"><ErrorCard message={error}/><div className="mt-3 flex flex-wrap gap-3"><button type="button" disabled={saving||submitting} onClick={reconcile} className="rounded-lg border bg-white px-4 py-3 text-sm">最新状態を読み込み・確認する</button>{lastFailed&&remaining>0?<button type="button" disabled={saving||submitting} onClick={()=>save(null,lastFailed!)} className="rounded-lg border bg-white px-4 py-3 text-sm">同じ保存を再試行</button>:null}</div></div>:null}
-    <MockAttemptView attempt={attempt} index={index} remainingSeconds={remaining} saving={saving||submitting} blocked={blocked} onSelect={choice=>save(choice)} onMove={move} onSubmit={openSubmit}/>
+    <MockAttemptView attempt={projectAnswerDrafts(attempt,drafts)} index={index} remainingSeconds={remaining} saving={saving||submitting} blocked={blocked} onSelect={choice=>save(choice)} onMove={move} onSubmit={openSubmit}/>
     <dialog ref={dialog} onCancel={event=>{if(submitting)event.preventDefault();}} className="m-auto w-[calc(100%_-_2rem)] max-w-md rounded-xl border border-slate-200 bg-white p-6  backdrop:bg-slate-950/40" aria-labelledby="mock-submit-title"><h2 id="mock-submit-title" className="text-lg font-black">この回答で提出しますか？</h2><p className="mt-4 text-sm">未回答{attempt.answers.filter(a=>a.selectedChoiceId===null).length}問。提出後は回答を変更できません。</p><div className="mt-6 flex flex-wrap justify-end gap-3"><button type="button" autoFocus disabled={submitting} onClick={()=>dialog.current?.close()} className="rounded-lg border px-4 py-3">キャンセル</button><button type="button" disabled={submitting} onClick={submit} className="rounded-lg bg-blue-600 px-4 py-3 text-white">{submitting?"提出を確認中…":"提出する"}</button></div></dialog>
   </>;
 }

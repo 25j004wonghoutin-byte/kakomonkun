@@ -30,6 +30,7 @@ export default async function NotificationsPage() {
       </div>
 
       <NotificationList
+        ownerId={user.id}
         initialNotifications={page.notifications}
         initialNextCursor={page.nextCursor}
         initialUnreadCount={unreadCount}
@@ -38,7 +39,7 @@ export default async function NotificationsPage() {
   );
 
   return teacher ? (
-    <TeacherShell>{content}</TeacherShell>
+    <TeacherShell userId={user.id}>{content}</TeacherShell>
   ) : (
     <StudentShell userId={user.id} userName={user.displayName} avatarUrl={user.studentProfile?.avatarUrl ?? null}>{content}</StudentShell>
   );

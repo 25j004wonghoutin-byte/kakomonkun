@@ -19,7 +19,7 @@ export async function GET(request: Request) {
       listNotifications(user.id, cursor),
       getUnreadNotificationCount(user.id),
     ]);
-    return Response.json({ ...page, unreadCount });
+    return Response.json({ ...page, unreadCount, ownerId: user.id });
   } catch (error) {
     if (error instanceof InvalidNotificationCursorError) {
       return badRequest("ページ情報が正しくありません。");

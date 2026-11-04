@@ -22,5 +22,5 @@ export async function PATCH(
     return notFound("通知が見つかりません。");
   }
 
-  return Response.json({ status: "changed" });
+  return Response.json({ status: "changed", ownerId: user.id });
 }

@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useSidebarVisibility } from "@/components/study-ui-preferences";
 import { usePathname } from "next/navigation";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { NotificationBell } from "@/components/notification-bell";
+import { useRememberedStudentIdentity } from "@/components/student-identity-provider";
 import { StudentShell } from "@/components/student-shell";
 
 export type RoleNavigationItem = {
@@ -36,6 +37,7 @@ export function RoleShell({ children, roleName, userName, userId, avatarUrl }: R
         navigation={teacherNavigation}
         userName="管理者"
         avatarLabel="管"
+        userId={userId}
       >
         {children}
       </RoleNavigationShell>
@@ -50,6 +52,7 @@ type RoleNavigationShellProps = {
   navigation: RoleNavigationItem[];
   userName: string;
   avatarLabel: string;
+  userId?: string;
 };
 
 export function RoleNavigationShell({
@@ -57,8 +60,15 @@ export function RoleNavigationShell({
   navigation,
   userName,
   avatarLabel,
+  userId,
 }: RoleNavigationShellProps) {
   const pathname = usePathname();
+  const { store, identity, signedOut } = useRememberedStudentIdentity();
+  useEffect(() => {
+    if (userId) store.seed({ id: userId, displayName: userName, avatarUrl: null, titleName: null });
+    void store.load();
+  }, [store, userId, userName]);
+  const notificationOwnerId = signedOut ? null : identity?.id ?? userId ?? null;
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [desktopSidebarVisible, setDesktopSidebarVisible] = useSidebarVisibility("teacher");
 
@@ -146,7 +156,7 @@ export function RoleNavigationShell({
 
               <Link href="/" className="app-mobile-brand">過去問くん</Link>
               <div className="app-user-tools">
-                <NotificationBell />
+                <NotificationBell ownerId={notificationOwnerId} />
                 <div className="flex items-center gap-3 rounded-full py-1 pl-1 pr-2">
                   <span className="grid size-9 place-items-center rounded-full bg-slate-100 text-sm font-medium text-slate-700">
                     {avatarLabel}
