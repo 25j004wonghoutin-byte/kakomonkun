@@ -9,6 +9,7 @@ import type {
 } from "@/lib/board/contract";
 import { readJsonResponse } from "@/lib/read-json-response";
 import { StudentAvatar } from "@/components/student-avatar";
+import { EquippedTitleBadge } from "@/components/equipped-title-badge";
 import { getPublicProfileHref } from "@/lib/public-profile-navigation";
 import {
   BoardAuthorName,
@@ -196,7 +197,7 @@ export function PostDetail({
                 <TeacherBadge isTeacher={comment.author.isTeacher} />
                 <time dateTime={comment.createdAt} className="text-xs text-slate-400">· {dateFormatter.format(new Date(comment.createdAt))}</time>
               </div>
-              {comment.author.titleName ? <span className="mt-1.5 inline-flex rounded bg-blue-50 px-2 py-1 text-xs font-black text-blue-900">{comment.author.titleName}</span> : null}
+              {comment.author.titleName ? <div className="mt-1.5"><EquippedTitleBadge name={comment.author.titleName} color={comment.author.bannerColor} /></div> : null}
               <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7 text-slate-800">{comment.body}</p>
               {comment.canDelete ? (
                 <button type="button" disabled={pending} onClick={() => deleteComment(comment)} className="mt-3 text-xs font-bold text-slate-500 hover:text-rose-700 disabled:opacity-50">削除</button>

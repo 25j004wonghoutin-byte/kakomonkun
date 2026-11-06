@@ -1,6 +1,7 @@
 "use client";
 
 import { StudentAvatar } from "@/components/student-avatar";
+import { EquippedTitleBadge } from "@/components/equipped-title-badge";
 
 import Link from "next/link";
 import { getPublicProfileHref } from "@/lib/public-profile-navigation";
@@ -59,9 +60,7 @@ export function PostCard({
           </div>
 
           {post.author.titleName ? (
-            <span className="mt-1.5 inline-flex rounded bg-blue-50 px-2 py-1 text-xs font-black text-blue-900">
-              {post.author.titleName}
-            </span>
+            <div className="mt-1.5"><EquippedTitleBadge name={post.author.titleName} color={post.author.bannerColor} /></div>
           ) : null}
 
           <Link

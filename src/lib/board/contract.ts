@@ -22,6 +22,7 @@ export type BoardAuthorView = {
   displayName: string;
   avatarUrl: string | null;
   titleName: string | null;
+  bannerColor?: string;
   isTeacher: boolean;
 };
 
@@ -31,6 +32,7 @@ export type PublicAuthorRow = {
   role: { name: string };
   studentProfile: {
     avatarUrl: string | null;
+    bannerColor?: string | null;
     currentTitle: { name: string } | null;
   } | null;
   teacherProfile: { avatarUrl: string | null } | null;
@@ -48,6 +50,7 @@ export function toBoardAuthor(row: PublicAuthorRow): BoardAuthorView {
     titleName: isTeacher
       ? null
       : (row.studentProfile?.currentTitle?.name ?? null),
+    bannerColor: !isTeacher ? normalizeBannerColor(row.studentProfile?.bannerColor) ?? DEFAULT_BANNER_COLOR : DEFAULT_BANNER_COLOR,
     isTeacher,
   };
 }

@@ -32,6 +32,13 @@ export function PublicProfile({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  function handleBannerSaved(color: string) {
+    setBannerColor(color);
+    setPosts(current => current.map(post => post.author.id === initialProfile.id
+      ? { ...post, author: { ...post.author, bannerColor: color } }
+      : post));
+  }
+
   function markPending(postId: string, pending: boolean) {
     setPendingIds((current) => {
       const next = new Set(current);
@@ -144,12 +151,11 @@ export function PublicProfile({
         <header className="flex min-h-16 items-center gap-4 border-b border-slate-200 px-4 py-3 sm:px-6">
           <Link href={backTarget.href} className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-md px-2 text-sm font-bold text-slate-700 hover:bg-slate-100"><svg aria-hidden="true" viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="m14 6-6 6 6 6M8 12h12" strokeLinecap="round" strokeLinejoin="round" /></svg>{backTarget.label}</Link>
           <div className="min-w-0">
-            <h2 title={initialProfile.displayName} className={`truncate font-black ${initialProfile.isTeacher ? "text-blue-800" : "text-slate-950"}`}>{initialProfile.displayName}</h2>
             <p className="text-xs text-slate-500">{postCount}件の投稿</p>
           </div>
         </header>
 
-        <ProfileBanner color={bannerColor} onSaved={viewerId === initialProfile.id && !initialProfile.isTeacher ? setBannerColor : undefined} />
+        <ProfileBanner color={bannerColor} onSaved={viewerId === initialProfile.id && !initialProfile.isTeacher ? handleBannerSaved : undefined} />
         <div className="px-4 pb-6 sm:px-6">
           <div
             aria-hidden="true"

@@ -11,6 +11,7 @@ import { readJsonResponse } from "@/lib/read-json-response";
 import { scheduleBoardDialogOpen } from "./dialog-lifecycle";
 import { BoardAuthorName, TeacherBadge } from "./post-card";
 import { StudentAvatar } from "@/components/student-avatar";
+import { EquippedTitleBadge } from "@/components/equipped-title-badge";
 import { getPublicProfileHref } from "@/lib/public-profile-navigation";
 
 export function ReplyDialog({
@@ -152,9 +153,7 @@ export function ReplyDialog({
             <TeacherBadge isTeacher={post.author.isTeacher} />
           </div>
           {post.author.titleName ? (
-            <span className="mt-1.5 inline-flex rounded bg-blue-50 px-2 py-1 text-xs font-black text-blue-900">
-              {post.author.titleName}
-            </span>
+            <div className="mt-1.5"><EquippedTitleBadge name={post.author.titleName} color={post.author.bannerColor} /></div>
           ) : null}
           <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7 text-slate-800">
             {post.body}
@@ -226,9 +225,7 @@ export function ReplyDialog({
                 <BoardAuthorName author={comment.author} profileReturnTo={profileReturnTo} />
                 <TeacherBadge isTeacher={comment.author.isTeacher} />
                 {comment.author.titleName ? (
-                  <span className="mt-1.5 block w-fit rounded bg-blue-50 px-2 py-1 text-xs font-black text-blue-900">
-                    {comment.author.titleName}
-                  </span>
+                  <div className="mt-1.5"><EquippedTitleBadge name={comment.author.titleName} color={comment.author.bannerColor} /></div>
                 ) : null}
                 <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-7 text-slate-800">
                   {comment.body}

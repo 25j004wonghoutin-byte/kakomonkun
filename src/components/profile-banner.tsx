@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { BANNER_COLORS, DEFAULT_BANNER_COLOR, normalizeBannerColor } from "@/lib/profile-banner";
 import { readJsonResponse } from "@/lib/read-json-response";
 
@@ -9,7 +9,40 @@ export function ProfileBanner({ color, onSaved }: { color?: string | null; onSav
   const [draft, setDraft] = useState(savedColor);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuId = useId();
+  const menuRoot = useRef<HTMLDivElement>(null);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const menuItem = useRef<HTMLButtonElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    menuItem.current?.focus();
+    function dismissOutside(event: PointerEvent) {
+      if (event.target instanceof Node && !menuRoot.current?.contains(event.target)) setMenuOpen(false);
+    }
+    function dismissWithEscape(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      setMenuOpen(false);
+      menuButton.current?.focus();
+    }
+    document.addEventListener("pointerdown", dismissOutside);
+    document.addEventListener("keydown", dismissWithEscape);
+    return () => {
+      document.removeEventListener("pointerdown", dismissOutside);
+      document.removeEventListener("keydown", dismissWithEscape);
+    };
+  }, [menuOpen]);
+
+  function openEditor() {
+    setMenuOpen(false);
+    setDraft(savedColor);
+    setError("");
+    dialog.current?.showModal();
+  }
+
   async function save() {
     if (pending || !onSaved) return;
     setPending(true); setError("");
@@ -24,9 +57,26 @@ export function ProfileBanner({ color, onSaved }: { color?: string | null; onSav
   }
   return <>
     <div data-profile-banner className="flex h-32 items-start justify-end p-3 sm:p-4" style={{ backgroundColor: savedColor }}>
-      {onSaved ? <button type="button" onClick={() => { setDraft(savedColor); setError(""); dialog.current?.showModal(); }} className="min-h-11 rounded-md border border-slate-300 bg-white px-3 text-xs font-bold text-slate-700 hover:bg-slate-50">バナーの色を変更</button> : null}
+      {onSaved ? <div ref={menuRoot} className="relative" onBlur={event => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setMenuOpen(false);
+      }}>
+        <button ref={menuButton} type="button" aria-label="プロフィールのメニュー" aria-haspopup="menu" aria-expanded={menuOpen} aria-controls={menuOpen ? menuId : undefined} disabled={pending}
+          onClick={() => setMenuOpen(current => !current)}
+          onKeyDown={event => {
+            if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); setMenuOpen(true); menuItem.current?.focus(); }
+          }}
+          className="grid size-11 place-items-center rounded-full border border-slate-300 bg-white text-slate-700 hover:bg-slate-50">
+          <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5" fill="currentColor"><circle cx="5" cy="12" r="1.8" /><circle cx="12" cy="12" r="1.8" /><circle cx="19" cy="12" r="1.8" /></svg>
+        </button>
+        {menuOpen ? <div id={menuId} role="menu" aria-label="プロフィールのメニュー" className="absolute right-0 top-full z-20 mt-2 w-52 rounded-lg bg-white p-1 shadow-lg"
+          onKeyDown={event => {
+            if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) { event.preventDefault(); menuItem.current?.focus(); }
+          }}>
+          <button ref={menuItem} type="button" role="menuitem" onClick={openEditor} className="flex min-h-11 w-full items-center rounded-md px-3 text-left text-sm font-bold text-slate-700 hover:bg-slate-50 focus-visible:bg-slate-50 focus-visible:outline-offset-[-2px]">バナーの色を変更</button>
+        </div> : null}
+      </div> : null}
     </div>
-    {onSaved ? <dialog ref={dialog} aria-label="バナーの色を変更" className="m-auto w-[calc(100%-2rem)] max-w-md rounded-xl border-0 p-5 text-slate-900 backdrop:bg-slate-950/50">
+    {onSaved ? <dialog ref={dialog} onClose={() => menuButton.current?.focus()} aria-label="バナーの色を変更" className="m-auto w-[calc(100%-2rem)] max-w-md rounded-xl border-0 p-5 text-slate-900 backdrop:bg-slate-950/50">
       <h2 className="text-lg font-black">バナーの色を変更</h2>
       <div aria-hidden="true" className="mt-4 h-24 rounded-lg border border-slate-200" style={{ backgroundColor: draft }} />
       <div role="group" aria-label="おすすめの色" className="mt-4 grid grid-cols-3 gap-2">

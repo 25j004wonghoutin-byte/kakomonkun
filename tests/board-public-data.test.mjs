@@ -55,6 +55,7 @@ test("public author never includes email, points or student number", () => {
     displayName: "みさき",
     avatarUrl: null,
     titleName: "コツコツ学習者",
+    bannerColor: "#deece6",
     isTeacher: false,
   });
   assert.equal(JSON.stringify(result).includes("private@example.com"), false);

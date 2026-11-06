@@ -19,6 +19,7 @@ const publicAuthorSelect = {
   studentProfile: {
     select: {
       avatarUrl: true,
+      bannerColor: true,
       currentTitle: { select: { name: true } },
     },
   },
