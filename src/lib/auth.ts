@@ -1,5 +1,6 @@
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
+import { assertNewGoogleAccountEmailAllowed, GoogleAccountDomainError } from "@/lib/google-login-policy";
 import { DEV_AUTH_COOKIE, isDevTestAuthEnabled } from "@/lib/dev-auth";
 import { prisma } from "@/lib/prisma";
 import { ensureStarterTitleForStudent } from "@/lib/starter-title";
@@ -79,6 +80,7 @@ export async function ensureAppUser(authUser: SupabaseUser) {
         include: USER_WITH_PROFILES,
       });
     } else {
+      assertNewGoogleAccountEmailAllowed(email);
       const studentRole = await tx.role.findUnique({
         where: { name: STUDENT_ROLE },
       });
@@ -206,7 +208,9 @@ export async function getCurrentUser() {
     try {
       user = await ensureAppUser(authUser);
     } catch (cause) {
-      console.error("Failed to provision authenticated user", cause);
+      if (!(cause instanceof GoogleAccountDomainError)) {
+        console.error("Failed to provision authenticated user", cause);
+      }
       return null;
     }
   }
