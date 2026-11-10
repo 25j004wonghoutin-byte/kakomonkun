@@ -7,13 +7,6 @@ import { existingUser, googleUser, harness, loadLoginPage, loadSessionProxy } fr
 // Render the real production page; the development-only form needs a live router.
 process.env.NODE_ENV = "production";
 
-test("login shows the exact new-account domain and the existing-account exception", async () => {
-  harness({ authUser: null });
-  const LoginPage = loadLoginPage();
-  const html = renderToStaticMarkup(await LoginPage({ searchParams: Promise.resolve({}) }));
-  assert.match(html, /edu\.kimura\.ac\.jp/); assert.match(html, /既存のアカウント/);
-});
-
 test("domain refusal is explained distinctly from a generic OAuth failure", async () => {
   harness();
   const LoginPage = loadLoginPage();

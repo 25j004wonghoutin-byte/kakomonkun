@@ -44,10 +44,6 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           ) : null}
 
           <GoogleLoginButton nextPath={nextPath} />
-          <p className="mt-4 text-sm leading-6 text-slate-600">
-            新規登録は @{NEW_GOOGLE_ACCOUNT_DOMAIN} のアカウントのみご利用いただけます。
-            既存のアカウントは、これまでどおりログインできます。
-          </p>
 
           {process.env.NODE_ENV !== "production" ? (
             <TestStudentLoginForm nextPath={nextPath} />
