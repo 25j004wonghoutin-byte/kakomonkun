@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import type {
   DailyHistoryItem,
   PracticeHistoryItem,
@@ -22,7 +23,7 @@ const dateFormatter = new Intl.DateTimeFormat("ja-JP", {
   day: "numeric",
 });
 
-export function StudentLearningDetail({ data }: { data: TeacherStudentDetail }) {
+export function StudentLearningDetail({ data, moderation }: { data: TeacherStudentDetail; moderation?: ReactNode }) {
   const start =
     data.pagination.total === 0
       ? 0
@@ -65,6 +66,8 @@ export function StudentLearningDetail({ data }: { data: TeacherStudentDetail }) 
           </p>
         )}
       </section>
+
+      {moderation}
 
       <section
         aria-label="学生の学習集計"

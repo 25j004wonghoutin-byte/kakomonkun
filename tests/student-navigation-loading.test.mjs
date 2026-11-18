@@ -27,6 +27,8 @@ test("normal student shell preserves identity, main content and idle links", () 
   assert.match(html, /確認用の学生/);
   assert.match(html, /<p>学習内容<\/p>/);
   assert.match(html.match(/<a[^>]*href="\/practice"[^>]*>/)?.[0] ?? "", /aria-current="page"/);
-  assert.equal((html.match(/data-navigation-pending="false"/g) ?? []).length, 9);
+  const helpLink = html.match(/<a[^>]*href="\/help"[^>]*>.*?<\/a>/)?.[0] ?? "";
+  assert.match(helpLink, /ヘルプ/);
+  assert.equal((html.match(/data-navigation-pending="false"/g) ?? []).length, 10);
   assert.doesNotMatch(html, /へ移動中/);
 });

@@ -4,6 +4,7 @@ import {
   listBoardPosts,
 } from "@/lib/board/read";
 import type { BoardScope } from "@/lib/board/contract";
+import { BOARD_RESTRICTED_MESSAGE } from "@/lib/board/moderation-contract";
 import { toBoardActor } from "@/lib/board/permissions";
 import { createBoardPost } from "@/lib/board/write-posts";
 import { parseCreatePostPayload } from "@/lib/board/validation";
@@ -58,5 +59,6 @@ export async function POST(request: Request) {
   }
 
   const created = await createBoardPost(actor, payload.body);
+  if (created === "restricted") return forbidden(BOARD_RESTRICTED_MESSAGE);
   return Response.json(created, { status: 201 });
 }

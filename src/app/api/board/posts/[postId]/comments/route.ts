@@ -1,4 +1,5 @@
 import { getCurrentUser } from "@/lib/auth";
+import { BOARD_RESTRICTED_MESSAGE } from "@/lib/board/moderation-contract";
 import { toBoardActor } from "@/lib/board/permissions";
 import { parseBoardBody, isUuid } from "@/lib/board/validation";
 import { createBoardComment } from "@/lib/board/write-comments";
@@ -44,6 +45,7 @@ export async function POST(
   }
 
   const created = await createBoardComment(actor, postId, body);
+  if (created === "restricted") return forbidden(BOARD_RESTRICTED_MESSAGE);
   return created === "not_found"
     ? notFound("投稿が見つかりません。")
     : Response.json(created, { status: 201 });

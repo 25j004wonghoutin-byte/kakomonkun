@@ -10,6 +10,7 @@ import type {
 } from "@/lib/board/contract";
 import { mergeBoardPage, promoteRepliedPost } from "@/lib/board/activity";
 import { readJsonResponse } from "@/lib/read-json-response";
+import { BoardRestrictionNotice, useBoardRestriction } from "./board-restriction-notice";
 import { PostCard } from "./post-card";
 import { ReplyDialog } from "./reply-dialog";
 import { StudentAvatar } from "@/components/student-avatar";
@@ -33,12 +34,15 @@ type CreatedPostResponse = {
 export function BoardFeed({
   initialPosts,
   initialNextCursor,
+  restrictionExpiresAt = null,
   viewer,
 }: {
   initialPosts: BoardPostView[];
   initialNextCursor: string | null;
   viewer: BoardViewer;
+  restrictionExpiresAt?: string | null;
 }) {
+  const activeRestriction = useBoardRestriction(restrictionExpiresAt);
   const [scope, setScope] = useState<BoardScope>("all");
   const [posts, setPosts] = useState(initialPosts);
   const [nextCursor, setNextCursor] = useState(initialNextCursor);
@@ -284,6 +288,7 @@ export function BoardFeed({
           ))}
         </div>
 
+        {activeRestriction ? <BoardRestrictionNotice expiresAt={activeRestriction} /> : null}
         <div className="flex gap-3 border-b-8 border-[#ffffff] px-4 py-5 sm:gap-4 sm:px-6">
           <Link href={getPublicProfileHref(viewer.id)} aria-label="自分の公開プロフィールを開く" className="h-fit shrink-0 rounded-full transition hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600">
             <ViewerAvatar name={viewer.displayName} avatarUrl={viewer.avatarUrl ?? null} isTeacher={viewer.roleName === "teacher"} />
@@ -294,6 +299,7 @@ export function BoardFeed({
             </label>
             <textarea
               id="board-post-draft"
+              disabled={Boolean(activeRestriction)}
               maxLength={280}
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
@@ -306,7 +312,7 @@ export function BoardFeed({
               </span>
               <button
                 type="button"
-                disabled={!draft.trim() || submitting}
+                disabled={!draft.trim() || submitting || Boolean(activeRestriction)}
                 onClick={submitPost}
                 className="min-h-10 rounded-lg bg-blue-600 px-5 text-sm font-black text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
               >
@@ -332,6 +338,8 @@ export function BoardFeed({
                 key={post.id}
                 post={post}
                 pending={pendingIds.has(post.id)}
+                restricted={Boolean(activeRestriction)}
+                canReport={viewer.roleName === "student" && viewer.id !== post.author.id}
                 onReply={setReplyPost}
                 onLike={toggleLike}
                 onPin={togglePin}
@@ -359,7 +367,7 @@ export function BoardFeed({
         ) : null}
       </section>
 
-      {replyPost ? (
+      {replyPost && !activeRestriction ? (
         <ReplyDialog
           post={replyPost}
           viewerName={viewer.displayName}

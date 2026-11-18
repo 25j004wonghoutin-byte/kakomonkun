@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { RoleShell } from "@/components/role-shell";
 import { getCurrentUser } from "@/lib/auth";
+import { getBoardRestrictionExpiry } from "@/lib/board/restrictions";
 import { getBoardThread } from "@/lib/board/read";
 import { isUuid } from "@/lib/board/validation";
 import { PostDetail } from "./post-detail";
@@ -22,14 +23,17 @@ export default async function BoardPostPage({
     notFound();
   }
 
-  const thread = await getBoardThread(user.id, postId);
+  const [thread, restrictionExpiresAt] = await Promise.all([
+    getBoardThread(user.id, postId),
+    getBoardRestrictionExpiry(user.id, user.role.name),
+  ]);
   if (!thread) {
     notFound();
   }
 
   return (
     <RoleShell roleName={user.role.name} userId={user.id} userName={user.displayName} avatarUrl={user.role.name === "student" ? user.studentProfile?.avatarUrl ?? null : null}>
-      <PostDetail initialThread={thread} viewerName={user.displayName} viewerAvatarUrl={user.role.name === "student" ? user.studentProfile?.avatarUrl ?? null : null} viewerIsTeacher={user.role.name === "teacher"} />
+      <PostDetail initialThread={thread} restrictionExpiresAt={restrictionExpiresAt} canReport={user.role.name === "student" && user.id !== thread.post.author.id} viewerName={user.displayName} viewerAvatarUrl={user.role.name === "student" ? user.studentProfile?.avatarUrl ?? null : null} viewerIsTeacher={user.role.name === "teacher"} />
     </RoleShell>
   );
 }

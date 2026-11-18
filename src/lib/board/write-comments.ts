@@ -8,6 +8,7 @@ import {
   canDeleteContent,
   canInteractWithPost,
 } from "@/lib/board/permissions";
+import { runBoardWrite } from "./restrictions";
 import { createBoardReplyNotification } from "@/lib/notifications/write";
 import { recordTitleActivity } from "@/lib/titles/activity";
 import { lockTitleOwner } from "@/lib/titles/unlocks";
@@ -35,14 +36,11 @@ export async function createBoardComment(
   actor: BoardActor,
   postId: string,
   body: string,
-): Promise<BoardCommentView | "not_found"> {
+): Promise<BoardCommentView | "not_found" | "restricted"> {
   const { prisma } = await import("@/lib/prisma");
-  const created = await prisma.$transaction((tx) =>
-    createBoardCommentInTransaction(tx, actor, postId, body),
-    { timeout: 30_000 },
-  );
+  const created = await runBoardWrite(actor, (tx) => createBoardCommentInTransaction(tx, actor, postId, body), 30_000);
 
-  if (created === "not_found") {
+  if (created === "not_found" || created === "restricted") {
     return created;
   }
 

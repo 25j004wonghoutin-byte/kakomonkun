@@ -6,6 +6,7 @@ import { EquippedTitleBadge } from "@/components/equipped-title-badge";
 import Link from "next/link";
 import { getPublicProfileHref } from "@/lib/public-profile-navigation";
 import type { BoardAuthorView, BoardPostView } from "@/lib/board/contract";
+import { PostReport } from "./post-report";
 
 const dateFormatter = new Intl.DateTimeFormat("ja-JP", {
   month: "numeric",
@@ -18,6 +19,8 @@ const dateFormatter = new Intl.DateTimeFormat("ja-JP", {
 export function PostCard({
   post,
   pending,
+  restricted = false,
+  canReport = false,
   onReply,
   onLike,
   onPin,
@@ -26,6 +29,8 @@ export function PostCard({
 }: {
   post: BoardPostView;
   pending: boolean;
+  restricted?: boolean;
+  canReport?: boolean;
   profileReturnTo?: string;
   onReply: (post: BoardPostView) => void;
   onLike: (post: BoardPostView) => void;
@@ -76,7 +81,7 @@ export function PostCard({
             <div className="flex items-center gap-1.5">
               <button
                 type="button"
-                disabled={pending}
+                disabled={pending || restricted}
                 onClick={() => onReply(post)}
                 className="transition hover:text-blue-600 disabled:opacity-50"
                 aria-label={`${authorLabel}の投稿に返信`}
@@ -93,7 +98,7 @@ export function PostCard({
             </div>
             <button
               type="button"
-              disabled={pending}
+              disabled={pending || restricted}
               onClick={() => onLike(post)}
               aria-pressed={post.likedByMe}
               className={`flex items-center gap-1.5 transition disabled:opacity-50 ${
@@ -106,6 +111,7 @@ export function PostCard({
               <HeartIcon className="size-5" filled={post.likedByMe} />
               {post.likeCount}
             </button>
+            {canReport ? <PostReport postId={post.id} /> : null}
             {post.canPin ? (
               <button
                 type="button"

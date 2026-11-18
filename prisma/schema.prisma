@@ -52,6 +52,7 @@ model User {
   boardDeleteLogs   BoardDeleteLog[]   @relation("BoardDeletionActor")
   receivedNotifications Notification[] @relation("NotificationRecipient")
   actedNotifications    Notification[] @relation("NotificationActor")
+  boardRestriction      BoardRestriction?
 
   @@index([roleId], map: "idx_users_role_id")
   @@index([status], map: "idx_users_status")
@@ -612,10 +613,33 @@ model BoardPost {
   author    User            @relation("BoardPostAuthor", fields: [authorId], references: [id], onDelete: Restrict)
   comments  BoardComment[]
   likes     BoardPostLike[]
+  reports   BoardReport[]
   notifications Notification[]
 
   @@index([authorId], map: "idx_board_posts_author_id_fk")
   @@map("board_posts")
+}
+
+model BoardReport {
+  id            String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  postId        String         @map("post_id") @db.Uuid
+  reason        String         @db.VarChar(30)
+  createdAt     DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  resolvedAt    DateTime?      @map("resolved_at") @db.Timestamptz(3)
+  post          BoardPost      @relation(fields: [postId], references: [id], onDelete: Restrict)
+  notifications Notification[]
+
+  @@index([postId], map: "idx_board_reports_post_id")
+  @@index([createdAt(sort: Desc), id(sort: Desc)], map: "idx_board_reports_queue")
+  @@map("board_reports")
+}
+
+model BoardRestriction {
+  userId    String   @id @map("user_id") @db.Uuid
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(3)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("board_restrictions")
 }
 
 model BoardComment {
@@ -668,6 +692,7 @@ model Notification {
   type           String        @db.VarChar(30)
   boardPostId    String?       @map("board_post_id") @db.Uuid
   boardCommentId String?       @map("board_comment_id") @db.Uuid
+  boardReportId  String?       @map("board_report_id") @db.Uuid
   titleId        String?       @map("title_id") @db.Uuid
   targetMonth    DateTime?     @map("target_month") @db.Date
   readAt         DateTime?     @map("read_at") @db.Timestamptz(3)
@@ -676,16 +701,19 @@ model Notification {
   actor          User?         @relation("NotificationActor", fields: [actorId], references: [id], onDelete: Restrict)
   boardPost      BoardPost?    @relation(fields: [boardPostId], references: [id], onDelete: Restrict)
   boardComment   BoardComment? @relation(fields: [boardCommentId], references: [id], onDelete: Restrict)
+  boardReport    BoardReport?  @relation(fields: [boardReportId], references: [id], onDelete: Restrict)
   title          Title?        @relation(fields: [titleId], references: [id], onDelete: Restrict)
 
   @@unique([recipientId, type, boardCommentId], map: "notifications_recipient_type_comment_key")
   @@unique([recipientId, type, boardPostId], map: "notifications_recipient_type_post_key")
   @@unique([recipientId, type, titleId], map: "notifications_recipient_type_title_key")
   @@unique([recipientId, type, targetMonth], map: "notifications_recipient_type_month_key")
+  @@unique([recipientId, type, boardReportId], map: "notifications_recipient_type_report_key")
   @@index([recipientId], map: "idx_notifications_recipient_id")
   @@index([actorId], map: "idx_notifications_actor_id")
   @@index([boardPostId], map: "idx_notifications_board_post_id")
   @@index([boardCommentId], map: "idx_notifications_board_comment_id")
+  @@index([boardReportId], map: "idx_notifications_board_report_id")
   @@index([titleId], map: "idx_notifications_title_id")
   @@index([recipientId, createdAt(sort: Desc), id(sort: Desc)], map: "idx_notifications_recipient_created")
   @@map("notifications")

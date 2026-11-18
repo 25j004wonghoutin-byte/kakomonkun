@@ -1,4 +1,5 @@
 import { getCurrentUser } from "@/lib/auth";
+import { BOARD_RESTRICTED_MESSAGE } from "@/lib/board/moderation-contract";
 import { toBoardActor } from "@/lib/board/permissions";
 import { isUuid } from "@/lib/board/validation";
 import { likeBoardPost, unlikeBoardPost } from "@/lib/board/write-likes";
@@ -19,6 +20,7 @@ export async function PUT(
   }
 
   const result = await likeBoardPost(contextResult.actor, contextResult.postId);
+  if (result === "restricted") return forbidden(BOARD_RESTRICTED_MESSAGE);
   return result === "not_found"
     ? notFound("投稿が見つかりません。")
     : Response.json({ liked: true });
@@ -37,6 +39,7 @@ export async function DELETE(
     contextResult.actor,
     contextResult.postId,
   );
+  if (result === "restricted") return forbidden(BOARD_RESTRICTED_MESSAGE);
   return result === "not_found"
     ? notFound("投稿が見つかりません。")
     : Response.json({ liked: false });

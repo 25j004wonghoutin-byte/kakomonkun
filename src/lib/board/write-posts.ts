@@ -4,6 +4,7 @@ import {
   canDeleteContent,
   canPinPost,
 } from "@/lib/board/permissions";
+import { runBoardWrite } from "./restrictions";
 import { createBoardPinnedNotifications } from "@/lib/notifications/write";
 import { recordTitleActivity } from "@/lib/titles/activity";
 import { lockTitleOwner } from "@/lib/titles/unlocks";
@@ -14,8 +15,7 @@ export type BoardPostMutationResult =
   | "forbidden";
 
 export async function createBoardPost(actor: BoardActor, body: string) {
-  const { prisma } = await import("@/lib/prisma");
-  return prisma.$transaction((tx) => createBoardPostInTransaction(tx, actor, body), { timeout: 30_000 });
+  return runBoardWrite(actor, (tx) => createBoardPostInTransaction(tx, actor, body), 30_000);
 }
 
 export async function createBoardPostInTransaction(tx: Prisma.TransactionClient, actor: BoardActor, body: string, now = new Date()) {

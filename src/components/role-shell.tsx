@@ -19,6 +19,7 @@ const teacherNavigation: RoleNavigationItem[] = [
   { label: "学習状況", href: "/teacher/students", icon: "students" },
   { label: "模擬試験状況", href: "/teacher/mock-exams", icon: "exam" },
   { label: "掲示板", href: "/board", icon: "message" },
+  { label: "掲示板の通報", href: "/teacher/board-reports", icon: "message" },
   { label: "通知", href: "/notifications", icon: "bell" },
 ];
 

@@ -1,6 +1,7 @@
 export type NotificationType =
   | "board_reply"
   | "board_pinned"
+  | "board_report"
   | "title_unlocked"
   | "mock_exam_reminder";
 
@@ -20,6 +21,8 @@ export function notificationMessage(value: {
   type: NotificationType;
   actorName: string | null;
 }): string {
+  if (value.type === "board_report") return "掲示板の投稿が通報されました";
+
   if (value.type === "board_reply") {
     return `${value.actorName ?? "ユーザー"}さんが投稿に返信しました`;
   }
@@ -40,6 +43,8 @@ export function notificationTarget(value: {
   postId: string | null;
   targetMonth?: string | null;
 }): string | null {
+  if (value.type === "board_report") return "/teacher/board-reports";
+
   if (value.type === "board_reply" || value.type === "board_pinned") {
     return value.postId ? `/board/posts/${value.postId}` : null;
   }

@@ -7,6 +7,8 @@ import {
   parseTeacherStudentDetailQuery,
   type TeacherStudentDetailTab,
 } from "@/lib/teacher/student-detail";
+import { getBoardRestrictionExpiry } from "@/lib/board/restrictions";
+import { BoardRestrictionForm } from "./board-restriction-form";
 import { StudentLearningDetail } from "./student-learning-detail";
 
 export const dynamic = "force-dynamic";
@@ -20,13 +22,16 @@ export default async function TeacherStudentDetailPage({
   params,
   searchParams,
 }: TeacherStudentDetailPageProps) {
-  await requireTeacherPageUser();
+  const teacher = await requireTeacherPageUser();
   const [{ userId }, rawQuery] = await Promise.all([params, searchParams]);
 
   if (!isStudentId(userId)) notFound();
 
   const query = parseTeacherStudentDetailQuery(rawQuery);
-  const data = await getTeacherStudentDetail(userId, query);
+  const [data, restrictionExpiry] = await Promise.all([
+    getTeacherStudentDetail(userId, query),
+    getBoardRestrictionExpiry(userId, "student"),
+  ]);
   if (!data) notFound();
 
   if (query.page > data.pagination.totalPages) {
@@ -36,8 +41,8 @@ export default async function TeacherStudentDetailPage({
   }
 
   return (
-    <TeacherShell>
-      <StudentLearningDetail data={data} />
+    <TeacherShell userId={teacher.id}>
+      <StudentLearningDetail data={data} moderation={<BoardRestrictionForm key={userId} userId={userId} initialExpiry={restrictionExpiry} />} />
     </TeacherShell>
   );
 }

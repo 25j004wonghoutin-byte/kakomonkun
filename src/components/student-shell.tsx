@@ -41,6 +41,7 @@ const navigation: NavigationItem[] = [
   { label: "称号ショップ", href: "/titles", icon: "medal" },
   { label: "掲示板", href: "/board", icon: "message" },
   { label: "マイページ", href: "/profile", icon: "user" },
+  { label: "ヘルプ", href: "/help", icon: "book" },
 ];
 
 type StudentShellProps = {

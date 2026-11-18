@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import type { BoardPostView, BoardPublicProfileView } from "@/lib/board/contract";
 import { readJsonResponse } from "@/lib/read-json-response";
+import { BoardRestrictionNotice, useBoardRestriction } from "@/app/board/board-restriction-notice";
 import { PostCard, TeacherBadge } from "@/app/board/post-card";
 import { ReplyDialog } from "@/app/board/reply-dialog";
 import { ProfileBanner } from "@/components/profile-banner";
@@ -16,13 +17,18 @@ export function PublicProfile({
   initialProfile,
   viewerName,
   viewerId,
+  viewerIsStudent = false,
+  restrictionExpiresAt = null,
   backTarget = getProfileReturnTarget(null),
 }: {
   initialProfile: BoardPublicProfileView;
   viewerName: string;
   viewerId?: string;
+  viewerIsStudent?: boolean;
+  restrictionExpiresAt?: string | null;
   backTarget?: ProfileReturnTarget;
 }) {
+  const activeRestriction = useBoardRestriction(restrictionExpiresAt);
   const [bannerColor, setBannerColor] = useState(initialProfile.bannerColor);
   const [posts, setPosts] = useState(initialProfile.posts);
   const [postCount, setPostCount] = useState(initialProfile.postCount);
@@ -173,12 +179,15 @@ export function PublicProfile({
 
         <h3 className="border-y border-slate-200 px-4 py-4 text-sm font-black text-blue-700 sm:px-6">投稿</h3>
         {error ? <p role="alert" className="border-b border-rose-200 bg-rose-50 px-6 py-3 text-sm font-bold text-rose-700">{error}</p> : null}
+        {activeRestriction ? <BoardRestrictionNotice expiresAt={activeRestriction} /> : null}
         {posts.length > 0 ? posts.map((post) => (
           <PostCard
             key={post.id}
             post={post}
             profileReturnTo={backTarget.href}
             pending={pendingIds.has(post.id)}
+            restricted={Boolean(activeRestriction)}
+            canReport={viewerIsStudent && viewerId !== post.author.id}
             onReply={setReplyPost}
             onLike={toggleLike}
             onPin={togglePin}
@@ -193,7 +202,7 @@ export function PublicProfile({
         </div> : null}
       </section>
 
-      {replyPost ? <ReplyDialog
+      {replyPost && !activeRestriction ? <ReplyDialog
         post={replyPost}
         viewerName={viewerName}
         profileReturnTo={backTarget.href}

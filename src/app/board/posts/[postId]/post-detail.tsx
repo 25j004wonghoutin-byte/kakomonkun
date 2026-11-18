@@ -9,6 +9,7 @@ import type {
 } from "@/lib/board/contract";
 import { readJsonResponse } from "@/lib/read-json-response";
 import { StudentAvatar } from "@/components/student-avatar";
+import { BoardRestrictionNotice, useBoardRestriction } from "../../board-restriction-notice";
 import { EquippedTitleBadge } from "@/components/equipped-title-badge";
 import { getPublicProfileHref } from "@/lib/public-profile-navigation";
 import {
@@ -30,12 +31,17 @@ export function PostDetail({
   viewerName,
   viewerAvatarUrl = null,
   viewerIsTeacher = false,
+  restrictionExpiresAt = null,
+  canReport = false,
 }: {
   initialThread: BoardThreadView;
   viewerName: string;
   viewerAvatarUrl?: string | null;
   viewerIsTeacher?: boolean;
+  restrictionExpiresAt?: string | null;
+  canReport?: boolean;
 }) {
+  const activeRestriction = useBoardRestriction(restrictionExpiresAt);
   const [post, setPost] = useState(initialThread.post);
   const profileReturnTo = `/board/posts/${post.id}`;
   const [comments, setComments] = useState(initialThread.comments);
@@ -169,10 +175,13 @@ export function PostDetail({
           <h1 className="font-black text-slate-950">投稿</h1>
         </header>
 
+        {activeRestriction ? <BoardRestrictionNotice expiresAt={activeRestriction} /> : null}
         <PostCard
           post={post}
           profileReturnTo={profileReturnTo}
           pending={pending}
+          restricted={Boolean(activeRestriction)}
+          canReport={canReport}
           onReply={() => replyRef.current?.focus()}
           onLike={toggleLike}
           onPin={togglePin}
@@ -218,6 +227,7 @@ export function PostDetail({
             <textarea
               ref={replyRef}
               id="board-detail-reply"
+              disabled={Boolean(activeRestriction)}
               maxLength={280}
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
@@ -226,7 +236,7 @@ export function PostDetail({
             />
             <div className="flex items-center justify-end gap-3 border-t border-slate-200 pt-3">
               <span className="text-xs font-bold text-slate-500">{draft.length} / 280</span>
-              <button type="button" disabled={!draft.trim() || submitting} onClick={submitReply} className="min-h-10 rounded-lg bg-blue-600 px-5 text-sm font-black text-white hover:bg-blue-700 disabled:bg-blue-300">
+              <button type="button" disabled={!draft.trim() || submitting || Boolean(activeRestriction)} onClick={submitReply} className="min-h-10 rounded-lg bg-blue-600 px-5 text-sm font-black text-white hover:bg-blue-700 disabled:bg-blue-300">
                 {submitting ? "返信中..." : "返信する"}
               </button>
             </div>

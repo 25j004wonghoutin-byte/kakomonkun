@@ -153,6 +153,7 @@ function toNotificationType(value: string): NotificationType {
   if (
     value === "board_reply" ||
     value === "board_pinned" ||
+    value === "board_report" ||
     value === "title_unlocked" ||
     value === "mock_exam_reminder"
   ) {
